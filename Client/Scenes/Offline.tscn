@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Node
+
+func _ready():
+	Globals.set(\"PlayerName\", \"DEBUG\")
+	Globals.set(\"CurrentMap\", 0)
+	Globals.set(\"Entrance\", [5])
+	var initializer = load(\"Nodes/GameInitializer.tscn\").instance()
+	Globals.set(\"Initializer\", initializer)
+	get_tree().change_scene(\"Scenes/InGame.tscn\")"
+
+[node name="Node" type="Node" index="0"]
+
+script = SubResource( 1 )
+
+
