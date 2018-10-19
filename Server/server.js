@@ -1,65 +1,44 @@
-//Import Required Libraries
-require(__dirname + '/Resources/config.js')
+require('./Scripts/Config.js')
+require('./Scripts/Packet.js')
 var fs = require('fs')
 var net = require('net')
-require('./packet.js')
 
-var init_files = fs.readdirSync(__dirname + "/Initializers")
+var init_files = fs.readdirSync("./Scripts/Initializers")
 init_files.forEach(function(initFile) {
     console.log('Loading Initializer: ' + initFile)
-    require(__dirname + "/Initializers/" + initFile)
+    require("./Scripts/Initializers/" + initFile)
 })
 
-var model_files = fs.readdirSync(__dirname + "/Models")
+var model_files = fs.readdirSync("./Scripts/Models")
 model_files.forEach(function(modelFile){
     console.log('Loading Model: ' + modelFile)
-    require(__dirname + "/Models/" + modelFile)
+    require("./Scripts/Models/" + modelFile)
 })
 
-maps = {}
-var map_files = fs.readdirSync(config.data_paths.maps)
-map_files.forEach(function(file){
-    console.log('Loading Map: ' + file)
-    var map = require(config.data_paths.maps + file)
-	map.id = parseInt(file.split(".")[0])
-    maps[map.id] = map
-})
+var load_resources = (container, name) => {
+    let files = fs.readdirSync("./Resources/" + name)
+    files.forEach((file) => {
+        console.log('Loading (' + name + '): ' + file)
+        let data = require("./Resources/" + name + "/" + file)
+        data.id = parseInt(file.split(".")[0])
+        container[data.id] = data
+    })
+}
 
-enemies = {}
-var enemy_files = fs.readdirSync(config.data_paths.enemies)
-enemy_files.forEach(function(file){
-    console.log('Loading Enemy: ' + file)
-    var enemy = require(config.data_paths.enemies + file)
-	enemy.id = parseInt(file.split(".")[0])
-    enemies[enemy.id] = enemy
-})
-
-items = {}
-var item_files = fs.readdirSync(config.data_paths.items)
-item_files.forEach(function(file){
-    console.log('Loading Item: ' + file)
-    var item = require(config.data_paths.items + file)
-	item.id = parseInt(file.split(".")[0])
-    items[item.id] = item
-})
-
-souls = {}
-var soul_files = fs.readdirSync(config.data_paths.souls)
-soul_files.forEach(function(file) {
-    console.log('Loading Soul: ' + file)
-    var soul = require(config.data_paths.souls + file)
-	soul.id = parseInt(file.split(".")[0])
-    souls[soul.id] = soul
-})
+load_resources(maps = {}, "Maps")
+load_resources(enemies = {}, "Enemies")
+load_resources(items = {}, "Items")
+load_resources(souls = {}, "Souls")
 
 playersOnline = [] //to może niefajne -> zrobić Set
 globalChat = [] //TYMCZASOWE (zamiast tego obiekty czatów i subskrypcje)
 new RoomManager()
 
+var client = new require('./Scripts/Client.js')
+
 net.createServer(function(socket) {
     console.log("socket connected")
-    var c_inst = new require('./client.js')
-    var thisClient = new c_inst()
+    var thisClient = new client()
 
     thisClient.socket = socket
     thisClient.initiate()
@@ -74,7 +53,7 @@ console.log("Initialize Completed, Server runnng on port: " + config.port + " fo
 var loop = function() {
 	RoomManager.prototype.managers.forEach(function (manager) {manager.clean()})
 	
-	setTimeout(loop, 5000) //TODO: stała loop timeout w config
+	setTimeout(loop, config.loop_timeout) //TODO: stała loop timeout w config
 }
 
 loop()
