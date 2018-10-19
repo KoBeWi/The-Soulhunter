@@ -19,7 +19,7 @@ var common_conf = {
         souls: __dirname + "/Game Data/Souls/"
     },
     starting_zone: 0,
-    client: args.client || __dirname + "/Server-client/Client.exe"
+    client: args.client || __dirname + "/../.client/Client.exe"
 }
 
 //Environment Specific Configuration
