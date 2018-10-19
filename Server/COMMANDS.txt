@@ -3,26 +3,26 @@ Client -> Server
 BROADSYNC[map, data] - synchronizacja dla pomieszczenia
 CHANGEROOM[player, direction, offset] - zmiana pomieszczenia
 CHAT[type, whisper, text]* - pisanie na czacie
-DAMAGE[map, group, attacked, defender, type] - zadawanie obra¿eñ
+DAMAGE[map, group, attacked, defender, type] - zadawanie obraÅ¼eÅ„
 DISCOVER[x, y] - odkrycie pomieszczenia
-ENEMY[map, index, id] - zg³oszenie przeciwnika
+ENEMY[map, index, id] - zgÅ‚oszenie przeciwnika
 EQUIP[slot, id] - zmiana ekwipunku
 LOGIN[username, password] - logowanie
-GETEQUIPMENT[] - ¿¹danie ekwipunku
-GETINVENTORY[] - ¿¹danie wyposa¿enia
-GETMAP[]* - ¿¹danie mapy
-GETSTATS[code]* - ¿¹danie statystyk
+GETEQUIPMENT[] - Å¼Ä…danie ekwipunku
+GETINVENTORY[] - Å¼Ä…danie wyposaÅ¼enia
+GETMAP[]* - Å¼Ä…danie mapy
+GETSTATS[code]* - Å¼Ä…danie statystyk
 GOTITEM[map, player, id] - dodanie przedmiotu graczowi
-KEYPRESS[id]* - wciœniêcie przycisku
-KEYRELEASE[id]* - odciœniêcie przycisku
-POS[x, y, direction] - przes³anie pozycji innym
+KEYPRESS[id]* - wciÅ›niÄ™cie przycisku
+KEYRELEASE[id]* - odciÅ›niÄ™cie przycisku
+POS[x, y, direction] - przesÅ‚anie pozycji innym
 PRIVSYNC[map, for, data] - synchronizacja dla gracza
 REGISTER[username, password] - rejestracja
-RNG[map, type, index, id, value] - wartoœæ z generatora liczb
+RNG[map, type, index, id, value] - wartoÅ›Ä‡ z generatora liczb
 TELLPOS[targetuser, x, y, direction] - ustawienie pozycji gracza
 SERVER[code] - potwierdzenie od klienta-servera
 
-* mo¿e wyjœæ nie od mastera
+* moÅ¼e wyjÅ›Ä‡ nie od mastera
 
 
 Server -> Client
@@ -30,22 +30,22 @@ Server -> Client
 HELLO - powitanie
 LOGIN[result, map] - logowanie
 REGISTER[result] - rejestracja
-NEWROOM[code] - nowy pokój
+NEWROOM[code] - nowy pokÃ³j
 CHANGEROOM[id] - zmiana pomieszczenia
 CHAT[author, message, type] - czat
-DAMAGE[group, id, damage] - numerek obra¿eñ
-DEAD[group, id, map*] - œmieræ
-DROP[enemy, id, map*] - stwórz przedmiot z wroga
-ENTER[map*, username, id, keylen, [keys]] - wejœcie
+DAMAGE[group, id, damage]- numerek obraÅ¼eÅ„
+DEAD[group, id, map*] - Å›mierÄ‡
+DROP[enemy, id, map*] - stwÃ³rz przedmiot z wroga
+ENTER[map*, username, id, keylen, [keys]] - wejÅ›cie
 EQUIPMENT[[eq]] - ekwipunek
-EXIT[name] - wyjœcie
-EXPERIENCE[amount] - +doœwiadczenie
-INVENTORY[number, [items]] - wyposa¿enie
-KEYPRESS[player, id] - wciœniêcie przycisku
+EXIT[name] - wyjï¿½cie
+EXPERIENCE[amount] - +doÅ›wiadczenie
+INVENTORY[number, [items]] - wyposaÅ¼enie
+KEYPRESS[player, id] - wciÅ›niÄ™cie przycisku
 KEYRELEASE[player, id] - puszczenie przycisku
 MAP[number, [rooms]] - aktualizacja mapy
 PLAYERID[id] - id klienta
-POS[map, id, direction, offset] - ustawienie pozycji wejœciowej
+POS[map, id, direction, offset] - ustawienie pozycji wejÅ›ciowej
 RNG[group, index, type, value] - losowy numer
 SOUL[source, id] - dusza z wroga
 STATS[code, [stats]] - statystyki
