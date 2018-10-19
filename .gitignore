@@ -1,6 +1,7 @@
 Client/.import/
 
 Server/.import/
+Server/.client/
 Server/.database/
 Server/node_modules/
 Server/package-lock.json
