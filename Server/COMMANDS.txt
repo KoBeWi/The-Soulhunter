@@ -38,7 +38,7 @@ DEAD[group, id, map*] - śmierć
 DROP[enemy, id, map*] - stwórz przedmiot z wroga
 ENTER[map*, username, id, keylen, [keys]] - wejście
 EQUIPMENT[[eq]] - ekwipunek
-EXIT[name] - wyj�cie
+EXIT[name] - wyjście
 EXPERIENCE[amount] - +doświadczenie
 INVENTORY[number, [items]] - wyposażenie
 KEYPRESS[player, id] - wciśnięcie przycisku
