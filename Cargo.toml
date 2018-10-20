@@ -1,0 +1,11 @@
+[package]
+name = "main"
+version = "0.1.0"
+authors = ["karroffel <therzog@mail.de>"]
+
+[lib]
+crate-type = ["cdylib"]
+path = "Server/main.rs"
+
+[dependencies]
+gdnative = { path = "X:/Sandbox/Rust/godot-rust-master/gdnative" }

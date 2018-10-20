@@ -1,7 +1,3 @@
-Client/.import/
-Client/Build/
-
-Server/.client/
-Server/.database/
-Server/node_modules/
-Server/package-lock.json
+.import/
+Build/
+target/
