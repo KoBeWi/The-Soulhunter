@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Server/Server.gdns" type="Script" id=1]
 
 [sub_resource type="GDScript" id=1]
 
@@ -11,7 +13,6 @@ var rooms = {}
 var sync_timeout = 2
 
 func _ready():
-	Network.send_data([\"SERVER\", Com.server.right(1)])
 	Com.server = self
 
 func _process(delta):
@@ -63,4 +64,8 @@ _sections_unfolded = [ "Resource" ]
 
 [node name="Server" type="Node"]
 script = SubResource( 1 )
+
+[node name="Rust" type="Node" parent="."]
+script = ExtResource( 1 )
+_sections_unfolded = [ "Script" ]
 

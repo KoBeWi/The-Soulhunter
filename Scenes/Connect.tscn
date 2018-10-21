@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=1]
-[ext_resource path="res://Server/Server.gdns" type="Script" id=2]
 
 [sub_resource type="GDScript" id=1]
 
@@ -11,11 +10,7 @@ script/source = "extends Node
 onready var start = OS.get_ticks_msec()
 
 func _ready():
-	var args = []
-	for arg in OS.get_cmdline_args(): args.append(arg)
-	
-	if args.has(\"-server\"):
-		Com.server = args[args.find(\"-server\") + 1]
+	Network.connect_client()
 
 func _process(delta):
 	if Network.connected:
@@ -68,8 +63,4 @@ lines_skipped = 0
 max_lines_visible = -1
 script = SubResource( 2 )
 _sections_unfolded = [ "Rect" ]
-
-[node name="Node" type="Node" parent="."]
-script = ExtResource( 2 )
-_sections_unfolded = [ "Script" ]
 

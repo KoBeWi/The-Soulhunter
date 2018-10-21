@@ -12,11 +12,13 @@ const server_port = 2412
 #const server_host = "0.tcp.ngrok.io"
 #const server_port = 18136
 
-func _ready():
+func connect_client():
 	client = StreamPeerTCP.new()
 	client.connect_to_host(server_host, server_port)
 
 func _process(delta):
+	if !client: return
+	
 	var packet_size = client.get_partial_data(1)
 	
 	if packet_size[0] == 1:
@@ -280,7 +282,7 @@ func get_data(format, data, start):
 	var i = start
 	var result = []
 	
-	for type in format:
+	for type in format: #TODO: enum lub TYPE_STRING etc.
 		if i >= data.size():
 			return result
 		
@@ -299,6 +301,7 @@ func get_data(format, data, start):
 	return result
 
 func extract_string(raw_ary, start):
+	print_raw(raw_ary)
 	var string = []
 	var i = start
 	

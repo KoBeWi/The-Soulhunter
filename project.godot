@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="The Soulhunter"
-run/main_scene="res://Scenes/Loading.tscn"
+run/main_scene="res://Scenes/Connect.tscn"
 config/icon="res://icon.png"
 
 [autoload]
