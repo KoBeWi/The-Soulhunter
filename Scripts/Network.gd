@@ -17,15 +17,21 @@ func connect_client():
 	client.connect_to_host(server_host, server_port)
 
 func _process(delta):
-	if !client: return
+	if !client or client.get_status() == client.STATUS_CONNECTING: return
+	
+	if client.get_status() != client.STATUS_CONNECTED:
+		client.connect_to_host(server_host, server_port)
 	
 	var packet_size = client.get_partial_data(1)
 	
-	if packet_size[0] == 1:
-		client.connect_to_host(server_host, server_port)
+	if packet_size[0] == FAILED: return
 	
 	if packet_size[1].size() > 0:
-		process_data(client.get_data(packet_size[1][0]-1)[1])
+		print(">",client.get_status())
+		var data = client.get_data(packet_size[1][0]-1)
+		print(client.get_status())
+#		print(data[0])
+		process_data(data[1])
 
 func process_data(data):
 	var command = extract_string(data, 0)
@@ -301,7 +307,6 @@ func get_data(format, data, start):
 	return result
 
 func extract_string(raw_ary, start):
-	print_raw(raw_ary)
 	var string = []
 	var i = start
 	

@@ -2,9 +2,22 @@
 extern crate gdnative as godot;
 
 use std::io::prelude::*;
-use std::net::TcpStream;
+// use std::net::TcpStream;
 use std::net::TcpListener;
 use std::thread;
+
+fn to_c_string(s: &str) -> Vec<u8> {
+    let mut buffer = Vec::with_capacity(s.chars().count()+2); //mało optymalne chyba
+    let len = buffer.capacity() as u8;
+    buffer.push(len);
+    
+    for c in s.chars() {
+        buffer.push(c as u8);
+    }
+
+    buffer.push('\0' as u8);
+    buffer
+}
 
 godot_class! {
     class HelloWorld: godot::Node {
@@ -25,10 +38,17 @@ godot_class! {
                 let listener = TcpListener::bind("127.0.0.1:2412").unwrap();
 
                 for stream in listener.incoming() {
-                    let mut stream = stream.unwrap();
 
-                    stream.write(&[7u8, 72u8, 69u8, 76u8, 76u8, 79u8, 0u8]).unwrap();
-                    stream.flush().unwrap();
+                    thread::spawn(|| { //tutaj thread pool
+                        let mut stream = stream.unwrap();
+
+                        stream.write(to_c_string("HELLO").as_slice()).unwrap();
+                        stream.flush().unwrap();
+
+                        // loop {
+                        //     println!("hehe");
+                        // }
+                    });
                 }
             });
         }

@@ -60,12 +60,10 @@ func sync_to_all(type, object):
 		var ary = object.get_sync_data()
 		if ary.empty(): return
 		Network.send_data([\"BROADSYNC\", object.mapid, \"e\", object.id] + ary)"
-_sections_unfolded = [ "Resource" ]
 
 [node name="Server" type="Node"]
 script = SubResource( 1 )
 
 [node name="Rust" type="Node" parent="."]
 script = ExtResource( 1 )
-_sections_unfolded = [ "Script" ]
 
