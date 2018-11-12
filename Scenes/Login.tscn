@@ -31,11 +31,10 @@ func _process(delta):
 		$Label2.text = \"Registered sucessfully!\"
 
 func _on_Login_pressed():
-	Network.send_data([\"login\", $Login.text, $Password.text])
+	Network.send_data([\"LOGIN\", $Login.text, $Password.text])
 
 func _on_Register_pressed():
-	Network.send_data([\"register\", $Login.text, $Password.text])"
-_sections_unfolded = [ "Resource" ]
+	Network.send_data([\"REGISTER\", $Login.text, $Password.text])"
 
 [node name="LoginScreen" type="Node2D"]
 script = SubResource( 1 )
@@ -44,7 +43,6 @@ script = SubResource( 1 )
 position = Vector2( 413.364, 278.414 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
 
 [node name="Login" type="LineEdit" parent="."]
 anchor_left = 0.0
@@ -169,7 +167,6 @@ custom_colors/font_color = Color( 1, 0, 0, 1 )
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_fonts" ]
 
 [node name="Label2" type="Label" parent="."]
 anchor_left = 0.0
@@ -191,7 +188,6 @@ custom_colors/font_color = Color( 0.148438, 1, 0, 1 )
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_fonts" ]
 
 [connection signal="pressed" from="Log-in" to="." method="_on_Login_pressed"]
 [connection signal="pressed" from="Register" to="." method="_on_Register_pressed"]

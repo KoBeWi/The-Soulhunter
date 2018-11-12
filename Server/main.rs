@@ -7,7 +7,7 @@ use std::net::TcpListener;
 use std::thread;
 
 fn to_c_string(s: &str) -> Vec<u8> {
-    let mut buffer = Vec::with_capacity(s.chars().count()+2); //mało optymalne chyba
+    let mut buffer = Vec::with_capacity(s.len()+2);
     let len = buffer.capacity() as u8;
     buffer.push(len);
     
@@ -17,6 +17,18 @@ fn to_c_string(s: &str) -> Vec<u8> {
 
     buffer.push('\0' as u8);
     buffer
+}
+
+fn from_c_string(buffer: &[u8], start: u8) -> String {
+    let mut s = String::from("");
+    
+    let mut i = start as usize;
+    while buffer[i] != '\0' as u8 {
+        s.push_str(&(buffer[i] as char).to_string());
+        i += 1;
+    }
+
+    s
 }
 
 godot_class! {
@@ -39,15 +51,24 @@ godot_class! {
 
                 for stream in listener.incoming() {
 
-                    thread::spawn(|| { //tutaj thread pool
+                    thread::spawn(move || { //tutaj thread pool
                         let mut stream = stream.unwrap();
 
                         stream.write(to_c_string("HELLO").as_slice()).unwrap();
                         stream.flush().unwrap();
 
-                        // loop {
-                        //     println!("hehe");
-                        // }
+                        loop {
+                            let mut buffer = [0; 512];
+                            stream.read(&mut buffer).unwrap();
+
+                            let command = from_c_string(&buffer, 1);
+                            println!("{}", command);
+
+                            if command.starts_with("LOGIN") {
+                                stream.write(to_c_string("LOGIN").as_slice()).unwrap();
+                                stream.flush().unwrap();
+                            }
+                        }
                     });
                 }
             });
