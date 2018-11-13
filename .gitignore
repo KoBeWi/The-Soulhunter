@@ -1,4 +1,5 @@
 .import/
+.database/
 Build/
 target/
 .vs/
