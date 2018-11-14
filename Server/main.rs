@@ -34,6 +34,23 @@ fn from_c_string(buffer: &[u8], start: u8) -> String {
     s
 }
 
+fn get_string(buffer: &[u8], p : &mut u8) -> String {
+    let s = from_c_string(buffer, *p);
+    *p += s.len() as u8;
+    s
+}
+
+struct s_register {name: String, password: String}
+
+fn parse_packet<S>(command: &str, buffer: &[u8]) -> Option<S> {
+    let p = command.len() as u8;
+
+    match command {
+        "REGISTER" => Some(s_register{name: get_string(buffer, &mut p), password: get_string(buffer, &mut p)}),
+        _ => None
+    }
+}
+
 godot_class! {
     class HelloWorld: godot::Node {
         fields {
@@ -70,6 +87,8 @@ godot_class! {
                             println!("{}", command);
 
                             if command.starts_with("REGISTER") {
+                                // let coll = client.db("soulhunter").collection("users");
+                                // coll.insert_one(doc!{ "title": "Back to the Future" }, None).unwrap();
                             } else if command.starts_with("LOGIN") {
                                 stream.write(to_c_string("LOGIN").as_slice()).unwrap();
                                 stream.flush().unwrap();
