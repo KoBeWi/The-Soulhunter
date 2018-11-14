@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate gdnative as godot;
-// extern crate mongodb;
+extern crate mongodb;
+
+use mongodb::ThreadedClient;
 
 use std::io::prelude::*;
 // use std::net::TcpStream;
@@ -47,6 +49,8 @@ godot_class! {
         }
 
         export fn _ready(&mut self) {
+            let client = mongodb::Client::connect("localhost", 27017).expect("Failed to initialize database.");
+
             thread::spawn(|| {
                 let listener = TcpListener::bind("127.0.0.1:2412").unwrap();
 
@@ -65,7 +69,8 @@ godot_class! {
                             let command = from_c_string(&buffer, 1);
                             println!("{}", command);
 
-                            if command.starts_with("LOGIN") {
+                            if command.starts_with("REGISTER") {
+                            } else if command.starts_with("LOGIN") {
                                 stream.write(to_c_string("LOGIN").as_slice()).unwrap();
                                 stream.flush().unwrap();
                             }
