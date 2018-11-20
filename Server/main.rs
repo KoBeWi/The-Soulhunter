@@ -40,14 +40,21 @@ fn get_string(buffer: &[u8], p : &mut u8) -> String {
     s
 }
 
-struct s_register {name: String, password: String}
+trait Packet {}
 
-fn parse_packet<S>(command: &str, buffer: &[u8]) -> Option<S> {
-    let p = command.len() as u8;
+struct PNull {}
+impl Packet for PNull {}
+
+struct SRegister {name: String, password: String}
+impl Packet for SRegister {}
+
+
+fn parse_packet(command: &str, buffer: &[u8]) -> Box<Packet> {
+    let mut p = command.len() as u8;
 
     match command {
-        "REGISTER" => Some(s_register{name: get_string(buffer, &mut p), password: get_string(buffer, &mut p)}),
-        _ => None
+        "REGISTER" => Box::new(SRegister{name: get_string(buffer, &mut p), password: get_string(buffer, &mut p)}),
+        _ => Box::new(PNull{})
     }
 }
 
