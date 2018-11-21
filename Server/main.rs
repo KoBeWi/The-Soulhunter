@@ -42,14 +42,18 @@ fn get_string(buffer: &[u8], p : &mut u8) -> String {
 
 enum Packet {
     SRegister(String, String),
+    SLogin(String, String),
     PNull
 }
 
-fn parse_packet(command: &str, buffer: &[u8]) -> Box<Packet> {
-    let mut p = command.len() as u8 + 2;
+fn parse_packet(buffer: &[u8]) -> Box<Packet> {
+    let mut p = 1 as u8;
+    let command = get_string(buffer, &mut p);
+    println!("Parsing: {}", command);
 
-    match command {
+    match command.as_ref() {
         "REGISTER" => Box::new(Packet::SRegister(get_string(buffer, &mut p), get_string(buffer, &mut p))),
+        "LOGIN" => Box::new(Packet::SLogin(get_string(buffer, &mut p), get_string(buffer, &mut p))),
         _ => Box::new(Packet::PNull{})
     }
 }
@@ -86,20 +90,15 @@ godot_class! {
                             let mut buffer = [0; 512];
                             stream.read(&mut buffer).unwrap();
 
-                            let command = from_c_string(&buffer, 1);
-                            println!("{}", command);
-
-                            if command.starts_with("REGISTER") {
-                                let data = parse_packet("REGISTER", &buffer);
-                                match (Box::leak(data)) {
-                                    Packet::SRegister(name, password) => println!("{}, {}", name, password),
-                                    _ => panic!("Bad packet")
-                                }
-                                // let coll = client.db("soulhunter").collection("users");
-                                // coll.insert_one(doc!{ "title": "Back to the Future" }, None).unwrap();
-                            } else if command.starts_with("LOGIN") {
-                                stream.write(to_c_string("LOGIN").as_slice()).unwrap();
-                                stream.flush().unwrap();
+                            let data = parse_packet(&buffer);
+                            match Box::leak(data) {
+                                Packet::SRegister(name, password) => {
+                                    // let coll = client.db("soulhunter").collection("users");
+                                    // coll.insert_one(doc!{ "title": "Back to the Future" }, None).unwrap();
+                                }, Packet::SLogin(name, password) => {
+                                    stream.write(&[&[9u8], to_c_string("LOGIN").as_slice(), &[0u8, 0u8]].concat()).unwrap();
+                                    stream.flush().unwrap();
+                                }, _ => panic!("Bad packet")
                             }
                         }
                     });
