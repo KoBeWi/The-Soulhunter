@@ -36,25 +36,21 @@ fn from_c_string(buffer: &[u8], start: u8) -> String {
 
 fn get_string(buffer: &[u8], p : &mut u8) -> String {
     let s = from_c_string(buffer, *p);
-    *p += s.len() as u8;
+    *p += s.len() as u8 + 1;
     s
 }
 
-trait Packet {}
-
-struct PNull {}
-impl Packet for PNull {}
-
-struct SRegister {name: String, password: String}
-impl Packet for SRegister {}
-
+enum Packet {
+    SRegister(String, String),
+    PNull
+}
 
 fn parse_packet(command: &str, buffer: &[u8]) -> Box<Packet> {
-    let mut p = command.len() as u8;
+    let mut p = command.len() as u8 + 2;
 
     match command {
-        "REGISTER" => Box::new(SRegister{name: get_string(buffer, &mut p), password: get_string(buffer, &mut p)}),
-        _ => Box::new(PNull{})
+        "REGISTER" => Box::new(Packet::SRegister(get_string(buffer, &mut p), get_string(buffer, &mut p))),
+        _ => Box::new(Packet::PNull{})
     }
 }
 
@@ -94,6 +90,11 @@ godot_class! {
                             println!("{}", command);
 
                             if command.starts_with("REGISTER") {
+                                let data = parse_packet("REGISTER", &buffer);
+                                match (Box::leak(data)) {
+                                    Packet::SRegister(name, password) => println!("{}, {}", name, password),
+                                    _ => panic!("Bad packet")
+                                }
                                 // let coll = client.db("soulhunter").collection("users");
                                 // coll.insert_one(doc!{ "title": "Back to the Future" }, None).unwrap();
                             } else if command.starts_with("LOGIN") {
