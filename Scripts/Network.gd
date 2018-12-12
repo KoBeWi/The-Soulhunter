@@ -26,24 +26,25 @@ func _process(delta):
 	
 	if packet_size[0] == FAILED: return
 	
-	if packet_size[1].size() > 0:
-		print(">",client.get_status())
+	if packet_size[1].size() > 0 and packet_size[1][0] > 0: #to drugie nie powinno się dziać ;_;
+		print("Received data: ", packet_size[1][0]-1)
 		var data = client.get_data(packet_size[1][0]-1)
-		print(client.get_status())
+#		print(client.get_status())
 #		print(data[0])
 		process_data(data[1])
 
 func process_data(data):
+	if data.size() <= 0: return
 	var command = extract_string(data, 0)
-	print("Received: " + command)
+	print("Command: " + command)
 	
-	var game = Com.game
 	data = extract_data(data, command)
 	
 	match command:
 		"HELLO": connected = true
 		"LOGIN":
 			if data[0] == 0:
+				print("OK")
 				account = true
 				Com.game = load("Scenes/InGame.tscn").instance()
 				
@@ -73,9 +74,9 @@ func process_data(data):
 			Com.server.remove_room(data[0])
 	
 	match command:
-		"CHANGEROOM": game.change_map(data[0])
-		"CHAT": game.chat.get_node("..").add_message(data[1], data[2], data[0])
-		"DAMAGE": game.damage_number(data[0], data[1], data[2])
+		"CHANGEROOM": Com.game.change_map(data[0])
+		"CHAT": Com.game.chat.get_node("..").add_message(data[1], data[2], data[0])
+		"DAMAGE": Com.game.damage_number(data[0], data[1], data[2])
 		"DEAD":
 			var map = determine_map(data).get_parent()
 			
@@ -103,12 +104,12 @@ func process_data(data):
 				Com.server.rooms[data.back()[2]].players.add_child(player)
 				Com.server.synchronize_player(player.mapid, data.back()[1])
 			else:
-				game.get_node("Players").add_child(player)
+				Com.game.get_node("Players").add_child(player)
 			player.initialize(data.back())
 			
 			for i in range(data.size() - 2):
 				Com.controls.press_key(data.back()[0], data[i])
-		"EQUIPMENT": game.update_equipment(data)
+		"EQUIPMENT": Com.game.update_equipment(data)
 		"EXIT":
 			var map = determine_map(data).get_parent()
 			
@@ -117,7 +118,7 @@ func process_data(data):
 					Com.controls.remove_player(player)
 					player.queue_free()
 		"EXPERIENCE": Com.player.get_node("Character").experience += data[0]
-		"INVENTORY": game.update_inventory(data)
+		"INVENTORY": Com.game.update_inventory(data)
 		"KEYPRESS": Com.controls.press_key(data[0], data[1])
 		"KEYRELEASE": Com.controls.release_key(data[0], data[1])
 		"MAP": Com.player.chr.update_map(data)
@@ -145,31 +146,31 @@ func process_data(data):
 			var index = data[1]
 			
 			if group == "e":
-				var enemy = game.get_enemy(index)
+				var enemy = Com.game.get_enemy(index)
 				if enemy: enemy.rng[data[2]] = data[3]
 		"SOUL":
-			var enemy = game.get_enemy(data[0])
+			var enemy = Com.game.get_enemy(data[0])
 			if enemy: enemy.create_soul(data[1])
 		"STATS":
 			var stats = stat_code(data.back())
 			var send = {}
 			for i in range(stats.size()):
 				send[stats[i]] = data[i]
-			game.update_stats(send)
+			Com.game.update_stats(send)
 		"SYNC":
 			var group = data[0]
 			var index = data[1]
 			
 			if group == "p":
 				var pos = get_data(["vector2"], data[3], data[2])[0]
-				var player = game.get_player(index)
+				var player = Com.game.get_player(index)
 				if player:
 					player.position = pos
 				else:
 					printerr("WARNING: Non-existent player index: ", index)
 			elif group == "e":
 				var enem_type = extract_string(data[3], data[2])
-				var enemy = game.get_enemy(index)
+				var enemy = Com.game.get_enemy(index)
 				
 #				if enem_type == "Skeleton": print_raw(data[3])
 				
@@ -177,7 +178,7 @@ func process_data(data):
 					enemy = load("res://Nodes/Enemies/" + enem_type + ".tscn").instance()
 					enemy.synced = true
 					enemy.id = index
-					game.enemies.add_child(enemy)
+					Com.game.enemies.add_child(enemy)
 				
 				data[2] += enem_type.length()+1
 				enemy.sync_data(data)
@@ -227,9 +228,11 @@ func print_raw(ary): ##DEBUG
 
 func extract_data(data, command):
 	var i = command.length()+1
+	print("'", command, "'", " ", command == "LOGIN")
 	
 	match command:
-		"LOGIN": return get_data(["int", "int"], data, i)
+		"HELLO": return
+		"LOGIN": return get_data(["int", "int"], data, i)
 		"REGISTER": return get_data(["int"], data, i)
 		"NEWROOM", "REMROOM": return get_data(["int"], data, i)
 		
@@ -283,6 +286,7 @@ func extract_data(data, command):
 #			print_raw(data)
 			var send = get_data(["string", "int"], data, i)
 			return send + [data]
+		_: print("Unknown command: ", command)
 
 func get_data(format, data, start):
 	var i = start
