@@ -37,38 +37,15 @@ func _process(delta):
 		text = txt + (\".\" if t % 1000 > 250 else \"\") + (\".\" if t % 1000 > 500 else \"\") + (\".\" if t % 1000 > 750 else \"\")"
 
 [node name="Loading" type="Control"]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 script = SubResource( 1 )
 
 [node name="Label" type="Label" parent="."]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 margin_left = 81.0
 margin_top = 255.0
 margin_right = 241.0
 margin_bottom = 299.0
 rect_scale = Vector2( 4, 4 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 custom_fonts/font = ExtResource( 1 )
 text = "Connecting to server..."
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 script = SubResource( 2 )
 

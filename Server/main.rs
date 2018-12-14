@@ -65,6 +65,27 @@ fn parse_packet(buffer: &[u8]) -> Packet {
     }
 }
 
+macro_rules! pack {
+    ( $( $x:expr ),* ) => {
+        {
+            let mut temp_vec : Vec<&[u8]> = Vec::new();
+            let mut len = 0u8;
+            temp_vec.push(&[0u8]);
+
+            $(
+                temp_vec.push($x);
+                len += $x.len() as u8;
+            )*
+
+            let mut array = [0u8, len+1];
+            array.copy_from_slice(&temp_vec.concat());
+            array[0] = len;
+
+            array
+        }
+    };
+}
+
 godot_class! {
     class HelloWorld: godot::Node {
         fields {
@@ -90,7 +111,8 @@ godot_class! {
                     thread::Builder::new().name("client#".to_string()).spawn(move || { //tutaj thread pool
                         let mut stream = stream.unwrap();
 
-                        stream.write(to_c_string("HELLO").as_slice()).unwrap();
+                        let string = to_c_string("HELLO");
+                        stream.write(string.as_slice()).unwrap();
                         stream.flush().unwrap();
 
                         loop {
@@ -102,7 +124,9 @@ godot_class! {
                                 Packet::SRegister(name, password) => {
                                     // let coll = client.db("soulhunter").collection("users");
                                     // coll.insert_one(doc!{ "title": "Back to the Future" }, None).unwrap();
-                                    stream.write(&[&[11u8], to_c_string("REGISTER").as_slice(), &[0u8]].concat()).unwrap();
+                                    // stream.write(&[&[11u8], to_c_string("REGISTER").as_slice(), &[0u8]].concat()).unwrap();
+                                    let string1 = to_c_string("REGISTER");
+                                    stream.write(&pack!(string1.as_slice(), &[0u8])).unwrap();
                                     stream.flush().unwrap();
                                 }, Packet::SLogin(name, password) => {
                                     stream.write(&[&[9u8], to_c_string("LOGIN").as_slice(), &[0u8, 0u8]].concat()).unwrap();
