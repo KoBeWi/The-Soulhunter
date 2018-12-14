@@ -77,9 +77,8 @@ macro_rules! pack {
                 len += $x.len() as u8;
             )*
 
-            let mut array = [0u8, len+1];
-            array.copy_from_slice(&temp_vec.concat());
-            array[0] = len;
+            let mut array = temp_vec.concat();
+            array[0] = len+1;
 
             array
         }
@@ -112,7 +111,7 @@ godot_class! {
                         let mut stream = stream.unwrap();
 
                         let string = to_c_string("HELLO");
-                        stream.write(string.as_slice()).unwrap();
+                        stream.write(&pack!(string.as_slice())).unwrap();
                         stream.flush().unwrap();
 
                         loop {

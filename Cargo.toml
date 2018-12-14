@@ -7,5 +7,5 @@ crate-type = ["cdylib"]
 path = "Server/main.rs"
 
 [dependencies]
-gdnative = "0.5.0"
-mongodb = "0.3.10"
+gdnative = "*"
+mongodb = "*"
