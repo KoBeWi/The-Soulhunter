@@ -41,14 +41,11 @@ fn get_string(buffer: &[u8], p : &mut u8) -> String {
 }
 
 enum Packet {
-    SRegister(String, String),
-    SLogin(String, String),
-    SGetStats(String),
-    SGetMap,
-
-    CGeneric(String),
-
-    PNull
+    Register(String, String),
+    Login(String, String),
+    GetStats(String),
+    GetMap,
+    Null
 }
 
 fn parse_packet(buffer: &[u8]) -> Packet {
@@ -57,11 +54,11 @@ fn parse_packet(buffer: &[u8]) -> Packet {
     println!("Parsing: {}", command);
 
     match command.as_ref() {
-        "REGISTER" => Packet::SRegister(get_string(buffer, &mut p), get_string(buffer, &mut p)),
-        "LOGIN" => Packet::SLogin(get_string(buffer, &mut p), get_string(buffer, &mut p)),
-        "GETSTATS" => Packet::SGetStats(get_string(buffer, &mut p)),
-        "GETMAP" => Packet::SGetMap,
-        _ => Packet::PNull{}
+        "REGISTER" => Packet::Register(get_string(buffer, &mut p), get_string(buffer, &mut p)),
+        "LOGIN" => Packet::Login(get_string(buffer, &mut p), get_string(buffer, &mut p)),
+        "GETSTATS" => Packet::GetStats(get_string(buffer, &mut p)),
+        "GETMAP" => Packet::GetMap,
+        _ => Packet::Null{}
     }
 }
 
@@ -106,7 +103,6 @@ godot_class! {
                 let listener = TcpListener::bind("127.0.0.1:2412").unwrap();
 
                 for stream in listener.incoming() {
-
                     thread::Builder::new().name("client#".to_string()).spawn(move || { //tutaj thread pool
                         let mut stream = stream.unwrap();
 
@@ -120,24 +116,24 @@ godot_class! {
 
                             let data = parse_packet(&buffer);
                             match data {
-                                Packet::SRegister(name, password) => {
+                                Packet::Register(name, password) => {
                                     // let coll = client.db("soulhunter").collection("users");
                                     // coll.insert_one(doc!{ "title": "Back to the Future" }, None).unwrap();
                                     // stream.write(&[&[11u8], to_c_string("REGISTER").as_slice(), &[0u8]].concat()).unwrap();
                                     let string1 = to_c_string("REGISTER");
                                     stream.write(&pack!(string1.as_slice(), &[0u8])).unwrap();
                                     stream.flush().unwrap();
-                                }, Packet::SLogin(name, password) => {
+                                }, Packet::Login(name, password) => {
                                     stream.write(&[&[9u8], to_c_string("LOGIN").as_slice(), &[0u8, 0u8]].concat()).unwrap();
                                     stream.flush().unwrap();
-                                }, Packet::SGetStats(code) => {
+                                }, Packet::GetStats(code) => {
                                     
-                                }, Packet::SGetMap => {
+                                }, Packet::GetMap => {
                                     
                                 }, _ => panic!("Bad packet")
                             }
                         }
-                    });
+                    }).unwrap();
                 }
             });
         }
