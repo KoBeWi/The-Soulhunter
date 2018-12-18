@@ -11,8 +11,6 @@ use std::thread;
 
 fn to_c_string(s: &str) -> Vec<u8> {
     let mut buffer = Vec::with_capacity(s.len()+2);
-    // let len = buffer.capacity() as u8;
-    // buffer.push(len);
     
     for c in s.chars() {
         buffer.push(c as u8);
@@ -32,6 +30,10 @@ fn from_c_string(buffer: &[u8], start: u8) -> String {
     }
 
     s
+}
+
+fn u16to8(from : u16) -> [u8;2] {
+    [(from / 256) as u8, (from % 256) as u8]
 }
 
 fn get_string(buffer: &[u8], p : &mut u8) -> String {
@@ -117,14 +119,18 @@ godot_class! {
                             let data = parse_packet(&buffer);
                             match data {
                                 Packet::Register(name, password) => {
-                                    // let coll = client.db("soulhunter").collection("users");
-                                    // coll.insert_one(doc!{ "title": "Back to the Future" }, None).unwrap();
-                                    // stream.write(&[&[11u8], to_c_string("REGISTER").as_slice(), &[0u8]].concat()).unwrap();
-                                    let string1 = to_c_string("REGISTER");
-                                    stream.write(&pack!(string1.as_slice(), &[0u8])).unwrap();
+                                    // let collection = client.db("my_database").collection("users");
+                                    // collection.insert_one(doc!{ "name": "player1" }, None).unwrap();
+
+                                    let data1 = to_c_string("REGISTER");
+                                    let data2 = u16to8(0);
+                                    stream.write(&pack!(data1.as_slice(), &data2)).unwrap();
                                     stream.flush().unwrap();
                                 }, Packet::Login(name, password) => {
-                                    stream.write(&[&[9u8], to_c_string("LOGIN").as_slice(), &[0u8, 0u8]].concat()).unwrap();
+                                    let data1 = to_c_string("LOGIN");
+                                    let data2 = u16to8(0);
+                                    let data3 = u16to8(0);
+                                    stream.write(&pack!(data1.as_slice(), &data2, &data3)).unwrap();
                                     stream.flush().unwrap();
                                 }, Packet::GetStats(code) => {
                                     
