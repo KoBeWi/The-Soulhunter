@@ -228,11 +228,11 @@ func print_raw(ary): ##DEBUG
 
 func extract_data(data, command):
 	var i = command.length()+1
-	print("'", command, "'", " ", command == "LOGIN")
+	print("'", command, "'", " ", command == "LOGIN")
 	
 	match command:
 		"HELLO": return
-		"LOGIN": return get_data(["int", "int"], data, i)
+		"LOGIN": return get_data(["int", "int"], data, i)
 		"REGISTER": return get_data(["int"], data, i)
 		"NEWROOM", "REMROOM": return get_data(["int"], data, i)
 		
@@ -286,7 +286,7 @@ func extract_data(data, command):
 #			print_raw(data)
 			var send = get_data(["string", "int"], data, i)
 			return send + [data]
-		_: print("Unknown command: ", command)
+		_: print("Unknown command: ", command, " (", command.to_ascii().size(), ")")
 
 func get_data(format, data, start):
 	var i = start
@@ -315,6 +315,7 @@ func extract_string(raw_ary, start):
 	var i = start
 	
 	while raw_ary[i] > 0:
+#		print("str(", raw_ary[i], ")")
 		string.append(raw_ary[i])
 		i += 1
 	

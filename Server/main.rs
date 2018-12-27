@@ -10,7 +10,7 @@ use std::net::TcpListener;
 use std::thread;
 
 fn to_c_string(s: &str) -> Vec<u8> {
-    let mut buffer = Vec::with_capacity(s.len()+2);
+    let mut buffer = Vec::with_capacity(s.len()+1);
     
     for c in s.chars() {
         buffer.push(c as u8);
@@ -42,10 +42,20 @@ fn get_string(buffer: &[u8], p : &mut u8) -> String {
     s
 }
 
+fn get_u16(buffer: &[u8], p : &mut u8) -> u16 {
+    let mut u = 0u16;
+    u += (buffer[*p as usize] as u16) * 256;
+    u += buffer[(*p+1) as usize] as u16;
+    *p += 2;
+    u
+}
+
 enum Packet {
     Register(String, String),
     Login(String, String),
     GetStats(String),
+    KeyPress(u16),
+    KeyRelease(u16),
     GetMap,
     Null
 }
@@ -59,6 +69,8 @@ fn parse_packet(buffer: &[u8]) -> Packet {
         "REGISTER" => Packet::Register(get_string(buffer, &mut p), get_string(buffer, &mut p)),
         "LOGIN" => Packet::Login(get_string(buffer, &mut p), get_string(buffer, &mut p)),
         "GETSTATS" => Packet::GetStats(get_string(buffer, &mut p)),
+        "KEYPRESS" => Packet::KeyPress(get_u16(buffer, &mut p)),
+        "KEYRELEASE" => Packet::KeyRelease(get_u16(buffer, &mut p)),
         "GETMAP" => Packet::GetMap,
         _ => Packet::Null{}
     }
@@ -85,7 +97,7 @@ macro_rules! pack {
 }
 
 godot_class! {
-    class HelloWorld: godot::Node {
+    class Server: godot::Node {
         fields {
         }
 
@@ -93,7 +105,7 @@ godot_class! {
         }
 
         constructor(header) {
-            HelloWorld {
+            Server {
                 header,
             }
         }
@@ -147,7 +159,7 @@ godot_class! {
 }
 
 fn init(handle: godot::init::InitHandle) {
-    HelloWorld::register_class(handle);
+    Server::register_class(handle);
 }
 
 godot_gdnative_init!();
