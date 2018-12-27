@@ -2,99 +2,19 @@
 extern crate gdnative as godot;
 extern crate mongodb;
 
+#[macro_use]
+mod packet;
+mod util;
+
+use packet::*;
+use util::*;
+
 use mongodb::ThreadedClient;
 
 use std::io::prelude::*;
 // use std::net::TcpStream;
 use std::net::TcpListener;
 use std::thread;
-
-fn to_c_string(s: &str) -> Vec<u8> {
-    let mut buffer = Vec::with_capacity(s.len()+1);
-    
-    for c in s.chars() {
-        buffer.push(c as u8);
-    }
-
-    buffer.push('\0' as u8);
-    buffer
-}
-
-fn from_c_string(buffer: &[u8], start: u8) -> String {
-    let mut s = String::from("");
-    
-    let mut i = start as usize;
-    while buffer[i] != '\0' as u8 {
-        s.push_str(&(buffer[i] as char).to_string());
-        i += 1;
-    }
-
-    s
-}
-
-fn u16to8(from : u16) -> [u8;2] {
-    [(from / 256) as u8, (from % 256) as u8]
-}
-
-fn get_string(buffer: &[u8], p : &mut u8) -> String {
-    let s = from_c_string(buffer, *p);
-    *p += s.len() as u8 + 1;
-    s
-}
-
-fn get_u16(buffer: &[u8], p : &mut u8) -> u16 {
-    let mut u = 0u16;
-    u += (buffer[*p as usize] as u16) * 256;
-    u += buffer[(*p+1) as usize] as u16;
-    *p += 2;
-    u
-}
-
-enum Packet {
-    Register(String, String),
-    Login(String, String),
-    GetStats(String),
-    KeyPress(u16),
-    KeyRelease(u16),
-    GetMap,
-    Null
-}
-
-fn parse_packet(buffer: &[u8]) -> Packet {
-    let mut p = 1 as u8;
-    let command = get_string(buffer, &mut p);
-    println!("Parsing: {}", command);
-
-    match command.as_ref() {
-        "REGISTER" => Packet::Register(get_string(buffer, &mut p), get_string(buffer, &mut p)),
-        "LOGIN" => Packet::Login(get_string(buffer, &mut p), get_string(buffer, &mut p)),
-        "GETSTATS" => Packet::GetStats(get_string(buffer, &mut p)),
-        "KEYPRESS" => Packet::KeyPress(get_u16(buffer, &mut p)),
-        "KEYRELEASE" => Packet::KeyRelease(get_u16(buffer, &mut p)),
-        "GETMAP" => Packet::GetMap,
-        _ => Packet::Null{}
-    }
-}
-
-macro_rules! pack {
-    ( $( $x:expr ),* ) => {
-        {
-            let mut temp_vec : Vec<&[u8]> = Vec::new();
-            let mut len = 0u8;
-            temp_vec.push(&[0u8]);
-
-            $(
-                temp_vec.push($x);
-                len += $x.len() as u8;
-            )*
-
-            let mut array = temp_vec.concat();
-            array[0] = len+1;
-
-            array
-        }
-    };
-}
 
 godot_class! {
     class Server: godot::Node {
