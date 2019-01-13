@@ -8,3 +8,4 @@ crate-type = ["cdylib"]
 [dependencies]
 gdnative = "*"
 mongodb = "*"
+bson = "*"

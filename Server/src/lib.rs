@@ -1,13 +1,18 @@
 #[macro_use]
 extern crate gdnative as godot;
 extern crate mongodb;
+#[macro_use]
+extern crate bson;
 
 #[macro_use]
 mod packet;
 mod util;
+mod database;
 
 use packet::*;
 use util::*;
+use database::*;
+use std::sync::Arc;
 
 use mongodb::ThreadedClient;
 
@@ -31,13 +36,15 @@ godot_class! {
         }
 
         export fn _ready(&mut self) {
-            let client = mongodb::Client::connect("localhost", 27017).expect("Failed to initialize database.");
-
             thread::spawn(|| {
+                let client = Arc::new(mongodb::Client::connect("localhost", 27017).expect("Failed to initialize database."));
+
                 let listener = TcpListener::bind("127.0.0.1:2412").unwrap();
                 println!("Listening for connections...");
 
                 for stream in listener.incoming() {
+                    let thread_client = Arc::clone(&client);
+                    
                     thread::Builder::new().name("client#".to_string()).spawn(move || { //tutaj thread pool
                         println!("New client connected.");
                         let mut stream = stream.unwrap();
@@ -47,14 +54,15 @@ godot_class! {
                         stream.flush().unwrap();
 
                         loop {
+                            let loop_client = Arc::clone(&thread_client);
+
                             let mut buffer = [0; 512];
                             stream.read(&mut buffer).unwrap();
 
                             let data = parse_packet(&buffer);
                             match data {
                                 Packet::Register(name, password) => {
-                                    // let collection = client.db("my_database").collection("users");
-                                    // collection.insert_one(doc!{ "name": "player1" }, None).unwrap();
+                                    register_user(&loop_client, &name, &password);
 
                                     let data1 = to_c_string("REGISTER");
                                     let data2 = u16to8(0);
