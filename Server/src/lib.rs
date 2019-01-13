@@ -35,9 +35,11 @@ godot_class! {
 
             thread::spawn(|| {
                 let listener = TcpListener::bind("127.0.0.1:2412").unwrap();
+                println!("Listening for connections...");
 
                 for stream in listener.incoming() {
                     thread::Builder::new().name("client#".to_string()).spawn(move || { //tutaj thread pool
+                        println!("New client connected.");
                         let mut stream = stream.unwrap();
 
                         let string = to_c_string("HELLO");

@@ -4,6 +4,6 @@
 
 [resource]
 
-class_name = "HelloWorld"
+class_name = "Server"
 library = ExtResource( 1 )
 

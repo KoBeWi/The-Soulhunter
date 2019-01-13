@@ -1,5 +1,5 @@
 [package]
-name = "main"
+name = "server"
 version = "0.1.0"
 crate-type = ["cdylib"]
 
