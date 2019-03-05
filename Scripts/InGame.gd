@@ -165,3 +165,7 @@ func get_enemy(id):
 func get_enemy_number():
 	last_enemy += 1
 	return last_enemy
+
+func start():
+	Com.player.initiated = true
+	$Fade/ColorRect.color.a = 0

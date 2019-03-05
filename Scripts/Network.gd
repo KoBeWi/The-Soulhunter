@@ -73,7 +73,6 @@ func process_data(data):
 		"REMROOM":
 			Com.server.remove_room(data[0])
 	
-	match command:
 		"CHANGEROOM": Com.game.change_map(data[0])
 		"CHAT": Com.game.chat.get_node("..").add_message(data[1], data[2], data[0])
 		"DAMAGE": Com.game.damage_number(data[0], data[1], data[2])
