@@ -46,15 +46,15 @@ func process_data(data):
 			if data[0] == 0:
 				print("OK")
 				account = true
-				Com.game = load("Scenes/InGame.tscn").instance()
+				var player = preload("res://Nodes/Player.tscn").instance()
+				player.add_camera()
+				Com.player = player
+				
+				Com.game = preload("res://Scenes/InGame.tscn").instance()
 				
 				$"/root".add_child(Com.game)
 				Com.game.load_map(data[1])
 				
-				var player = load("Nodes/Player.tscn").instance()
-				var camera = load("Nodes/Camera.tscn").instance()
-				player.add_child(camera)
-				Com.player = player
 				Com.game.add_main_player(player)
 				Com.game.update_camera()
 				

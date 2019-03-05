@@ -3,6 +3,9 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/ManaBar.png-275d6dd5b11d8d7a1ccb426bc6343fb2.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 

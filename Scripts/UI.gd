@@ -1,9 +1,9 @@
 extends CanvasLayer
 
-onready var chr = get_node("../../Character")
+onready var chr = Com.player.get_node("Character")
 
 func _ready():
-	set_process(true)
+	get_parent().UI = self
 
 func _process(delta):
 	update_bar("HP")

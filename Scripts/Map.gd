@@ -6,7 +6,7 @@ onready var way = load("res://Graphics/Map/Way.png")
 onready var corner = load("res://Graphics/Map/Corner.png")
 onready var edge = load("res://Graphics/Map/Edge.png")
 
-onready var chr = get_node("../../../Character")
+onready var chr = Com.player.get_node("Character")
 
 var cam_x = 10
 var cam_y = 10

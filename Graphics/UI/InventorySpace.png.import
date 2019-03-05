@@ -3,6 +3,9 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/InventorySpace.png-f1acfcb21d2addd0d95791a770dd2862.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 

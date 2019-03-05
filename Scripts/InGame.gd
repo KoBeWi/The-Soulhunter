@@ -1,5 +1,6 @@
-extends Node
+extends Node2D
 
+var UI
 var chat
 var menu
 var map
@@ -10,9 +11,6 @@ var last_enemy = -1
 var is_menu = false
 
 onready var effects = $Effects
-
-func _ready():
-	return
 
 func _process(delta):
 	if Com.server:
@@ -67,11 +65,11 @@ func _process(delta):
 		
 		var room = [map.map_x + int(Com.player.position.x)/1920, map.map_y + int(Com.player.position.y)/1080] #przenieść na server
 		if room != last_room:
-			Com.player.get_node("Camera/UI/Map").set_room(room)
+			UI.get_node("Map").set_room(room)
 			last_room = room
 			if !Com.player.chr.map.has(room):
 				Com.player.chr.map.append(room)
-				Network.send_data(["DISCOVER", room[0], room[1]]) #nie powinno wysyłać na samym początku
+#				Network.send_data(["DISCOVER", room[0], room[1]]) #nie powinno wysyłać na samym początku
 
 func load_map(id):
 	map = Res.maps[id].instance()
@@ -81,7 +79,7 @@ func load_map(id):
 
 func update_camera():
 	if Com.player:
-		var camera = Com.player.get_node("Camera")
+		var camera = Com.player.camera
 		camera.limit_right = map.width * 1920
 		camera.limit_bottom = map.height * 1080
 
@@ -96,8 +94,8 @@ func change_map(id):
 
 func add_main_player(player):
 	$Players.add_child(player)
-	menu = player.get_node("Camera/UI/PlayerMenu")
-	chat = player.get_node("Camera/UI/Chat/Input")
+	menu = UI.get_node("PlayerMenu")
+	chat = UI.get_node("Chat/Input")
 
 func damage_number(group, id, damage):
 	var node

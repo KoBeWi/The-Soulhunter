@@ -3,6 +3,9 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/HealthBar.png-7b9f39c5a38c05757def049bf439229a.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 

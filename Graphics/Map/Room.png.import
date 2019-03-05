@@ -3,6 +3,9 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/Room.png-f12d262fbf90d293f09e4b6beeb5fc0f.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 

@@ -5,7 +5,7 @@ const eq_slot_order = [3, 7, 4, 0, 5, 1, 6, 2]
 onready var status = $StatusPanel
 onready var inventory = $Inventory
 onready var equipment = $Equipment
-onready var chr = $"../../../Character"
+onready var chr = Com.player.get_node("Character")
 onready var selector = $InventorySelect
 onready var description = $"Description Panel"
 

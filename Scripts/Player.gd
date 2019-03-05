@@ -18,8 +18,10 @@ onready var chr = $Character
 onready var anim = $Animation
 onready var mapid = $"../../Map".mapid
 
+var camera
+
 func _ready():
-	add_to_group("players")
+#	add_to_group("players") ??
 	$Sprite/ArmPosition.visible = false
 
 func initialize(n):
@@ -31,6 +33,9 @@ func initialize(n):
 	anim.play("Idle")
 
 func _physics_process(delta):
+	if !initiated:
+		return
+	
 	var flip = sprite.flip_h
 	
 	motion += Vector2(0, 1)
@@ -126,3 +131,12 @@ func weapon_exit(body):
 	return
 #	if self == Com.player and body.get("is_enemy"):
 #		enemies.erase(body.get_name())
+
+func add_camera():
+	camera = Camera2D.new()
+	camera.limit_left = 0
+	camera.limit_top = 0
+	camera.drag_margin_h_enabled = false
+	camera.drag_margin_v_enabled = false
+	camera.make_current()
+	add_child(camera)
