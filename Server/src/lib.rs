@@ -8,10 +8,14 @@ extern crate bson;
 mod packet;
 mod util;
 mod database;
+mod player;
+mod room;
 
 use packet::*;
 use util::*;
+use room::*;
 use database::*;
+
 use std::sync::Arc;
 
 use mongodb::ThreadedClient;
@@ -24,6 +28,7 @@ use std::thread;
 godot_class! {
     class Server: godot::Node {
         fields {
+            room_manager : RoomManager,
         }
 
         setup(_builder) {
@@ -32,10 +37,21 @@ godot_class! {
         constructor(header) {
             Server {
                 header,
+                room_manager: RoomManager{
+                    rooms: Vec::new(),
+                },
             }
         }
 
+        // export fn test(&mut self) -> u8 {
+        //     return 32u8;
+        // }
+
         export fn _ready(&mut self) {
+            // unsafe {
+            //     self.get_owner().get_node(godot::NodePath::from_str("Node")).unwrap().call(godot::GodotString::from_str("test"), &[]);
+            // }
+
             thread::spawn(|| {
                 let client = Arc::new(mongodb::Client::connect("localhost", 27017).expect("Failed to initialize database."));
 
