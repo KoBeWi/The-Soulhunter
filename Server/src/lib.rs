@@ -20,6 +20,7 @@ use std::sync::Arc;
 
 use mongodb::ThreadedClient;
 
+use std::collections::HashMap;
 use std::io::prelude::*;
 // use std::net::TcpStream;
 use std::net::TcpListener;
@@ -28,7 +29,7 @@ use std::thread;
 godot_class! {
     class Server: godot::Node {
         fields {
-            room_manager : RoomManager,
+            // room_manager : RoomManager,
         }
 
         setup(_builder) {
@@ -37,9 +38,9 @@ godot_class! {
         constructor(header) {
             Server {
                 header,
-                room_manager: RoomManager{
-                    rooms: Vec::new(),
-                },
+                // room_manager: RoomManager{
+                //     rooms: HashMap::new(),
+                // },
             }
         }
 
@@ -55,11 +56,17 @@ godot_class! {
             thread::spawn(|| {
                 let client = Arc::new(mongodb::Client::connect("localhost", 27017).expect("Failed to initialize database."));
 
+                let room_manager = Arc::new(RoomManager{
+                    rooms: HashMap::new(),
+                });
+
                 let listener = TcpListener::bind("127.0.0.1:2412").unwrap();
                 println!("Listening for connections...");
 
                 for stream in listener.incoming() {
                     let thread_client = Arc::clone(&client);
+                    let thread_room_manager = Arc::clone(&room_manager);
+                    let thread_server = Arc::new(self);
                     
                     thread::Builder::new().name("client#".to_string()).spawn(move || { //tutaj thread pool
                         println!("New client connected.");
@@ -71,6 +78,8 @@ godot_class! {
 
                         loop {
                             let loop_client = Arc::clone(&thread_client);
+                            let loop_room_manager = Arc::clone(&thread_room_manager);
+                            let loop_server = Arc::clone(&thread_server);
 
                             let mut buffer = [0; 512];
                             stream.read(&mut buffer).unwrap();
@@ -90,6 +99,12 @@ godot_class! {
                                     let data3 = u16to8(0);
                                     stream.write(&pack!(data1.as_slice(), &data2, &data3)).unwrap();
                                     stream.flush().unwrap();
+                                    
+                                    match Arc::try_unwrap(loop_server) {
+                                        Ok(server) => {
+                                            loop_room_manager.get_room(server, 0u32);
+                                        }, Err(error) => panic!("Some error with server")
+                                    }
                                 }, Packet::GetStats(code) => {
                                     
                                 }, Packet::GetMap => {
