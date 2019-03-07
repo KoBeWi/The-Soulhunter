@@ -1,13 +1,12 @@
-#ifndef GDEXAMPLE_H
-#define GDEXAMPLE_H
-
 #include <Godot.hpp>
-#include <Sprite.hpp>
+#include <Node.hpp>
+// #include <iostream>
 
-namespace godot {
+using namespace godot;
+// using namespace std;
 
-class GDExample : public Sprite {
-	GODOT_CLASS(GDExample, Sprite)
+class Server : public Node {
+	GODOT_CLASS(Server, Node)
 
 private:
 	float time_passed;
@@ -18,8 +17,8 @@ private:
 public:
 	static void _register_methods();
 
-	GDExample();
-	~GDExample();
+	Server();
+	~Server();
 
 	void _init(); // our initializer called by Godot
 
@@ -27,7 +26,3 @@ public:
 	void set_speed(float p_speed);
 	float get_speed();
 };
-
-}
-
-#endif
