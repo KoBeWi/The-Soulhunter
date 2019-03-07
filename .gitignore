@@ -1,7 +1,9 @@
 .import/
 .database/
-Build/
-target/
 .vs/
-Cargo.lock
-*.dll
+Build/
+bin/
+godot-cpp/
+*.dblite
+*.obj
+build_server.bat
