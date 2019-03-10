@@ -1,6 +1,7 @@
 .import/
 .database/
 .vs/
+.vscode/
 Build/
 bin/
 godot-cpp/

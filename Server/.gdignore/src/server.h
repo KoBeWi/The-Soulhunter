@@ -1,7 +1,11 @@
 #include <Godot.hpp>
 #include <Node.hpp>
+#include <Reference.hpp>
+#include <TCP_Server.hpp>
+#include <StreamPeerTCP.hpp>
+
 #include <thread>
-#include <core/>
+#include <vector>
 
 using namespace godot;
 using namespace std;
@@ -10,12 +14,9 @@ class Server : public Node {
 	GODOT_CLASS(Server, Node)
 
 private:
-	float time_passed;
-	float time_emit;
-	float amplitude;
-	float speed;
-
 	TCP_Server* server;
+	vector<Ref<StreamPeerTCP>> peers;
+
 	thread main_thread;
 
 public:
