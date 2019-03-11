@@ -35,16 +35,7 @@ void Server::_process(float delta) {
 		Ref<StreamPeerTCP> peer = server->take_connection();
 		Godot::print("New player connected");
 
-		PoolByteArray hello;
-		// hello.resize(7);
-		// hello.push_back(7);
-		// for (char c : String("HELLO").ascii().get_data())
-		// 	hello.append(c);
-		// hello.push_back('\0');
-
-		// String("A").
-
-		peer->put_data(hello);
+		peer->put_data(Packet().string("HELLO"));
 		peers.push_back(peer);
 	}
 
