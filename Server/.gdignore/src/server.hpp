@@ -7,6 +7,8 @@
 #include <thread>
 #include <vector>
 
+#include <packet.hpp>
+
 using namespace godot;
 using namespace std;
 

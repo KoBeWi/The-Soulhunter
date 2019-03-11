@@ -1,4 +1,4 @@
-#include "server.h"
+#include "server.hpp"
 
 void Server::_register_methods() {
 	register_method("_process", &Server::_process);
@@ -36,13 +36,13 @@ void Server::_process(float delta) {
 		Godot::print("New player connected");
 
 		PoolByteArray hello;
-		hello.push_back(7);
-		hello.push_back('H');
-		hello.push_back('E');
-		hello.push_back('L');
-		hello.push_back('L');
-		hello.push_back('O');
-		hello.push_back('\0');
+		// hello.resize(7);
+		// hello.push_back(7);
+		// for (char c : String("HELLO").ascii().get_data())
+		// 	hello.append(c);
+		// hello.push_back('\0');
+
+		// String("A").
 
 		peer->put_data(hello);
 		peers.push_back(peer);

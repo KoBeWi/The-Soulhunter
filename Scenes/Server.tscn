@@ -7,8 +7,6 @@
 resource_name = "Server"
 script/source = "extends Node
 
-var server
-
 var players = {}
 var rooms = {}
 
@@ -16,14 +14,8 @@ var sync_timeout = 0
 
 func _ready():
 	Com.server = self
-	server = TCP_Server.new()
-	server.listen(2412)
-#	print($Rust.test())
 
 func _process(delta):
-	if server.is_connection_available():
-		$\"C++\".handle_connection(1)
-	
 	sync_timeout += delta
 	if sync_timeout >= 2:
 		for room in rooms.values():
