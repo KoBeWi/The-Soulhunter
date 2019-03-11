@@ -35,8 +35,31 @@ void Server::_process(float delta) {
 		Ref<StreamPeerTCP> peer = server->take_connection();
 		Godot::print("New player connected");
 
-		peer->put_data(Packet().string("HELLO"));
+		peer->put_data(Packet().add_str("HELLO"));
 		peers.push_back(peer);
+	}
+
+	for (Ref<StreamPeerTCP> peer : peers) {
+		Array packet_size = peer->get_partial_data(1);
+		int error = (int)packet_size[0];
+		PoolByteArray data = (PoolByteArray)packet_size[1];
+
+		if (error == GODOT_FAILED) continue;
+
+		if (error == GODOT_ERR_FILE_EOF) {
+			// peers.erase(peer);
+			continue;
+		}
+
+		// Godot::print((int)packet_size.size());
+		if (data.size() == 0) continue;
+		data = (PoolByteArray)peer->get_partial_data((int)data[0])[1];
+
+		string command = Packet::extract_string(data, 0);
+
+		if (command == "LOGIN") {
+			peer->put_data(Packet().add_str("LOGIN").add_u16(0).add_u16(0));
+		}
 	}
 
 	// time_passed += speed * delta;

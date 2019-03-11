@@ -5,7 +5,8 @@
 #include <StreamPeerTCP.hpp>
 
 #include <thread>
-#include <vector>
+#include <list>
+#include <iostream>
 
 #include <packet.hpp>
 
@@ -17,7 +18,7 @@ class Server : public Node {
 
 private:
 	TCP_Server* server;
-	vector<Ref<StreamPeerTCP>> peers;
+	list<Ref<StreamPeerTCP>> peers;
 
 	thread main_thread;
 

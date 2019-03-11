@@ -6,7 +6,7 @@ Packet::Packet() {
     parts.push_back(size);
 }
 
-Packet& Packet::string(const char* string) {
+Packet& Packet::add_str(const char* string) {
     int length = strlen(string);
 
     PoolByteArray array;
@@ -21,12 +21,12 @@ Packet& Packet::string(const char* string) {
     return *this;
 }
 
-Packet& Packet::number(const uint16_t number) {
+Packet& Packet::add_u16(const uint16_t number) {
     PoolByteArray array;
     array.resize(2);
 
     array.set(0, number/256);
-    array.set(0, number % 256);
+    array.set(1, number % 256);
 
     parts.push_back(array);
 
@@ -44,4 +44,17 @@ Packet::operator PoolByteArray() const {
 
     result.set(0, size);
     return result;
+}
+
+string Packet::extract_string(PoolByteArray data, int from) {
+    stringstream result;
+
+    char c = (char)data[from];
+    while (c != '\0') {
+        result << c;
+        from++;
+        c = (char)data[from];
+    }
+
+    return result.str();
 }
