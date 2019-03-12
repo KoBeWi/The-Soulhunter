@@ -55,11 +55,9 @@ void Server::_process(float delta) {
 		if (data.size() == 0) continue;
 		data = (PoolByteArray)peer->get_partial_data((int)data[0])[1];
 
-		string command = Packet::extract_string(data, 0);
+		string command = Packet::get_str(data, 0);
 
-		if (command == "LOGIN") {
-			peer->put_data(Packet().add_str("LOGIN").add_u16(0).add_u16(0));
-		}
+		Unpacker::unpack(data, command, peer);
 	}
 
 	// time_passed += speed * delta;

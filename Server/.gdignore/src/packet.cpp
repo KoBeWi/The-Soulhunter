@@ -46,7 +46,7 @@ Packet::operator PoolByteArray() const {
     return result;
 }
 
-string Packet::extract_string(PoolByteArray data, int from) {
+string Packet::get_str(PoolByteArray data, int from) {
     stringstream result;
 
     char c = (char)data[from];
@@ -57,4 +57,8 @@ string Packet::extract_string(PoolByteArray data, int from) {
     }
 
     return result.str();
+}
+
+uint16_t Packet::get_u16(PoolByteArray data, int from) {
+    return (uint16_t)data[from] * 256 + (uint16_t)data[from];
 }

@@ -1,6 +1,8 @@
+#ifndef PACKET_H
+#define PACKET_H
+
 #include <PoolArrays.hpp>
 
-#include <vector>
 #include <list>
 #include <cstring>
 #include <iostream>
@@ -17,8 +19,11 @@ struct Packet {
 
     operator PoolByteArray() const;
     
-    static string extract_string(PoolByteArray, int);
+    static string get_str(PoolByteArray, int);
+    static uint16_t get_u16(PoolByteArray, int);
 
     private:
-    vector<PoolByteArray> parts;
+    list<PoolByteArray> parts;
 };
+
+#endif

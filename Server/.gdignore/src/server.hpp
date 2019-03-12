@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include <packet.hpp>
+#include <unpacker.hpp>
 
 using namespace godot;
 using namespace std;

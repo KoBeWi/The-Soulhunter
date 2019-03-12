@@ -1,7 +1,8 @@
--b³¹d +dodatek >zmiana
--jakieœ problemy z nieznikaniem graczy po wyjœciu
--czasami gracz pojawia nie przy tym wyjœciu co cza :(
->enemies powinny byæ bezpoœrednio w game?
-+grupa Sync, czyli rzeczy, które trzeba synchronizowaæ (i w sumie tam daæ wrogów)
--wywaliæ bone z enemies ;_;
+-bÅ‚Ä…d +dodatek >zmiana
+-jakieÅ› problemy z nieznikaniem graczy po wyjÅ›ciu
+-czasami gracz pojawia nie przy tym wyjÅ›ciu co cza :(
+>enemies powinny byÄ‡ bezpoÅ›rednio w game?
++grupa Sync, czyli rzeczy, ktÃ³re trzeba synchronizowaÄ‡ (i w sumie tam daÄ‡ wrogÃ³w)
+-wywaliÄ‡ bone z enemies ;_;
 +usuwanie gracza z controls, gdy wychodzi z servera
+>przerobiÄ‡ kod serwera, Å¼e sÄ… tam referencje gdziem moÅ¼na

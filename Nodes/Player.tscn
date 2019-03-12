@@ -157,6 +157,7 @@ anims/Jump = SubResource( 3 )
 anims/SwingAttack1L = SubResource( 4 )
 anims/SwingAttack1R = SubResource( 5 )
 anims/Walk = SubResource( 6 )
+next/Fall = "Fall"
 script = SubResource( 7 )
 
 [node name="Sprite" type="Sprite" parent="."]
