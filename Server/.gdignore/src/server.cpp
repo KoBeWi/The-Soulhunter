@@ -12,6 +12,7 @@ void Server::_register_methods() {
 }
 
 Server::Server() {
+	Database::initialize();
 }
 
 Server::~Server() {
@@ -26,6 +27,7 @@ void Server::_init() {
 }
 
 void Server::_ready() {
+
 	server = TCP_Server::_new();
 	server->listen(2412);
 }

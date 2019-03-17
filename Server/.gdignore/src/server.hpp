@@ -4,6 +4,11 @@
 #include <TCP_Server.hpp>
 #include <StreamPeerTCP.hpp>
 
+#include <bsoncxx/builder/stream/document.hpp>
+#include <bsoncxx/json.hpp>
+#include <mongocxx/client.hpp>
+#include <mongocxx/instance.hpp>
+
 #include <thread>
 #include <list>
 #include <iostream>

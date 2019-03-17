@@ -321,7 +321,7 @@ func extract_string(raw_ary, start):
 	return PoolByteArray(string).get_string_from_ascii()
 	
 func extract_int(raw_ary, start):
-	return raw_ary[start] + raw_ary[start+1]*256
+	return raw_ary[start]*256 + raw_ary[start+1]
 
 func make_format(format, length):
 	var temp = []

@@ -5,6 +5,7 @@
 #include <StreamPeerTCP.hpp>
 
 #include <packet.hpp>
+#include <database.hpp>
 
 // #include <list>
 // #include <cstring>

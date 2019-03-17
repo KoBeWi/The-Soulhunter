@@ -5,6 +5,7 @@
 Build/
 bin/
 godot-cpp/
+Server/.gdignore/mogodb/
 *.dblite
 *.obj
 build_server.bat

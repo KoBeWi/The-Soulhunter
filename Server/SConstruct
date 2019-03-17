@@ -76,10 +76,13 @@ else:
 
 cpp_library += '.' + str(bits)
 
+boost_path = ".gdignore/mogodb/boost_1_69_0"
+mongodb_path = ".gdignore/mogodb/mongo-cxx-driver/cmake-build/install/"
+
 # make sure our binding library is properly includes
-env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/'])
-env.Append(LIBPATH=[cpp_bindings_path + 'bin/'])
-env.Append(LIBS=[cpp_library])
+env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/', mongodb_path + 'include/', boost_path])
+env.Append(LIBPATH=[cpp_bindings_path + 'bin/', mongodb_path + 'lib/'])
+env.Append(LIBS=[cpp_library, "bsoncxx", "mongocxx"])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=['.gdignore/src/'])

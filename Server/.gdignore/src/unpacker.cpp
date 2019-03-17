@@ -14,7 +14,11 @@ struct ULogin : public Unpacker {
     void take_action(Ref<StreamPeerTCP> peer) {
         cout << this->login << " " << this->password << endl;
 
-        peer->put_data(Packet().add_str("LOGIN").add_u16(0).add_u16(0));
+        if (Database::get_document(Database::get_collection("users"), "name", login)) {
+            peer->put_data(Packet().add_str("LOGIN").add_u16(0).add_u16(0));
+        } else {
+            peer->put_data(Packet().add_str("LOGIN").add_u16(1).add_u16(0));
+        }
 
         delete this;
     }
