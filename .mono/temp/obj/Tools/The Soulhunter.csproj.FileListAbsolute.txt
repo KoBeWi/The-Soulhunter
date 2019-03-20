@@ -1,0 +1,6 @@
+X:\Studia\Magister\the-soulhunter\.mono\temp\obj\Tools\The Soulhunter.csprojAssemblyReference.cache
+X:\Studia\Magister\the-soulhunter\.mono\temp\obj\Tools\The Soulhunter.csproj.CoreCompileInputs.cache
+X:\Studia\Magister\the-soulhunter\.mono\temp\bin\Tools\The Soulhunter.dll
+X:\Studia\Magister\the-soulhunter\.mono\temp\bin\Tools\The Soulhunter.pdb
+X:\Studia\Magister\the-soulhunter\.mono\temp\obj\Tools\The Soulhunter.dll
+X:\Studia\Magister\the-soulhunter\.mono\temp\obj\Tools\The Soulhunter.pdb

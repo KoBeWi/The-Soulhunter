@@ -76,11 +76,15 @@ else:
 
 cpp_library += '.' + str(bits)
 
-boost_path = ".gdignore/mogodb/boost_1_69_0"
+# boost_path = ".gdignore/mogodb/boost_1_69_0"
 mongodb_path = ".gdignore/mogodb/mongo-cxx-driver/cmake-build/install/"
 
+env.Append(CCFLAGS = ['/std:c++17'])
+
 # make sure our binding library is properly includes
-env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/', mongodb_path + 'include/', boost_path])
+# env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/', mongodb_path + 'include/', boost_path])
+env.Append(CPPPATH=['.', godot_headers_path, cpp_bindings_path + 'include/', cpp_bindings_path + 'include/core/', cpp_bindings_path + 'include/gen/', mongodb_path + 'include/'])
+# env.Append(LIBPATH=[cpp_bindings_path + 'bin/', mongodb_path + 'lib/', '.gdignore\mogodb\boost_1_69_0\lib64-msvc-14.1'])
 env.Append(LIBPATH=[cpp_bindings_path + 'bin/', mongodb_path + 'lib/'])
 env.Append(LIBS=[cpp_library, "bsoncxx", "mongocxx"])
 

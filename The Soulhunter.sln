@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "The Soulhunter", "The Soulhunter.csproj", "{4CC310C6-50E0-43E6-99D1-0FEFAE55EBB1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	Release|Any CPU = Release|Any CPU
+	Tools|Any CPU = Tools|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4CC310C6-50E0-43E6-99D1-0FEFAE55EBB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CC310C6-50E0-43E6-99D1-0FEFAE55EBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CC310C6-50E0-43E6-99D1-0FEFAE55EBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CC310C6-50E0-43E6-99D1-0FEFAE55EBB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CC310C6-50E0-43E6-99D1-0FEFAE55EBB1}.Tools|Any CPU.ActiveCfg = Tools|Any CPU
+		{4CC310C6-50E0-43E6-99D1-0FEFAE55EBB1}.Tools|Any CPU.Build.0 = Tools|Any CPU
+	EndGlobalSection
+EndGlobal
