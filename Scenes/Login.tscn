@@ -24,7 +24,7 @@ func _process(delta):
 		if error < 10:
 			show_message(\"Failed to log in: \" + [\"user doesn't exist\", \"wrong password\", \"user already online\"][error-1], Color.red)
 		else:
-			show_message(\"Registration failed: \" + [\"empty name\", \"user already exists\", \"empty password\"][error-11], Color.red)
+			show_message(\"Registration failed: \" + [\"user already exists\", \"empty name\", \"empty password\"][error-11], Color.red)
 	else:
 		show_message(\"\")
 	

@@ -14,14 +14,29 @@ public class Database {
 
     public Error RegisterUser(string login, string password) {
         var collection = database.GetCollection<BsonDocument>("users");
+
+        if (collection.CountDocuments(new BsonDocument {{"login", login}} ) == 1) {
+            return Error.FileAlreadyInUse;
+        }
+
         collection.InsertOne(new BsonDocument {{"login", login}, {"password", password}} );
 
         return Error.Ok;
     }
 
-    public void Check(string login, string passowrd) {
+    public Error TryLogin(string login, string password) {
         var collection = database.GetCollection<BsonDocument>("users");
-        collection.Find(new BsonDocument{});
+        var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
+
+        if (found == null) {
+            return Error.FileNotFound;
+        }
+
+        if (found.GetValue("password") != password) {
+            return Error.FileNoPermission;
+        }
+
+        return Error.Ok;
     }
 
     public enum Result {SUCCESS, FAILURE}

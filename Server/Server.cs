@@ -51,12 +51,28 @@ public class Server : Node {
 
             switch(unpacker.GetCommand()) {
                 case "REGISTER":
-                    database.RegisterUser(unpacker.GetString(), unpacker.GetString());
-
-                    new Packet().AddString("REGISTER").AddInt(0).Send(stream);
+                    if (database.RegisterUser(unpacker.GetString(), unpacker.GetString()) == Error.FileAlreadyInUse) {
+                        new Packet().AddString("REGISTER").AddInt(1).Send(stream);
+                    } else {
+                        new Packet().AddString("REGISTER").AddInt(0).Send(stream);
+                    }
 
                     break;
                 case "LOGIN":
+                    switch (database.TryLogin(unpacker.GetString(), unpacker.GetString())) {
+                        case Error.FileNotFound:
+                            new Packet().AddString("LOGIN").AddInt(1).Send(stream);
+                            break;
+                        case Error.FileNoPermission:
+                            new Packet().AddString("LOGIN").AddInt(2).Send(stream);
+                            break;
+                        case Error.FileAlreadyInUse:
+                            new Packet().AddString("LOGIN").AddInt(3).Send(stream);
+                            break;
+                        default:
+                            new Packet().AddString("LOGIN").AddInt(0).Send(stream);
+                            break;
+                    };
 
                     break;
             }      
