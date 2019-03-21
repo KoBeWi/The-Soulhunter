@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 
 public class Packet {
-    static readonly byte[] zero = new byte[] {0};
+    public static readonly byte[] zero = new byte[] {0};
 
-    int length;
-    List<byte[]> data;
+    private int length;
+    private List<byte[]> data;
 
     public Packet() {
         data = new List<byte[]>();
