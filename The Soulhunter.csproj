@@ -62,7 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\Core.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Server\Database.cs" />
+    <Compile Include="Server\Packet.cs" />
+    <Compile Include="Server\Unpacker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

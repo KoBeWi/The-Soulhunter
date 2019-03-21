@@ -1,6 +1,6 @@
+.database/
 .import/
 .vs/
 .vscode/
 .mono/
 Build/
-Server/database/
