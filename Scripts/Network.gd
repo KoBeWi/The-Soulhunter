@@ -1,23 +1,31 @@
 extends Node
 
 var client
-var connected
 var account
 
-#const server_host = "149.156.43.54"
 const server_host = "127.0.0.1"
+#const server_host = "149.156.43.54"
 #const server_host = "172.19.56.150"
 #const server_host = "172.19.24.145"
 const server_port = 2412
 #const server_host = "0.tcp.ngrok.io"
 #const server_port = 18136
 
+signal connected
+signal log_in
+signal error
+
+func _ready():
+	set_process(false)
+
 func connect_client():
 	client = StreamPeerTCP.new()
 	client.connect_to_host(server_host, server_port)
+	set_process(true)
 
 func _process(delta):
-	if !client or client.get_status() == client.STATUS_CONNECTING: return
+	if client.get_status() == client.STATUS_CONNECTING:
+		return
 	
 	if client.get_status() != client.STATUS_CONNECTED:
 		client.connect_to_host(server_host, server_port)
@@ -27,7 +35,7 @@ func _process(delta):
 	if packet_size[0] == FAILED: return
 	
 	if packet_size[1].size() > 0 and packet_size[1][0] > 0: #to drugie nie powinno się dziać ;_;
-		print("Received data: ", packet_size[1][0]-1)
+#		print("Received data: ", packet_size[1][0]-1)
 		var data = client.get_data(packet_size[1][0]-1)
 #		print(client.get_status())
 #		print(data[0])
@@ -41,14 +49,13 @@ func process_data(data):
 	data = extract_data(data, command)
 	
 	match command:
-		"HELLO": connected = true
+		"HELLO": emit_signal("connected")
 		"LOGIN":
-			if data[0] == 0:
+			if data[0] == OK:
 				print("OK")
-				account = true
+				
 				var player = preload("res://Nodes/Player.tscn").instance()
-				player.add_camera()
-				Com.player = player
+				player.set_main()
 				
 				Com.game = preload("res://Scenes/InGame.tscn").instance()
 				
@@ -58,16 +65,14 @@ func process_data(data):
 				Com.game.add_main_player(player)
 				Com.game.update_camera()
 				
+				emit_signal("log_in")
+				
 				send_data(["GETSTATS", "1"]) #nie powinno być domyślne?
 				send_data(["GETMAP"])
 			else:
-				get_node("/root/LoginScreen").error = data[0]
+				emit_signal("error", data[0])
 		"REGISTER":
-			if data[0] == 0:
-				get_node("/root/LoginScreen").error = null
-				get_node("/root/LoginScreen").register = true
-			else:
-				get_node("/root/LoginScreen").error = 10 + data[0]
+			emit_signal("error", data[0])
 		"NEWROOM":
 			Com.server.create_room(data[0])
 		"REMROOM":
@@ -227,13 +232,12 @@ func print_raw(ary): ##DEBUG
 
 func extract_data(data, command):
 	var i = command.length()+1
-	print("'", command, "'", " ", command == "LOGIN")
+#	print("'", command, "'", " ", command == "LOGIN")
 	
 	match command:
 		"HELLO": return
 		"LOGIN": return get_data(["int", "int"], data, i)
 		"REGISTER": return get_data(["int"], data, i)
-		"NEWROOM", "REMROOM": return get_data(["int"], data, i)
 		
 		"CHANGEROOM": return get_data(["int"], data, i)
 		"CHAT": return get_data(["int", "string", "string"], data, i)

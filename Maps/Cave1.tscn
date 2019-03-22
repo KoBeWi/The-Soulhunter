@@ -27,6 +27,7 @@ __meta__ = {
 }
 
 [node name="SavePoint" parent="." instance=ExtResource( 3 )]
+position = Vector2( 1305, 345 )
 
 [node name="Enemies" type="Node2D" parent="."]
 editor/display_folded = true

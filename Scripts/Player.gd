@@ -23,13 +23,14 @@ var camera
 func _ready():
 #	add_to_group("players") ??
 	$Sprite/ArmPosition.visible = false
+	Com.controls.connect("key_press", self, "on_key_press")
+	Com.controls.connect("key_release", self, "on_key_release")
 
 func initialize(n):
 	uname = n[0]
 	if n[1] != -1: id = n[1]
 	
 	$Name.set_text("<" + uname + ">")
-	Com.controls.register_player(self)
 	anim.play("Idle")
 
 func _physics_process(delta):
@@ -39,10 +40,10 @@ func _physics_process(delta):
 	var flip = sprite.flip_h
 	
 	motion += Vector2(0, 1)
-	if controls.has("RIGHT"):
+	if controls.has(Controls.RIGHT):
 		motion.x = 8
 		sprite.flip_h = false
-	elif controls.has("LEFT"):
+	elif controls.has(Controls.LEFT):
 		motion.x = -8
 		sprite.flip_h = true
 	else:
@@ -52,7 +53,7 @@ func _physics_process(delta):
 	
 	if flip != sprite.flip_h: flip()
 		
-	if key_press.has("JUMP") and on_floor:
+	if key_press.has(Controls.JUMP) and on_floor:
 		motion.y = -20
 	
 	if attack:
@@ -79,7 +80,7 @@ func _physics_process(delta):
 	if collided and collided.normal.y < 0:
 		move_and_collide(motion.slide(collided.normal))
 	
-	if key_press.has("ATTACK") and !attack:
+	if key_press.has(Controls.ATTACK) and !attack:
 		attack = true
 		$Sprite/ArmPosition.visible = true
 		anim.playback_speed = 4
@@ -93,12 +94,13 @@ func set_pos_and_broadcast(pos):
 	
 	Network.send_data(["POS", int(pos.x), int(pos.y), direction()])
 
-func press_key(uname):
-	controls[uname] = true
-	key_press[uname] = true
+func on_key_press(key):
+	print(key)
+	controls[key] = true
+	key_press[key] = true
 
-func release_key(uname):
-	controls.erase(uname)
+func on_key_release(key):
+	controls.erase(key)
 
 func flip(f = $Sprite.flip_h):
 	$Sprite.flip_h = f
@@ -132,7 +134,11 @@ func weapon_exit(body):
 #	if self == Com.player and body.get("is_enemy"):
 #		enemies.erase(body.get_name())
 
-func add_camera():
-	camera = preload("res://Server/Nodes/PlayerCamera.tscn").instance()
+func set_main():
+	Com.player = self
+	
+	camera = preload("res://Nodes/PlayerCamera.tscn").instance()
 	camera.make_current()
 	add_child(camera)
+	
+	Com.controls.set_master(self)

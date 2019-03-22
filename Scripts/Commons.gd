@@ -1,6 +1,8 @@
 extends Node
 
-const ENEMY_NAMES = ["Skeleton"]
+const ENEMY_NAMES = ["Skeleton"] ##enum?
+
+onready var controls = $Controls
 
 var game
 var server
@@ -8,16 +10,12 @@ var player
 
 var keys = {}
 var pressed_keys = {}
-var controls
-
-func _ready():
-	controls = load("res://Scripts/Controls.gd").new()
-	add_child(controls)
 
 func _process(delta):
 	for key in keys.keys():
 		pressed_keys[key] = true
 
+##niepotrzebne
 func press_key(key):
 	keys[key] = true
 

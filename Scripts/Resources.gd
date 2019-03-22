@@ -7,20 +7,16 @@ var souls = []
 func _ready():
 	var dir = Directory.new()
 	if dir.open("res://Maps") == OK:
-		dir.list_dir_begin()
+		dir.list_dir_begin(true)
 		
-		var name = dir.get_next()
-		while name != "":
-			if name == "." or name == "..":
-				name = dir.get_next()
-				continue
-				
-			var map = load("res://Maps/" + name)
-			var mapid = map.instance().mapid
+		var file_name = dir.get_next()
+		while file_name != "":
+			var map = load("res://Maps/" + file_name)
+			var mapid = map.instance().mapid ##INSTANCE? :I
 			maps.resize(max(maps.size(), mapid + 1))
 			maps[mapid] = map
 			
-			name = dir.get_next()
+			file_name = dir.get_next()
 	else:
 		print("MAP DIRECTORY DOESN'T EXIST WTF")
 	
@@ -30,23 +26,20 @@ func _ready():
 func read_generic_resources(resource, target):
 	var dir = Directory.new()
 	if dir.open("res://Resources/" + resource) == OK:
-		dir.list_dir_begin()
+		dir.list_dir_begin(true)
 		
-		var name = dir.get_next()
-		while name != "":
-			if name == "." or name == "..":
-				name = dir.get_next()
-				continue
-			target.resize(max(target.size(), int(name) + 1))
+		var file_name = dir.get_next()
+		while file_name != "":
+			target.resize(max(target.size(), int(file_name) + 1))
 			
 			var file = File.new()
-			file.open("res://Resources/" + resource + "/" + name, file.READ)
+			file.open("res://Resources/" + resource + "/" + file_name, file.READ)
 			var text = file.get_as_text()
 			file.close()
 			
 			var dict = parse_json(text)
-			target[int(name)] = dict
+			target[int(file_name)] = dict
 			
-			name = dir.get_next()
+			file_name = dir.get_next()
 	else:
 		print(resource.to_upper() + " DIRECTORY DOESN'T EXIST DAFUQ")

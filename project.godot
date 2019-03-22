@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node",
+"class": "Controls",
+"language": "GDScript",
+"path": "res://Scripts/Controls.gd"
+} ]
 _global_script_class_icons={
-
+"Controls": ""
 }
 
 [application]
@@ -23,7 +28,7 @@ config/icon="res://icon.png"
 
 Network="*res://Scripts/Network.gd"
 Res="*res://Scripts/Resources.gd"
-Com="*res://Scripts/Commons.gd"
+Com="*res://Nodes/Commons.tscn"
 
 [debug]
 

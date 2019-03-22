@@ -29,6 +29,7 @@ func _body_exit(body):
 
 func init_player():
 	if Com.player and !Com.player.initiated:
+		print(position)
 		Com.player.position = position
 		Com.game.start()"
 

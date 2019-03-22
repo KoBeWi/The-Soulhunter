@@ -9,27 +9,14 @@ script/source = "extends Node2D
 
 onready var message = $Label
 
-var error
-var register
+func _ready():
+	Network.connect(\"error\", self, \"on_error\")
+	Network.connect(\"log_in\", self, \"on_log_in\")
 
-func _process(delta):
-	if Network.account:
-		if typeof(Network.account) == TYPE_BOOL: Network.account = $Login.text
-		
-		if Com.player:
-			get_tree().current_scene = Com.game
-			queue_free()
-	
-	if error:
-		if error < 10:
-			show_message(\"Failed to log in: \" + [\"user doesn't exist\", \"wrong password\", \"user already online\"][error-1], Color.red)
-		else:
-			show_message(\"Registration failed: \" + [\"user already exists\", \"empty name\", \"empty password\"][error-11], Color.red)
-	else:
-		show_message(\"\")
-	
-	if register:
-		show_message(\"Registered sucessfully!\", Color.green)
+func on_log_in():
+	Network.account = $Login.text
+	get_tree().current_scene = Com.game
+	queue_free()
 
 func _on_Login_pressed():
 	Network.send_data([\"LOGIN\", $Login.text, $Password.text])
@@ -37,7 +24,21 @@ func _on_Login_pressed():
 func _on_Register_pressed():
 	Network.send_data([\"REGISTER\", $Login.text, $Password.text])
 
-func show_message(_message, color = Color.white):
+func on_error(code):
+	match code:
+		ERR_FILE_NOT_FOUND:
+			show_message(\"Failed to log in: user doesn't exist.\", Color.red)
+		ERR_FILE_NO_PERMISSION:
+			show_message(\"Failed to log in: wrong password.\", Color.red)
+		ERR_BUSY:
+			show_message(\"Failed to log in: user already online.\", Color.red)
+		
+		ERR_ALREADY_IN_USE:
+			show_message(\"Registration failed: user already exists.\", Color.red)
+		OK:
+			show_message(\"Registered sucessfully!\", Color.red)
+
+func show_message(_message, color):
 	message.text = _message
 	message.modulate = color"
 

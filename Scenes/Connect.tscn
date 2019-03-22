@@ -9,17 +9,15 @@ script/source = "extends Control
 onready var start = OS.get_ticks_msec()
 
 func _ready():
+	Network.connect(\"connected\", self, \"on_connect\")
 	Network.connect_client()
 
 func _process(delta):
-	if Network.connected:
-		if Com.server:
-			get_tree().change_scene(\"Scenes/Server.tscn\")
-		else:
-			get_tree().change_scene(\"Scenes/Login.tscn\")
-	
 	if OS.get_ticks_msec() > start + 5000:
-		$Label.fail = true"
+		$Label.fail = true
+
+func on_connect():
+	get_tree().change_scene(\"res://Scenes/Login.tscn\")"
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends Label

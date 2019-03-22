@@ -95,6 +95,7 @@ func change_map(id):
 
 func add_main_player(player):
 	$Players.add_child(player)
+	UI = player.get_node("PlayerCamera/UI")
 	menu = UI.get_node("PlayerMenu")
 	chat = UI.get_node("Chat/Input")
 
@@ -169,4 +170,4 @@ func get_enemy_number():
 
 func start():
 	Com.player.initiated = true
-	$Fade/ColorRect.color.a = 0
+	Com.player.get_node("PlayerCamera/Fade/ColorRect").color.a = 0

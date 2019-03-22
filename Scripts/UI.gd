@@ -2,9 +2,6 @@ extends CanvasLayer
 
 onready var chr = Com.player.get_node("Character")
 
-func _ready():
-	get_parent().UI = self
-
 func _process(delta):
 	update_bar("HP")
 	update_bar("MP")

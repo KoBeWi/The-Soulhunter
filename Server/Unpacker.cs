@@ -36,33 +36,21 @@ public class Unpacker {
     public void  HandlePacket(Database database, NetworkStream stream) {
         switch (command) {
             case "REGISTER":
-                if (database.RegisterUser(GetString(), GetString()) == Error.FileAlreadyInUse) {
-                    new Packet().AddString("REGISTER").AddInt(1).Send(stream);
-                } else {
-                    new Packet().AddString("REGISTER").AddInt(0).Send(stream);
-                }
+                new Packet().AddString("REGISTER").AddInt((int)database.RegisterUser(GetString(), GetString()));
 
                 break;
             case "LOGIN":
                 Character character = null;
 
-                switch (database.TryLogin(GetString(), GetString(), out character)) {
-                    case Error.FileNotFound:
-                        new Packet().AddString("LOGIN").AddInt(1).Send(stream);
-                        break;
-                    case Error.FileNoPermission:
-                        new Packet().AddString("LOGIN").AddInt(2).Send(stream);
-                        break;
-                    case Error.FileAlreadyInUse:
-                        new Packet().AddString("LOGIN").AddInt(3).Send(stream);
-                        break;
-                    default:
-                        new Packet().AddString("LOGIN").AddInt(0).AddInt(character.GetMapId()).Send(stream);
+                var error = database.TryLogin(GetString(), GetString(), out character);
 
-                        Server.Instance().CreateRoom(character.GetMapId());
+                if (error == Error.Ok) {
+                    new Packet().AddString("LOGIN").AddInt(0).AddInt(character.GetMapId()).Send(stream);
 
-                        break;
-                };
+                    Server.Instance().CreateRoom(character.GetMapId());
+                } else {
+                    new Packet().AddString("LOGIN").AddInt((int)error).Send(stream);
+                }
 
                 break;
         }
