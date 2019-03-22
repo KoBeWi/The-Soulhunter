@@ -46,15 +46,15 @@
       <HintPath>$(ProjectDir)\.mono\assemblies\GodotSharpEditor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MongoDB.Driver" >
+    <Reference Include="MongoDB.Driver">
       <HintPath>$(ProjectDir)\.mono\assemblies\MongoDB.Driver.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MongoDB.Driver.Core" >
+    <Reference Include="MongoDB.Driver.Core">
       <HintPath>$(ProjectDir)\.mono\assemblies\MongoDB.Driver.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MongoDB.Bson" >
+    <Reference Include="MongoDB.Bson">
       <HintPath>$(ProjectDir)\.mono\assemblies\MongoDB.Bson.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -66,6 +66,8 @@
     <Compile Include="Server\Database.cs" />
     <Compile Include="Server\Packet.cs" />
     <Compile Include="Server\Unpacker.cs" />
+    <Compile Include="Server\Room.cs" />
+    <Compile Include="Server\Character.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -95,7 +95,7 @@ func process_data(data):
 			else:
 				printerr("WARNING: Wrong enemy id for drop: ", data[0])
 		"ENTER":
-			var player = load("Nodes/Player.tscn").instance()
+			var player = load("res://Nodes/Player.tscn").instance()
 			
 			if Com.server:
 				player.id = data.back()[1]

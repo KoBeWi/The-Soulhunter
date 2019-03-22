@@ -30,7 +30,7 @@ func dead():
 	queue_free()
 
 func create_drop(id):
-	var item = load("Nodes/Item.tscn").instance()
+	var item = load("res://Nodes/Item.tscn").instance()
 	item.set_id(id)
 	item.position = position
 	get_node("../..").add_child(item)
@@ -38,7 +38,7 @@ func create_drop(id):
 func create_soul(id):
 	if Com.server: return #nie powinno być potrzebne
 	
-	var soul = load("Nodes/Soul.tscn").instance()
+	var soul = load("res://Nodes/Soul.tscn").instance()
 	get_node("../..").add_child(soul)
 	soul.position = position
 	soul.set_id(id)

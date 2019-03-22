@@ -63,7 +63,8 @@ func _process(delta):
 			chat.caret_position = 1
 			chat.grab_focus()
 		
-		var room = [map.map_x + int(Com.player.position.x)/1920, map.map_y + int(Com.player.position.y)/1080] #przenieść na server
+		return
+		var room = [map.map_x 	+ int(Com.player.position.x)/1920, map.map_y + int(Com.player.position.y)/1080] #przenieść na server
 		if room != last_room:
 			UI.get_node("Map").set_room(room)
 			last_room = room
@@ -112,7 +113,7 @@ func damage_number(group, id, damage):
 		return
 	node.damage(damage)
 	
-	var label = load("Nodes/DamageNumber.tscn").instance()
+	var label = load("res://Nodes/DamageNumber.tscn").instance()
 	label.get_node("Number").set_text(str(damage))
 	
 	if node.has_node("NumberPoint"):

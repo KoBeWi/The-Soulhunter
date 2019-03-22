@@ -19,14 +19,23 @@ public class Database {
             return Error.FileAlreadyInUse;
         }
 
-        collection.InsertOne(new BsonDocument {{"login", login}, {"password", password}} );
+        collection.InsertOne(new BsonDocument {
+            {"login", login},
+            {"password", password},
+            {"location", 0 },
+            // {"location", new BsonDocument {{"map_id", 0}, {"from", 5}} },
+            {"level", 1},
+            {"max_hp", 120}
+        } );
 
         return Error.Ok;
     }
 
-    public Error TryLogin(string login, string password) {
+    public Error TryLogin(string login, string password, out Character character) {
         var collection = database.GetCollection<BsonDocument>("users");
         var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
+
+        character = null;
 
         if (found == null) {
             return Error.FileNotFound;
@@ -35,6 +44,8 @@ public class Database {
         if (found.GetValue("password") != password) {
             return Error.FileNoPermission;
         }
+
+        character = new Character(found);
 
         return Error.Ok;
     }

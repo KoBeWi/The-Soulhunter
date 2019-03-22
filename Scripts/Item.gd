@@ -12,7 +12,7 @@ func _physics_process(delta):
 
 func set_id(id):
 	self.id = id
-	get_node("Sprite").texture = load("Graphics/Items/" + str(id) + ".png")
+	get_node("Sprite").texture = load("res://Graphics/Items/" + str(id) + ".png")
 
 func _body_enter(body):
 	if body.is_in_group("players"):

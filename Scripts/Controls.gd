@@ -1,6 +1,8 @@
 extends Node
 onready var Com = get_node("..")
 
+enum{ATTACK, JUMP, UP, RIGHT, DOWN, LEFT, ACCEPT, CANCEL, MAP, CHAT, COMMAND}
+
 var players = {}
 var controls = {}
 

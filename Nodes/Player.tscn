@@ -161,6 +161,7 @@ next/Fall = "Fall"
 script = SubResource( 7 )
 
 [node name="Sprite" type="Sprite" parent="."]
+editor/display_folded = true
 texture = ExtResource( 3 )
 hframes = 14
 frame = 13

@@ -133,10 +133,6 @@ func weapon_exit(body):
 #		enemies.erase(body.get_name())
 
 func add_camera():
-	camera = Camera2D.new()
-	camera.limit_left = 0
-	camera.limit_top = 0
-	camera.drag_margin_h_enabled = false
-	camera.drag_margin_v_enabled = false
+	camera = preload("res://Server/Nodes/PlayerCamera.tscn").instance()
 	camera.make_current()
 	add_child(camera)

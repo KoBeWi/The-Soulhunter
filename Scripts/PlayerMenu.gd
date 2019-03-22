@@ -23,7 +23,7 @@ func show():
 	select = 0
 	mode = "inv" if chr.inventory.size() > 0 else "eq"
 	current_type = "consumable"
-	selector.texture = load("Graphics/UI/InventorySelect.png")
+	selector.texture = load("res://Graphics/UI/InventorySelect.png")
 	visible = true
 
 func _process(delta):
@@ -82,14 +82,14 @@ func _process(delta):
 
 func update_select():
 	if mode == "eq":
-		selector.texture = load("Graphics/UI/EquipmentSelect.png")
+		selector.texture = load("res://Graphics/UI/EquipmentSelect.png")
 		selector.position = equipment.position + Vector2(116 + select%2 * 228, select/2 * 40)
 		if chr.equipment[eq_slot_order[select]] < 65535:
 			update_description(chr.equipment[eq_slot_order[select]])
 		else:
 			update_description(null)
 	else:
-		selector.texture = load("Graphics/UI/InventorySelect.png")
+		selector.texture = load("res://Graphics/UI/InventorySelect.png")
 		select = min(max(select, 0), item_list.size()-1)
 		selector.position = inventory.position + Vector2(78 + select%3 * 152, select/3 * 40)
 		if select > -1:
@@ -99,7 +99,7 @@ func update_select():
 
 func update_description(id):
 	if typeof(id) == TYPE_INT:
-		description.get_node("Icon").texture = load("Graphics/Items/" + str(id) + ".png")
+		description.get_node("Icon").texture = load("res://Graphics/Items/" + str(id) + ".png")
 		description.get_node("Description").text = Res.items[id]["description"]
 	else:
 		description.get_node("Icon").texture = null
@@ -125,16 +125,16 @@ func update_inventory():
 		if chr.slot_from_type(Res.items[item]["type"]) == current_type: item_list.append(item)
 	
 	for i in 9:
-		var slot = load("Nodes/InventorySpace.tscn").instance()
+		var slot = load("res://Nodes/InventorySpace.tscn").instance()
 		if i >= item_list.size():
 			slot.get_node("ItemName").text = ""
-			slot.texture = load("Graphics/UI/InventorySpaceFree.png")
+			slot.texture = load("res://Graphics/UI/InventorySpaceFree.png")
 		else:
 			var id = item_list[i]
 			var name = Res.items[id]["name"]
 			if (chr.inventory[id] > 1): name = name + " (x" + str(chr.inventory[id]) + ")"
 			slot.get_node("ItemName").text = name
-			slot.texture = load("Graphics/UI/InventorySpace.png")
+			slot.texture = load("res://Graphics/UI/InventorySpace.png")
 		slot.position = Vector2(78 + i%3 * 152, i/3 * 40)
 		inventory.add_child(slot)
 
@@ -144,12 +144,12 @@ func update_equipment():
 	
 	for i in range(8):
 		var item = chr.equipment[eq_slot_order[i]]
-		var slot = load("Nodes/EquipmentSlot.tscn").instance()
+		var slot = load("res://Nodes/EquipmentSlot.tscn").instance()
 		if item == 65535:
 			slot.get_node("ItemIcon").texture = null
 			slot.get_node("ItemName").text = "<none>"
 		else:
 			slot.get_node("ItemName").text = Res.items[item]["name"]
-			slot.get_node("ItemIcon").texture = load("Graphics/Items/" + str(item) + ".png")
+			slot.get_node("ItemIcon").texture = load("res://Graphics/Items/" + str(item) + ".png")
 		slot.position = Vector2(116 + i%2*228, i/2 * 40)
 		equipment.add_child(slot)
