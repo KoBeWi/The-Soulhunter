@@ -19,7 +19,6 @@ POS[x, y, direction] - przesłanie pozycji innym
 PRIVSYNC[map, for, data] - synchronizacja dla gracza
 REGISTER[username, password] - rejestracja
 RNG[map, type, index, id, value] - wartość z generatora liczb
-TELLPOS[targetuser, x, y, direction] - ustawienie pozycji gracza
 SERVER[code] - potwierdzenie od klienta-servera
 
 * może wyjść nie od mastera
@@ -28,7 +27,7 @@ SERVER[code] - potwierdzenie od klienta-servera
 Server -> Client
 
 HELLO - powitanie
-LOGIN[result, map] - logowanie
+LOGIN[result, map, id] - logowanie
 REGISTER[result] - rejestracja
 NEWROOM[code] - nowy pokój
 CHANGEROOM[id] - zmiana pomieszczenia

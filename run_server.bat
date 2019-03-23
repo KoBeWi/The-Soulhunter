@@ -1,1 +1,1 @@
-godot_mono --s Scenes/Server.tscn
+godot_mono --s Server/Nodes/Server.tscn

@@ -56,6 +56,7 @@ func process_data(data):
 				
 				var player = preload("res://Nodes/Player.tscn").instance()
 				player.set_main()
+				player.id = data[2]
 				
 				Com.game = preload("res://Scenes/InGame.tscn").instance()
 				
@@ -236,7 +237,7 @@ func extract_data(data, command):
 	
 	match command:
 		"HELLO": return
-		"LOGIN": return get_data(["int", "int"], data, i)
+		"LOGIN": return get_data(["int", "int", "int"], data, i)
 		"REGISTER": return get_data(["int"], data, i)
 		
 		"CHANGEROOM": return get_data(["int"], data, i)

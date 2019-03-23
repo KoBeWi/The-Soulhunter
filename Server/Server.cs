@@ -16,8 +16,7 @@ public class Server : Node {
 
     private bool available = true;
 
-    public override void _Ready()
-    {
+    public override void _Ready() {
         instance = this;
         server = new TcpListener(IPAddress.Parse("127.0.0.1"), 2412);
         database = new Database();
@@ -55,7 +54,7 @@ public class Server : Node {
             try {
                 int read = stream.Read(bytes, 0, bytes.Length);
 
-                if (read == 0) { //🤔
+                if (read == 0) {
                     GD.Print("Connection closed");
                     player.LogOut();
                     client.Close();
@@ -63,7 +62,7 @@ public class Server : Node {
                 }
             } catch (System.IO.IOException) {
                 GD.Print("Connection error");
-                //tutaj np. dodanie do hanged connections i czekanie sobie
+                player.LogOut(); //tutaj np. dodanie do hanged connections i czekanie sobie, zamiast logout
                 client.Close();
                 return;
             }
