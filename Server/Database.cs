@@ -32,11 +32,9 @@ public class Database {
         return Error.Ok;
     }
 
-    public Error TryLogin(string login, string password, NetworkStream stream, out Player player) {
+    public Error TryLogin(string login, string password, Player player) {
         var collection = database.GetCollection<BsonDocument>("users");
         var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
-
-        player = null;
 
         if (found == null) {
             return Error.FileNotFound;
@@ -50,7 +48,7 @@ public class Database {
             return Error.FileNoPermission;
         }
 
-        player = new Player(found, stream);
+        player.LogIn(found);
         player.SetCharacter("dummy");
         Server.Instance().AddOnlinePlayer(player);
 

@@ -10,13 +10,24 @@ public class Player {
 
     private Character character;
 
-    public Player(BsonDocument _data, NetworkStream stream) {
-        data = _data;
+    public Player(NetworkStream stream) {
         upstream = stream;
+    }
+
+    public void LogIn(BsonDocument _data) {
+        data = _data;
 
         login = data.GetValue("login").AsString;
 
         character = null;
+    }
+
+    public void LogOut() {
+        Server.Instance().RemoveOnlinePlayer(this);
+
+        if (character != null) {
+            character.RemoveFromRoom();
+        }
     }
 
     public string GetLogin() {return login;}

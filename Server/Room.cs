@@ -16,15 +16,25 @@ public class Room {
         Server.Instance().AddChild(room);
     }
 
-    public void RemoveRoom() {
+    public void Dispose() {
         Server.Instance().RemoveChild(room);
     }
 
     public void AddPlayer(Character character) {
+        character.SetRoom(this);
+
         foreach (var player in players) {
-            player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()));
+            player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()).AddInt(0).AddInt(0));
         }
 
         players.Add(character);
+    }
+
+    public void RemovePlayer(Character character) {
+        players.Remove(character);
+
+        foreach (var player in players) {
+            player.GetPlayer().SendPacket(new Packet("EXIT").AddString(character.GetName()));
+        }
     }
 }

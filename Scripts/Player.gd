@@ -95,7 +95,6 @@ func set_pos_and_broadcast(pos):
 	Network.send_data(["POS", int(pos.x), int(pos.y), direction()])
 
 func on_key_press(key):
-	print(key)
 	controls[key] = true
 	key_press[key] = true
 

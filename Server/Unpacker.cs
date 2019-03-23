@@ -33,24 +33,22 @@ public class Unpacker {
 
     public string GetCommand() { return command; }
 
-    public void  HandlePacket(Database database, NetworkStream stream) {
+    public void  HandlePacket(Database database, Player player) {
         switch (command) {
             case "REGISTER":
-                new Packet("REGISTER").AddInt((int)database.RegisterUser(GetString(), GetString()));
+                player.SendPacket(new Packet("REGISTER").AddInt((int)database.RegisterUser(GetString(), GetString())));
 
                 break;
             case "LOGIN":
-                Player player = null;
-
-                var error = database.TryLogin(GetString(), GetString(), stream, out player);
+                var error = database.TryLogin(GetString(), GetString(), player);
 
                 if (error == Error.Ok) {
-                    new Packet("LOGIN").AddInt(0).AddInt(player.GetCharacter().GetMapId()).Send(stream);
+                    player.SendPacket(new Packet("LOGIN").AddInt(0).AddInt(player.GetCharacter().GetMapId()));
 
                     var room = Server.Instance().GetRoom(player.GetCharacter().GetMapId());
                     room.AddPlayer(player.GetCharacter());
                 } else {
-                    new Packet("LOGIN").AddInt((int)error).Send(stream);
+                    player.SendPacket(new Packet("LOGIN").AddInt((int)error));
                 }
 
                 break;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/UI.gd" type="Script" id=1]
 [ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=2]
@@ -7,11 +7,9 @@
 [ext_resource path="res://Graphics/UI/HealthBar.png" type="Texture" id=5]
 [ext_resource path="res://Graphics/UI/ManaBar.png" type="Texture" id=6]
 [ext_resource path="res://Nodes/PlayerMenu.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Scripts/PlayerMenu.gd" type="Script" id=8]
-[ext_resource path="res://Nodes/Map.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Scripts/Map.gd" type="Script" id=10]
-[ext_resource path="res://Scripts/Chat.gd" type="Script" id=11]
-[ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=12]
+[ext_resource path="res://Nodes/Map.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scripts/Chat.gd" type="Script" id=9]
+[ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=10]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.243137, 0.0862745, 0, 0.25098 )
@@ -105,27 +103,17 @@ text = "0/0"
 align = 1
 valign = 1
 
-[node name="PlayerMenu" type="Control" parent="UI" instance=ExtResource( 7 )]
-editor/display_folded = true
+[node name="PlayerMenu" parent="UI" instance=ExtResource( 7 )]
 visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-script = ExtResource( 8 )
 
-[node name="Map" type="Control" parent="UI" instance=ExtResource( 9 )]
-visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 10 )
+[node name="Map" parent="UI" instance=ExtResource( 8 )]
 
 [node name="Chat" type="Panel" parent="UI"]
 margin_top = 470.0
 margin_right = 410.0
 margin_bottom = 600.0
 custom_styles/panel = SubResource( 1 )
-script = ExtResource( 11 )
+script = ExtResource( 9 )
 
 [node name="Input" type="LineEdit" parent="UI/Chat"]
 margin_top = 112.0
@@ -134,7 +122,7 @@ margin_bottom = 139.0
 focus_mode = 1
 custom_styles/focus = SubResource( 2 )
 custom_styles/normal = SubResource( 3 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 10 )
 focus_mode = 1
 context_menu_enabled = false
 placeholder_text = "Press T to chat"

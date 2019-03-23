@@ -33,10 +33,10 @@ func on_error(code):
 		ERR_BUSY:
 			show_message(\"Failed to log in: user already online.\", Color.red)
 		
-		ERR_ALREADY_IN_USE:
+		ERR_FILE_ALREADY_IN_USE:
 			show_message(\"Registration failed: user already exists.\", Color.red)
 		OK:
-			show_message(\"Registered sucessfully!\", Color.red)
+			show_message(\"Registered sucessfully!\", Color.green)
 
 func show_message(_message, color):
 	message.text = _message

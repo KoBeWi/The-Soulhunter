@@ -21,7 +21,10 @@ public class Server : Node {
         instance = this;
         server = new TcpListener(IPAddress.Parse("127.0.0.1"), 2412);
         database = new Database();
+        
         rooms = new Dictionary<int, List<Room>>();
+        playersOnline = new List<Player>();
+
         server.Start();
     }
 
@@ -41,14 +44,27 @@ public class Server : Node {
         var client = _client as TcpClient;
 
         NetworkStream stream = client.GetStream();
+        Player player = new Player(stream);
         new Packet("HELLO").Send(stream);
 
         var bytes = new byte[256];
 
+        GD.Print("Player connected");
+
         while (true) {
             try {
-                stream.Read(bytes, 0, bytes.Length);
+                int read = stream.Read(bytes, 0, bytes.Length);
+
+                if (read == 0) { //🤔
+                    GD.Print("Connection closed");
+                    player.LogOut();
+                    client.Close();
+                    return;
+                }
             } catch (System.IO.IOException) {
+                GD.Print("Connection error");
+                //tutaj np. dodanie do hanged connections i czekanie sobie
+                client.Close();
                 return;
             }
 
@@ -56,7 +72,7 @@ public class Server : Node {
 
             GD.Print("Received packet: " + unpacker.GetCommand());
 
-            unpacker.HandlePacket(database, stream);
+            unpacker.HandlePacket(database, player);
         }
         
         // client.Close();
@@ -79,6 +95,10 @@ public class Server : Node {
         rooms[mapId].Add(room);
 
         return room;
+    }
+
+    public void RemoveOnlinePlayer(Player player) {
+        playersOnline.Remove(player);
     }
 
     public void AddOnlinePlayer(Player player) {

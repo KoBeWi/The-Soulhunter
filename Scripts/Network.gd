@@ -44,7 +44,7 @@ func _process(delta):
 func process_data(data):
 	if data.size() <= 0: return
 	var command = extract_string(data, 0)
-	print("Command: " + command)
+	print("Received: " + command)
 	
 	data = extract_data(data, command)
 	
