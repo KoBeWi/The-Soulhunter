@@ -7,9 +7,11 @@ public class Packet {
     private int length;
     private List<byte[]> data;
 
-    public Packet() {
+    public Packet(string command) {
         data = new List<byte[]>();
         length = 1;
+
+        AddString(command);
     }
 
     public Packet AddString(string s) {

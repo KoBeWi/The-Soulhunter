@@ -12,6 +12,7 @@ public class Server : Node {
     private static Server instance;
 
     private Dictionary<int, List<Room>> rooms;
+    private List<Player> playersOnline;
 
     private bool available = true;
 
@@ -40,7 +41,7 @@ public class Server : Node {
         var client = _client as TcpClient;
 
         NetworkStream stream = client.GetStream();
-        new Packet().AddString("HELLO").Send(stream);
+        new Packet("HELLO").Send(stream);
 
         var bytes = new byte[256];
 
@@ -61,12 +62,31 @@ public class Server : Node {
         // client.Close();
     }
 
-    public void CreateRoom(int mapId) {
+    public Room GetRoom(int mapId) {
+        if (!rooms.ContainsKey(mapId) || rooms[mapId].Count == 0) {
+            return CreateRoom(mapId);
+        }
+
+        return rooms[mapId][0]; //tutaj wybór fajnego pokoju
+    }
+
+    private Room CreateRoom(int mapId) {
         if (!rooms.ContainsKey(mapId)) {
             rooms.Add(mapId, new List<Room>());
         }
 
-        rooms[mapId].Add(new Room(mapId));
+        var room = new Room(mapId);
+        rooms[mapId].Add(room);
+
+        return room;
+    }
+
+    public void AddOnlinePlayer(Player player) {
+        playersOnline.Add(player);
+    }
+
+    public Player GetPlayerOnline(string login) {
+        return playersOnline.Find((player) => player.GetLogin() == login);
     }
 
     public static Server Instance() {return instance;}

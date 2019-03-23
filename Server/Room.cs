@@ -19,4 +19,12 @@ public class Room {
     public void RemoveRoom() {
         Server.Instance().RemoveChild(room);
     }
+
+    public void AddPlayer(Character character) {
+        foreach (var player in players) {
+            player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()));
+        }
+
+        players.Add(character);
+    }
 }

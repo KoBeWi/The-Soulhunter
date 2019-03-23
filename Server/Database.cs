@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Net.Sockets;
 using MongoDB.Driver;
 using MongoDB.Bson;
 
@@ -31,21 +32,27 @@ public class Database {
         return Error.Ok;
     }
 
-    public Error TryLogin(string login, string password, out Character character) {
+    public Error TryLogin(string login, string password, NetworkStream stream, out Player player) {
         var collection = database.GetCollection<BsonDocument>("users");
         var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
 
-        character = null;
+        player = null;
 
         if (found == null) {
             return Error.FileNotFound;
+        }
+
+        if (Server.Instance().GetPlayerOnline(login) != null) {
+            return Error.Busy;
         }
 
         if (found.GetValue("password") != password) {
             return Error.FileNoPermission;
         }
 
-        character = new Character(found);
+        player = new Player(found, stream);
+        player.SetCharacter("dummy");
+        Server.Instance().AddOnlinePlayer(player);
 
         return Error.Ok;
     }

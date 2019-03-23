@@ -67,6 +67,7 @@
     <Compile Include="Server\Packet.cs" />
     <Compile Include="Server\Unpacker.cs" />
     <Compile Include="Server\Room.cs" />
+    <Compile Include="Server\Player.cs" />
     <Compile Include="Server\Character.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
