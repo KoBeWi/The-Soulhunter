@@ -11,10 +11,11 @@ var last_enemy = -1
 var is_menu = false
 
 onready var effects = $Effects
+onready var players = $Players
 
 func _process(delta):
 	if Com.server:
-		for player in $Players.get_children():
+		for player in players.get_children():
 			if !player.initiated or player.changeroomed: continue
 			
 			if player.position.x >= map.width * 1920:
@@ -86,7 +87,7 @@ func update_camera():
 
 func change_map(id):
 	map.queue_free()
-	for player in $Players.get_children():
+	for player in players.get_children():
 		if player != Com.player:
 			Com.controls.remove_player(player)
 			player.queue_free()
@@ -94,7 +95,8 @@ func change_map(id):
 	load_map(id)
 
 func add_main_player(player):
-	$Players.add_child(player)
+	player.connect("initiated", self, "start")
+	players.add_child(player)
 	UI = player.get_node("PlayerCamera/UI")
 	menu = UI.get_node("PlayerMenu")
 	chat = UI.get_node("Chat/Input")
@@ -102,7 +104,7 @@ func add_main_player(player):
 func damage_number(group, id, damage):
 	var node
 	if group == "p":
-		for player in $Players.get_children():
+		for player in players.get_children():
 			if player.id == id:
 				node = player
 				break
@@ -155,7 +157,7 @@ func update_equipment(items):
 	menu.update_equipment()
 
 func get_player(id):
-	for player in $Players.get_children():
+	for player in players.get_children():
 		if player.id == id:
 			return player
 
@@ -169,5 +171,4 @@ func get_enemy_number():
 	return last_enemy
 
 func start():
-	Com.player.initiated = true
 	Com.player.get_node("PlayerCamera/Fade/ColorRect").color.a = 0

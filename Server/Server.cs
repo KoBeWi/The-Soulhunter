@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 public class Server : Node {
+    private static readonly PackedScene roomFactory = ResourceLoader.Load("res://Server/Nodes/Room.tscn") as PackedScene;
+
     private TcpListener server;
     private Database database;
     private static Server instance;
@@ -90,7 +92,9 @@ public class Server : Node {
             rooms.Add(mapId, new List<Room>());
         }
 
-        var room = new Room(mapId);
+        var room = roomFactory.Instance() as Room;
+        room.SetMap(mapId);
+        AddChild(room);
         rooms[mapId].Add(room);
 
         return room;

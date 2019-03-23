@@ -146,6 +146,11 @@ func process_data(data):
 					player.position = pos
 					player.initiated = true
 					break
+		"PPOS":
+			for player in Com.game.players.get_children():
+				if player.id == data[0]:
+					player.position = Vector2(data[1], data[2])
+					player.start()
 		"RNG":
 			var group = data[0]
 			var index = data[1]
@@ -279,6 +284,7 @@ func extract_data(data, command):
 				return get_data(["int", "int", "int", "int"], data, i)
 			else:
 				return get_data(["int", "int", "int"], data, i)
+		"PPOS": return get_data(["int", "int", "int"], data, i)
 		"RNG": return get_data(["string", "int", "string", "int"], data, i)
 		"SOUL": return get_data(["int", "int"], data, i)
 		"STATS":

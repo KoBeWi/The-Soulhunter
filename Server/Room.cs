@@ -2,32 +2,35 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class Room {
-    private static readonly PackedScene roomFactory = ResourceLoader.Load("res://Server/Nodes/Room.tscn") as PackedScene;
+public class Room : Viewport {
     private static readonly PackedScene playerFactory = ResourceLoader.Load("res://Nodes/Player.tscn") as PackedScene;
 
-    private Node room;
+    private int mapId;
     private Node playerList;
+    private Node map;
 
     private List<Character> players;
     private Dictionary<Character, Node> nodeBindings;
     int lastPlayerId;
 
-    public Room(int id) {
+    public override void _Ready() {
         players = new List<Character>();
         nodeBindings = new Dictionary<Character, Node>();
         lastPlayerId = 0;
 
-        room = roomFactory.Instance();
-        room.Set("map", id);
-        Server.Instance().AddChild(room);
+        GetNode("InGame").Call("load_map", mapId);
+        map = GetNode("InGame/Map");
 
-        playerList = room.GetNode("InGame/Players");
+        playerList = GetNode("InGame/Players");
     }
 
-    public void Dispose() {
-        Server.Instance().RemoveChild(room);
+    public void SetMap(int id) {
+        mapId = id;
     }
+
+    // public void Dispose() {
+    //     Server.Instance().RemoveChild(room);
+    // }
 
     public int AddPlayer(Character character) {
         var newPlayer = playerFactory.Instance();
@@ -37,9 +40,7 @@ public class Room {
 
         character.SetRoom(this);
 
-        foreach (var player in players) {
-            player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()).AddInt(lastPlayerId).AddInt(0));
-        }
+        BroadcastPacket(new Packet("ENTER").AddString(character.GetName()).AddInt(lastPlayerId).AddInt(0));
 
         players.Add(character);
 
@@ -50,8 +51,20 @@ public class Room {
         players.Remove(character);
         nodeBindings[character].QueueFree();
 
+        BroadcastPacket(new Packet("EXIT").AddString(character.GetName()));
+    }
+
+    public void BroadcastPacket(Packet packet) {
         foreach (var player in players) {
-            player.GetPlayer().SendPacket(new Packet("EXIT").AddString(character.GetName()));
+            player.GetPlayer().SendPacket(packet);
         }
+    }
+
+    public void InitPlayer(Character character) {
+        var newPlayer = nodeBindings[character];
+        newPlayer.Set("position", map.GetNode("SavePoint").Get("position")); //hacky af
+        var position = (Vector2)newPlayer.Get("position");
+
+        BroadcastPacket(new Packet("PPOS").AddInt((int)newPlayer.Get("id")).AddInt((int)position.x).AddInt((int)position.y).AddInt(0));
     }
 }

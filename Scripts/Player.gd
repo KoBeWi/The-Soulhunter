@@ -20,11 +20,15 @@ onready var mapid = $"../../Map".mapid
 
 var camera
 
+signal initiated
+
 func _ready():
 #	add_to_group("players") ??
 	$Sprite/ArmPosition.visible = false
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
+	visible = false
+	set_process(false)
 
 func initialize(n):
 	uname = n[0]
@@ -33,10 +37,12 @@ func initialize(n):
 	$Name.set_text("<" + uname + ">")
 	anim.play("Idle")
 
+func start():
+	set_process(true)
+	visible = true
+	emit_signal("initiated")
+
 func _physics_process(delta):
-	if !initiated:
-		return
-	
 	var flip = sprite.flip_h
 	
 	motion += Vector2(0, 1)

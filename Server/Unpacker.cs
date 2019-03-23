@@ -44,10 +44,12 @@ public class Unpacker {
 
                 if (error == Error.Ok) {
                     var room = Server.Instance().GetRoom(player.GetCharacter().GetMapId());
-                    
+
                     player.SendPacket(new Packet("LOGIN")
                     .AddInt(0).AddInt(player.GetCharacter().GetMapId())
                     .AddInt(room.AddPlayer(player.GetCharacter())));
+
+                    room.InitPlayer(player.GetCharacter());
                 } else {
                     player.SendPacket(new Packet("LOGIN").AddInt((int)error));
                 }

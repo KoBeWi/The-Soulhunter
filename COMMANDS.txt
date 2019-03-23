@@ -44,7 +44,8 @@ KEYPRESS[player, id] - wciśnięcie przycisku
 KEYRELEASE[player, id] - puszczenie przycisku
 MAP[number, [rooms]] - aktualizacja mapy
 PLAYERID[id] - id klienta
-POS[map, id, direction, offset] - ustawienie pozycji wejściowej
+PPOS[playerid, position_x, position_y] - ustawienie pozycji gracza
+//POS[map, id, direction, offset] - ustawienie pozycji wejściowej
 RNG[group, index, type, value] - losowy numer
 SOUL[source, id] - dusza z wroga
 STATS[code, [stats]] - statystyki
