@@ -34,4 +34,10 @@ public class Character {
 
     public void SetNewId(int id) {playerId = id;}
     public int GetPlayerId() {return playerId;}
+
+    public void BroadcastPacket(Packet packet) {
+        if (currentRoom != null) {
+            currentRoom.BroadcastPacketExcept(packet, this);
+        }
+    }
 }

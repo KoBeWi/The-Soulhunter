@@ -1,5 +1,5 @@
 class_name Unpacker
-extends Node
+extends Reference
 
 var data
 var command

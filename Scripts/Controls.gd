@@ -43,10 +43,10 @@ func _process(delta):
 
 func process_key(key_id, key):
 	if Input.is_key_pressed(key) and !controls.has(key_id):
-		Network.send_data(["KEYPRESS", key_id])
+		Network.send_data(Packet.new("KEYPRESS").add_u8(key_id))
 		process_key_nosend(key_id, key)
 	elif !Input.is_key_pressed(key) and controls.has(key_id):
-		Network.send_data(["KEYRELEASE", key_id])
+		Network.send_data(Packet.new("KEYRELEASE").add_u8(key_id))
 		process_key_nosend(key_id, key)
 
 func process_key_nosend(key_id, key):
@@ -54,15 +54,15 @@ func process_key_nosend(key_id, key):
 		controls[key_id] = true
 		Com.press_key(key_id)
 		if !Com.game.is_menu:
-			emit_signal("key_press", key_id)
+			press_key(Com.player.id, key_id)
 	elif !Input.is_key_pressed(key) and controls.has(key_id):
 		controls.erase(key_id)
 		Com.release_key(key_id)
 		if !Com.game.is_menu:
-			emit_signal("key_release", key_id)
+			release_key(Com.player.id, key_id)
 
-func press_key(player_name, key):
-	emit_signal("key_press", key)
+func press_key(player_id, key):
+	emit_signal("key_press", player_id, key)
 
-func release_key(player_name, key):
-	emit_signal("key_release", key)
+func release_key(player_id, key):
+	emit_signal("key_release", player_id, key)

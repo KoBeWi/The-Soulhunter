@@ -128,10 +128,8 @@ func process_packet(unpacker):
 		"EQUIPMENT": ###
 			Com.game.update_equipment([])
 		
-		"EXIT": ###
-			var map = Com.game.map
-			
-			for player in map.get_node("Players").get_children():
+		"EXIT":
+			for player in Com.game.players.get_children():
 				if player.id == [][0]:
 					Com.controls.remove_player(player)
 					player.queue_free()
@@ -201,43 +199,8 @@ func process_packet(unpacker):
 				[][2] += enem_type.length()+1
 				enemy.sync_data([])
 
-func send_data(data):
-	print("Sending: ", data)
-	var size = 1
-	var packet = PoolByteArray()
-	
-	for bit in data:
-		if typeof(bit) == TYPE_STRING:
-			packet.append_array(bit.to_ascii())
-			packet.append(0)
-			size += bit.length()+1
-		elif typeof(bit) == TYPE_REAL: #trochu hack
-			packet.append(int(bit) % 256)
-			packet.append(int(bit) / 256)
-			size += 2
-		elif typeof(bit) == TYPE_INT:
-			packet.append(bit % 256)
-			packet.append(bit / 256)
-			size += 2
-		elif typeof(bit) == TYPE_VECTOR2: #ten abs tak średnio
-			packet.append(int(abs(bit.x)) % 256)
-			packet.append(int(abs(bit.x)) / 256)
-			packet.append(int(abs(bit.y)) % 256)
-			packet.append(int(abs(bit.y)) / 256)
-			size += 4
-		elif typeof(bit) == TYPE_BOOL:
-			packet.append(1 if bit else 0)
-			size += 2
-		else:
-			print("Something strange went to packet: ", typeof(bit))
-			var bytes = var2bytes(bit)
-			packet.append_array(bytes)
-			size += bytes.size()
-	
-	packet.insert(0, size)
-#	for i in range(packet.size()): printraw(packet[i], " ")
-#	print()
-	client.put_data(packet)
+func send_data(packet):
+	client.put_data(packet.data)
 
 func print_raw(ary): ##DEBUG
 	var arr = []

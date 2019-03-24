@@ -66,6 +66,12 @@ public class Room : Viewport {
         }
     }
 
+    public void BroadcastPacketExcept(Packet packet, Character except) {
+        foreach (var player in players) {
+            if (player != except) player.GetPlayer().SendPacket(packet);
+        }
+    }
+
     // public void ReverseBroadcastPacket(Action<Character> packetMaker) {
     //     foreach (var player in players) {
     //         packetMaker.Invoke(player);

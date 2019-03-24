@@ -97,12 +97,14 @@ func set_pos_and_broadcast(pos):
 	
 	Network.send_data(["POS", int(pos.x), int(pos.y), direction()])
 
-func on_key_press(key):
-	controls[key] = true
-	key_press[key] = true
+func on_key_press(p_id, key):
+	if p_id == id:
+		controls[key] = true
+		key_press[key] = true
 
-func on_key_release(key):
-	controls.erase(key)
+func on_key_release(p_id, key):
+	if p_id == id:
+		controls.erase(key)
 
 func flip(f = $Sprite.flip_h):
 	$Sprite.flip_h = f

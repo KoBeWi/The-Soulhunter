@@ -31,7 +31,7 @@ public class Unpacker {
         return data[offset-2] * 256 + data[offset-1];
     }
 
-    public int GetU8() {
+    public byte GetU8() {
         offset += 1;
         return data[offset-1];
     }
@@ -58,6 +58,12 @@ public class Unpacker {
                 } else {
                     player.SendPacket(new Packet("LOGIN").AddU8((byte)error));
                 }
+
+                break;
+            
+            case "KEYPRESS":
+            case "KEYRELEASE":
+                player.GetCharacter().BroadcastPacket(new Packet(command).AddU16(player.GetCharacter().GetPlayerId()).AddU8(GetU8()));
 
                 break;
         }
