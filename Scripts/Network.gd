@@ -186,7 +186,7 @@ func process_packet(unpacker):
 			var index = [][1]
 			
 			if group == "p":
-				var pos = get_data(["vector2"], [][3], [][2])[0]
+				var pos = []#get_data(["vector2"], [][3], [][2])[0]
 				var player = Com.game.get_player(index)
 				if player:
 					player.position = pos
@@ -250,114 +250,8 @@ func print_raw(ary): ##DEBUG
 	for i in range(ary.size()): arr.append(ary[i])
 	print(str(arr))
 
-func extract_data(data, command):
-	var i = command.length()+1
-#	print("'", command, "'", " ", command == "LOGIN")
-	
-	match command:
-		"HELLO": return
-		"LOGIN": return get_data([U16, U16, U16], data, i)
-		"REGISTER": return get_data([U16], data, i)
-		
-		"CHANGEROOM": return get_data([U16], data, i)
-		"CHAT": return get_data([U16, STRING, STRING], data, i)
-		"DAMAGE": return get_data([STRING, U16, U16], data, i)
-		"DEAD":
-			if Com.server:
-				return get_data([STRING, U16, U16], data, i)
-			else:
-				return get_data([STRING, U16], data, i)
-		"DROP":
-			if Com.server:
-				return get_data([U16, U16, U16], data, i)
-			else:
-				return get_data([U16, U16], data, i)
-		"ENTER":
-			if Com.server:
-				var temp = get_data([U16, STRING, U16, U16], data, i)
-				var send = get_data(make_format(STRING, temp[3]), data, temp.back())
-				send.append([temp[1], temp[2], temp[0]])
-				return send
-			else:
-				var temp = get_data([STRING,U16, U16], data, i)
-				var send = get_data(make_format(STRING, temp[2]), data, temp.back())
-				send.append([temp[0], temp[1]])
-				return send
-		"EQUIPMENT": return get_data(make_format(U16, 8), data, i)
-		"EXIT": return get_data([U16, U16], data, i)
-		"EXPERIENCE", "PLAYERID": return get_data([U16], data, i)
-		"INVENTORY":
-			var temp = get_data([U16], data, i)
-			return get_data(make_format(U16, temp[0]), data, temp.back())
-		"KEYPRESS", "KEYRELEASE": return get_data([STRING, STRING], data, i)
-		"MAP":
-			var temp = get_data([U16], data, i)
-			return get_data(make_format(U16, temp[0]), data, temp.back())
-		"POS": return get_data([U16, U16, U16], data, i)
-		"POSV": return get_data([U16, U16, U16], data, i)
-		"RNG": return get_data([STRING, U16, STRING, U16], data, i)
-		"SOUL": return get_data([U16, U16], data, i)
-		"STATS":
-			var temp = get_data([U16], data, i)
-			var send = get_data(make_format(U16, stat_code(temp[0]).size()), data, temp.back())
-			send.append(temp[0])
-			return send
-		"SYNC":
-#			print_raw(data)
-			var send = get_data([STRING, U16], data, i)
-			return send + [data]
-		_: print("Unknown command: ", command, " (", command.to_ascii().size(), ")")
-
-func get_data(format, data, start):
-	var i = start
-	var result = []
-	
-	for type in format:
-		if i >= data.size():
-			return result
-		
-		if type == STRING:
-			var string = extract_string(data, i)
-			result.append(string)
-			i += string.length()+1
-		elif type == U16:
-			result.append(extract_int(data, i))
-			i += 2
-		elif type == "vector2":
-			result.append(Vector2(extract_int(data, i), extract_int(data, i+2)))
-			i += 4
-	
-	result.append(i)
-	return result
-
-func extract_string(raw_ary, start):
-	var string = []
-	var i = start
-	
-	while raw_ary[i] > 0:
-#		print("str(", raw_ary[i], ")")
-		string.append(raw_ary[i])
-		i += 1
-	
-	return PoolByteArray(string).get_string_from_ascii()
-	
-func extract_int(raw_ary, start):
-	return raw_ary[start]*256 + raw_ary[start+1]
-
-func make_format(format, length):
-	var temp = []
-	
-	for i in range(length):
-		temp.append(format)
-	
-	return temp
-
 func stat_code(code):
 	if code == 1:
 		return ["level", "experience", "maxhp", "hp", "maxmp", "mp"]
 	elif code == 2:
 		return ["attack", "defense"]
-		
-func determine_map(source):
-	if Com.server: return Com.server.rooms[source[-2]].root.map
-	else: return Com.game.map
