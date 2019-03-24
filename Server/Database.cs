@@ -23,7 +23,7 @@ public class Database {
         collection.InsertOne(new BsonDocument {
             {"login", login},
             {"password", password},
-            {"location", 0 },
+            {"location", 0},
             // {"location", new BsonDocument {{"map_id", 0}, {"from", 5}} },
             {"level", 1},
             {"max_hp", 120}

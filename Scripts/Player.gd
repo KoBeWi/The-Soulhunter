@@ -30,12 +30,10 @@ func _ready():
 	visible = false
 	set_process(false)
 
-func initialize(n):
-	uname = n[0]
-	if n[1] != -1: id = n[1]
-	
-	$Name.set_text("<" + uname + ">")
-	anim.play("Idle")
+func set_name(n):
+	uname = n
+	$Name.gext = "<" + uname + ">"
+#	anim.play("Idle")
 
 func start():
 	set_process(true)

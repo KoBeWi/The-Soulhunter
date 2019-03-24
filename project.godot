@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Controls",
 "language": "GDScript",
 "path": "res://Scripts/Controls.gd"
+}, {
+"base": "Node",
+"class": "Unpacker",
+"language": "GDScript",
+"path": "res://Scripts/Unpacker.gd"
 } ]
 _global_script_class_icons={
-"Controls": ""
+"Controls": "",
+"Unpacker": ""
 }
 
 [application]

@@ -35,12 +35,18 @@ public class Room : Viewport {
     public int AddPlayer(Character character) {
         var newPlayer = playerFactory.Instance();
         newPlayer.Set("id", ++lastPlayerId);
+        character.SetNewId(lastPlayerId);
         nodeBindings.Add(character, newPlayer);
         playerList.AddChild(newPlayer);
 
         character.SetRoom(this);
 
-        BroadcastPacket(new Packet("ENTER").AddString(character.GetName()).AddInt(lastPlayerId).AddInt(0));
+        character.GetPlayer().SendPacket(new Packet("EROOM").AddU16(mapId).AddU16(lastPlayerId).AddU8(0).AddU16(0));
+
+        foreach (var player in players) {
+            character.GetPlayer().SendPacket(new Packet("ENTER").AddString(player.GetName()).AddU16(player.GetPlayerId()).AddU16(0));
+            player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()).AddU16(lastPlayerId).AddU16(0));
+        }
 
         players.Add(character);
 
@@ -60,11 +66,23 @@ public class Room : Viewport {
         }
     }
 
-    public void InitPlayer(Character character) {
-        var newPlayer = nodeBindings[character];
-        newPlayer.Set("position", map.GetNode("SavePoint").Get("position")); //hacky af
-        var position = (Vector2)newPlayer.Get("position");
+    // public void ReverseBroadcastPacket(Action<Character> packetMaker) {
+    //     foreach (var player in players) {
+    //         packetMaker.Invoke(player);
+    //     }
+    // }
 
-        BroadcastPacket(new Packet("PPOS").AddInt((int)newPlayer.Get("id")).AddInt((int)position.x).AddInt((int)position.y).AddInt(0));
-    }
+    // public void InitPlayer(Character character) {
+    //     var newPlayer = nodeBindings[character];
+
+    //     ReverseBroadcastPacket((player) => {
+    //         if (player != character)
+    //             character.GetPlayer().SendPacket(new Packet("ENTER")
+    //                 .AddString(player.GetName())
+    //                 .AddU16(player.GetPlayerId())
+    //                 .AddU16(0));
+    //     });
+
+    //     BroadcastPacket(new Packet("POS").AddU16((int)newPlayer.Get("id")).AddU16(4).AddU16(0).AddU16(0));
+    // }
 }

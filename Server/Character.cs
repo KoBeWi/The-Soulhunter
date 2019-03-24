@@ -2,6 +2,7 @@ using MongoDB.Bson;
 
 public class Character {
     string name;
+    int playerId;
 
     int level;
     int maxHp;
@@ -30,4 +31,7 @@ public class Character {
         if (currentRoom != null)
             currentRoom.RemovePlayer(this);
     }
+
+    public void SetNewId(int id) {playerId = id;}
+    public int GetPlayerId() {return playerId;}
 }

@@ -22,7 +22,14 @@ public class Packet {
         return this;
     }
 
-    public Packet AddInt(int i) {
+    public Packet AddU8(byte i) {
+        data.Add(new byte[] {i});
+        length += 1;
+
+        return this;
+    }
+
+    public Packet AddU16(int i) {
         data.Add(new byte[] {(byte)(i / 256), (byte)(i % 256)});
         length += 2;
 

@@ -6,3 +6,4 @@
 -wywalić bone z enemies ;_;
 +usuwanie gracza z controls, gdy wychodzi z servera
 >przerobić kod serwera, że są tam referencje gdziem można
+-zabezpieczyć stream.write w każdym miejscu
