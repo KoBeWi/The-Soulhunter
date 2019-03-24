@@ -41,11 +41,11 @@ public class Room : Viewport {
 
         character.SetRoom(this);
 
-        character.GetPlayer().SendPacket(new Packet("EROOM").AddU16(mapId).AddU16(lastPlayerId).AddU8(0).AddU16(0));
+        character.GetPlayer().SendPacket(new Packet("EROOM").AddU16(mapId).AddU16(lastPlayerId).AddU8(4).AddU8(0));
 
         foreach (var player in players) {
-            character.GetPlayer().SendPacket(new Packet("ENTER").AddString(player.GetName()).AddU16(player.GetPlayerId()).AddU16(0));
-            player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()).AddU16(lastPlayerId).AddU16(0));
+            character.GetPlayer().SendPacket(new Packet("ENTER").AddString(player.GetName()).AddU16(player.GetPlayerId()).AddU8(4).AddU8(0));
+            player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()).AddU16(lastPlayerId).AddU8(4).AddU8(0));
         }
 
         players.Add(character);

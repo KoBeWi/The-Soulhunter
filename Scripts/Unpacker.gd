@@ -3,7 +3,7 @@ extends Node
 
 var data
 var command
-var offset = 1
+var offset = 0
 
 func _init(_data):
 	data = _data
@@ -27,3 +27,18 @@ func get_u16():
 func get_u8():
     offset += 1
     return data[offset-1]
+
+func get_position():
+	var mode = get_u8()
+	var offset
+	
+	if mode != 4:
+		offset = get_u16()
+	
+	match mode:
+		0: return Vector2(offset * 1920, 0)
+		1: return Vector2(Com.game.map.width * 1920 - 30, offset * 1080 + 540)
+		2: return Vector2(offset * 1920, Com.game.map.height * 1080 - 1)
+		3: return Vector2(30, offset * 1080 + 540)
+		4: return Com.game.map.get_node("SavePoint/PlayerSpot").global_position ##niebezpieczne
+		5: return Vector2(offset, get_u16())

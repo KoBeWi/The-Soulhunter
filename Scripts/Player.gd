@@ -16,7 +16,6 @@ var attack = false
 onready var sprite = $Sprite
 onready var chr = $Character
 onready var anim = $Animation
-onready var mapid = $"../../Map".mapid
 
 var camera
 
@@ -32,7 +31,7 @@ func _ready():
 
 func set_name(n):
 	uname = n
-	$Name.gext = "<" + uname + ">"
+	$Name.text = "<" + uname + ">"
 #	anim.play("Idle")
 
 func start():
@@ -129,7 +128,7 @@ func weapon_enter(body):
 	if !attack: return
 	
 	if Com.server and body.is_in_group ("enemies"):
-		Network.send_data(["DAMAGE", mapid, "p", id, body.id, "N"])
+		Network.send_data(["DAMAGE", "mapid", "p", id, body.id, "N"])
 		#enemies.append(body.get_name())
 
 func weapon_exit(body):

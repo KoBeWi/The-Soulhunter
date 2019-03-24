@@ -7,3 +7,4 @@
 +usuwanie gracza z controls, gdy wychodzi z servera
 >przerobić kod serwera, że są tam referencje gdziem można
 -zabezpieczyć stream.write w każdym miejscu
+>zamienić command na enum i rozmiar na u16

@@ -48,7 +48,7 @@ func process_packet(unpacker):
 	
 	print("Received: " + unpacker.command)
 	
-	match Unpacker.command:
+	match unpacker.command:
 		"HELLO":
 			emit_signal("connected")
 		
@@ -88,7 +88,7 @@ func process_packet(unpacker):
 			Com.game.damage_number([], [], []) ###
 		
 		"DEAD": ###
-			var map = determine_map([]).get_parent()
+			var map = Com.game.map
 			
 			if [][0] == "e":
 				var enemy = map.get_enemy([][1])
@@ -100,12 +100,18 @@ func process_packet(unpacker):
 				map.get_node("Players/" + [][1]).dead()
 		
 		"DROP": ###
-			var map = determine_map([]).get_parent()
+			var map = Com.game.map
 			var enemy = map.get_enemy([][0])
 			if enemy:
 				enemy.create_drop([][1])
 			else:
 				printerr("WARNING: Wrong enemy id for drop: ", [][0])
+		
+		"EROOM":
+			Com.game.load_map(unpacker.get_u16())
+			Com.player.id = unpacker.get_u16()
+			Com.player.position = unpacker.get_position()
+			Com.player.start()
 		
 		"ENTER":
 			var player = load("res://Nodes/Player.tscn").instance()
@@ -113,6 +119,8 @@ func process_packet(unpacker):
 			Com.game.players.add_child(player)
 			player.set_name(unpacker.get_string())
 			player.id = unpacker.get_u16()
+			player.position = unpacker.get_position()
+			player.start()
 			
 #			for i in range(data.size() - 2): ###
 #				Com.controls.press_key(data.back()[0], [][i])
@@ -121,7 +129,7 @@ func process_packet(unpacker):
 			Com.game.update_equipment([])
 		
 		"EXIT": ###
-			var map = determine_map([]).get_parent()
+			var map = Com.game.map
 			
 			for player in map.get_node("Players").get_children():
 				if player.id == [][0]:
@@ -145,24 +153,10 @@ func process_packet(unpacker):
 		
 		"POS":
 			var player_id = unpacker.get_u16()
-			var mode = unpacker.get_u8()
-			var offset = unpacker.get_u16()
 			
 			for player in Com.game.players.get_children():
 				if player.id == player_id:
-					var pos = Vector2()
-					
-					match mode:
-						0: pos = Vector2(offset * 1920, 0)
-						1:
-							pos = Vector2(Com.game.map.width * 1920 - 30, offset * 1080 + 540)
-							player.flip(true)
-						2: pos = Vector2(offset * 1920, Com.game.map.height * 1080 - 1)
-						3: pos = Vector2(30, offset * 1080 + 540)
-						4: pos = Com.game.map.get_node("SavePoint/PlayerSpot").global_position ##niebezpieczne
-						5: pos = Vector2(offset, unpacker.get_u16())
-					
-					player.position = pos
+					player.position = unpacker.get_position()
 					player.start()
 					break
 		"RNG": ###
@@ -193,7 +187,7 @@ func process_packet(unpacker):
 				else:
 					printerr("WARNING: Non-existent player index: ", index)
 			elif group == "e":
-				var enem_type = extract_string([][3], [][2])
+				var enem_type = ""#extract_string([][3], [][2])
 				var enemy = Com.game.get_enemy(index)
 				
 #				if enem_type == "Skeleton": print_raw([][3])
