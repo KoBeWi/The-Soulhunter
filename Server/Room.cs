@@ -22,6 +22,8 @@ public class Room : Viewport {
         map = GetNode("InGame/Map");
 
         playerList = GetNode("InGame/Players");
+
+        GetNode<Timer>("Timer").Connect("timeout", this, "Tick");
     }
 
     public void SetMap(int id) {
@@ -35,16 +37,23 @@ public class Room : Viewport {
     public int AddPlayer(Character character) {
         var newPlayer = playerFactory.Instance();
         newPlayer.Set("id", ++lastPlayerId);
+        newPlayer.Set("position", map.GetNode("SavePoint/PlayerSpot").Get("global_position"));
+        newPlayer.Call("start");
+        
         character.SetNewId(lastPlayerId);
         nodeBindings.Add(character, newPlayer);
         playerList.AddChild(newPlayer);
 
         character.SetRoom(this);
-
         character.GetPlayer().SendPacket(new Packet("EROOM").AddU16(mapId).AddU16(lastPlayerId).AddU8(4).AddU8(0));
 
         foreach (var player in players) {
-            character.GetPlayer().SendPacket(new Packet("ENTER").AddString(player.GetName()).AddU16(player.GetPlayerId()).AddU8(4).AddU8(0));
+            var pos = (Vector2)nodeBindings[player].Get("position");
+
+            character.GetPlayer().SendPacket(new Packet("ENTER")
+                .AddString(player.GetName()).AddU16(player.GetPlayerId())
+                .AddU8(5).AddU16((int)pos.x).AddU16((int)pos.y).AddU8(0));
+            
             player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()).AddU16(lastPlayerId).AddU8(4).AddU8(0));
         }
 
@@ -57,7 +66,7 @@ public class Room : Viewport {
         players.Remove(character);
         nodeBindings[character].QueueFree();
 
-        BroadcastPacket(new Packet("EXIT").AddString(character.GetName()));
+        BroadcastPacket(new Packet("EXIT").AddU16(character.GetPlayerId()));
     }
 
     public void BroadcastPacket(Packet packet) {
@@ -70,6 +79,9 @@ public class Room : Viewport {
         foreach (var player in players) {
             if (player != except) player.GetPlayer().SendPacket(packet);
         }
+    }
+
+    public void Tick() {
     }
 
     // public void ReverseBroadcastPacket(Action<Character> packetMaker) {

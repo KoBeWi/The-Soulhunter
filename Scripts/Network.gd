@@ -45,7 +45,6 @@ func _process(delta):
 
 func process_packet(unpacker):
 #	if data.size() <= 0: return ##inaczej zabezpieczyć
-	
 	print("Received: " + unpacker.command)
 	
 	match unpacker.command:
@@ -62,17 +61,10 @@ func process_packet(unpacker):
 				player.set_main()
 				
 				Com.game = preload("res://Scenes/InGame.tscn").instance()
-				
 				$"/root".add_child(Com.game)
-#				Com.game.load_map(data[1])
-				
 				Com.game.add_main_player(player)
-#				Com.game.update_camera()
 				
 				emit_signal("log_in")
-				
-#				send_data(["GETSTATS", "1"]) #nie powinno być domyślne? // pwoinno
-#				send_data(["GETMAP"])
 			else:
 				emit_signal("error", result)
 		"REGISTER":
@@ -129,9 +121,10 @@ func process_packet(unpacker):
 			Com.game.update_equipment([])
 		
 		"EXIT":
+			var id = unpacker.get_u16()
+			
 			for player in Com.game.players.get_children():
-				if player.id == [][0]:
-					Com.controls.remove_player(player)
+				if player.id == id:
 					player.queue_free()
 		
 		"EXPERIENCE": ###

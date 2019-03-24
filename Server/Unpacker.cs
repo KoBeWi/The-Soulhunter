@@ -41,31 +41,41 @@ public class Unpacker {
     public void  HandlePacket(Database database, Player player) {
         switch (command) {
             case "REGISTER":
-                player.SendPacket(new Packet("REGISTER").AddU8((byte)database.RegisterUser(GetString(), GetString())));
+            player.SendPacket(new Packet("REGISTER").AddU8((byte)database.RegisterUser(GetString(), GetString())));
 
-                break;
+            break;
             case "LOGIN":
-                var error = database.TryLogin(GetString(), GetString(), player);
+            var error = database.TryLogin(GetString(), GetString(), player);
 
-                if (error == Error.Ok) {
-                    var room = Server.Instance().GetRoom(player.GetCharacter().GetMapId());
+            if (error == Error.Ok) {
+                var room = Server.Instance().GetRoom(player.GetCharacter().GetMapId());
 
-                    player.SendPacket(new Packet("LOGIN").AddU8(0));
-                        //.AddU16(0).AddU16(player.GetCharacter().GetMapId())
-                        //.AddU16(room.AddPlayer(player.GetCharacter())));
+                player.SendPacket(new Packet("LOGIN").AddU8(0));
+                    //.AddU16(0).AddU16(player.GetCharacter().GetMapId())
+                    //.AddU16(room.AddPlayer(player.GetCharacter())));
 
-                    room.AddPlayer(player.GetCharacter());
-                } else {
-                    player.SendPacket(new Packet("LOGIN").AddU8((byte)error));
-                }
+                room.AddPlayer(player.GetCharacter());
+            } else {
+                player.SendPacket(new Packet("LOGIN").AddU8((byte)error));
+            }
 
-                break;
-            
+            break;
             case "KEYPRESS":
-            case "KEYRELEASE":
-                player.GetCharacter().BroadcastPacket(new Packet(command).AddU16(player.GetCharacter().GetPlayerId()).AddU8(GetU8()));
+            var id = player.GetCharacter().GetPlayerId();
+            var key = GetU8();
 
-                break;
+            Server.GetControls().Call("press_key", id, key);
+            player.GetCharacter().BroadcastPacket(new Packet(command).AddU16(id).AddU8(key));
+
+            break;
+            case "KEYRELEASE":
+            id = player.GetCharacter().GetPlayerId();
+            key = GetU8();
+
+            Server.GetControls().Call("release_key", id, key);
+            player.GetCharacter().BroadcastPacket(new Packet(command).AddU16(id).AddU8(key));
+
+            break;
         }
     }
 }

@@ -15,6 +15,7 @@ public class Server : Node {
 
     private Dictionary<int, List<Room>> rooms;
     private List<Player> playersOnline;
+    private Node controls;
 
     private bool available = true;
 
@@ -22,9 +23,11 @@ public class Server : Node {
         instance = this;
         server = new TcpListener(IPAddress.Parse("127.0.0.1"), 2412);
         database = new Database();
-        
+
         rooms = new Dictionary<int, List<Room>>();
         playersOnline = new List<Player>();
+        
+        controls = GetNode("/root/Com/Controls");
 
         server.Start();
     }
@@ -113,4 +116,5 @@ public class Server : Node {
     }
 
     public static Server Instance() {return instance;}
+    public static Node GetControls() {return instance.controls;}    
 }
