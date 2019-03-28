@@ -41,11 +41,11 @@ func _process(delta):
 		var data = client.get_data(packet_size[1][0]-1)
 #		print(client.get_status())
 #		print(data[0])
-		process_packet(Unpacker.new(data[1]))
+		process_packet(Unpacker.new(data[1], packet_size[1][0]))
 
 func process_packet(unpacker):
 #	if data.size() <= 0: return ##inaczej zabezpieczyć
-	print("Received: " + str(unpacker.command))
+	print("Received: ", unpacker.command, " /", unpacker.size)
 	
 	match unpacker.command:
 		Packet.TYPE.HELLO:
@@ -133,7 +133,7 @@ func process_packet(unpacker):
 		"INVENTORY": ###
 			Com.game.update_inventory([])
 		
-		Packet.TYPE.KEYPRESS:
+		Packet.TYPE.KEY_PRESS:
 			Com.controls.press_key(unpacker.get_u16(), unpacker.get_u8())
 		
 		Packet.TYPE.KEY_RELEASE:
@@ -191,6 +191,14 @@ func process_packet(unpacker):
 				
 				[][2] += enem_type.length()+1
 				enemy.sync_data([])
+		
+		Packet.TYPE.TICK:
+			for i in Com.game.players.get_child_count():
+				var id = unpacker.get_u16()
+				
+				for player in Com.game.players.get_children():
+					if player.id == id:
+						player.apply_state_vector([unpacker.get_u16(), unpacker.get_u16()])
 
 func send_data(packet):
 	client.put_data(packet.data)

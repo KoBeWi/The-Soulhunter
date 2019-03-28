@@ -7,6 +7,7 @@ var initiated = false
 var changeroomed = false
 var uname = ""
 var motion = Vector2()
+var smooth_position = Vector2()
 #var enemies = []
 var id = -1
 
@@ -38,6 +39,12 @@ func start():
 	set_process(true)
 	visible = true
 	emit_signal("initiated")
+
+func _process(delta):
+	if sprite.position.length_squared() > 1:
+		sprite.position *= 0.8
+	else:
+		sprite.position = Vector2()
 
 func _physics_process(delta):
 	var flip = sprite.flip_h
@@ -147,8 +154,15 @@ func set_main():
 	
 	Com.controls.set_master(self)
 
-func vector_state_types():
-	pass
+func state_vector_types():
+	return [Data.TYPE.U16, Data.TYPE.U16]
 
 func get_state_vector():
-	return ["get_position"]
+	return [position.x, position.y]
+
+func apply_state_vector(vector):
+	var old_position = position
+	position.x = vector[0]
+	position.y = vector[1]
+	
+	sprite.position = (old_position - position) + sprite.position

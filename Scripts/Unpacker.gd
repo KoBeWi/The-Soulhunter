@@ -4,9 +4,11 @@ extends Reference
 var data
 var command
 var offset = 0
+var size = 0
 
-func _init(_data):
+func _init(_data, _size):
 	data = _data
+	size = _size
 	command = get_u8()
 
 func get_string():

@@ -9,8 +9,9 @@ public class Packet {
         ENTER_ROOM,
         PLAYER_ENTER,
         PLAYER_EXIT,
-        KEYPRESS,
-        KEYRELEASE
+        KEY_PRESS,
+        KEY_RELEASE,
+        TICK
     }
 
     public static readonly byte[] zero = new byte[] {0};
@@ -45,6 +46,17 @@ public class Packet {
         length += 2;
 
         return this;
+    }
+
+    public void AddStateVector(Godot.Collections.Array types, Godot.Collections.Array data) {
+        for (int i = 0; i < types.Count; i++) {
+            switch((Data.TYPE)types[i]) {
+                case Data.TYPE.U16:
+                AddU16((int)(float)data[i]);
+
+                break;
+            }
+        }
     }
 
     public byte[] Bytes() {

@@ -60,7 +60,7 @@ public class Unpacker {
             }
 
             break;
-            case Packet.TYPE.KEYPRESS:
+            case Packet.TYPE.KEY_PRESS:
             var id = player.GetCharacter().GetPlayerId();
             var key = GetU8();
 
@@ -68,7 +68,7 @@ public class Unpacker {
             player.GetCharacter().BroadcastPacket(new Packet(command).AddU16(id).AddU8(key));
 
             break;
-            case Packet.TYPE.KEYRELEASE:
+            case Packet.TYPE.KEY_RELEASE:
             id = player.GetCharacter().GetPlayerId();
             key = GetU8();
 

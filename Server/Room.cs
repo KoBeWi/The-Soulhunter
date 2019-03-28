@@ -65,6 +65,7 @@ public class Room : Viewport {
     public void RemovePlayer(Character character) {
         players.Remove(character);
         nodeBindings[character].QueueFree();
+        nodeBindings.Remove(character);
 
         BroadcastPacket(new Packet(Packet.TYPE.PLAYER_EXIT).AddU16(character.GetPlayerId()));
     }
@@ -82,7 +83,16 @@ public class Room : Viewport {
     }
 
     public void Tick() {
+        var state = new Packet(Packet.TYPE.TICK);
 
+        foreach (var player in nodeBindings.Keys) {
+            var types = nodeBindings[player].Call("state_vector_types") as Godot.Collections.Array;
+            var data = nodeBindings[player].Call("get_state_vector") as Godot.Collections.Array;
+            state.AddU16(player.GetPlayerId());
+            state.AddStateVector(types, data);
+        }
+
+        BroadcastPacket(state);
     }
 
     // public void ReverseBroadcastPacket(Action<Character> packetMaker) {
