@@ -19,10 +19,10 @@ func on_log_in():
 	queue_free()
 
 func _on_Login_pressed():
-	Network.send_data(Packet.new(\"LOGIN\").add_string($Login.text).add_string($Password.text))
+	Network.send_data(Packet.new(Packet.TYPE.LOGIN).add_string($Login.text).add_string($Password.text))
 
 func _on_Register_pressed():
-	Network.send_data(Packet.new(\"REGISTER\").add_string($Login.text).add_string($Password.text))
+	Network.send_data(Packet.new(Packet.TYPE.REGISTER).add_string($Login.text).add_string($Password.text))
 
 func on_error(code):
 	match code:

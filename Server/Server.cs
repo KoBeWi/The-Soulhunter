@@ -49,7 +49,7 @@ public class Server : Node {
 
         NetworkStream stream = client.GetStream();
         Player player = new Player(stream);
-        new Packet("HELLO").Send(stream);
+        new Packet(Packet.TYPE.HELLO).Send(stream);
 
         var bytes = new byte[256];
 
@@ -74,7 +74,7 @@ public class Server : Node {
 
             var unpacker = new Unpacker(bytes);
 
-            GD.Print("Received packet: " + unpacker.GetCommand());
+            GD.Print("Received packet: " + ((Packet.TYPE)unpacker.GetCommand()).ToString());
 
             unpacker.HandlePacket(database, player);
         }

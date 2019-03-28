@@ -43,10 +43,10 @@ func _process(delta):
 
 func process_key(key_id, key):
 	if Input.is_key_pressed(key) and !controls.has(key_id):
-		Network.send_data(Packet.new("KEYPRESS").add_u8(key_id))
+		Network.send_data(Packet.new(Packet.TYPE.KEYPRESS).add_u8(key_id))
 		process_key_nosend(key_id, key)
 	elif !Input.is_key_pressed(key) and controls.has(key_id):
-		Network.send_data(Packet.new("KEYRELEASE").add_u8(key_id))
+		Network.send_data(Packet.new(Packet.TYPE.KEYRELEASE).add_u8(key_id))
 		process_key_nosend(key_id, key)
 
 func process_key_nosend(key_id, key):

@@ -2,16 +2,27 @@ using System;
 using System.Collections.Generic;
 
 public class Packet {
+    public enum TYPE {
+        HELLO,
+        LOGIN,
+        REGISTER,
+        ENTER_ROOM,
+        PLAYER_ENTER,
+        PLAYER_EXIT,
+        KEYPRESS,
+        KEYRELEASE
+    }
+
     public static readonly byte[] zero = new byte[] {0};
 
     private int length;
     private List<byte[]> data;
 
-    public Packet(string command) {
+    public Packet(TYPE command) {
         data = new List<byte[]>();
         length = 1;
 
-        AddString(command);
+        AddU8((byte)command);
     }
 
     public Packet AddString(string s) {

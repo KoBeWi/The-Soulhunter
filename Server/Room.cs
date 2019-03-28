@@ -45,16 +45,16 @@ public class Room : Viewport {
         playerList.AddChild(newPlayer);
 
         character.SetRoom(this);
-        character.GetPlayer().SendPacket(new Packet("EROOM").AddU16(mapId).AddU16(lastPlayerId).AddU8(4).AddU8(0));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastPlayerId).AddU8(4).AddU8(0));
 
         foreach (var player in players) {
             var pos = (Vector2)nodeBindings[player].Get("position");
 
-            character.GetPlayer().SendPacket(new Packet("ENTER")
+            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.PLAYER_ENTER)
                 .AddString(player.GetName()).AddU16(player.GetPlayerId())
                 .AddU8(5).AddU16((int)pos.x).AddU16((int)pos.y).AddU8(0));
             
-            player.GetPlayer().SendPacket(new Packet("ENTER").AddString(character.GetName()).AddU16(lastPlayerId).AddU8(4).AddU8(0));
+            player.GetPlayer().SendPacket(new Packet(Packet.TYPE.PLAYER_ENTER).AddString(character.GetName()).AddU16(lastPlayerId).AddU8(4).AddU8(0));
         }
 
         players.Add(character);
@@ -66,7 +66,7 @@ public class Room : Viewport {
         players.Remove(character);
         nodeBindings[character].QueueFree();
 
-        BroadcastPacket(new Packet("EXIT").AddU16(character.GetPlayerId()));
+        BroadcastPacket(new Packet(Packet.TYPE.PLAYER_EXIT).AddU16(character.GetPlayerId()));
     }
 
     public void BroadcastPacket(Packet packet) {
@@ -82,6 +82,7 @@ public class Room : Viewport {
     }
 
     public void Tick() {
+
     }
 
     // public void ReverseBroadcastPacket(Action<Character> packetMaker) {

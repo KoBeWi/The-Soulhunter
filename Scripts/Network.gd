@@ -45,13 +45,13 @@ func _process(delta):
 
 func process_packet(unpacker):
 #	if data.size() <= 0: return ##inaczej zabezpieczyć
-	print("Received: " + unpacker.command)
+	print("Received: " + str(unpacker.command))
 	
 	match unpacker.command:
-		"HELLO":
+		Packet.TYPE.HELLO:
 			emit_signal("connected")
 		
-		"LOGIN":
+		Packet.TYPE.LOGIN:
 			var result = unpacker.get_u8()
 			
 			if result == OK:
@@ -67,17 +67,17 @@ func process_packet(unpacker):
 				emit_signal("log_in")
 			else:
 				emit_signal("error", result)
-		"REGISTER":
+		Packet.TYPE.REGISTER:
 			emit_signal("error", unpacker.get_u8())
 	
-		"CHANGEROOM":
-			Com.game.change_map([]) ###
+		"CHANGEROOM": ###
+			Com.game.change_map([])
 		
-		"CHAT":
-			Com.game.chat.get_parent().add_message([], [], []) ###
+		"CHAT": ###
+			Com.game.chat.get_parent().add_message([], [], [])
 		
-		"DAMAGE":
-			Com.game.damage_number([], [], []) ###
+		"DAMAGE": ###
+			Com.game.damage_number([], [], [])
 		
 		"DEAD": ###
 			var map = Com.game.map
@@ -99,13 +99,13 @@ func process_packet(unpacker):
 			else:
 				printerr("WARNING: Wrong enemy id for drop: ", [][0])
 		
-		"EROOM":
+		Packet.TYPE.ENTER_ROOM:
 			Com.game.load_map(unpacker.get_u16())
 			Com.player.id = unpacker.get_u16()
 			Com.player.position = unpacker.get_position()
 			Com.player.start()
 		
-		"ENTER":
+		Packet.TYPE.PLAYER_ENTER:
 			var player = load("res://Nodes/Player.tscn").instance()
 			
 			Com.game.players.add_child(player)
@@ -120,7 +120,7 @@ func process_packet(unpacker):
 		"EQUIPMENT": ###
 			Com.game.update_equipment([])
 		
-		"EXIT":
+		Packet.TYPE.PLAYER_EXIT:
 			var id = unpacker.get_u16()
 			
 			for player in Com.game.players.get_children():
@@ -133,10 +133,10 @@ func process_packet(unpacker):
 		"INVENTORY": ###
 			Com.game.update_inventory([])
 		
-		"KEYPRESS":
+		Packet.TYPE.KEYPRESS:
 			Com.controls.press_key(unpacker.get_u16(), unpacker.get_u8())
 		
-		"KEYRELEASE":
+		Packet.TYPE.KEY_RELEASE:
 			Com.controls.release_key(unpacker.get_u16(), unpacker.get_u8())
 		
 		"MAP": ###

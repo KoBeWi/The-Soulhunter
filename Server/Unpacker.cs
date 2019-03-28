@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 
 public class Unpacker {
-    private string command;
+    private Packet.TYPE command;
     private byte[] data;
     private int offset = 1;
 
     public Unpacker(byte[] from) {
         data = from;
-        command = GetString();
+        command = (Packet.TYPE)GetU8();
     }
 
     public string GetString() {
@@ -36,31 +36,31 @@ public class Unpacker {
         return data[offset-1];
     }
 
-    public string GetCommand() { return command; }
+    public int GetCommand() { return (int)command; }
 
     public void  HandlePacket(Database database, Player player) {
         switch (command) {
-            case "REGISTER":
-            player.SendPacket(new Packet("REGISTER").AddU8((byte)database.RegisterUser(GetString(), GetString())));
+            case Packet.TYPE.REGISTER:
+            player.SendPacket(new Packet(Packet.TYPE.REGISTER).AddU8((byte)database.RegisterUser(GetString(), GetString())));
 
             break;
-            case "LOGIN":
+            case Packet.TYPE.LOGIN:
             var error = database.TryLogin(GetString(), GetString(), player);
 
             if (error == Error.Ok) {
                 var room = Server.Instance().GetRoom(player.GetCharacter().GetMapId());
 
-                player.SendPacket(new Packet("LOGIN").AddU8(0));
+                player.SendPacket(new Packet(Packet.TYPE.LOGIN).AddU8(0));
                     //.AddU16(0).AddU16(player.GetCharacter().GetMapId())
                     //.AddU16(room.AddPlayer(player.GetCharacter())));
 
                 room.AddPlayer(player.GetCharacter());
             } else {
-                player.SendPacket(new Packet("LOGIN").AddU8((byte)error));
+                player.SendPacket(new Packet(Packet.TYPE.LOGIN).AddU8((byte)error));
             }
 
             break;
-            case "KEYPRESS":
+            case Packet.TYPE.KEYPRESS:
             var id = player.GetCharacter().GetPlayerId();
             var key = GetU8();
 
@@ -68,7 +68,7 @@ public class Unpacker {
             player.GetCharacter().BroadcastPacket(new Packet(command).AddU16(id).AddU8(key));
 
             break;
-            case "KEYRELEASE":
+            case Packet.TYPE.KEYRELEASE:
             id = player.GetCharacter().GetPlayerId();
             key = GetU8();
 

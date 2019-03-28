@@ -7,7 +7,7 @@ var offset = 0
 
 func _init(_data):
 	data = _data
-	command = get_string()
+	command = get_u8()
 
 func get_string():
 	var string = PoolByteArray()
@@ -21,12 +21,12 @@ func get_string():
 	return string.get_string_from_ascii()
 
 func get_u16():
-    offset += 2
-    return data[offset-2] * 256 + data[offset-1]
+	offset += 2
+	return data[offset-2] * 256 + data[offset-1]
 
 func get_u8():
-    offset += 1
-    return data[offset-1]
+	offset += 1
+	return data[offset-1]
 
 func get_position():
 	var mode = get_u8()

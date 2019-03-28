@@ -146,3 +146,9 @@ func set_main():
 	add_child(camera)
 	
 	Com.controls.set_master(self)
+
+func vector_state_types():
+	pass
+
+func get_state_vector():
+	return ["get_position"]
