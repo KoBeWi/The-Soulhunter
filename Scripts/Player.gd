@@ -158,7 +158,7 @@ func state_vector_types():
 	return [Data.TYPE.U16, Data.TYPE.U16]
 
 func get_state_vector():
-	return [position.x, position.y]
+	return [round(position.x), round(position.y)]
 
 func apply_state_vector(vector):
 	var old_position = position

@@ -48,8 +48,25 @@ public class Packet {
         return this;
     }
 
-    public void AddStateVector(Godot.Collections.Array types, Godot.Collections.Array data) {
+    static readonly byte[] boolHelper = {1, 2, 4, 8, 16, 32, 64, 128};
+
+    public void AddBoolArray(bool[] bools) {
+        byte boolVector = 0;
+
+        for (int i = 0; i < 8; i++) {
+            if (i >= bools.Length) break;
+            boolVector |= bools[i] ? boolHelper[i] : (byte)0;
+        }
+
+        AddU8(boolVector);
+    }
+
+    public void AddStateVector(Godot.Collections.Array types, Godot.Collections.Array data, bool[] diffVector) {
+        AddBoolArray(diffVector);
+
         for (int i = 0; i < types.Count; i++) {
+            if (!diffVector[i]) continue;
+
             switch((Data.TYPE)types[i]) {
                 case Data.TYPE.U16:
                 AddU16((int)(float)data[i]);

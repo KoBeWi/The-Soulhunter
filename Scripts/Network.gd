@@ -195,10 +195,11 @@ func process_packet(unpacker):
 		Packet.TYPE.TICK:
 			for i in Com.game.players.get_child_count():
 				var id = unpacker.get_u16()
+				var diff_vector = unpacker.get_u8()
 				
 				for player in Com.game.players.get_children():
 					if player.id == id:
-						player.apply_state_vector([unpacker.get_u16(), unpacker.get_u16()])
+						Data.apply_state_vector(unpacker, player, diff_vector)
 
 func send_data(packet):
 	client.put_data(packet.data)

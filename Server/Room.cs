@@ -11,11 +11,13 @@ public class Room : Viewport {
 
     private List<Character> players;
     private Dictionary<Character, Node> nodeBindings;
+    private Dictionary<Character, Godot.Collections.Array> stateHistory;
     int lastPlayerId;
 
     public override void _Ready() {
         players = new List<Character>();
         nodeBindings = new Dictionary<Character, Node>();
+        stateHistory = new Dictionary<Character, Godot.Collections.Array>();
         lastPlayerId = 0;
 
         GetNode("InGame").Call("load_map", mapId);
@@ -66,6 +68,7 @@ public class Room : Viewport {
         players.Remove(character);
         nodeBindings[character].QueueFree();
         nodeBindings.Remove(character);
+        stateHistory.Remove(character);
 
         BroadcastPacket(new Packet(Packet.TYPE.PLAYER_EXIT).AddU16(character.GetPlayerId()));
     }
@@ -88,8 +91,18 @@ public class Room : Viewport {
         foreach (var player in nodeBindings.Keys) {
             var types = nodeBindings[player].Call("state_vector_types") as Godot.Collections.Array;
             var data = nodeBindings[player].Call("get_state_vector") as Godot.Collections.Array;
+
+            bool[] diffVector;
+            if (stateHistory.ContainsKey(player)) {
+                diffVector = Data.CompareStateVectors(stateHistory[player], data);
+            } else {
+                diffVector = new bool[data.Count];
+                for (int i = 0; i < diffVector.Length; i++) diffVector[i] = true;
+            }
+            stateHistory[player] = data;
+
             state.AddU16(player.GetPlayerId());
-            state.AddStateVector(types, data);
+            state.AddStateVector(types, data, diffVector);
         }
 
         BroadcastPacket(state);
