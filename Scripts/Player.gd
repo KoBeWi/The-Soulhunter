@@ -5,11 +5,10 @@ var key_press = {}
 
 var initiated = false
 var changeroomed = false
-var uname = ""
+var uname = "" setget set_username
 var motion = Vector2()
 var smooth_position = Vector2()
 #var enemies = []
-var id = -1
 
 var on_floor = false
 var attack = false
@@ -23,14 +22,14 @@ var camera
 signal initiated
 
 func _ready():
-#	add_to_group("players") ??
+	if Com.register_node(self, "Player"): return
+	
 	$Sprite/ArmPosition.visible = false
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
-	visible = false
 	set_process(false)
 
-func set_name(n):
+func set_username(n):
 	uname = n
 	$Name.text = "<" + uname + ">"
 #	anim.play("Idle")
@@ -105,12 +104,12 @@ func set_pos_and_broadcast(pos):
 	Network.send_data(["POS", int(pos.x), int(pos.y), direction()])
 
 func on_key_press(p_id, key):
-	if p_id == id:
+	if p_id == get_meta("id"):
 		controls[key] = true
 		key_press[key] = true
 
 func on_key_release(p_id, key):
-	if p_id == id:
+	if p_id == get_meta("id"):
 		controls.erase(key)
 
 func flip(f = $Sprite.flip_h):
@@ -136,8 +135,8 @@ func attack_end():
 func weapon_enter(body):
 	if !attack: return
 	
-	if Com.server and body.is_in_group ("enemies"):
-		Network.send_data(["DAMAGE", "mapid", "p", id, body.id, "N"])
+#	if Com.server and body.is_in_group ("enemies"):
+#		Network.send_data(["DAMAGE", "mapid", "p", id, body.id, "N"])
 		#enemies.append(body.get_name())
 
 func weapon_exit(body):
@@ -147,6 +146,7 @@ func weapon_exit(body):
 
 func set_main():
 	Com.player = self
+	$Name.visible = false
 	
 	camera = preload("res://Nodes/PlayerCamera.tscn").instance()
 	camera.make_current()
@@ -155,14 +155,16 @@ func set_main():
 	Com.controls.set_master(self)
 
 func state_vector_types():
-	return [Data.TYPE.U16, Data.TYPE.U16]
+	return [Data.TYPE.STRING, Data.TYPE.U16, Data.TYPE.U16]
 
 func get_state_vector():
-	return [round(position.x), round(position.y)]
+	return [uname, round(position.x), round(position.y)]
 
 func apply_state_vector(vector):
+	self.uname = vector[0]
+	
 	var old_position = position
-	position.x = vector[0]
-	position.y = vector[1]
+	position.x = vector[1]
+	position.y = vector[2]
 	
 	sprite.position = (old_position - position) + sprite.position

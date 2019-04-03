@@ -7,12 +7,19 @@ enum TYPE {
     STRING
 }
 
+const NODES = [
+	"Player",
+	"Enemies/Skeleton"
+]
+
+const binary = [1, 2, 4, 8, 16, 32, 64, 128]
+
 static func apply_state_vector(unpacker, node, diff_vector):
 	var final_vector = node.get_state_vector()
 	var data_types = node.state_vector_types()
 	
 	for i in data_types.size():
-		if (diff_vector & (i+1)) > 0:
+		if (diff_vector & binary[i]) > 0:
 			match data_types[i]:
 				TYPE.U8:
 					final_vector[i] = unpacker.get_u8()

@@ -2,13 +2,13 @@ using MongoDB.Bson;
 
 public class Character {
     string name;
-    int playerId;
+    ushort playerId;
 
     int level;
     int maxHp;
     int hp;
 
-    int currentMap;
+    ushort currentMap;
     Room currentRoom;
 
     Player owner;
@@ -16,10 +16,10 @@ public class Character {
     public Character(Player _owner, BsonDocument data) {
         owner = _owner;
         name = data.GetValue("login").AsString;
-        currentMap = data.GetValue("location").AsInt32;
+        currentMap = (ushort)data.GetValue("location").AsInt32;
     }
 
-    public int GetMapId() {return currentMap;}
+    public ushort GetMapId() {return currentMap;}
     public string GetName() {return name;}
     public Player GetPlayer() {return owner;}
 
@@ -32,8 +32,8 @@ public class Character {
             currentRoom.RemovePlayer(this);
     }
 
-    public void SetNewId(int id) {playerId = id;}
-    public int GetPlayerId() {return playerId;}
+    public void SetNewId(ushort id) {playerId = id;}
+    public ushort GetPlayerId() {return playerId;}
 
     public void BroadcastPacket(Packet packet) {
         if (currentRoom != null) {

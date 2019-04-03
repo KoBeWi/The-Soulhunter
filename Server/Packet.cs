@@ -11,6 +11,7 @@ public class Packet {
         PLAYER_EXIT,
         KEY_PRESS,
         KEY_RELEASE,
+        ADD_ENTITY,
         TICK
     }
 
@@ -41,7 +42,7 @@ public class Packet {
         return this;
     }
 
-    public Packet AddU16(int i) {
+    public Packet AddU16(ushort i) {
         data.Add(new byte[] {(byte)(i / 256), (byte)(i % 256)});
         length += 2;
 
@@ -69,8 +70,11 @@ public class Packet {
 
             switch((Data.TYPE)types[i]) {
                 case Data.TYPE.U16:
-                AddU16((int)(float)data[i]);
+                AddU16((ushort)(float)data[i]);
+                break;
 
+                case Data.TYPE.STRING:
+                AddString(data[i] as string);
                 break;
             }
         }

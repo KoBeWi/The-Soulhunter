@@ -26,9 +26,9 @@ public class Unpacker {
         return result;
     }
 
-    public int GetU16() {
+    public ushort GetU16() {
         offset += 2;
-        return data[offset-2] * 256 + data[offset-1];
+        return (ushort)(data[offset-2] * 256 + data[offset-1]);
     }
 
     public byte GetU8() {

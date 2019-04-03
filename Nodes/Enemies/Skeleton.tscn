@@ -4,11 +4,8 @@
 [ext_resource path="res://Scripts/ParentCollider.gd" type="Script" id=2]
 
 [sub_resource type="GDScript" id=1]
-
 resource_name = "Skeleton"
-script/source = "extends \"res://Scripts/Enemy.gd\"
-
-onready var bone = load(\"res://Nodes/Projectiles/Bone.tscn\")
+script/source = "extends Enemy
 
 var walk = 0
 var attac = 0
@@ -18,6 +15,8 @@ var direction = 0
 var async = false
 
 func _ready():
+	if Com.register_node(self, \"Enemies/Skeleton\"): return
+	
 	init(\"Skeleton\")
 	direction = 1 - randi()%2*2
 
@@ -44,7 +43,7 @@ func _physics_process(delta):
 			attac = 0
 			
 			if Com.server: 
-				var b = bone.instance()
+				var b = preload(\"res://Nodes/Projectiles/Bone.tscn\").instance()
 				$\"..\".add_child(b)
 				
 				b.global_position = global_position + Vector2(0, -80)
@@ -90,16 +89,25 @@ func sync_data(data):
 func print_raw(ary): ##DEBUG
 	var arr = []
 	for i in range(ary.size()): arr.append(ary[i])
-	print(str(arr))"
-_sections_unfolded = [ "Resource" ]
+	print(str(arr))
+
+func state_vector_types():
+	return [Data.TYPE.U16, Data.TYPE.U16]
+
+func get_state_vector():
+	return [round(position.x), round(position.y)]
+
+func apply_state_vector(vector):
+#	var old_position = position
+	position.x = vector[0]
+	position.y = vector[1]
+	
+#	sprite.position = (old_position - position) + sprite.position"
 
 [sub_resource type="RectangleShape2D" id=2]
-
-custom_solver_bias = 0.0
 extents = Vector2( 48, 48 )
 
 [sub_resource type="Animation" id=3]
-
 resource_name = "Bone Walk"
 length = 4.0
 loop = true
@@ -118,7 +126,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=4]
-
 length = 4.0
 loop = true
 step = 1.0
@@ -136,10 +143,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-
 resource_name = "Throw"
 length = 3.0
-loop = false
 step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -155,7 +160,6 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=6]
-
 length = 4.0
 loop = true
 step = 1.0
@@ -173,19 +177,13 @@ tracks/0/keys = {
 }
 
 [node name="Skeleton" type="KinematicBody2D"]
-editor/display_folded = true
-input_pickable = false
-collision_layer = 1
 collision_mask = 0
-collision/safe_margin = 0.08
-motion/sync_to_physics = false
 script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 10
 frame = 4
-_sections_unfolded = [ "Animation", "Region", "Transform" ]
 __meta__ = {
 "_edit_lock_": true
 }
@@ -201,14 +199,7 @@ __meta__ = {
 editor/display_folded = true
 position = Vector2( 0, -3 )
 input_pickable = false
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
 script = ExtResource( 2 )
-_sections_unfolded = [ "Collision", "Transform" ]
 __meta__ = {
 "_edit_lock_": true
 }
@@ -218,16 +209,11 @@ position = Vector2( 7.94456, 14.7414 )
 shape = SubResource( 2 )
 
 [node name="Animation" type="AnimationPlayer" parent="."]
-root_node = NodePath("..")
 autoplay = "Idle"
-playback_process_mode = 1
-playback_default_blend_time = 0.0
 playback_speed = 8.0
 "anims/Bone Walk" = SubResource( 3 )
 anims/Idle = SubResource( 4 )
 anims/Throw = SubResource( 5 )
 anims/Walk = SubResource( 6 )
-blend_times = [  ]
-_sections_unfolded = [ "Playback Options" ]
 
 [connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]

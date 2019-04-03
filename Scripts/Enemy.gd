@@ -1,26 +1,25 @@
+class_name Enemy
 extends KinematicBody2D
+
 var attack_type = "N"
 var synced = false
 var rng = {}
 
-var id = -1
-onready var players = get_node("../../../Players").get_children()
-onready var mapid = $"../..".mapid
+onready var players = get_tree().get_nodes_in_group("players")
+#onready var mapid = $"../..".mapid
 
-func init(name = ""):
-	if !Com.server and !synced:
-		queue_free()
-		return
-	
-	add_to_group("enemies")
-	if id == -1: id = $"../../..".get_enemy_number()
-	
-	if Com.server:
-		Network.send_data(["ENEMY", mapid, id, 0]) #0 to ma być id wroga (tutaj szkielet)
+func init(ename = ""):
+	return
+#	add_to_group("enemies")
+#	if id == -1: id = $"../../..".get_enemy_number()
+#
+#	if Com.server:
+#		Network.send_data(["ENEMY", mapid, id, 0]) #0 to ma być id wroga (tutaj szkielet)
 
 func _body_enter(body):
-	if Com.server and is_in_group("enemies") and body.is_in_group("players"):
-		Network.send_data(["DAMAGE", mapid, "e", id, body.id, attack_type])
+	return
+#	if Com.server and is_in_group("enemies") and body.is_in_group("players"):
+#		Network.send_data(["DAMAGE", mapid, "e", id, body.id, attack_type])
 
 func damage(amount):
 	pass
@@ -47,11 +46,12 @@ func get_sync_data(): return []
 func sync_data(data): breakpoint
 
 func server_random(i, id, filter = {}):
+	return -1
 	if Com.server:
 		var rnd = randi() % i
 		if filter.has("eq") and filter["eq"] != rnd: return rnd
 		
-		Network.send_data(["RNG", mapid, "e", get_index(), id, rnd])
+#		Network.send_data(["RNG", mapid, "e", get_index(), id, rnd])
 		return rnd
 	else:
 		#if get_index() == 0: print(rng , "/" , id)

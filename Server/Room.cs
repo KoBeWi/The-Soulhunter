@@ -5,30 +5,35 @@ using System.Collections.Generic;
 public class Room : Viewport {
     private static readonly PackedScene playerFactory = ResourceLoader.Load("res://Nodes/Player.tscn") as PackedScene;
 
-    private int mapId;
-    private Node playerList;
+    private ushort mapId;
+    private Node entityList;
     private Node map;
 
+    ushort lastEntityId;
+    private Dictionary<ushort, Node> entityBindings;
+    private Dictionary<ushort, Godot.Collections.Array> stateHistory;
+
     private List<Character> players;
-    private Dictionary<Character, Node> nodeBindings;
-    private Dictionary<Character, Godot.Collections.Array> stateHistory;
-    int lastPlayerId;
+    private Dictionary<Character, Node> playerNodes;
 
     public override void _Ready() {
         players = new List<Character>();
-        nodeBindings = new Dictionary<Character, Node>();
-        stateHistory = new Dictionary<Character, Godot.Collections.Array>();
-        lastPlayerId = 0;
+        entityBindings = new Dictionary<ushort, Node>();
+        playerNodes = new Dictionary<Character, Node>();
+        stateHistory = new Dictionary<ushort, Godot.Collections.Array>();
+        lastEntityId = 0;
 
         GetNode("InGame").Call("load_map", mapId);
         map = GetNode("InGame/Map");
 
-        playerList = GetNode("InGame/Players");
+        entityList = GetNode("InGame/Entities");
 
         GetNode<Timer>("Timer").Connect("timeout", this, "Tick");
+
+        GD.Print("Created new room of map ", mapId);
     }
 
-    public void SetMap(int id) {
+    public void SetMap(ushort id) {
         mapId = id;
     }
 
@@ -38,37 +43,39 @@ public class Room : Viewport {
 
     public int AddPlayer(Character character) {
         var newPlayer = playerFactory.Instance();
-        newPlayer.Set("id", ++lastPlayerId);
-        newPlayer.Set("position", map.GetNode("SavePoint/PlayerSpot").Get("global_position"));
+        
+        newPlayer.Set("uname", character.GetName());
+        newPlayer.Set("position", map.GetNode("SavePoint/PlayerSpot").Get("global_position")); //nie można lepiej?
         newPlayer.Call("start");
         
-        character.SetNewId(lastPlayerId);
-        nodeBindings.Add(character, newPlayer);
-        playerList.AddChild(newPlayer);
+        playerNodes.Add(character, newPlayer);
+        entityList.AddChild(newPlayer);
+        character.SetNewId(lastEntityId);
+        newPlayer.SetMeta("id", lastEntityId);
 
         character.SetRoom(this);
-        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastPlayerId).AddU8(4).AddU8(0));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(4).AddU8(0));
 
-        foreach (var player in players) {
-            var pos = (Vector2)nodeBindings[player].Get("position");
+        foreach (var id in entityBindings.Keys) {
+            if (id == lastEntityId) continue;
 
-            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.PLAYER_ENTER)
-                .AddString(player.GetName()).AddU16(player.GetPlayerId())
-                .AddU8(5).AddU16((int)pos.x).AddU16((int)pos.y).AddU8(0));
-            
-            player.GetPlayer().SendPacket(new Packet(Packet.TYPE.PLAYER_ENTER).AddString(character.GetName()).AddU16(lastPlayerId).AddU8(4).AddU8(0));
+            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY)
+                    .AddU16((ushort)(int)entityBindings[id].GetMeta("type"))
+                    .AddU16(id));
+            // player.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY).AddU16(0).AddU16(lastEntityId));
         }
 
         players.Add(character);
 
-        return lastPlayerId;
+        return lastEntityId;
     }
 
     public void RemovePlayer(Character character) {
         players.Remove(character);
-        nodeBindings[character].QueueFree();
-        nodeBindings.Remove(character);
-        stateHistory.Remove(character);
+        playerNodes[character].QueueFree();
+        playerNodes.Remove(character);
+        stateHistory.Remove(character.GetPlayerId());
+        entityBindings.Remove(character.GetPlayerId()); //jakoś uniwersalniej
 
         BroadcastPacket(new Packet(Packet.TYPE.PLAYER_EXIT).AddU16(character.GetPlayerId()));
     }
@@ -86,26 +93,38 @@ public class Room : Viewport {
     }
 
     public void Tick() {
-        var state = new Packet(Packet.TYPE.TICK);
+        if (players.Count == 0) return; //tutaj też timeout i wywalanie
 
-        foreach (var player in nodeBindings.Keys) {
-            var types = nodeBindings[player].Call("state_vector_types") as Godot.Collections.Array;
-            var data = nodeBindings[player].Call("get_state_vector") as Godot.Collections.Array;
+        var state = new Packet(Packet.TYPE.TICK);
+        state.AddU8((byte)entityBindings.Count);
+
+        foreach (var id in entityBindings.Keys) {
+            var types = entityBindings[id].Call("state_vector_types") as Godot.Collections.Array;
+            var data = entityBindings[id].Call("get_state_vector") as Godot.Collections.Array;
 
             bool[] diffVector;
-            if (stateHistory.ContainsKey(player)) {
-                diffVector = Data.CompareStateVectors(stateHistory[player], data);
+            if (stateHistory.ContainsKey(id)) {
+                diffVector = Data.CompareStateVectors(stateHistory[id], data);
             } else {
                 diffVector = new bool[data.Count];
                 for (int i = 0; i < diffVector.Length; i++) diffVector[i] = true;
             }
-            stateHistory[player] = data;
+            stateHistory[id] = data;
 
-            state.AddU16(player.GetPlayerId());
+            state.AddU16(id);
             state.AddStateVector(types, data, diffVector);
         }
 
         BroadcastPacket(state);
+    }
+
+    public void RegisterNode(Node node, ushort type) {
+        node.SetMeta("type", type);
+        entityBindings.Add((ushort)++lastEntityId, node);
+
+        foreach (var character in players) {
+            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY).AddU16(type).AddU16(lastEntityId));
+        }
     }
 
     // public void ReverseBroadcastPacket(Action<Character> packetMaker) {

@@ -10,20 +10,23 @@ var last_room
 var last_enemy = -1
 var is_menu = false
 
+onready var entities = $Entities
 onready var effects = $Effects
-onready var players = $Players
+
+var entity_list = {}
 
 func _process(delta):
-	if Com.server:
-		for player in players.get_children():
-			if !player.initiated or player.changeroomed: continue
-			
-			if player.position.x >= map.width * 1920:
-				player.changeroomed = true
-				Network.send_data(["CHANGEROOM", map.mapid, player.id, "r", int(player.position.y) / 1080])
-			elif player.position.x < 0:
-				player.changeroomed = true
-				Network.send_data(["CHANGEROOM", map.mapid, player.id, "l", int(player.position.y) / 1080])
+	if Com.is_server:
+		pass
+#		for player in players.get_children():
+#			if !player.initiated or player.changeroomed: continue
+#
+#			if player.position.x >= map.width * 1920:
+#				player.changeroomed = true
+#				Network.send_data(["CHANGEROOM", map.mapid, player.id, "r", int(player.position.y) / 1080])
+#			elif player.position.x < 0:
+#				player.changeroomed = true
+#				Network.send_data(["CHANGEROOM", map.mapid, player.id, "l", int(player.position.y) / 1080])
 	else:
 		if Com.key_press("_ACCEPT") and chat.has_focus():
 			if chat.text.left(1) == "/":
@@ -87,29 +90,28 @@ func update_camera():
 
 func change_map(id):
 	map.queue_free()
-	for player in players.get_children():
-		if player != Com.player:
-			Com.controls.remove_player(player)
-			player.queue_free()
-			
+	for entity in entities.get_children():
+#		Com.controls.remove_player(player) ##zamiast tego czyścimy
+		entity.queue_free()
+	
 	load_map(id)
 
 func add_main_player(player):
 	player.connect("initiated", self, "start")
-	players.add_child(player)
+	add_child(player)
 	UI = player.get_node("PlayerCamera/UI")
 	menu = UI.get_node("PlayerMenu")
 	chat = UI.get_node("Chat/Input")
 
 func damage_number(group, id, damage):
 	var node
-	if group == "p":
-		for player in players.get_children():
-			if player.id == id:
-				node = player
-				break
-	elif group == "e":
-		node = enemies.get_child(id)
+#	if group == "p":
+#		for player in players.get_children():
+#			if player.id == id:
+#				node = player
+#				break
+#	elif group == "e":
+#		node = enemies.get_child(id)
 	
 	if !node:
 		print("WARNING: Damage number for non-existing object")
@@ -157,9 +159,10 @@ func update_equipment(items):
 	menu.update_equipment()
 
 func get_player(id):
-	for player in players.get_children():
-		if player.id == id:
-			return player
+	pass
+#	for player in players.get_children():
+#		if player.id == id:
+#			return player
 
 func get_enemy(id):
 	for enemy in enemies.get_children():
@@ -169,6 +172,21 @@ func get_enemy(id):
 func get_enemy_number():
 	last_enemy += 1
 	return last_enemy
+
+func add_entity(type, id):
+	var node = load(str("res://Nodes/", Data.NODES[type], ".tscn")).instance()
+	node.set_meta("valid", true)
+	node.set_meta("id", id)
+#	node.visible = false
+	
+	entity_list[id] = node
+	entities.add_child(node)
+
+func register_entity(node, id):
+	entity_list[id] = node
+
+func get_entity(id):
+	return entity_list.get(id)
 
 func start():
 	Com.player.get_node("PlayerCamera/Fade/ColorRect").color.a = 0

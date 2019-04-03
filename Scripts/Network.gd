@@ -45,7 +45,7 @@ func _process(delta):
 
 func process_packet(unpacker):
 #	if data.size() <= 0: return ##inaczej zabezpieczyć
-	print("Received: ", unpacker.command, " /", unpacker.size)
+	print("Received: ", Packet.TYPE.keys()[unpacker.command], " /", unpacker.size)
 	
 	match unpacker.command:
 		Packet.TYPE.HELLO:
@@ -58,6 +58,7 @@ func process_packet(unpacker):
 				print("Logged in sucessfully")
 				
 				var player = preload("res://Nodes/Player.tscn").instance()
+				player.set_meta("valid", true)
 				player.set_main()
 				
 				Com.game = preload("res://Scenes/InGame.tscn").instance()
@@ -101,18 +102,34 @@ func process_packet(unpacker):
 		
 		Packet.TYPE.ENTER_ROOM:
 			Com.game.load_map(unpacker.get_u16())
-			Com.player.id = unpacker.get_u16()
+			Com.player.set_meta("id", unpacker.get_u16())
+			Com.game.register_entity(Com.player, Com.player.get_meta("id"))
 			Com.player.position = unpacker.get_position()
 			Com.player.start()
 		
-		Packet.TYPE.PLAYER_ENTER:
-			var player = load("res://Nodes/Player.tscn").instance()
+		Packet.TYPE.ADD_ENTITY:
+			Com.game.add_entity(unpacker.get_u16(), unpacker.get_u16())
+		
+		Packet.TYPE.TICK:
+			var entity_count = unpacker.get_u8()
 			
-			Com.game.players.add_child(player)
-			player.set_name(unpacker.get_string())
-			player.id = unpacker.get_u16()
-			player.position = unpacker.get_position()
-			player.start()
+			for i in entity_count:
+				var id = unpacker.get_u16()
+				var diff_vector = unpacker.get_u8()
+				
+				var entity = Com.game.get_entity(id)
+				
+				if entity:
+					Data.apply_state_vector(unpacker, entity, diff_vector)
+		
+#		Packet.TYPE.PLAYER_ENTER:
+#			var player = load("res://Nodes/Player.tscn").instance()
+#
+#			Com.game.players.add_child(player)
+#			player.set_name(unpacker.get_string())
+#			player.id = unpacker.get_u16()
+#			player.position = unpacker.get_position()
+#			player.start()
 			
 #			for i in range(data.size() - 2): ###
 #				Com.controls.press_key(data.back()[0], [][i])
@@ -191,15 +208,6 @@ func process_packet(unpacker):
 				
 				[][2] += enem_type.length()+1
 				enemy.sync_data([])
-		
-		Packet.TYPE.TICK:
-			for i in Com.game.players.get_child_count():
-				var id = unpacker.get_u16()
-				var diff_vector = unpacker.get_u8()
-				
-				for player in Com.game.players.get_children():
-					if player.id == id:
-						Data.apply_state_vector(unpacker, player, diff_vector)
 
 func send_data(packet):
 	client.put_data(packet.data)

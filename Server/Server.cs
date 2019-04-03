@@ -28,6 +28,7 @@ public class Server : Node {
         playersOnline = new List<Player>();
         
         controls = GetNode("/root/Com/Controls");
+        GetNode("/root/Com").Set("is_server", true);
 
         server.Start();
     }
@@ -82,7 +83,7 @@ public class Server : Node {
         // client.Close();
     }
 
-    public Room GetRoom(int mapId) {
+    public Room GetRoom(ushort mapId) {
         if (!rooms.ContainsKey(mapId) || rooms[mapId].Count == 0) {
             return CreateRoom(mapId);
         }
@@ -90,7 +91,7 @@ public class Server : Node {
         return rooms[mapId][0]; //tutaj wybór fajnego pokoju
     }
 
-    private Room CreateRoom(int mapId) {
+    private Room CreateRoom(ushort mapId) {
         if (!rooms.ContainsKey(mapId)) {
             rooms.Add(mapId, new List<Room>());
         }

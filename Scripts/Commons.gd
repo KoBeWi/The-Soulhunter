@@ -5,7 +5,7 @@ const ENEMY_NAMES = ["Skeleton"] ##enum?
 onready var controls = $Controls
 
 var game
-var server
+var is_server = false
 var player
 
 var keys = {}
@@ -29,3 +29,11 @@ func key_press(key):
 
 func key_hold(key):
 	return keys.has(key)
+
+func register_node(node, type):
+	if is_server:
+		node.set_meta("room", node.find_parent("InGame").get_parent())
+		node.get_meta("room").call("RegisterNode", node, Data.NODES.find(type))
+	elif !node.get_meta("valid"):
+		node.queue_free()
+		return true

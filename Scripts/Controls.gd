@@ -54,12 +54,12 @@ func process_key_nosend(key_id, key):
 		controls[key_id] = true
 		Com.press_key(key_id)
 		if !Com.game.is_menu:
-			press_key(Com.player.id, key_id)
+			press_key(Com.player.get_meta("id"), key_id)
 	elif !Input.is_key_pressed(key) and controls.has(key_id):
 		controls.erase(key_id)
 		Com.release_key(key_id)
 		if !Com.game.is_menu:
-			release_key(Com.player.id, key_id)
+			release_key(Com.player.get_meta("id"), key_id)
 
 func press_key(player_id, key):
 	emit_signal("key_press", player_id, key)
