@@ -24,17 +24,20 @@ signal initiated
 func _ready():
 	if Com.register_node(self, "Player"): return
 	
-	$Sprite/ArmPosition.visible = false
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
-	set_process(false)
+	$Sprite/ArmPosition.visible = false
 
 func set_username(n):
 	uname = n
 	$Name.text = "<" + uname + ">"
 #	anim.play("Idle")
 
-func start():
+func on_client_create():
+	visible = false
+	set_process(false)
+
+func on_initialized():
 	set_process(true)
 	visible = true
 	emit_signal("initiated")
@@ -174,4 +177,4 @@ func apply_state_vector(vector):
 	var old_position = position
 	position.x = vector[1]
 	position.y = vector[2]
-	sprite.position = (old_position - position) + sprite.position
+	if get_meta("initialized"): sprite.position = (old_position - position) + sprite.position

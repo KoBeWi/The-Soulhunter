@@ -30,5 +30,5 @@ static func apply_state_vector(unpacker, node, diff_vector):
 	
 	node.apply_state_vector(final_vector)
 	if !node.has_meta("initalized"):
-#		node.start()
+		node.on_initialized()
 		node.set_meta("initialized", true)

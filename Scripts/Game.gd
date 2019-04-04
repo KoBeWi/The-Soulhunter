@@ -181,6 +181,7 @@ func add_entity(type, id):
 	
 	entity_list[id] = node
 	entities.add_child(node)
+	node.on_client_create()
 
 func register_entity(node, id):
 	entity_list[id] = node

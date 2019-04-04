@@ -105,7 +105,6 @@ func process_packet(unpacker):
 			Com.player.set_meta("id", unpacker.get_u16())
 			Com.game.register_entity(Com.player, Com.player.get_meta("id"))
 			Com.player.position = unpacker.get_position()
-			Com.player.start()
 		
 		Packet.TYPE.ADD_ENTITY:
 			Com.game.add_entity(unpacker.get_u16(), unpacker.get_u16())
@@ -160,14 +159,6 @@ func process_packet(unpacker):
 		"MAP": ###
 			Com.player.chr.update_map([])
 		
-		"POS":
-			var player_id = unpacker.get_u16()
-			
-			for player in Com.game.players.get_children():
-				if player.id == player_id:
-					player.position = unpacker.get_position()
-					player.start()
-					break
 		"RNG": ###
 			var group = [][0]
 			var index = [][1]

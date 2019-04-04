@@ -3,6 +3,14 @@ extends KinematicBody2D
 
 onready var players = get_tree().get_nodes_in_group("players")
 
+func on_client_create():
+	visible = false
+	set_process(false)
+
+func on_initialized():
+	visible = true
+	set_process(true)
+
 func init(ename = ""):
 	return
 #	add_to_group("enemies")
