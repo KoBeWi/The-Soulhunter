@@ -155,10 +155,18 @@ func set_main():
 	Com.controls.set_master(self)
 
 func state_vector_types():
-	return [Data.TYPE.STRING, Data.TYPE.U16, Data.TYPE.U16]
+	return [
+			Data.TYPE.STRING,
+			Data.TYPE.U16,
+			Data.TYPE.U16
+		]
 
 func get_state_vector():
-	return [uname, round(position.x), round(position.y)]
+	return [
+			uname,
+			round(position.x),
+			round(position.y)
+		]
 
 func apply_state_vector(vector):
 	self.uname = vector[0]
@@ -166,5 +174,4 @@ func apply_state_vector(vector):
 	var old_position = position
 	position.x = vector[1]
 	position.y = vector[2]
-	
 	sprite.position = (old_position - position) + sprite.position

@@ -1,12 +1,7 @@
 class_name Enemy
 extends KinematicBody2D
 
-var attack_type = "N"
-var synced = false
-var rng = {}
-
 onready var players = get_tree().get_nodes_in_group("players")
-#onready var mapid = $"../..".mapid
 
 func init(ename = ""):
 	return
@@ -15,6 +10,16 @@ func init(ename = ""):
 #
 #	if Com.server:
 #		Network.send_data(["ENEMY", mapid, id, 0]) #0 to ma być id wroga (tutaj szkielet)
+
+func _process(delta):
+	if Com.is_server:
+		server_ai()
+
+func _physics_process(delta):
+	general_ai()
+
+func server_ai(): pass
+func general_ai(): pass
 
 func _body_enter(body):
 	return
@@ -41,23 +46,3 @@ func create_soul(id):
 	get_node("../..").add_child(soul)
 	soul.position = position
 	soul.set_id(id)
-
-func get_sync_data(): return []
-func sync_data(data): breakpoint
-
-func server_random(i, id, filter = {}):
-	return -1
-	if Com.server:
-		var rnd = randi() % i
-		if filter.has("eq") and filter["eq"] != rnd: return rnd
-		
-#		Network.send_data(["RNG", mapid, "e", get_index(), id, rnd])
-		return rnd
-	else:
-		#if get_index() == 0: print(rng , "/" , id)
-		if rng.has(id):
-			var rnd = rng[id]
-			rng.erase(id)
-			return rnd
-		else:
-			return -1

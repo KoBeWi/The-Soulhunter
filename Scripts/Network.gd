@@ -114,6 +114,7 @@ func process_packet(unpacker):
 			var entity_count = unpacker.get_u8()
 			
 			for i in entity_count:
+#				print("_")
 				var id = unpacker.get_u16()
 				var diff_vector = unpacker.get_u8()
 				

@@ -23,10 +23,12 @@ func get_string():
 	return string.get_string_from_ascii()
 
 func get_u16():
+#	print("u16 ", data[offset] * 256 + data[offset+1])
 	offset += 2
 	return data[offset-2] * 256 + data[offset-1]
 
 func get_u8():
+#	print("u8 ", data[offset])
 	offset += 1
 	return data[offset-1]
 

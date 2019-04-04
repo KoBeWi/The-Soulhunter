@@ -29,3 +29,6 @@ static func apply_state_vector(unpacker, node, diff_vector):
 					final_vector[i] = unpacker.get_string()
 	
 	node.apply_state_vector(final_vector)
+	if !node.has_meta("initalized"):
+#		node.start()
+		node.set_meta("initialized", true)

@@ -54,7 +54,7 @@ public class Room : Viewport {
         newPlayer.SetMeta("id", lastEntityId);
 
         character.SetRoom(this);
-        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(4).AddU8(0));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(4).AddU8(0)); //po co to ostatnie?; przedostatnie też mało poczebne
 
         foreach (var id in entityBindings.Keys) {
             if (id == lastEntityId) continue;
@@ -66,6 +66,8 @@ public class Room : Viewport {
         }
 
         players.Add(character);
+
+        character.GetPlayer().SendPacket(CreateStatePacket(true));
 
         return lastEntityId;
     }
@@ -92,9 +94,7 @@ public class Room : Viewport {
         }
     }
 
-    public void Tick() {
-        if (players.Count == 0) return; //tutaj też timeout i wywalanie
-
+    private Packet CreateStatePacket(bool full) {
         var state = new Packet(Packet.TYPE.TICK);
         state.AddU8((byte)entityBindings.Count);
 
@@ -103,7 +103,7 @@ public class Room : Viewport {
             var data = entityBindings[id].Call("get_state_vector") as Godot.Collections.Array;
 
             bool[] diffVector;
-            if (stateHistory.ContainsKey(id)) {
+            if (!full && stateHistory.ContainsKey(id)) {
                 diffVector = Data.CompareStateVectors(stateHistory[id], data);
             } else {
                 diffVector = new bool[data.Count];
@@ -114,6 +114,14 @@ public class Room : Viewport {
             state.AddU16(id);
             state.AddStateVector(types, data, diffVector);
         }
+
+        return state;
+    }
+
+    public void Tick() {
+        if (players.Count == 0) return; //tutaj też timeout i wywalanie
+
+        var state = CreateStatePacket(false);
 
         BroadcastPacket(state);
     }

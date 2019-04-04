@@ -34,6 +34,6 @@ func register_node(node, type):
 	if is_server:
 		node.set_meta("room", node.find_parent("InGame").get_parent())
 		node.get_meta("room").call("RegisterNode", node, Data.NODES.find(type))
-	elif !node.get_meta("valid"):
+	elif !node.has_meta("valid"):
 		node.queue_free()
 		return true

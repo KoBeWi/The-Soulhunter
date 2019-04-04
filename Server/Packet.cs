@@ -69,8 +69,12 @@ public class Packet {
             if (!diffVector[i]) continue;
 
             switch((Data.TYPE)types[i]) {
+                case Data.TYPE.U8:
+                AddU8((byte)(int)Godot.GD.Convert(data[i], 2));
+                break;
+
                 case Data.TYPE.U16:
-                AddU16((ushort)(float)data[i]);
+                AddU16((ushort)(int)Godot.GD.Convert(data[i], 2));
                 break;
 
                 case Data.TYPE.STRING:
