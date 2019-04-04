@@ -122,18 +122,6 @@ func process_packet(unpacker):
 				if entity:
 					Data.apply_state_vector(unpacker, entity, diff_vector)
 		
-#		Packet.TYPE.PLAYER_ENTER:
-#			var player = load("res://Nodes/Player.tscn").instance()
-#
-#			Com.game.players.add_child(player)
-#			player.set_name(unpacker.get_string())
-#			player.id = unpacker.get_u16()
-#			player.position = unpacker.get_position()
-#			player.start()
-			
-#			for i in range(data.size() - 2): ###
-#				Com.controls.press_key(data.back()[0], [][i])
-		
 		"EQUIPMENT": ###
 			Com.game.update_equipment([])
 		
@@ -159,13 +147,6 @@ func process_packet(unpacker):
 		"MAP": ###
 			Com.player.chr.update_map([])
 		
-		"RNG": ###
-			var group = [][0]
-			var index = [][1]
-			
-			if group == "e":
-				var enemy = Com.game.get_enemy(index)
-				if enemy: enemy.rng[[][2]] = [][3]
 		"SOUL": ###
 			var enemy = Com.game.get_enemy([][0])
 			if enemy: enemy.create_soul([][1])

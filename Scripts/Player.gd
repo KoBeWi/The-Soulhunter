@@ -14,6 +14,7 @@ var on_floor = false
 var attack = false
 
 onready var sprite = $Sprite
+onready var arm = $Sprite/ArmPosition
 onready var chr = $Character
 onready var anim = $Animation
 
@@ -26,7 +27,7 @@ func _ready():
 	
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
-	$Sprite/ArmPosition.visible = false
+	arm.visible = false
 
 func set_username(n):
 	uname = n
@@ -94,17 +95,11 @@ func _physics_process(delta):
 	
 	if key_press.has(Controls.ATTACK) and !attack:
 		attack = true
-		$Sprite/ArmPosition.visible = true
+		arm.visible = true
 		anim.playback_speed = 4
 		anim.play("SwingAttack1" + direction())
 	
 	key_press.clear()
-
-func set_pos_and_broadcast(pos):
-	pos = Vector2(int(pos.x), int(pos.y))
-	position = pos
-	
-	Network.send_data(["POS", int(pos.x), int(pos.y), direction()])
 
 func on_key_press(p_id, key):
 	if p_id == get_meta("id"):
@@ -115,10 +110,10 @@ func on_key_release(p_id, key):
 	if p_id == get_meta("id"):
 		controls.erase(key)
 
-func flip(f = $Sprite.flip_h):
-	$Sprite.flip_h = f
-	var oldpos = $Sprite/ArmPosition.position
-	$Sprite/ArmPosition.position = Vector2(-oldpos.x, oldpos.y)
+func flip(f = sprite.flip_h):
+	sprite.flip_h = f
+	var oldpos = arm.position
+	arm.position = Vector2(-oldpos.x, oldpos.y)
 	
 
 func direction():
@@ -132,7 +127,7 @@ func damage(amount):
 
 func attack_end():
 	attack = false
-	$Sprite/ArmPosition.visible = false
+	arm.visible = false
 	anim.playback_speed = 8
 
 func weapon_enter(body):
