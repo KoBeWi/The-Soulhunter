@@ -9,7 +9,8 @@ enum TYPE {
 
 const NODES = [
 	"Player",
-	"Enemies/Skeleton"
+	"Enemies/Skeleton",
+	"Enemies/Bone"
 ]
 
 const binary = [1, 2, 4, 8, 16, 32, 64, 128]

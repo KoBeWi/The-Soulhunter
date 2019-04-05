@@ -7,11 +7,10 @@ public class Packet {
         LOGIN,
         REGISTER,
         ENTER_ROOM,
-        PLAYER_ENTER,
-        PLAYER_EXIT,
         KEY_PRESS,
         KEY_RELEASE,
         ADD_ENTITY,
+        REMOVE_ENTITY,
         TICK
     }
 
@@ -70,11 +69,11 @@ public class Packet {
 
             switch((Data.TYPE)types[i]) {
                 case Data.TYPE.U8:
-                AddU8((byte)(int)Godot.GD.Convert(data[i], 2));
+                AddU8((byte)(int)Godot.GD.Convert(data[i], (int)Godot.Variant.Type.Int));
                 break;
 
                 case Data.TYPE.U16:
-                AddU16((ushort)(int)Godot.GD.Convert(data[i], 2));
+                AddU16((ushort)(int)Godot.GD.Convert(data[i], (int)Godot.Variant.Type.Int));
                 break;
 
                 case Data.TYPE.STRING:

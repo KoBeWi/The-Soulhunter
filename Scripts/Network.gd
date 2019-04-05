@@ -109,6 +109,10 @@ func process_packet(unpacker):
 		Packet.TYPE.ADD_ENTITY:
 			Com.game.add_entity(unpacker.get_u16(), unpacker.get_u16())
 		
+		Packet.TYPE.REMOVE_ENTITY:
+			var entity = Com.game.get_entity(unpacker.get_u16())
+			if entity: entity.queue_free()
+		
 		Packet.TYPE.TICK:
 			var entity_count = unpacker.get_u8()
 			
@@ -124,13 +128,6 @@ func process_packet(unpacker):
 		
 		"EQUIPMENT": ###
 			Com.game.update_equipment([])
-		
-		Packet.TYPE.PLAYER_EXIT:
-			var id = unpacker.get_u16()
-			
-			for player in Com.game.players.get_children():
-				if player.id == id:
-					player.queue_free()
 		
 		"EXPERIENCE": ###
 			Com.player.get_node("Character").experience += [][0]

@@ -40,15 +40,17 @@ func server_ai():
 	
 	match state:
 		IDLE:
-			if delay <= 0 and randi()%100 == 0:
+			if delay <= 0 and randi()%300 == 0:
 				state = WALK
 				walk = 1 - randi()%2*2
 				delay = 30
-			elif randi()%100 == 0:
+			elif randi()%300 == 0:
 				state = ATTACK
 	
 		WALK:
-			if delay <= 0 and randi()%100 == 0:
+			if delay <= 0 and randi()%300 == 0:
+				print(\"stay\")
+				state = IDLE
 				walk = 0
 				delay = 20
 		
@@ -57,11 +59,12 @@ func server_ai():
 			
 			if attac >= 10:
 				attac = 0
+				state = IDLE ##inaczej
 				
-	#			var bone = preload(\"res://Nodes/Projectiles/Bone.tscn\").instance()
-	#			bone.position = position + Vector2(0, -80)
-	#			bone.velocity.x = abs(bone.velocity.x) * direction
-	#			get_parent().add_child(bone)
+				var bone = preload(\"res://Nodes/Projectiles/Bone.tscn\").instance()
+				bone.position = position + Vector2(0, -80)
+				bone.velocity.x = abs(bone.velocity.x) * direction
+				get_parent().add_child(bone)
 
 func _physics_process(delta):
 	sprite.flip_h = (direction == 1)
@@ -72,7 +75,7 @@ func _physics_process(delta):
 		sprite.position = Vector2()
 	
 	if state != previous_state:
-		state = previous_state
+		previous_state = state
 		
 		match state:
 			IDLE:

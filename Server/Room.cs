@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 public class Room : Viewport {
@@ -76,10 +77,8 @@ public class Room : Viewport {
         players.Remove(character);
         playerNodes[character].QueueFree();
         playerNodes.Remove(character);
-        stateHistory.Remove(character.GetPlayerId());
-        entityBindings.Remove(character.GetPlayerId()); //jakoś uniwersalniej
-
-        BroadcastPacket(new Packet(Packet.TYPE.PLAYER_EXIT).AddU16(character.GetPlayerId()));
+        
+        DisposeNode(character.GetPlayerId());
     }
 
     public void BroadcastPacket(Packet packet) {
@@ -129,9 +128,19 @@ public class Room : Viewport {
     public void RegisterNode(Node node, ushort type) {
         node.SetMeta("type", type);
         entityBindings.Add((ushort)++lastEntityId, node);
+        node.SetMeta("id", lastEntityId);
 
         foreach (var character in players) {
             character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY).AddU16(type).AddU16(lastEntityId));
+        }
+    }
+
+    public void DisposeNode(ushort id) {
+        entityBindings.Remove(id);
+        stateHistory.Remove(id);
+
+        foreach (var character in players) {
+            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.REMOVE_ENTITY).AddU16(lastEntityId));
         }
     }
 

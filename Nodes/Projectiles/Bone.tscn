@@ -4,45 +4,58 @@
 [ext_resource path="res://Scripts/ParentCollider.gd" type="Script" id=2]
 
 [sub_resource type="GDScript" id=1]
-
 resource_name = "Bone"
-script/source = "extends \"res://Scripts/Enemy.gd\"
+script/source = "extends Enemy
 
-var velocity = Vector2(-6, -16)
+var velocity = Vector2(6, -16)
+
+onready var sprite = $Sprite
 
 func _ready():
+	if Com.register_node(self, \"Enemies/Bone\"): return
+	
 	init()
-	attack_type = \"B\"
 
 func _physics_process(delta):
-	velocity += Vector2(0, 1)
+	velocity.y += 1
 	rotation -= velocity.x
 	
+	if sprite.position.length_squared() > 1:
+		sprite.position *= 0.8
+	else:
+		sprite.position = Vector2()
+	
 	var col = move_and_collide(velocity)
-	if col: queue_free()
+	if col: Com.dispose_node(self)
 
-func get_sync_data():
-	return [\"Bone\", position, Vector2(velocity.x + 10000, velocity.y + 10000)]
+func state_vector_types():
+	return [
+			Data.TYPE.U16,
+			Data.TYPE.U16,
+			Data.TYPE.U16
+		]
 
-func sync_data(data):
-	var extract = Network.get_data([\"vector2\", \"vector2\"], data[3], data[2])
-	position = extract[0]
-	velocity = Vector2(extract[1].x - 10000, extract[1].y - 10000)"
-_sections_unfolded = [ "Resource" ]
+func get_state_vector():
+	return [
+			round(position.x),
+			round(position.y),
+			round(velocity.y * 1000)
+		]
+
+func apply_state_vector(vector):
+	var old_position = position
+	position.x = vector[0]
+	position.y = vector[1]
+	if get_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
+	
+	velocity.y = vector[2] * 0.001"
 
 [sub_resource type="RectangleShape2D" id=2]
-
-custom_solver_bias = 0.0
 extents = Vector2( 8, 21 )
 
 [node name="Bone" type="KinematicBody2D"]
-input_pickable = false
-collision_layer = 1
 collision_mask = 0
-collision/safe_margin = 0.08
-motion/sync_to_physics = false
 script = SubResource( 1 )
-_sections_unfolded = [ "Collision", "collision" ]
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
@@ -52,13 +65,6 @@ texture = ExtResource( 1 )
 
 [node name="Hitbox" type="Area2D" parent="."]
 editor/display_folded = true
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
 script = ExtResource( 2 )
 
 [node name="Shape" type="CollisionShape2D" parent="Hitbox"]
