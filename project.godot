@@ -63,3 +63,9 @@ gdscript/warnings/enable=false
 window/size/width=800
 window/size/resizable=false
 window/dpi/allow_hidpi=true
+
+[layer_names]
+
+2d_physics/layer_1="map"
+2d_physics/layer_2="player"
+2d_physics/layer_3="enemy"

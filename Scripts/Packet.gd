@@ -10,7 +10,8 @@ enum TYPE {
 	KEY_RELEASE,
 	ADD_ENTITY,
 	REMOVE_ENTITY,
-	TICK
+	TICK,
+	CHAT
 }
 
 var data
@@ -36,3 +37,6 @@ func add_u16(i):
 	data.append(i % 256)
 	data[0] += 2
 	return self
+
+func send():
+	Network.send_data(self)

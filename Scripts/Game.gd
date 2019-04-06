@@ -1,9 +1,9 @@
 extends Node2D
 
 var UI
-var chat
-var menu
-var map
+var chat ##do wywalenia
+var menu #pewnie też
+var map #a jakże
 var enemies
 var last_room
 
@@ -16,6 +16,7 @@ onready var effects = $Effects
 var entity_list = {}
 
 func _process(delta):
+	return
 	if Com.is_server:
 		pass
 #		for player in players.get_children():
@@ -28,21 +29,7 @@ func _process(delta):
 #				player.changeroomed = true
 #				Network.send_data(["CHANGEROOM", map.mapid, player.id, "l", int(player.position.y) / 1080])
 	else:
-		if Com.key_press("_ACCEPT") and chat.has_focus():
-			if chat.text.left(1) == "/":
-				chat.get_node("..").parse_command(chat.text)
-			else:
-				chat.get_node("..").add_message(Com.player.uname, chat.text)
-				var data = chat.get_node("..").get_data()
-				Network.send_data(["CHAT"] + data + [chat.text])
-			chat.text = ""
-			chat.placeholder_text = "Press T to chat"
-			chat.release_focus()
-		elif Com.key_press("_CANCEL") and chat.has_focus():
-			chat.text = ""
-			chat.placeholder_text = "Press T to chat"
-			chat.release_focus()
-		elif Com.key_press("MENU") and !is_menu:
+		if Com.key_press("MENU") and !is_menu:
 			menu.show()
 			menu.set_process(true)
 			Network.send_data(["GETSTATS", "2"])

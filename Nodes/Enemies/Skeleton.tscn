@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/ParentCollider.gd" type="Script" id=2]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Skeleton"
@@ -25,7 +24,7 @@ func _ready():
 #	init(\"Skeleton\")
 	direction = 1 - randi()%2*2
 
-func server_ai():
+func server_ai(delta):
 	#TODO: rzucza tylko gdy gracz w pobliżu, chodzi za wykrytym graczem
 	delay -= 1
 	
@@ -54,9 +53,9 @@ func server_ai():
 				delay = 20
 		
 		ATTACK:
-			attac += 1
+			attac += delta
 			
-			if attac >= 10:
+			if attac >= 0.3:
 				attac = 0
 				state = IDLE ##inaczej
 				
@@ -65,8 +64,8 @@ func server_ai():
 				bone.velocity.x = abs(bone.velocity.x) * direction
 				get_parent().add_child(bone)
 
-func _physics_process(delta):
-	sprite.scale.x = direction
+func general_ai(delta):
+	sprite.scale.x = -direction
 	
 	if sprite.position.length_squared() > 1:
 		sprite.position *= 0.8
@@ -117,7 +116,14 @@ func apply_state_vector(vector):
 	
 	state = vector[2]
 	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
-	walk = vector[4]-1"
+	walk = vector[4]-1
+
+func on_hit(body):
+	print(body)
+
+func on_unhit(body):
+	pass # Replace with function body.
+"
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 24, 48 )
@@ -192,16 +198,17 @@ tracks/0/keys = {
 }
 
 [node name="Skeleton" type="KinematicBody2D"]
-collision_layer = 2
+collision_layer = 0
+collision_mask = 3
 script = SubResource( 1 )
 
 [node name="SpriteContainer" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="SpriteContainer"]
-position = Vector2( 20, 0 )
+position = Vector2( -20, 0 )
 texture = ExtResource( 1 )
-flip_h = true
 hframes = 10
+frame = 7
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 12 )
@@ -209,7 +216,8 @@ shape = SubResource( 2 )
 
 [node name="Hitbox" type="Area2D" parent="."]
 input_pickable = false
-script = ExtResource( 2 )
+collision_layer = 4
+collision_mask = 0
 
 [node name="TriggerCollider" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( 0, 12 )
@@ -223,4 +231,6 @@ anims/Idle = SubResource( 4 )
 anims/Throw = SubResource( 5 )
 anims/Walk = SubResource( 6 )
 
+[connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
+[connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]
 [connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]

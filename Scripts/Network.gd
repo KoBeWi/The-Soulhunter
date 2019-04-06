@@ -15,7 +15,8 @@ const server_port = 2412
 
 signal connected
 signal log_in
-signal error
+signal error(code)
+signal chat_message(type, from, message)
 
 func _ready():
 	set_process(false)
@@ -74,8 +75,8 @@ func process_packet(unpacker):
 		"CHANGEROOM": ###
 			Com.game.change_map([])
 		
-		"CHAT": ###
-			Com.game.chat.get_parent().add_message([], [], [])
+		Packet.TYPE.CHAT:
+			emit_signal("chat_message", unpacker.get_u8(), unpacker.get_string(), unpacker.get_string())
 		
 		"DAMAGE": ###
 			Com.game.damage_number([], [], [])
@@ -135,10 +136,10 @@ func process_packet(unpacker):
 			Com.game.update_inventory([])
 		
 		Packet.TYPE.KEY_PRESS:
-			Com.controls.press_key(unpacker.get_u16(), unpacker.get_u8())
+			Com.controls.press_key(unpacker.get_u16(), unpacker.get_u8(), Controls.State.ACTION)
 		
 		Packet.TYPE.KEY_RELEASE:
-			Com.controls.release_key(unpacker.get_u16(), unpacker.get_u8())
+			Com.controls.release_key(unpacker.get_u16(), unpacker.get_u8(), Controls.State.ACTION)
 		
 		"MAP": ###
 			Com.player.chr.update_map([])

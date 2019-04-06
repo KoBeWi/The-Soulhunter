@@ -11,7 +11,8 @@ public class Packet {
         KEY_RELEASE,
         ADD_ENTITY,
         REMOVE_ENTITY,
-        TICK
+        TICK,
+        CHAT
     }
 
     public static readonly byte[] zero = new byte[] {0};

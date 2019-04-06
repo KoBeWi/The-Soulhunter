@@ -8,6 +8,7 @@ var changeroomed = false
 var uname = "" setget set_username
 var motion = Vector2()
 var smooth_position = Vector2()
+var main = false
 #var enemies = []
 
 var on_floor = false
@@ -103,13 +104,13 @@ func _physics_process(delta):
 	
 	key_press.clear()
 
-func on_key_press(p_id, key):
-	if p_id == get_meta("id"):
+func on_key_press(p_id, key, state):
+	if state == Controls.State.ACTION and p_id == get_meta("id"):
 		controls[key] = true
 		key_press[key] = true
 
-func on_key_release(p_id, key):
-	if p_id == get_meta("id"):
+func on_key_release(p_id, key, state):
+	if state == Controls.State.ACTION and p_id == get_meta("id"):
 		controls.erase(key)
 
 func flip(f = sprite.flip_h):
@@ -147,6 +148,7 @@ func weapon_exit(body):
 func set_main():
 	Com.player = self
 	$Name.visible = false
+	main = true
 	
 	camera = preload("res://Nodes/PlayerCamera.tscn").instance()
 	camera.make_current()
@@ -175,3 +177,9 @@ func apply_state_vector(vector):
 	position.x = vector[1]
 	position.y = vector[2]
 	if has_meta("initialized"): sprite.position = (old_position - position) + sprite.position
+
+func on_hit(body):
+	pass # Replace with function body.
+
+func on_unhit(body):
+	pass # Replace with function body.

@@ -41,7 +41,7 @@ public class Unpacker {
     public void  HandlePacket(Database database, Player player) {
         switch (command) {
             case Packet.TYPE.REGISTER:
-            player.SendPacket(new Packet(Packet.TYPE.REGISTER).AddU8((byte)database.RegisterUser(GetString(), GetString())));
+            player.SendPacket(new Packet(command).AddU8((byte)database.RegisterUser(GetString(), GetString())));
 
             break;
             case Packet.TYPE.LOGIN:
@@ -50,13 +50,13 @@ public class Unpacker {
             if (error == Error.Ok) {
                 var room = Server.Instance().GetRoom(player.GetCharacter().GetMapId());
 
-                player.SendPacket(new Packet(Packet.TYPE.LOGIN).AddU8(0));
+                player.SendPacket(new Packet(command).AddU8(0));
                     //.AddU16(0).AddU16(player.GetCharacter().GetMapId())
                     //.AddU16(room.AddPlayer(player.GetCharacter())));
 
                 room.AddPlayer(player.GetCharacter());
             } else {
-                player.SendPacket(new Packet(Packet.TYPE.LOGIN).AddU8((byte)error));
+                player.SendPacket(new Packet(command).AddU8((byte)error));
             }
 
             break;
@@ -74,6 +74,14 @@ public class Unpacker {
 
             Server.GetControls().Call("release_key", id, key);
             player.GetCharacter().BroadcastPacket(new Packet(command).AddU16(id).AddU8(key));
+
+            break;
+            case Packet.TYPE.CHAT:
+            var mode = GetU8();
+            
+            if (mode == (byte)Data.CHATS.GLOBAL) {
+                player.GetCharacter().BroadcastPacket(new Packet(command).AddU8(mode).AddString(player.GetCharacter().GetName()).AddString(GetString()));
+            }
 
             break;
         }

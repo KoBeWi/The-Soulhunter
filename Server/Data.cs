@@ -5,6 +5,13 @@ public class Data {
         STRING
     }
 
+    public enum CHATS {
+        SYSTEM,
+        GLOBAL,
+        LOCAL,
+        WHISPER
+    }
+
     public static bool[] CompareStateVectors(Godot.Collections.Array oldVec, Godot.Collections.Array newVec) {
         bool[] isChanged = new bool[oldVec.Count];
 

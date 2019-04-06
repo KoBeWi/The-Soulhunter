@@ -24,13 +24,13 @@ func init(ename = ""):
 func _process(delta):
 	if Com.is_server:
 		players = get_tree().get_nodes_in_group("players") #optymalizacja do tego?
-		server_ai()
+		server_ai(delta)
 
 func _physics_process(delta):
-	general_ai()
+	general_ai(delta)
 
-func server_ai(): pass
-func general_ai(): pass
+func server_ai(delta): pass
+func general_ai(delta): pass
 
 func _body_enter(body):
 	return

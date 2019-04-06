@@ -7,6 +7,13 @@ enum TYPE {
     STRING
 }
 
+enum CHATS {
+	SYSTEM,
+	GLOBAL,
+	LOCAL,
+	WHISPER
+}
+
 const NODES = [
 	"Player",
 	"Enemies/Skeleton",

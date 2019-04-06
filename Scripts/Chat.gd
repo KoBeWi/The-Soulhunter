@@ -5,9 +5,16 @@ const chat_colors = [Color(0.8, 0.8, 0.8), Color(1, 1, 0.4), Color(0.3, 0.5, 1),
 
 onready var font = load("res://Resources/UI/DefaultFont.tres")
 
-var mode = 1
+var mode = Data.CHATS.GLOBAL
 var whisper = ""
 var history = []
+
+onready var input = $Input
+
+func _ready():
+	Com.controls.connect("key_press", self, "on_key_press")
+	Com.controls.connect("key_release", self, "on_key_release")
+	Network.connect("chat_message", self, "on_message_get")
 
 func _draw():
 	var lines = min(7, history.size())
@@ -16,6 +23,9 @@ func _draw():
 		var message = history[history.size() - i - 1]
 		draw_string(font, Vector2(4, 112 - i * 16), chat_label(message) + ") ", chat_color(message))
 		draw_string(font, Vector2(72, 112 - i * 16), message["text"])
+
+func on_message_get(type, from, message):
+	add_message(from, message, type)
 
 func add_message(author, message, type = mode):
 	history.append({"type": type, "text": author + ": " + message, "whisper": whisper})
@@ -27,14 +37,11 @@ func chat_label(message):
 func chat_color(message):
 	return chat_colors[message["type"]]
 
-func get_data():
-	return [mode, whisper]
-
 func parse_command(command):
 	if command == "/g":
-		mode = 1
+		mode = Data.CHATS.GLOBAL
 	elif command == "/l":
-		mode = 2
+		mode = Data.CHATS.LOCAL
 	elif command.left(2) == "/w":
 		var split = command.split(" ", true, 1)
 		if split.size() == 2:
@@ -42,3 +49,35 @@ func parse_command(command):
 			whisper = split[1]
 	
 	if mode != 3: whisper = ""
+
+func on_key_press(p_id, key, state):
+	if state == Controls.State.ACTION:
+		if key == Controls.CHAT:
+			Com.controls.state = Controls.State.CHAT
+			input.placeholder_text = ""
+			input.grab_focus()
+			return
+		else:
+			return
+	elif state == Controls.State.CHAT:
+		if key == Controls.ACCEPT:
+			if input.text.begins_with("/"):
+				parse_command(input.text)
+			else:
+				add_message(Com.player.uname, input.text)
+				Packet.new(Packet.TYPE.CHAT).add_u8(mode).add_string(input.text).send()
+			
+			reset()
+		elif key == Controls.CANCEL:
+			reset()
+
+func on_key_release(p_id, key, state):
+	pass
+
+func reset():
+	input.text = ""
+	input.placeholder_text = "Press T to chat"
+	input.release_focus()
+	
+	if Com.controls.state == Controls.State.CHAT:
+		Com.controls.state = Controls.State.ACTION
