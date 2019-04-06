@@ -1,3 +1,0 @@
-zamienić array na set gdzie się da
-skrócić nazwy komend
-obsługa booli (1 bajt)

@@ -1,7 +1,6 @@
-Client/.import/
-Client/Build/
-
-Server/.client/
-Server/.database/
-Server/node_modules/
-Server/package-lock.json
+.database/
+.import/
+.vs/
+.vscode/
+.mono/
+Build/

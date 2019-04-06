@@ -1,0 +1,1 @@
+godot_mono --s Server/Nodes/Server.tscn

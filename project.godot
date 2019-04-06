@@ -1,0 +1,65 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node",
+"class": "Controls",
+"language": "GDScript",
+"path": "res://Scripts/Controls.gd"
+}, {
+"base": "Object",
+"class": "Data",
+"language": "GDScript",
+"path": "res://Scripts/Data.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://Scripts/Enemy.gd"
+}, {
+"base": "Reference",
+"class": "Packet",
+"language": "GDScript",
+"path": "res://Scripts/Packet.gd"
+}, {
+"base": "Reference",
+"class": "Unpacker",
+"language": "GDScript",
+"path": "res://Scripts/Unpacker.gd"
+} ]
+_global_script_class_icons={
+"Controls": "",
+"Data": "",
+"Enemy": "",
+"Packet": "",
+"Unpacker": ""
+}
+
+[application]
+
+config/name="The Soulhunter"
+run/main_scene="res://Scenes/Connect.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+Network="*res://Scripts/Network.gd"
+Res="*res://Scripts/Resources.gd"
+Com="*res://Nodes/Commons.tscn"
+
+[debug]
+
+gdscript/warnings/enable=false
+
+[display]
+
+window/size/width=800
+window/size/resizable=false
+window/dpi/allow_hidpi=true
