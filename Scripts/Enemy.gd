@@ -21,6 +21,7 @@ func init(ename = ""):
 
 func _process(delta):
 	if Com.is_server:
+		players = get_tree().get_nodes_in_group("players") #optymalizacja do tego?
 		server_ai()
 
 func _physics_process(delta):

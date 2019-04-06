@@ -172,4 +172,4 @@ func apply_state_vector(vector):
 	var old_position = position
 	position.x = vector[1]
 	position.y = vector[2]
-	if get_meta("initialized"): sprite.position = (old_position - position) + sprite.position
+	if has_meta("initialized"): sprite.position = (old_position - position) + sprite.position

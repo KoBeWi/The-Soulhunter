@@ -110,8 +110,7 @@ func process_packet(unpacker):
 			Com.game.add_entity(unpacker.get_u16(), unpacker.get_u16())
 		
 		Packet.TYPE.REMOVE_ENTITY:
-			var entity = Com.game.get_entity(unpacker.get_u16())
-			if entity: entity.queue_free()
+			Com.game.remove_entity(unpacker.get_u16())
 		
 		Packet.TYPE.TICK:
 			var entity_count = unpacker.get_u8()
@@ -123,7 +122,7 @@ func process_packet(unpacker):
 				
 				var entity = Com.game.get_entity(id)
 				
-				if entity:
+				if entity and is_instance_valid(entity):
 					Data.apply_state_vector(unpacker, entity, diff_vector)
 		
 		"EQUIPMENT": ###

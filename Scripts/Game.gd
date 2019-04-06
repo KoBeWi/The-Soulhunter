@@ -186,6 +186,12 @@ func add_entity(type, id):
 func register_entity(node, id):
 	entity_list[id] = node
 
+func remove_entity(id):
+	var entity = entity_list.get(id)
+	if entity:
+		entity_list.erase(id)
+		entity.queue_free()
+
 func get_entity(id):
 	return entity_list.get(id)
 

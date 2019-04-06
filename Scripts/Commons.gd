@@ -32,7 +32,6 @@ func key_hold(key):
 
 func register_node(node, type):
 	if is_server:
-		print(type)
 		node.set_meta("room", node.find_parent("InGame").get_parent())
 		node.get_meta("room").call("RegisterNode", node, Data.NODES.find(type))
 	elif !node.has_meta("valid"):

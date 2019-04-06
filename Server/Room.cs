@@ -140,7 +140,7 @@ public class Room : Viewport {
         stateHistory.Remove(id);
 
         foreach (var character in players) {
-            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.REMOVE_ENTITY).AddU16(lastEntityId));
+            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.REMOVE_ENTITY).AddU16(id));
         }
     }
 

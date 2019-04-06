@@ -8,7 +8,7 @@ resource_name = "Skeleton"
 script/source = "extends Enemy
 
 onready var animation = $Animation
-onready var sprite = $Sprite
+onready var sprite = $SpriteContainer
 
 enum {IDLE, WALK, ATTACK}
 var state = IDLE
@@ -17,7 +17,7 @@ var previous_state = IDLE
 var walk = 0
 var attac = 0
 var delay = 0
-var direction = 0
+var direction = 1
 
 func _ready():
 	if Com.register_node(self, \"Enemies/Skeleton\"): return
@@ -40,7 +40,7 @@ func server_ai():
 	
 	match state:
 		IDLE:
-			if delay <= 0 and randi()%300 == 0:
+			if delay <= 0 and randi()%200 == 0:
 				state = WALK
 				walk = 1 - randi()%2*2
 				delay = 30
@@ -48,8 +48,7 @@ func server_ai():
 				state = ATTACK
 	
 		WALK:
-			if delay <= 0 and randi()%300 == 0:
-				print(\"stay\")
+			if delay <= 0 and randi()%200 == 0:
 				state = IDLE
 				walk = 0
 				delay = 20
@@ -67,7 +66,7 @@ func server_ai():
 				get_parent().add_child(bone)
 
 func _physics_process(delta):
-	sprite.flip_h = (direction == 1)
+	sprite.scale.x = direction
 	
 	if sprite.position.length_squared() > 1:
 		sprite.position *= 0.8
@@ -114,14 +113,14 @@ func apply_state_vector(vector):
 	var old_position = position
 	position.x = vector[0]
 	position.y = vector[1]
-	if get_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
+	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
 	
 	state = vector[2]
 	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
 	walk = vector[4]-1"
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 48, 48 )
+extents = Vector2( 24, 48 )
 
 [sub_resource type="Animation" id=3]
 resource_name = "Bone Walk"
@@ -129,7 +128,7 @@ length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -146,7 +145,7 @@ length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -163,7 +162,7 @@ resource_name = "Throw"
 length = 3.0
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -180,7 +179,7 @@ length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -196,32 +195,24 @@ tracks/0/keys = {
 collision_mask = 0
 script = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="SpriteContainer" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="SpriteContainer"]
+position = Vector2( 20, 0 )
 texture = ExtResource( 1 )
+flip_h = true
 hframes = 10
-frame = 4
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2( 7.94456, 11.7414 )
+position = Vector2( 0, 12 )
 shape = SubResource( 2 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Hitbox" type="Area2D" parent="."]
-editor/display_folded = true
-position = Vector2( 0, -3 )
 input_pickable = false
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="TriggerCollider" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2( 7.94456, 14.7414 )
+position = Vector2( 0, 12 )
 shape = SubResource( 2 )
 
 [node name="Animation" type="AnimationPlayer" parent="."]

@@ -21,11 +21,11 @@ func _physics_process(delta):
 	rotation -= velocity.x
 	
 	if sprite.position.length_squared() > 1:
-		sprite.position *= 0.8
+		sprite.position *= 0.7
 	else:
 		sprite.position = Vector2()
 	
-	var col = move_and_collide(velocity)
+	var col = move_and_collide(velocity/4)
 	if col: Com.dispose_node(self)
 
 func state_vector_types():
@@ -46,7 +46,7 @@ func apply_state_vector(vector):
 	var old_position = position
 	position.x = vector[0]
 	position.y = vector[1]
-	if get_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
+	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
 	
 	velocity.y = vector[2] * 0.001"
 
