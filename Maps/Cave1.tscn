@@ -30,13 +30,9 @@ __meta__ = {
 position = Vector2( 1305, 345 )
 
 [node name="Enemies" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource( 4 )]
 position = Vector2( 796.52, 480.101 )
-
-[node name="Skeleton2" parent="Enemies" instance=ExtResource( 4 )]
-position = Vector2( 1568.23, 480.101 )
 
 [node name="Background" parent="." instance=ExtResource( 5 )]
 

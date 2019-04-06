@@ -44,7 +44,7 @@ func server_ai():
 				state = WALK
 				walk = 1 - randi()%2*2
 				delay = 30
-			elif randi()%300 == 0:
+			elif randi()%100 == 0:
 				state = ATTACK
 	
 		WALK:
@@ -60,7 +60,7 @@ func server_ai():
 				attac = 0
 				state = IDLE ##inaczej
 				
-				var bone = preload(\"res://Nodes/Projectiles/Bone.tscn\").instance()
+				var bone = preload(\"res://Nodes/Enemies/Bone.tscn\").instance()
 				bone.position = position + Vector2(0, -80)
 				bone.velocity.x = abs(bone.velocity.x) * direction
 				get_parent().add_child(bone)
@@ -192,7 +192,7 @@ tracks/0/keys = {
 }
 
 [node name="Skeleton" type="KinematicBody2D"]
-collision_mask = 0
+collision_layer = 2
 script = SubResource( 1 )
 
 [node name="SpriteContainer" type="Node2D" parent="."]

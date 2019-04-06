@@ -37,10 +37,12 @@ func set_username(n):
 func on_client_create():
 	visible = false
 	set_process(false)
+	set_physics_process(false)
 
 func on_initialized():
-	set_process(true)
 	visible = true
+	set_process(true)
+	set_physics_process(true)
 	emit_signal("initiated")
 
 func _process(delta):

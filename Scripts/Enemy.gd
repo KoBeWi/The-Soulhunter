@@ -6,10 +6,12 @@ onready var players = get_tree().get_nodes_in_group("players")
 func on_client_create():
 	visible = false
 	set_process(false)
+	set_physics_process(false)
 
 func on_initialized():
 	visible = true
 	set_process(true)
+	set_physics_process(true)
 
 func init(ename = ""):
 	return

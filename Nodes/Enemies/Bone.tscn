@@ -7,7 +7,7 @@
 resource_name = "Bone"
 script/source = "extends Enemy
 
-var velocity = Vector2(6, -16)
+var velocity = Vector2(300, -800)
 
 onready var sprite = $Sprite
 
@@ -17,29 +17,32 @@ func _ready():
 	init()
 
 func _physics_process(delta):
-	velocity.y += 1
-	rotation -= velocity.x
+	velocity.y += 50
+	rotation -= velocity.x * 0.01
 	
 	if sprite.position.length_squared() > 1:
 		sprite.position *= 0.7
 	else:
 		sprite.position = Vector2()
 	
-	var col = move_and_collide(velocity/4)
+	var col = move_and_collide(velocity * delta)
 	if col: Com.dispose_node(self)
 
 func state_vector_types():
 	return [
 			Data.TYPE.U16,
 			Data.TYPE.U16,
+			Data.TYPE.U16,
 			Data.TYPE.U16
 		]
 
 func get_state_vector():
+#	print(velocity, \" >>\")
 	return [
 			round(position.x),
 			round(position.y),
-			round(velocity.y * 1000)
+			round(velocity.x) + 10000,
+			round(velocity.y) + 10000
 		]
 
 func apply_state_vector(vector):
@@ -48,13 +51,15 @@ func apply_state_vector(vector):
 	position.y = vector[1]
 	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
 	
-	velocity.y = vector[2] * 0.001"
+	print(vector)
+	velocity.x = vector[2] - 10000
+	velocity.y = vector[3] - 10000"
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 21 )
 
 [node name="Bone" type="KinematicBody2D"]
-collision_mask = 0
+collision_layer = 0
 script = SubResource( 1 )
 
 [node name="Collider" type="CollisionShape2D" parent="."]

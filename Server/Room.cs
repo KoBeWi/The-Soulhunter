@@ -122,6 +122,7 @@ public class Room : Viewport {
 
         var state = CreateStatePacket(false);
 
+        // GD.Print("TICK");
         BroadcastPacket(state);
     }
 
