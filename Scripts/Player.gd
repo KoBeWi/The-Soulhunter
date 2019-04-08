@@ -3,8 +3,6 @@ extends KinematicBody2D
 var controls = {}
 var key_press = {}
 
-var initiated = false
-var changeroomed = false
 var uname = "" setget set_username
 var motion = Vector2()
 var smooth_position = Vector2()
@@ -183,3 +181,11 @@ func on_hit(body):
 
 func on_unhit(body):
 	pass # Replace with function body.
+
+func check_map(map):
+	if position.x >= map.width * 1920:
+		return 1
+	elif position.x < 0:
+		return 3
+	
+	return 4

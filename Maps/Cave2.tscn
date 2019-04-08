@@ -11,6 +11,7 @@ location = "A Cave"
 mapid = 1
 map_x = 32767
 map_y = 32768
+width = 1
 height = 2
 borders = [ 1, 2, 0, 1, 0, 1, 1, 1 ]
 edges = [ false, false, false, false, false, false, false, false ]

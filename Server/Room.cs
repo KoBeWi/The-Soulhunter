@@ -38,6 +38,59 @@ public class Room : Viewport {
         mapId = id;
     }
 
+    public void Tick() {
+        if (players.Count == 0) return; //tutaj też timeout i wywalanie
+
+        List<Character> killUs = new List<Character>();
+
+        foreach (var player in playerNodes) {
+            var exit = (int)player.Value.Call("check_map", map);
+            
+            if (exit < 4) {
+                Room room = null;
+
+                if (exit == 3) room = Server.GetAdjacentMap((int)map.Get("map_x") - 1, (int)map.Get("map_y"));
+
+                if (room != null) {
+                    GD.Print("rooom");
+                    // room.AcquirePlayer(player);
+                    killUs.Add(player.Key);
+                }
+            }
+        }
+
+        foreach (var player in killUs) RemovePlayer(player);
+
+        var state = CreateStatePacket(false);
+
+        // GD.Print("TICK");
+        BroadcastPacket(state);
+    }
+
+    private Packet CreateStatePacket(bool full) {
+        var state = new Packet(Packet.TYPE.TICK);
+        state.AddU8((byte)entityBindings.Count);
+
+        foreach (var id in entityBindings.Keys) {
+            var types = entityBindings[id].Call("state_vector_types") as Godot.Collections.Array;
+            var data = entityBindings[id].Call("get_state_vector") as Godot.Collections.Array;
+
+            bool[] diffVector;
+            if (!full && stateHistory.ContainsKey(id)) {
+                diffVector = Data.CompareStateVectors(stateHistory[id], data);
+            } else {
+                diffVector = new bool[data.Count];
+                for (int i = 0; i < diffVector.Length; i++) diffVector[i] = true;
+            }
+            stateHistory[id] = data;
+
+            state.AddU16(id);
+            state.AddStateVector(types, data, diffVector);
+        }
+
+        return state;
+    }
+
     // public void Dispose() {
     //     Server.Instance().RemoveChild(room);
     // }
@@ -73,9 +126,10 @@ public class Room : Viewport {
         return lastEntityId;
     }
 
-    public void RemovePlayer(Character character) {
+    public void RemovePlayer(Character character, bool free = true) {
+        GD.Print("rem rem");
         players.Remove(character);
-        playerNodes[character].QueueFree();
+        if (free) playerNodes[character].QueueFree();
         playerNodes.Remove(character);
         
         DisposeNode(character.GetPlayerId());
@@ -93,75 +147,18 @@ public class Room : Viewport {
         }
     }
 
-    private Packet CreateStatePacket(bool full) {
-        var state = new Packet(Packet.TYPE.TICK);
-        state.AddU8((byte)entityBindings.Count);
-
-        foreach (var id in entityBindings.Keys) {
-            var types = entityBindings[id].Call("state_vector_types") as Godot.Collections.Array;
-            var data = entityBindings[id].Call("get_state_vector") as Godot.Collections.Array;
-
-            bool[] diffVector;
-            if (!full && stateHistory.ContainsKey(id)) {
-                diffVector = Data.CompareStateVectors(stateHistory[id], data);
-            } else {
-                diffVector = new bool[data.Count];
-                for (int i = 0; i < diffVector.Length; i++) diffVector[i] = true;
-            }
-            stateHistory[id] = data;
-
-            state.AddU16(id);
-            state.AddStateVector(types, data, diffVector);
-        }
-
-        return state;
-    }
-
-    public void Tick() {
-        if (players.Count == 0) return; //tutaj też timeout i wywalanie
-
-        var state = CreateStatePacket(false);
-
-        // GD.Print("TICK");
-        BroadcastPacket(state);
-    }
-
     public void RegisterNode(Node node, ushort type) {
         node.SetMeta("type", type);
         entityBindings.Add((ushort)++lastEntityId, node);
         node.SetMeta("id", lastEntityId);
 
-        foreach (var character in players) {
-            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY).AddU16(type).AddU16(lastEntityId));
-        }
+        BroadcastPacket(new Packet(Packet.TYPE.ADD_ENTITY).AddU16(type).AddU16(lastEntityId));
     }
 
     public void DisposeNode(ushort id) {
         entityBindings.Remove(id);
         stateHistory.Remove(id);
 
-        foreach (var character in players) {
-            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.REMOVE_ENTITY).AddU16(id));
-        }
+        BroadcastPacket(new Packet(Packet.TYPE.REMOVE_ENTITY).AddU16(id));
     }
-
-    // public void ReverseBroadcastPacket(Action<Character> packetMaker) {
-    //     foreach (var player in players) {
-    //         packetMaker.Invoke(player);
-    //     }
-    // }
-
-    // public void InitPlayer(Character character) {
-    //     var newPlayer = nodeBindings[character];
-
-    //     ReverseBroadcastPacket((player) => {
-    //         if (player != character)
-    //             character.GetPlayer().SendPacket(new Packet("ENTER")
-    //                 .AddString(player.GetName())
-    //                 .AddU16(player.GetPlayerId())
-    //                 .AddU16(0));
-    //     });
-
-    //     BroadcastPacket(new Packet("POS").AddU16((int)newPlayer.Get("id")).AddU16(4).AddU16(0).AddU16(0));
-    // }
 }

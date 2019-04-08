@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -8,10 +9,12 @@ using System.Threading.Tasks;
 
 public class Server : Node {
     private static readonly PackedScene roomFactory = ResourceLoader.Load("res://Server/Nodes/Room.tscn") as PackedScene;
+    private List<PackedScene> mapList;
 
     private TcpListener server;
     private Database database;
     private static Server instance;
+
 
     private Dictionary<int, List<Room>> rooms;
     private List<Player> playersOnline;
@@ -26,6 +29,10 @@ public class Server : Node {
 
         rooms = new Dictionary<int, List<Room>>();
         playersOnline = new List<Player>();
+
+        mapList = new List<PackedScene>();
+        foreach (var map in System.IO.Directory.GetFiles("Maps"))
+            mapList.Add(ResourceLoader.Load(map) as PackedScene);
         
         controls = GetNode("/root/Com/Controls");
         GetNode("/root/Com").Set("is_server", true);
@@ -81,6 +88,21 @@ public class Server : Node {
         }
         
         // client.Close();
+    }
+
+    public static Room GetAdjacentMap(int x, int y) {
+        foreach (var map in instance.mapList) {
+            var m_x = (int)map.GetState().GetNodePropertyValue(0, 3); //niebezpieczny szajs; może dać resource?
+            var m_y = (int)map.GetState().GetNodePropertyValue(0, 4);
+            var m_w = (int)map.GetState().GetNodePropertyValue(0, 5);
+            var m_h = (int)map.GetState().GetNodePropertyValue(0, 6);
+
+            if (x >= m_x && y >= m_y && x < m_x + m_w && y < m_y + m_h) {
+                return instance.GetRoom((ushort)(int)GD.Convert(map.GetState().GetNodePropertyValue(0, 2), (int)Variant.Type.Int));
+            }
+        }
+
+        return null;
     }
 
     public Room GetRoom(ushort mapId) {
