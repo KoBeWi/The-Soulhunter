@@ -48,18 +48,22 @@ public class Room : Viewport {
             
             if (exit < 4) {
                 Room room = null;
+                Vector2 position = (Vector2)player.Value.Get("position");
 
-                if (exit == 3) room = Server.GetAdjacentMap((int)map.Get("map_x") - 1, (int)map.Get("map_y"));
+                if (exit == 3) {
+                    room = Server.GetAdjacentMap((int)map.Get("map_x") - 1, (int)map.Get("map_y"));
+                    position.x += 1920;
+                    position.y += ((int)map.Get("map_y") - (int)room.GetMapValue("map_y")) * 1080;
+                }
 
                 if (room != null) {
-                    GD.Print("rooom");
-                    // room.AcquirePlayer(player);
+                    room.AcquirePlayer(player.Key, player.Value, position);
                     killUs.Add(player.Key);
                 }
             }
         }
 
-        foreach (var player in killUs) RemovePlayer(player);
+        foreach (var player in killUs) RemovePlayer(player, false);
 
         var state = CreateStatePacket(false);
 
@@ -116,7 +120,6 @@ public class Room : Viewport {
             character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY)
                     .AddU16((ushort)(int)entityBindings[id].GetMeta("type"))
                     .AddU16(id));
-            // player.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY).AddU16(0).AddU16(lastEntityId));
         }
 
         players.Add(character);
@@ -127,12 +130,40 @@ public class Room : Viewport {
     }
 
     public void RemovePlayer(Character character, bool free = true) {
-        GD.Print("rem rem");
         players.Remove(character);
-        if (free) playerNodes[character].QueueFree();
+        if (free) {
+            playerNodes[character].QueueFree();
+        } else {
+            // entityList.RemoveChild(playerNodes[character]);
+        }
         playerNodes.Remove(character);
         
         DisposeNode(character.GetPlayerId());
+    }
+
+    public void AcquirePlayer(Character character, Node newPlayer, Vector2 position) {
+        newPlayer.Set("position", position);
+        
+        playerNodes.Add(character, newPlayer);
+        newPlayer.GetParent().RemoveChild(newPlayer);
+        entityList.AddChild(newPlayer);
+        character.SetNewId(lastEntityId);
+        newPlayer.SetMeta("id", lastEntityId);
+
+        character.SetRoom(this);
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(5).AddU16((ushort)position.x).AddU16((ushort)position.y).AddU8(0)); //po co to ostatnie?; przedostatnie też mało poczebne
+
+        foreach (var id in entityBindings.Keys) {
+            if (id == lastEntityId) continue;
+
+            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY)
+                    .AddU16((ushort)(int)entityBindings[id].GetMeta("type"))
+                    .AddU16(id));
+        }
+
+        players.Add(character);
+
+        character.GetPlayer().SendPacket(CreateStatePacket(true));
     }
 
     public void BroadcastPacket(Packet packet) {
@@ -160,5 +191,9 @@ public class Room : Viewport {
         stateHistory.Remove(id);
 
         BroadcastPacket(new Packet(Packet.TYPE.REMOVE_ENTITY).AddU16(id));
+    }
+
+    public object GetMapValue(string value) {
+        return map.Get(value);
     }
 }

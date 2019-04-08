@@ -66,10 +66,11 @@ func update_camera():
 		camera.limit_bottom = map.height * 1080
 
 func change_map(id):
-	map.queue_free()
-	for entity in entities.get_children():
-#		Com.controls.remove_player(player) ##zamiast tego czyścimy
-		entity.queue_free()
+	if map:
+		map.queue_free()
+		for entity in entities.get_children():
+	#		Com.controls.remove_player(player) ##zamiast tego czyścimy
+			entity.queue_free()
 	
 	load_map(id)
 

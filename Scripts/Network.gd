@@ -102,7 +102,7 @@ func process_packet(unpacker):
 				printerr("WARNING: Wrong enemy id for drop: ", [][0])
 		
 		Packet.TYPE.ENTER_ROOM:
-			Com.game.load_map(unpacker.get_u16())
+			Com.game.change_map(unpacker.get_u16())
 			Com.player.set_meta("id", unpacker.get_u16())
 			Com.game.register_entity(Com.player, Com.player.get_meta("id"))
 			Com.player.position = unpacker.get_position()
