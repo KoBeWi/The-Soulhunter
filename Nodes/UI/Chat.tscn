@@ -32,11 +32,23 @@ custom_fonts/bold_font = ExtResource( 2 )
 scroll_active = false
 scroll_following = true
 
-[node name="Input" type="LineEdit" parent="Container"]
+[node name="Input" type="HBoxContainer" parent="Container"]
 margin_top = 113.0
 margin_right = 410.0
 margin_bottom = 130.0
+
+[node name="Chat" type="Label" parent="Container/Input"]
+visible = false
+margin_right = 54.0
+margin_bottom = 17.0
+custom_fonts/font = ExtResource( 3 )
+text = "[Global]"
+
+[node name="Text" type="LineEdit" parent="Container/Input"]
+margin_right = 410.0
+margin_bottom = 17.0
 focus_mode = 1
+size_flags_horizontal = 3
 custom_styles/focus = SubResource( 2 )
 custom_styles/normal = SubResource( 3 )
 custom_fonts/font = ExtResource( 3 )
@@ -45,3 +57,4 @@ context_menu_enabled = false
 placeholder_text = "Press T to chat"
 caret_blink = true
 
+[connection signal="text_changed" from="Container/Input/Text" to="." method="on_text"]

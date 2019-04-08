@@ -7,38 +7,53 @@ onready var font = load("res://Resources/UI/DefaultFont.tres")
 
 var mode = Data.CHATS.GLOBAL
 var whisper = ""
+var last_whisper = ""
 
 onready var history = $Container/History
-onready var input = $Container/Input
+onready var input = $Container/Input/Text
+onready var chat_mode = $Container/Input/Chat
+
+const PLACEHOLDER = "T to chat, /g global, /l local, /w NAME whisper, /r reply"
 
 func _ready():
 	Com.controls.connect("key_press", self, "on_key_press")
 	Network.connect("chat_message", self, "on_message_get")
+	input.placeholder_text = PLACEHOLDER
 
 func on_message_get(type, from, message):
 	add_message(from, message, type)
+	
+	if type == Data.CHATS.WHISPER:
+		last_whisper = from
 
 func add_message(author, message, type = mode, add_whisper = false):
 	history.push_color("#" + chat_colors[type].to_html())
-	history.add_text(str("[", default_chats[type], (" to " + whisper) if add_whisper else "", "]"))
+	history.add_text(mode_text(type, add_whisper))
 	history.pop()
 	
 	history.push_color("#" + chat_colors[type].lightened(0.5).to_html())
-	history.append_bbcode(str(" [b]", author, ":[/b] "))
+	history.append_bbcode(str("[b]", author, ":[/b] "))
 	history.pop()
 	
 	history.add_text(str(message, "\n"))
 
 func parse_command(command):
-	if command == "/g":
+	if command.begins_with("/g"):
 		mode = Data.CHATS.GLOBAL
-	elif command == "/l":
+		update_mode()
+		return true
+	elif command.begins_with("/l"):
 		mode = Data.CHATS.LOCAL
-	elif command.left(2) == "/w":
+		return true
+	elif command.begins_with("/w"):
 		var split = command.split(" ", true, 1)
 		if split.size() == 2:
-			mode = 3
+			mode = Data.CHATS.WHISPER
 			whisper = split[1]
+	elif command.begins_with("/r"):
+		mode = Data.CHATS.WHISPER
+		whisper = last_whisper
+		return true
 
 func on_key_press(p_id, key, state):
 	if state == Controls.State.ACTION:
@@ -70,15 +85,30 @@ func on_key_press(p_id, key, state):
 
 func activate():
 	Com.controls.state = Controls.State.CHAT
+	update_mode()
 	history.scroll_active = true
+	chat_mode.visible = true
 	input.placeholder_text = ""
 	input.grab_focus()
 
 func reset():
 	input.text = ""
 	history.scroll_active = false
-	input.placeholder_text = "Press T to chat"
+	chat_mode.visible = false
+	input.placeholder_text = PLACEHOLDER
 	input.release_focus()
 	
 	if Com.controls.state == Controls.State.CHAT:
 		Com.controls.state = Controls.State.ACTION
+
+func mode_text(type, add_whisper):
+	return str("[", default_chats[type], (" to " + whisper) if add_whisper else "", "] ")
+
+func update_mode():
+	chat_mode.modulate = chat_colors[mode]
+	chat_mode.text = mode_text(mode, mode == Data.CHATS.WHISPER)
+
+func on_text(new_text):
+	if new_text.ends_with(" ") and parse_command(new_text):
+		update_mode()
+		input.text = ""
