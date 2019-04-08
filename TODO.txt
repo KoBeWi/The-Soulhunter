@@ -1,5 +1,7 @@
 -błąd +dodatek >zmiana
+
 +usuwanie gracza z controls, gdy wychodzi z servera
 -zabezpieczyć stream.write w każdym miejscu
 >zamienić rozmiar pakietu u16, żeby mogły być dłuższe
 >coś zrobić z ujemnymi U16 :/ (żeby automatycznie, albo uważać tam gdzie tak jest czy cuś)
++własne error code (np. ERROR_CHAT) i handler u klienta dla każdego

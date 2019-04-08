@@ -78,9 +78,17 @@ public class Unpacker {
             break;
             case Packet.TYPE.CHAT:
             var mode = GetU8();
+            var packet = new Packet(command).AddU8(mode).AddString(player.GetCharacter().GetName()).AddString(GetString());
             
             if (mode == (byte)Data.CHATS.GLOBAL) {
-                player.GetCharacter().BroadcastPacket(new Packet(command).AddU8(mode).AddString(player.GetCharacter().GetName()).AddString(GetString()));
+                foreach (var otherPlayer in Server.GetPlayers()) {
+                    if (otherPlayer != player) otherPlayer.SendPacket(packet);
+                }
+            } else if (mode == (byte)Data.CHATS.LOCAL) {
+                player.GetCharacter().BroadcastPacket(packet);
+            } else if (mode == (byte)Data.CHATS.WHISPER) {
+               var otherPlayer = Server.GetPlayerOnline(GetString());
+               if (otherPlayer != null) otherPlayer.SendPacket(packet);
             }
 
             break;

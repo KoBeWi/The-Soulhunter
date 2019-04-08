@@ -85,10 +85,10 @@ func general_ai(delta):
 	
 	move_and_collide(Vector2(walk * 6, 1))
 
-func _on_animation_finished(anim_name):
+func _on_animation_finished(anim_name): ##potrzebne?
 	if anim_name == \"Throw\":
-		attac = false
-		$Animation.play(\"Idle\")
+		attac = 0
+		animation.play(\"Idle\")
 
 func state_vector_types():
 	return [

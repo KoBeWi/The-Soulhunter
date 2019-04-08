@@ -23,7 +23,7 @@ public class Player {
     }
 
     public void LogOut() {
-        Server.Instance().RemoveOnlinePlayer(this);
+        Server.RemoveOnlinePlayer(this);
 
         if (character != null) {
             character.RemoveFromRoom();

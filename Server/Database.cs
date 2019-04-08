@@ -40,7 +40,7 @@ public class Database {
             return Error.FileNotFound;
         }
 
-        if (Server.Instance().GetPlayerOnline(login) != null) {
+        if (Server.GetPlayerOnline(login) != null) {
             return Error.Busy;
         }
 
@@ -50,7 +50,7 @@ public class Database {
 
         player.LogIn(found);
         player.SetCharacter("dummy");
-        Server.Instance().AddOnlinePlayer(player);
+        Server.AddOnlinePlayer(player);
 
         return Error.Ok;
     }

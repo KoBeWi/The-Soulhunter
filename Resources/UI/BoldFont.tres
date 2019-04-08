@@ -3,6 +3,5 @@
 [ext_resource path="res://Resources/UI/DejaVuSerif.ttf" type="DynamicFontData" id=1]
 
 [resource]
-size = 14
 font_data = ExtResource( 1 )
 

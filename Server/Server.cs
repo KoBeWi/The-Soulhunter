@@ -104,16 +104,20 @@ public class Server : Node {
         return room;
     }
 
-    public void RemoveOnlinePlayer(Player player) {
-        playersOnline.Remove(player);
+    public static void RemoveOnlinePlayer(Player player) {
+        instance.playersOnline.Remove(player);
     }
 
-    public void AddOnlinePlayer(Player player) {
-        playersOnline.Add(player);
+    public static void AddOnlinePlayer(Player player) {
+        instance.playersOnline.Add(player);
     }
 
-    public Player GetPlayerOnline(string login) {
-        return playersOnline.Find((player) => player.GetLogin() == login);
+    public static Player GetPlayerOnline(string login) { //tu lepiej jakiś słownik
+        return instance.playersOnline.Find((player) => player.GetLogin() == login);
+    }
+
+    public static List<Player> GetPlayers() {
+        return instance.playersOnline;
     }
 
     public static Server Instance() {return instance;}

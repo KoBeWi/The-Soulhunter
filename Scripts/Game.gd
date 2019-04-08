@@ -1,7 +1,6 @@
 extends Node2D
 
 var UI
-var chat ##do wywalenia
 var menu #pewnie też
 var map #a jakże
 var enemies
@@ -44,15 +43,6 @@ func _process(delta):
 		if Com.key_press("MAP"):
 			var map = Com.player.get_node("Camera/UI/Map")
 			map.visible = !map.visible
-			
-		if Com.key_press("CHAT"):
-			chat.placeholder_text = ""
-			chat.grab_focus()
-		elif Com.key_press("_COMMAND"):
-			chat.placeholder_text = ""
-			chat.text = "/"
-			chat.caret_position = 1
-			chat.grab_focus()
 		
 		return
 		var room = [map.map_x 	+ int(Com.player.position.x)/1920, map.map_y + int(Com.player.position.y)/1080] #przenieść na server
@@ -88,7 +78,6 @@ func add_main_player(player):
 	add_child(player)
 	UI = player.get_node("PlayerCamera/UI")
 	menu = UI.get_node("PlayerMenu")
-	chat = UI.get_node("Chat/Input")
 
 func damage_number(group, id, damage):
 	var node
