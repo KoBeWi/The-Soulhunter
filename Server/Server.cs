@@ -15,7 +15,6 @@ public class Server : Node {
     private Database database;
     private static Server instance;
 
-
     private Dictionary<int, List<Room>> rooms;
     private List<Player> playersOnline;
     private Node controls;

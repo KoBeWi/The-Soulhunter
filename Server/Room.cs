@@ -7,7 +7,7 @@ public class Room : Viewport {
     private static readonly PackedScene playerFactory = ResourceLoader.Load("res://Nodes/Player.tscn") as PackedScene;
 
     private ushort mapId;
-    private Node entityList;
+    private Node entityRoot;
     private Node map;
 
     ushort lastEntityId;
@@ -27,7 +27,7 @@ public class Room : Viewport {
         GetNode("InGame").Call("load_map", mapId);
         map = GetNode("InGame/Map");
 
-        entityList = GetNode("InGame/Entities");
+        entityRoot = GetNode("InGame/Entities");
 
         GetNode<Timer>("Timer").Connect("timeout", this, "Tick");
 
@@ -41,7 +41,7 @@ public class Room : Viewport {
     public void Tick() {
         if (players.Count == 0) return; //tutaj też timeout i wywalanie
 
-        List<Character> killUs = new List<Character>();
+        Dictionary<Character, ushort> killUs = new Dictionary<Character, ushort>();
 
         foreach (var player in playerNodes) {
             var exit = (int)player.Value.Call("check_map", map);
@@ -50,20 +50,24 @@ public class Room : Viewport {
                 Room room = null;
                 Vector2 position = (Vector2)player.Value.Get("position");
 
-                if (exit == 3) {
+                if (exit == 1) {
+                    room = Server.GetAdjacentMap((int)map.Get("map_x") + 1, (int)map.Get("map_y"));
+                    position.x -= 1920;
+                    position.y += ((int)map.Get("map_y") - (int)room.GetMapValue("map_y")) * 1080;
+                } else if (exit == 3) {
                     room = Server.GetAdjacentMap((int)map.Get("map_x") - 1, (int)map.Get("map_y"));
                     position.x += 1920;
                     position.y += ((int)map.Get("map_y") - (int)room.GetMapValue("map_y")) * 1080;
                 }
 
                 if (room != null) {
+                    killUs.Add(player.Key, player.Key.GetPlayerId());
                     room.AcquirePlayer(player.Key, player.Value, position);
-                    killUs.Add(player.Key);
                 }
             }
         }
 
-        foreach (var player in killUs) RemovePlayer(player, false);
+        foreach (var player in killUs) RemovePlayer(player.Key, false, player.Value);
 
         var state = CreateStatePacket(false);
 
@@ -107,7 +111,7 @@ public class Room : Viewport {
         newPlayer.Call("start");
         
         playerNodes.Add(character, newPlayer);
-        entityList.AddChild(newPlayer);
+        entityRoot.AddChild(newPlayer);
         character.SetNewId(lastEntityId);
         newPlayer.SetMeta("id", lastEntityId);
 
@@ -126,10 +130,10 @@ public class Room : Viewport {
 
         character.GetPlayer().SendPacket(CreateStatePacket(true));
 
-        return lastEntityId;
+        return lastEntityId; //niepotrzebne?
     }
 
-    public void RemovePlayer(Character character, bool free = true) {
+    public void RemovePlayer(Character character, bool free = true, ushort idOverride = 0) {
         players.Remove(character);
         if (free) {
             playerNodes[character].QueueFree();
@@ -138,7 +142,7 @@ public class Room : Viewport {
         }
         playerNodes.Remove(character);
         
-        DisposeNode(character.GetPlayerId());
+        DisposeNode(idOverride == 0 ? character.GetPlayerId() : idOverride);
     }
 
     public void AcquirePlayer(Character character, Node newPlayer, Vector2 position) {
@@ -146,7 +150,9 @@ public class Room : Viewport {
         
         playerNodes.Add(character, newPlayer);
         newPlayer.GetParent().RemoveChild(newPlayer);
-        entityList.AddChild(newPlayer);
+        entityRoot.AddChild(newPlayer);
+
+        RegisterNode(newPlayer, (ushort)(int)newPlayer.GetMeta("type"));
         character.SetNewId(lastEntityId);
         newPlayer.SetMeta("id", lastEntityId);
 

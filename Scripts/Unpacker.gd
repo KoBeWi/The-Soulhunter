@@ -20,6 +20,7 @@ func get_string():
 	
 	offset += 1
 	
+#	print("string ", string.get_string_from_ascii())
 	return string.get_string_from_ascii()
 
 func get_u16():
