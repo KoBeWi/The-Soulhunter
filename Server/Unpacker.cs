@@ -78,7 +78,9 @@ public class Unpacker {
             break;
             case Packet.TYPE.CHAT:
             var mode = GetU8();
-            var packet = new Packet(command).AddU8(mode).AddString(player.GetCharacter().GetName()).AddString(GetString());
+            var message = GetString(); //debug
+            var packet = new Packet(command).AddU8(mode).AddString(player.GetCharacter().GetName()).AddString(message);
+            GD.Print(player.GetCharacter().GetName(), ": ", message);
             
             if (mode == (byte)Data.CHATS.GLOBAL) {
                 foreach (var otherPlayer in Server.GetPlayers()) {
