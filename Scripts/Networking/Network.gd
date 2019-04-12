@@ -71,9 +71,6 @@ func process_packet(unpacker):
 				emit_signal("error", result)
 		Packet.TYPE.REGISTER:
 			emit_signal("error", unpacker.get_u8())
-	
-		"CHANGEROOM": ###
-			Com.game.change_map([])
 		
 		Packet.TYPE.CHAT:
 			emit_signal("chat_message", unpacker.get_u8(), unpacker.get_string(), unpacker.get_string())

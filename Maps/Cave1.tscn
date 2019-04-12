@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Scripts/MapSettings.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=2]
-[ext_resource path="res://Nodes/SavePoint.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Nodes/Projectiles/SavePoint.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Nodes/Enemies/Skeleton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Nodes/Backgrounds/Cave1.tscn" type="PackedScene" id=5]
 

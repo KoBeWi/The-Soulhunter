@@ -3,6 +3,10 @@ extends KinematicBody2D
 
 onready var players = get_tree().get_nodes_in_group("players")
 
+var hp
+var max_hp
+var xp
+
 func on_client_create():
 	visible = false
 	set_process(false)
@@ -32,14 +36,8 @@ func _physics_process(delta):
 func server_ai(delta): pass
 func general_ai(delta): pass
 
-func _body_enter(body):
-	return
-#	if Com.server and is_in_group("enemies") and body.is_in_group("players"):
-#		Network.send_data(["DAMAGE", mapid, "e", id, body.id, attack_type])
-
-func damage(amount):
-	pass
-#	print(" >> ", id)
+func damage(attack):
+	hp -= attack.damage
 
 func dead():
 	queue_free()

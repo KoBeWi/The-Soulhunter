@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+var time = 45
+
+func _physics_process(delta):
+	translate(Vector2(0, -time/15))
+	time -= 1
+	
+	if time == 0:
+		queue_free()"
+
+[node name="DamageNumber" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Number" type="Label" parent="."]
+margin_left = -56.0
+margin_top = -28.0
+margin_bottom = -14.0
+rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 1, 0.164063, 0, 1 )
+text = "0"
+align = 1
+valign = 1
+

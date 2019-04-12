@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Graphics/Objects/SavePoint.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/ParentCollider.gd" type="Script" id=2]
-[ext_resource path="res://Graphics/UI/PressUp.png" type="Texture" id=3]
+[ext_resource path="res://Graphics/UI/PressUp.png" type="Texture" id=2]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Save Point"
@@ -25,21 +24,12 @@ func _body_enter(body):
 		
 func _body_exit(body):
 	if body == Com.player:
-		player_in = false
+		player_in = false"
 
-func init_player():
-	return
-	if Com.player and !Com.player.initiated:
-		print(position)
-		Com.player.position = position
-		Com.game.start()"
-
-[sub_resource type="PhysicsMaterial" id=2]
-
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 30, 15 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:position")
@@ -54,51 +44,32 @@ tracks/0/keys = {
 "values": [ Vector2( 0, -160 ), Vector2( 0, -140 ) ]
 }
 
-[node name="SavePoint" type="Node2D"]
+[node name="SavePoint" type="StaticBody2D"]
 script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Collider" type="StaticBody2D" parent="."]
-editor/display_folded = true
-physics_material_override = SubResource( 2 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Shape" type="CollisionPolygon2D" parent="Collider"]
-polygon = PoolVector2Array( 30, -15, 40, 15, -40, 15, -30, -15 )
 
 [node name="PlayerSpot" type="Position2D" parent="."]
 position = Vector2( 0, -14.3075 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="EffectArea" type="Area2D" parent="."]
-editor/display_folded = true
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Shape" type="CollisionShape2D" parent="EffectArea"]
 position = Vector2( 0, -30 )
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="PressUp" type="Sprite" parent="."]
 editor/display_folded = true
 position = Vector2( 0, -160 )
-texture = ExtResource( 3 )
-__meta__ = {
-"_edit_lock_": true
-}
+texture = ExtResource( 2 )
 
 [node name="Animation" type="AnimationPlayer" parent="PressUp"]
 autoplay = "Idle"
-anims/Idle = SubResource( 4 )
+anims/Idle = SubResource( 3 )
 
+[node name="Shape" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 30, -15, 40, 15, -40, 15, -30, -15 )
+
+[connection signal="body_entered" from="EffectArea" to="." method="_body_enter"]
+[connection signal="body_exited" from="EffectArea" to="." method="_body_exit"]

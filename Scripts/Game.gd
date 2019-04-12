@@ -3,7 +3,6 @@ extends Node2D
 var UI
 var menu #pewnie też
 var map #a jakże
-var enemies
 var last_room
 
 var last_enemy = -1
@@ -15,48 +14,34 @@ onready var effects = $Effects
 var entity_list = {}
 
 func _process(delta):
-	return
-	if Com.is_server:
-		pass
-#		for player in players.get_children():
-#			if !player.initiated or player.changeroomed: continue
-#
-#			if player.position.x >= map.width * 1920:
-#				player.changeroomed = true
-#				Network.send_data(["CHANGEROOM", map.mapid, player.id, "r", int(player.position.y) / 1080])
-#			elif player.position.x < 0:
-#				player.changeroomed = true
-#				Network.send_data(["CHANGEROOM", map.mapid, player.id, "l", int(player.position.y) / 1080])
-	else:
-		if Com.key_press("MENU") and !is_menu:
-			menu.show()
-			menu.set_process(true)
-			Network.send_data(["GETSTATS", "2"])
-			Network.send_data(["GETINVENTORY"])
-			Network.send_data(["GETEQUIPMENT"])
-			is_menu = true
-		elif Com.key_press("MENU"):
-			menu.visible = false
-			menu.set_process(false)
-			is_menu = false
-			
-		if Com.key_press("MAP"):
-			var map = Com.player.get_node("Camera/UI/Map")
-			map.visible = !map.visible
+	return ##do wywalenia to wszystko (może oprócz mapy)
+	if Com.key_press("MENU") and !is_menu:
+		menu.show()
+		menu.set_process(true)
+		Network.send_data(["GETSTATS", "2"])
+		Network.send_data(["GETINVENTORY"])
+		Network.send_data(["GETEQUIPMENT"])
+		is_menu = true
+	elif Com.key_press("MENU"):
+		menu.visible = false
+		menu.set_process(false)
+		is_menu = false
 		
-		return
-		var room = [map.map_x 	+ int(Com.player.position.x)/1920, map.map_y + int(Com.player.position.y)/1080] #przenieść na server
-		if room != last_room:
-			UI.get_node("Map").set_room(room)
-			last_room = room
-			if !Com.player.chr.map.has(room):
-				Com.player.chr.map.append(room)
-#				Network.send_data(["DISCOVER", room[0], room[1]]) #nie powinno wysyłać na samym początku
+	if Com.key_press("MAP"): #nie tej mapy
+		var map = Com.player.get_node("Camera/UI/Map")
+		map.visible = !map.visible
+	
+	var room = [map.map_x + int(Com.player.position.x)/1920, map.map_y + int(Com.player.position.y)/1080] #przenieść na server
+	if room != last_room:
+		UI.get_node("Map").set_room(room)
+		last_room = room
+		if !Com.player.chr.map.has(room):
+			Com.player.chr.map.append(room)
+			Network.send_data(["DISCOVER", room[0], room[1]]) #nie powinno wysyłać na samym początku
 
 func load_map(id):
 	map = Res.maps[id].instance()
 	add_child(map)
-	enemies = map.get_node("Enemies")
 	update_camera()
 
 func update_camera():
@@ -69,7 +54,6 @@ func change_map(id):
 	if map:
 		map.queue_free()
 		for entity in entities.get_children():
-	#		Com.controls.remove_player(player) ##zamiast tego czyścimy
 			entity.queue_free()
 	
 	load_map(id)
@@ -104,10 +88,10 @@ func damage_number(group, id, damage):
 	label.global_position = node.global_position
 	effects.add_child(label)
 
-func got_soul(soul):
+func got_soul(soul): ##do HUDu
 	print(soul)
 
-func update_stats(stats):
+func update_stats(stats): ##tak jak niżej
 	if stats.has("level"):
 		Com.player.chr.level = stats["level"]
 	if stats.has("experience"):
@@ -127,24 +111,13 @@ func update_stats(stats):
 	
 	menu.update_status()
 
-func update_inventory(items):
+func update_inventory(items): ##przerzucić do menu
 	Com.player.chr.update_inventory(items)
 	menu.update_inventory()
 
-func update_equipment(items):
+func update_equipment(items): ##też
 	Com.player.chr.update_equipment(items)
 	menu.update_equipment()
-
-func get_player(id):
-	pass
-#	for player in players.get_children():
-#		if player.id == id:
-#			return player
-
-func get_enemy(id):
-	for enemy in enemies.get_children():
-		if enemy.id == id:
-			return enemy
 
 func get_enemy_number():
 	last_enemy += 1
@@ -154,7 +127,6 @@ func add_entity(type, id):
 	var node = load(str("res://Nodes/", Data.NODES[type], ".tscn")).instance()
 	node.set_meta("valid", true)
 	node.set_meta("id", id)
-#	node.visible = false
 	
 	entity_list[id] = node
 	entities.add_child(node)
@@ -172,5 +144,5 @@ func remove_entity(id):
 func get_entity(id):
 	return entity_list.get(id)
 
-func start():
+func start(): ##:/
 	Com.player.get_node("PlayerCamera/Fade/ColorRect").color.a = 0

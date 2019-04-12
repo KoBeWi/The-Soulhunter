@@ -12,12 +12,12 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Controls",
 "language": "GDScript",
-"path": "res://Scripts/Controls.gd"
+"path": "res://Scripts/System/Controls.gd"
 }, {
 "base": "Object",
 "class": "Data",
 "language": "GDScript",
-"path": "res://Scripts/Data.gd"
+"path": "res://Scripts/Networking/Data.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Enemy",
@@ -27,12 +27,12 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "Packet",
 "language": "GDScript",
-"path": "res://Scripts/Packet.gd"
+"path": "res://Scripts/Networking/Packet.gd"
 }, {
 "base": "Reference",
 "class": "Unpacker",
 "language": "GDScript",
-"path": "res://Scripts/Unpacker.gd"
+"path": "res://Scripts/Networking/Unpacker.gd"
 } ]
 _global_script_class_icons={
 "Controls": "",
@@ -50,9 +50,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Network="*res://Scripts/Network.gd"
-Res="*res://Scripts/Resources.gd"
-Com="*res://Nodes/Commons.tscn"
+Network="*res://Scripts/Networking/Network.gd"
+Res="*res://Scripts/System/Resources.gd"
+Com="*res://Nodes/System/Commons.tscn"
 
 [debug]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Scripts/PlayerMenu.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/UI/PlayerMenu.gd" type="Script" id=1]
 [ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=2]
 [ext_resource path="res://Graphics/UI/InventorySelect.png" type="Texture" id=3]
 [ext_resource path="res://Graphics/UI/DescriptionPanel.png" type="Texture" id=4]
