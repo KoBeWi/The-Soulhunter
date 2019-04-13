@@ -1,21 +1,23 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/Resources/WeaponEquip.gd" type="Script" id=1]
-[ext_resource path="res://Graphics/Items/Weapons/0.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/Weapon.gd" type="Script" id=1]
+[ext_resource path="res://Resources/Items/0.tres" type="Resource" id=2]
+[ext_resource path="res://Graphics/Items/Weapons/0.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6, 30 )
 
-[node name="Sword" type="StaticBody2D"]
+[node name="Sword" type="StaticBody2D" groups=[
+"player_attack",
+]]
 collision_layer = 0
 collision_mask = 4
 script = ExtResource( 1 )
-item_name = "Rusted Sword"
-attack = 1
+data = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -33 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -45 )

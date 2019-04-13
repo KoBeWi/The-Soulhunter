@@ -102,6 +102,10 @@ public class Packet {
     }
 
     public void Send(System.Net.Sockets.NetworkStream stream) {
-        stream.Write(Bytes(), 0, length);
+        try {
+            stream.Write(Bytes(), 0, length);
+        } catch (System.IO.IOException) {
+            Godot.GD.Print("Sending disrupted");
+        }
     }
 }

@@ -17,12 +17,15 @@ public class Room : Viewport {
     private List<Character> players;
     private Dictionary<Character, Node> playerNodes;
 
+    private uint timeout;
+
     public override void _Ready() {
         players = new List<Character>();
         entityBindings = new Dictionary<ushort, Node>();
         playerNodes = new Dictionary<Character, Node>();
         stateHistory = new Dictionary<ushort, Godot.Collections.Array>();
         lastEntityId = 0;
+        timeout = 0;
 
         GetNode("InGame").Call("load_map", mapId);
         map = GetNode("InGame/Map");
@@ -39,7 +42,15 @@ public class Room : Viewport {
     }
 
     public void Tick() {
-        if (players.Count == 0) return; //tutaj też timeout i wywalanie
+        if (players.Count == 0) {
+            timeout++;
+
+            if (timeout > 100) {
+                Server.RemoveRoom(mapId, this);
+            }
+            return;
+        }
+        timeout = 0;
 
         Dictionary<Character, ushort> killUs = new Dictionary<Character, ushort>();
 
@@ -98,10 +109,6 @@ public class Room : Viewport {
 
         return state;
     }
-
-    // public void Dispose() {
-    //     Server.Instance().RemoveChild(room);
-    // }
 
     public int AddPlayer(Character character) {
         var newPlayer = playerFactory.Instance();

@@ -194,6 +194,8 @@ tracks/0/keys = {
 collision_layer = 0
 collision_mask = 3
 script = SubResource( 1 )
+max_hp = 4
+xp = 1
 
 [node name="SpriteContainer" type="Node2D" parent="."]
 

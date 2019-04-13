@@ -178,6 +178,8 @@ texture = ExtResource( 4 )
 position = Vector2( 3, -11 )
 
 [node name="0" parent="Sprite/ArmPosition/Arm/WeaponHinge" instance=ExtResource( 5 )]
+item_name = ""
+attack = 0
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource( 8 )

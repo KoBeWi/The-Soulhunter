@@ -3,9 +3,9 @@ extends KinematicBody2D
 
 onready var players = get_tree().get_nodes_in_group("players")
 
-var hp
-var max_hp
-var xp
+export(int) var max_hp
+onready var hp = max_hp
+export(int) var xp
 
 func on_client_create():
 	visible = false
@@ -37,9 +37,10 @@ func server_ai(delta): pass
 func general_ai(delta): pass
 
 func hit(body):
-	if body.is_in_group("player_attack"):
-		damage(body.attack)
-		on_hit()
+	if Com.is_server:
+		if body.is_in_group("player_attack"):
+			damage(body.call("attack"))
+			on_hit()
 
 func unhit(body):
 	on_unhit()
@@ -49,9 +50,15 @@ func on_unhit(): pass
 
 func damage(attack):
 	hp -= attack.damage
+	
+	if hp <= 0:
+		dead()
 
 func dead():
-	queue_free()
+	on_dead()
+	Com.dispose_node(self)
+
+func on_dead(): pass
 
 func create_drop(id):
 	var item = load("res://Nodes/Item.tscn").instance()

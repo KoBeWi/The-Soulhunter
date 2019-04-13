@@ -112,6 +112,11 @@ public class Server : Node {
         return rooms[mapId][0]; //tutaj wybór fajnego pokoju
     }
 
+    public static void RemoveRoom(ushort mapId, Room room) {
+        instance.rooms[mapId].Remove(room);
+        room.QueueFree();
+    }
+
     private Room CreateRoom(ushort mapId) {
         if (!rooms.ContainsKey(mapId)) {
             rooms.Add(mapId, new List<Room>());
