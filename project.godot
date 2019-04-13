@@ -24,6 +24,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Enemy.gd"
 }, {
+"base": "ItemData",
+"class": "EquippableItem",
+"language": "GDScript",
+"path": "res://Scripts/Resources/EquippableItem.gd"
+}, {
+"base": "Resource",
+"class": "ItemData",
+"language": "GDScript",
+"path": "res://Scripts/Resources/ItemData.gd"
+}, {
 "base": "Reference",
 "class": "Packet",
 "language": "GDScript",
@@ -33,13 +43,21 @@ _global_script_classes=[ {
 "class": "Unpacker",
 "language": "GDScript",
 "path": "res://Scripts/Networking/Unpacker.gd"
+}, {
+"base": "EquippableItem",
+"class": "WeaponEquip",
+"language": "GDScript",
+"path": "res://Scripts/Resources/WeaponEquip.gd"
 } ]
 _global_script_class_icons={
 "Controls": "",
 "Data": "",
 "Enemy": "",
+"EquippableItem": "",
+"ItemData": "",
 "Packet": "",
-"Unpacker": ""
+"Unpacker": "",
+"WeaponEquip": ""
 }
 
 [application]

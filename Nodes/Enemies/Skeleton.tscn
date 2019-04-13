@@ -116,14 +116,7 @@ func apply_state_vector(vector):
 	
 	state = vector[2]
 	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
-	walk = vector[4]-1
-
-func on_hit(body):
-	print(body)
-
-func on_unhit(body):
-	pass # Replace with function body.
-"
+	walk = vector[4]-1"
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 24, 48 )
@@ -231,6 +224,6 @@ anims/Idle = SubResource( 4 )
 anims/Throw = SubResource( 5 )
 anims/Walk = SubResource( 6 )
 
-[connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
-[connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]
+[connection signal="body_entered" from="Hitbox" to="." method="hit"]
+[connection signal="body_exited" from="Hitbox" to="." method="unhit"]
 [connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]

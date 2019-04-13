@@ -53,7 +53,7 @@ func apply_state_vector(vector):
 	velocity.x = vector[2] - 10000
 	velocity.y = vector[3] - 10000
 
-func on_hit(body):
+func on_hit():
 	Com.dispose_node(self)"
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -77,4 +77,4 @@ collision_mask = 0
 [node name="Shape" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource( 2 )
 
-[connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
+[connection signal="body_entered" from="Hitbox" to="." method="hit"]

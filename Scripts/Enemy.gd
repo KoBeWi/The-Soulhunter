@@ -36,6 +36,17 @@ func _physics_process(delta):
 func server_ai(delta): pass
 func general_ai(delta): pass
 
+func hit(body):
+	if body.is_in_group("player_attack"):
+		damage(body.attack)
+		on_hit()
+
+func unhit(body):
+	on_unhit()
+
+func on_hit(): pass
+func on_unhit(): pass
+
 func damage(attack):
 	hp -= attack.damage
 
