@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Graphics/Backgrounds/Plains.png" type="Texture" id=1]
+
+[node name="Background" type="ParallaxBackground"]
+scroll_ignore_camera_zoom = true
+
+[node name="Layer1" type="ParallaxLayer" parent="."]
+motion_scale = Vector2( 0.5, 1 )
+motion_offset = Vector2( 0, 540 )
+motion_mirroring = Vector2( 1920, 0 )
+
+[node name="Plains" type="Sprite" parent="Layer1"]
+texture = ExtResource( 1 )
+

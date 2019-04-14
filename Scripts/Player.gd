@@ -1,5 +1,9 @@
 extends KinematicBody2D
 
+const GRAVITY = 100
+const SPEED = 500
+const JUMP = 1500
+
 var controls = {}
 var key_press = {}
 
@@ -9,7 +13,7 @@ var smooth_position = Vector2()
 var main = false
 #var enemies = []
 
-var on_floor = false
+var jump = false
 var attack = false
 
 onready var sprite = $Sprite
@@ -53,30 +57,30 @@ func _process(delta):
 func _physics_process(delta):
 	var flip = sprite.flip_h
 	
-	motion += Vector2(0, 1)
+	motion += Vector2(0, GRAVITY)
 	if controls.has(Controls.RIGHT):
-		motion.x = 8
+		motion.x = SPEED
 		sprite.flip_h = false
 	elif controls.has(Controls.LEFT):
-		motion.x = -8
+		motion.x = -SPEED
 		sprite.flip_h = true
 	else:
 		motion.x = 0
 	
-	if motion.y > 2: on_floor = false
-	
 	if flip != sprite.flip_h: flip()
 		
-	if key_press.has(Controls.JUMP) and on_floor:
-		motion.y = -20
+	if key_press.has(Controls.JUMP) and is_on_floor():
+		jump = true
+		motion.y = -JUMP
 	
 	if attack:
 		pass
 	elif motion.y < 0:
-		on_floor = false
 		if anim.assigned_animation != "Jump":
 			anim.play("Jump")
-	elif !on_floor and motion.y >= 0:
+	elif !is_on_floor() and motion.y >= 0:
+		jump = false
+		
 		if anim.assigned_animation != "Fall":
 			anim.play("Fall")
 	elif motion.x != 0:
@@ -84,15 +88,7 @@ func _physics_process(delta):
 	else:
 		anim.play("Idle")
 	
-	var collided = move_and_collide (Vector2(0, motion.y))
-	if collided:
-		if motion.y > 0:
-			on_floor = true
-		motion.y = 0
-	collided = move_and_collide (Vector2(motion.x, 0))
-	
-	if collided and collided.normal.y < 0:
-		move_and_collide(motion.slide(collided.normal))
+	motion = move_and_slide_with_snap(motion, Vector2.DOWN * 32 if !jump else Vector2(), Vector2.UP, true)
 	
 	if key_press.has(Controls.ATTACK) and !attack:
 		attack = true

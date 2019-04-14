@@ -1,7 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Scripts/UI/Map.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/UI/MapMenu.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/Map/Position.png" type="Texture" id=2]
+
 
 
 [sub_resource type="Animation" id=1]

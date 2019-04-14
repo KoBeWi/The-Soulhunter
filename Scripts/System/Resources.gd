@@ -11,10 +11,11 @@ func _ready():
 		
 		var file_name = dir.get_next()
 		while file_name != "":
-			var map = load("res://Maps/" + file_name)
-			var mapid = map.instance().mapid ##INSTANCE? :I
-			maps.resize(max(maps.size(), mapid + 1))
-			maps[mapid] = map
+			var map  = load("res://Maps/" + file_name)
+			var map_id = map.get_state().get_node_property_value(0, 2)
+			
+			maps.resize(max(maps.size(), map_id + 1))
+			maps[map_id] = map
 			
 			file_name = dir.get_next()
 	else:

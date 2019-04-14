@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
@@ -138,7 +138,13 @@ func _on_Animation_animation_finished(anim_name):
 		$\"..\".attack_end()"
 
 [sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 24, 49 )
+extents = Vector2( 24, 32 )
+
+[sub_resource type="RayShape2D" id=9]
+length = 32.0
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 24, 48 )
 
 [node name="Player" type="KinematicBody2D" groups=[
 "players",
@@ -178,11 +184,14 @@ texture = ExtResource( 4 )
 position = Vector2( 3, -11 )
 
 [node name="0" parent="Sprite/ArmPosition/Arm/WeaponHinge" instance=ExtResource( 5 )]
-item_name = ""
-attack = 0
 
 [node name="Collider" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -16 )
 shape = SubResource( 8 )
+
+[node name="ColliderRay" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 16 )
+shape = SubResource( 9 )
 
 [node name="Name" type="Label" parent="."]
 margin_left = -19.0
@@ -197,11 +206,12 @@ valign = 1
 position = Vector2( 4.50741, -48.9376 )
 
 [node name="Hitbox" type="Area2D" parent="."]
+editor/display_folded = true
 collision_layer = 2
 collision_mask = 0
 
 [node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
-shape = SubResource( 8 )
+shape = SubResource( 10 )
 
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
