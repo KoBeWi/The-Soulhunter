@@ -185,3 +185,7 @@ func check_map(map):
 		return 3
 	
 	return 4
+
+func update_camera():
+	camera.limit_right = Com.game.map.width * 1920
+	camera.limit_bottom = Com.game.map.height * 1080

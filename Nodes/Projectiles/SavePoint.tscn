@@ -60,7 +60,6 @@ position = Vector2( 0, -30 )
 shape = SubResource( 2 )
 
 [node name="PressUp" type="Sprite" parent="."]
-editor/display_folded = true
 position = Vector2( 0, -160 )
 texture = ExtResource( 2 )
 

@@ -62,13 +62,13 @@ public class Room : Viewport {
                 Vector2 position = (Vector2)player.Value.Get("position");
 
                 if (exit == 1) {
-                    room = Server.GetAdjacentMap((int)map.Get("map_x") + 1, (int)map.Get("map_y"));
-                    position.x -= 1920;
-                    position.y += ((int)map.Get("map_y") - (int)room.GetMapValue("map_y")) * 1080;
+                    room = Server.GetAdjacentMap((int)map.Get("map_x") + (int)map.Get("width"), (int)map.Get("map_y"));
+                    position.x -= (int)map.Get("width") * 1920;
+                    position.y += ((int)map.Get("map_y") + (int)position.y / 1080 - (int)room.GetMapValue("map_y")) * 1080;
                 } else if (exit == 3) {
                     room = Server.GetAdjacentMap((int)map.Get("map_x") - 1, (int)map.Get("map_y"));
-                    position.x += 1920;
-                    position.y += ((int)map.Get("map_y") - (int)room.GetMapValue("map_y")) * 1080;
+                    position.x += (int)room.GetMapValue("width") * 1920;
+                    position.y += ((int)map.Get("map_y") + (int)position.y / 1080 - (int)room.GetMapValue("map_y")) * 1080;
                 }
 
                 if (room != null) {

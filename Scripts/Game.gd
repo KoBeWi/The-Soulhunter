@@ -1,8 +1,8 @@
 extends Node2D
 
-var UI
+var UI #do wywalenia
 var menu #pewnie też
-var map #a jakże
+var map
 var last_room
 
 var last_enemy = -1
@@ -42,13 +42,6 @@ func _process(delta):
 func load_map(id):
 	map = Res.maps[id].instance()
 	add_child(map)
-	update_camera()
-
-func update_camera():
-	if Com.player:
-		var camera = Com.player.camera
-		camera.limit_right = map.width * 1920
-		camera.limit_bottom = map.height * 1080
 
 func change_map(id):
 	if map:

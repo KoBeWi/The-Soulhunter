@@ -103,6 +103,7 @@ func process_packet(unpacker):
 			Com.player.set_meta("id", unpacker.get_u16())
 			Com.game.register_entity(Com.player, Com.player.get_meta("id"))
 			Com.player.position = unpacker.get_position()
+			Com.player.update_camera()
 		
 		Packet.TYPE.ADD_ENTITY:
 			Com.game.add_entity(unpacker.get_u16(), unpacker.get_u16())
