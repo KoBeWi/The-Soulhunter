@@ -1,0 +1,126 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Nodes/Enemies/Skeleton.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=1]
+resource_name = "Skeleton"
+script/source = "extends Enemy
+
+onready var animation = $Animation
+onready var sprite = $SpriteContainer
+
+enum {IDLE, WALK, ATTACK}
+var state = IDLE
+var previous_state = IDLE
+
+var walk = 0
+var attac = 0
+var delay = 0
+var direction = 1
+
+func _ready():
+	if Com.register_node(self, \"Enemies/BloodSkeleton\"): return
+	
+#	init(\"Skeleton\")
+	direction = 1 - randi()%2*2
+
+func server_ai(delta):
+	#TODO: rzucza tylko gdy gracz w pobliżu, chodzi za wykrytym graczem
+	delay -= 1
+	
+	var radar = 100000
+	
+	for player in players:
+		var dist = player.global_position.distance_squared_to(global_position)
+		
+		if dist < radar:
+			direction = sign(player.global_position.x - global_position.x)
+			radar = dist
+	
+	match state:
+		IDLE:
+			if delay <= 0 and randi()%200 == 0:
+				state = WALK
+				walk = 1 - randi()%2*2
+				delay = 30
+			elif randi()%30 == 0:
+				state = ATTACK
+	
+		WALK:
+			if delay <= 0 and randi()%200 == 0:
+				state = IDLE
+				walk = 0
+				delay = 20
+		
+		ATTACK:
+			attac += delta
+			
+			if attac >= 0.3:
+				attac = 0
+				state = IDLE ##inaczej
+				
+				var bone = preload(\"res://Nodes/Enemies/Bone.tscn\").instance()
+				bone.position = position + Vector2(0, -80)
+				bone.velocity.x = abs(bone.velocity.x) * direction
+				get_parent().add_child(bone)
+
+func general_ai(delta):
+	sprite.scale.x = -direction
+	
+	if sprite.position.length_squared() > 1:
+		sprite.position *= 0.8
+	else:
+		sprite.position = Vector2()
+	
+	if state != previous_state:
+		previous_state = state
+		
+		match state:
+			IDLE:
+				animation.play(\"Idle\")
+			WALK:
+				animation.play(\"Walk\")
+			ATTACK:
+				animation.play(\"Throw\")
+	
+	move_and_collide(Vector2(walk * 6, 1))
+
+func _on_animation_finished(anim_name): ##potrzebne?
+	if anim_name == \"Throw\":
+		attac = 0
+		animation.play(\"Idle\")
+
+func state_vector_types():
+	return [
+			Data.TYPE.U16,
+			Data.TYPE.U16,
+			Data.TYPE.U8,
+			Data.TYPE.U8,
+			Data.TYPE.U8
+		]
+
+func get_state_vector():
+	return [
+			round(position.x),
+			round(position.y),
+			state,
+			direction+1,
+			walk+1
+		]
+
+func apply_state_vector(vector):
+	var old_position = position
+	position.x = vector[0]
+	position.y = vector[1]
+	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
+	
+	state = vector[2]
+	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
+	walk = vector[4]-1"
+
+[node name="Skeleton" instance=ExtResource( 1 )]
+modulate = Color( 1, 0, 0, 1 )
+script = SubResource( 1 )
+max_hp = 10
+xp = 3
+

@@ -58,6 +58,14 @@
       <HintPath>$(ProjectDir)\.mono\assemblies\MongoDB.Bson.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DnsClient">
+      <HintPath>$(ProjectDir)\.mono\assemblies\DnsClient.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>$(ProjectDir)\.mono\assemblies\System.Buffers.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>

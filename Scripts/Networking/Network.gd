@@ -6,12 +6,9 @@ var client
 var account
 
 const server_host = "127.0.0.1"
-#const server_host = "149.156.43.54"
-#const server_host = "172.19.56.150"
-#const server_host = "172.19.24.145"
 const server_port = 2412
 #const server_host = "0.tcp.ngrok.io"
-#const server_port = 18136
+#const server_port = 12051
 
 signal connected
 signal log_in

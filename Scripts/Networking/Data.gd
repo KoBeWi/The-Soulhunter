@@ -17,6 +17,7 @@ enum CHATS {
 const NODES = [
 	"Player",
 	"Enemies/Skeleton",
+	"Enemies/BloodSkeleton",
 	"Enemies/Bone"
 ]
 
