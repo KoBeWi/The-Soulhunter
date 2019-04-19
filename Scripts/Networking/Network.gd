@@ -4,11 +4,12 @@ enum{STRING, U8, U16}
 
 var client
 var account
+var server_delta = 0
 
-const server_host = "127.0.0.1"
-const server_port = 2412
-#const server_host = "0.tcp.ngrok.io"
-#const server_port = 12051
+#const server_host = "127.0.0.1"
+#const server_port = 2412
+const server_host = "0.tcp.eu.ngrok.io"
+const server_port = 18200
 
 signal connected
 signal log_in
@@ -47,6 +48,7 @@ func process_packet(unpacker):
 	
 	match unpacker.command:
 		Packet.TYPE.HELLO:
+			server_delta = unpacker.get_u32() - OS.get_ticks_msec()
 			emit_signal("connected")
 		
 		Packet.TYPE.LOGIN:
@@ -61,6 +63,7 @@ func process_packet(unpacker):
 				
 				Com.game = preload("res://Scenes/InGame.tscn").instance()
 				$"/root".add_child(Com.game)
+				get_tree().current_scene = Com.game
 				Com.game.add_main_player(player)
 				
 				emit_signal("log_in")
@@ -109,6 +112,7 @@ func process_packet(unpacker):
 			Com.game.remove_entity(unpacker.get_u16())
 		
 		Packet.TYPE.TICK:
+			var timestamp = unpacker.get_u32()
 			var entity_count = unpacker.get_u8()
 			
 			for i in entity_count:
@@ -119,7 +123,7 @@ func process_packet(unpacker):
 				var entity = Com.game.get_entity(id)
 				
 				if entity and is_instance_valid(entity):
-					Data.apply_state_vector(unpacker, entity, diff_vector)
+					Data.apply_state_vector(timestamp, unpacker, entity, diff_vector)
 		
 		"EQUIPMENT": ###
 			Com.game.update_equipment([])

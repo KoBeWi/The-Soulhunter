@@ -57,7 +57,6 @@ margin_right = 439.0
 margin_bottom = 279.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-text = "a"
 placeholder_text = "login"
 
 [node name="Password" type="LineEdit" parent="."]
@@ -67,7 +66,6 @@ margin_right = 440.0
 margin_bottom = 321.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-text = "a"
 secret = true
 placeholder_text = "password"
 

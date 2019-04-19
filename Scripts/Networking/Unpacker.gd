@@ -23,15 +23,19 @@ func get_string():
 #	print("string ", string.get_string_from_ascii())
 	return string.get_string_from_ascii()
 
+func get_u8():
+#	print("u8 ", data[offset])
+	offset += 1
+	return data[offset-1]
+
 func get_u16():
 #	print("u16 ", data[offset] * 256 + data[offset+1])
 	offset += 2
 	return data[offset-2] * 256 + data[offset-1]
 
-func get_u8():
-#	print("u8 ", data[offset])
-	offset += 1
-	return data[offset-1]
+func get_u32():
+	offset += 4
+	return data[offset-4] * 16777216 + data[offset-3] * 65536 + data[offset-2] * 256 + data[offset-1]
 
 func get_position():
 	var mode = get_u8()

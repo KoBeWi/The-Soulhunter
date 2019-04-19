@@ -9,10 +9,11 @@ var key_press = {}
 
 var uname = "" setget set_username
 var motion = Vector2()
-var smooth_position = Vector2()
+var last_server_position = Vector2()
 var main = false
 #var enemies = []
 
+var last_controls = OS.get_ticks_msec()
 var jump = false
 var attack = false
 
@@ -53,6 +54,9 @@ func _process(delta):
 		sprite.position *= 0.8
 	else:
 		sprite.position = Vector2()
+	
+	if camera:
+		camera.position = sprite.position
 
 func _physics_process(delta):
 	var flip = sprite.flip_h
@@ -96,15 +100,17 @@ func _physics_process(delta):
 		anim.playback_speed = 4
 		anim.play("SwingAttack1" + direction())
 	
+	if !controls.empty():
+		last_controls = OS.get_ticks_msec()
 	key_press.clear()
 
 func on_key_press(p_id, key, state):
-	if state == Controls.State.ACTION and p_id == get_meta("id"):
+	if (!main or state == Controls.State.ACTION) and p_id == get_meta("id"):
 		controls[key] = true
 		key_press[key] = true
 
 func on_key_release(p_id, key, state):
-	if state == Controls.State.ACTION and p_id == get_meta("id"):
+	if (!main or state == Controls.State.ACTION) and p_id == get_meta("id"):
 		controls.erase(key)
 
 func flip(f = sprite.flip_h):
@@ -164,13 +170,24 @@ func get_state_vector():
 			round(position.y)
 		]
 
-func apply_state_vector(vector):
+func apply_state_vector(timestamp, diff_vector, vector):
 	self.uname = vector[0]
+	var target_position = Vector2(vector[1], vector[2])
 	
-	var old_position = position
-	position.x = vector[1]
-	position.y = vector[2]
-	if has_meta("initialized"): sprite.position = (old_position - position) + sprite.position
+	if !main or Com.time_greater(timestamp, last_controls + 1000):
+		var old_position = position
+		
+		if old_position.round() != target_position:
+			position = target_position
+		elif last_server_position != Vector2():
+			position = last_server_position
+		
+		if has_meta("initialized"): sprite.position += (old_position - position)
+	
+	if (diff_vector & 2) > 0:
+		last_server_position.x = vector[1]
+	if (diff_vector & 4) > 0:
+		last_server_position.y = vector[2]
 
 func on_hit(body):
 	pass # Replace with function body.

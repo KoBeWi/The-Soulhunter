@@ -49,6 +49,13 @@ public class Packet {
         return this;
     }
 
+    public Packet AddU32(uint i) {
+        data.Add(new byte[] {(byte)(i / 16777216), (byte)(i / 65536), (byte)(i / 256), (byte)(i % 256)});
+        length += 4;
+
+        return this;
+    }
+
     static readonly byte[] boolHelper = {1, 2, 4, 8, 16, 32, 64, 128};
 
     public void AddBoolArray(bool[] bools) {

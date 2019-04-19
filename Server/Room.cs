@@ -87,7 +87,7 @@ public class Room : Viewport {
     }
 
     private Packet CreateStatePacket(bool full) {
-        var state = new Packet(Packet.TYPE.TICK);
+        var state = new Packet(Packet.TYPE.TICK).AddU32((uint)OS.GetTicksMsec());
         state.AddU8((byte)entityBindings.Count);
 
         foreach (var id in entityBindings.Keys) {
@@ -101,7 +101,10 @@ public class Room : Viewport {
                 diffVector = new bool[data.Count];
                 for (int i = 0; i < diffVector.Length; i++) diffVector[i] = true;
             }
-            stateHistory[id] = data;
+            
+            if (!full) {
+                stateHistory[id] = data;
+            }
 
             state.AddU16(id);
             state.AddStateVector(types, data, diffVector);

@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=2]
 [ext_resource path="res://Nodes/Projectiles/SavePoint.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Nodes/Enemies/Skeleton.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Nodes/Backgrounds/Plains.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Nodes/Backgrounds/Plains.tscn" type="PackedScene" id=4]
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 1 )
@@ -29,8 +28,5 @@ position = Vector2( 1504, 689 )
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Skeleton" parent="Enemies" instance=ExtResource( 4 )]
-position = Vector2( 704, 834 )
-
-[node name="Background" parent="." instance=ExtResource( 5 )]
+[node name="Background" parent="." instance=ExtResource( 4 )]
 

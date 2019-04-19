@@ -44,7 +44,7 @@ func get_state_vector():
 			round(velocity.y) + 10000
 		]
 
-func apply_state_vector(vector):
+func apply_state_vector(timestamp, diff_vector, vector):
 	var old_position = position
 	position.x = vector[0]
 	position.y = vector[1]

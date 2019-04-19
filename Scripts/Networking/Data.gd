@@ -23,7 +23,7 @@ const NODES = [
 
 const binary = [1, 2, 4, 8, 16, 32, 64, 128]
 
-static func apply_state_vector(unpacker, node, diff_vector):
+static func apply_state_vector(timestamp, unpacker, node, diff_vector):
 	var final_vector = node.get_state_vector()
 	var data_types = node.state_vector_types()
 	
@@ -37,7 +37,7 @@ static func apply_state_vector(unpacker, node, diff_vector):
 				TYPE.STRING:
 					final_vector[i] = unpacker.get_string()
 	
-	node.apply_state_vector(final_vector)
+	node.apply_state_vector(timestamp, diff_vector, final_vector)
 	if !node.has_meta("initalized"):
 		node.on_initialized()
 		node.set_meta("initialized", true)

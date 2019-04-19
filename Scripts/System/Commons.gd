@@ -44,3 +44,6 @@ func dispose_node(node):
 		node.queue_free()
 	elif !node.has_meta("valid"):
 		node.queue_free()
+
+func time_greater(server, client):
+	return server > client + Network.server_delta
