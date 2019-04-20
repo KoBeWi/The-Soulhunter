@@ -51,8 +51,7 @@ public class Unpacker {
                 var room = Server.Instance().GetRoom(player.GetCharacter().GetMapId());
 
                 player.SendPacket(new Packet(command).AddU8(0));
-                    //.AddU16(0).AddU16(player.GetCharacter().GetMapId())
-                    //.AddU16(room.AddPlayer(player.GetCharacter())));
+                player.SendPacket(new Packet(Packet.TYPE.STATS).AddStats(player, "level", "exp", "hp", "max_hp", "mp", "max_mp"));
 
                 room.AddPlayer(player.GetCharacter());
             } else {

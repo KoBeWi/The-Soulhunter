@@ -5,13 +5,15 @@ using MongoDB.Bson;
 public class Player {
     private BsonDocument data;
     private NetworkStream upstream;
+    private Database database;
 
     private string login;
 
     private Character character;
 
-    public Player(NetworkStream stream) {
+    public Player(NetworkStream stream, Database databas) {
         upstream = stream;
+        database = databas;
     }
 
     public void LogIn(BsonDocument _data) {
@@ -40,5 +42,9 @@ public class Player {
 
     public void SendPacket(Packet packet) {
         packet.Send(upstream);
+    }
+
+    public ushort GetStat(string stat) {
+        return database.GetStat(login, stat); //można jakieś cache
     }
 }

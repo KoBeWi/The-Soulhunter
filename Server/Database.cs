@@ -26,7 +26,11 @@ public class Database {
             {"location", 0},
             // {"location", new BsonDocument {{"map_id", 0}, {"from", 5}} },
             {"level", 1},
-            {"max_hp", 120}
+            {"exp", 0},
+            {"hp", 120},
+            {"max_hp", 120},
+            {"mp", 80},
+            {"max_mp", 80}
         } );
 
         return Error.Ok;
@@ -55,21 +59,14 @@ public class Database {
         return Error.Ok;
     }
 
-    public enum Result {SUCCESS, FAILURE}
-
-        /*
+    public ushort GetStat(string login, string stat) {
         var collection = database.GetCollection<BsonDocument>("users");
+        var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
 
-        var document = new BsonDocument {
-            { "name", "MongoDB" },
-            { "type", "Database" },
-            { "count", 1 },
-            { "info", new BsonDocument
-                {
-                    { "x", 203 },
-                    { "y", 102 }
-                }}
-        };
+        if (found == null) {
+            return 0;
+        }
 
-        collection.InsertOne(document);*/
+        return (ushort)found.GetValue(stat).AsInt32;
+    }
 }

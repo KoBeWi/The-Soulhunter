@@ -6,15 +6,16 @@ var client
 var account
 var server_delta = 0
 
-#const server_host = "127.0.0.1"
-#const server_port = 2412
-const server_host = "0.tcp.eu.ngrok.io"
-const server_port = 18200
+const server_host = "127.0.0.1"
+const server_port = 2412
+#const server_host = "0.tcp.eu.ngrok.io"
+#const server_port = 18200
 
 signal connected
 signal log_in
 signal error(code)
 signal chat_message(type, from, message)
+signal stats(data)
 
 func _ready():
 	set_process(false)
@@ -140,18 +141,26 @@ func process_packet(unpacker):
 		Packet.TYPE.KEY_RELEASE:
 			Com.controls.release_key(unpacker.get_u16(), unpacker.get_u8(), Controls.State.ACTION)
 		
+		Packet.TYPE.STATS:
+			var vec = unpacker.get_u8()
+			var stats = {}
+			
+			for i in Packet.stat_list.size():
+				var stat = Packet.stat_list[i]
+				
+				if (vec & Data.binary[i]) > 0:
+					stats[stat] = unpacker.get_u16()
+			
+			print(stats)
+			if !stats.empty():
+				emit_signal("stats", stats)
+		
 		"MAP": ###
 			Com.player.chr.update_map([])
 		
 		"SOUL": ###
 			var enemy = Com.game.get_enemy([][0])
 			if enemy: enemy.create_soul([][1])
-		"STATS": ###
-			var stats = stat_code([].back())
-			var send = {}
-			for i in range(stats.size()):
-				send[stats[i]] = [][i]
-			Com.game.update_stats(send)
 		"SYNC": ###
 			var group = [][0]
 			var index = [][1]
@@ -185,9 +194,3 @@ func print_raw(ary): ##DEBUG
 	var arr = []
 	for i in range(ary.size()): arr.append(ary[i])
 	print(str(arr))
-
-func stat_code(code):
-	if code == 1:
-		return ["level", "experience", "maxhp", "hp", "maxmp", "mp"]
-	elif code == 2:
-		return ["attack", "defense"]

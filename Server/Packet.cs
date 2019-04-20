@@ -12,7 +12,8 @@ public class Packet {
         ADD_ENTITY,
         REMOVE_ENTITY,
         TICK,
-        CHAT
+        CHAT,
+        STATS
     }
 
     public static readonly byte[] zero = new byte[] {0};
@@ -58,7 +59,7 @@ public class Packet {
 
     static readonly byte[] boolHelper = {1, 2, 4, 8, 16, 32, 64, 128};
 
-    public void AddBoolArray(bool[] bools) {
+    public Packet AddBoolArray(bool[] bools) {
         byte boolVector = 0;
 
         for (int i = 0; i < 8; i++) {
@@ -66,10 +67,10 @@ public class Packet {
             boolVector |= bools[i] ? boolHelper[i] : (byte)0;
         }
 
-        AddU8(boolVector);
+        return AddU8(boolVector);
     }
 
-    public void AddStateVector(Godot.Collections.Array types, Godot.Collections.Array data, bool[] diffVector) {
+    public Packet AddStateVector(Godot.Collections.Array types, Godot.Collections.Array data, bool[] diffVector) {
         AddBoolArray(diffVector);
 
         for (int i = 0; i < types.Count; i++) {
@@ -89,6 +90,31 @@ public class Packet {
                 break;
             }
         }
+
+        return this;
+    }
+
+    static readonly string[] statList = {"level", "exp", "hp", "max_hp", "mp", "max_mp"};
+
+    public Packet AddStats(Player player, params string[] stats) {
+        var vec = new bool[8];
+        int last_index = -1;
+
+        List<ushort> statsToSend = new List<ushort>();
+
+        foreach(string stat in stats) {
+            var index = Array.IndexOf(statList, stat);
+            if (index <= last_index) throw new Exception("Wrong order");
+            last_index = index;
+
+            vec[index] = true;
+            statsToSend.Add(player.GetStat(stat));
+        }
+
+        AddBoolArray(vec);
+        foreach (ushort stat in statsToSend) AddU16(stat);
+
+        return this;
     }
 
     public byte[] Bytes() {

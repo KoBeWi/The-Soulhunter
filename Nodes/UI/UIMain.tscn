@@ -6,8 +6,6 @@
 [ext_resource path="res://Nodes/Map.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Nodes/UI/Chat.tscn" type="PackedScene" id=5]
 
-
-
 [node name="UI" type="CanvasLayer"]
 script = ExtResource( 1 )
 

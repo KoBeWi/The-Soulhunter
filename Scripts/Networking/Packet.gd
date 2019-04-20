@@ -11,8 +11,11 @@ enum TYPE {
 	ADD_ENTITY,
 	REMOVE_ENTITY,
 	TICK,
-	CHAT
+	CHAT,
+	STATS
 }
+
+const stat_list = ["level", "exp", "hp", "max_hp", "mp", "max_mp"]
 
 var data
 
