@@ -37,6 +37,7 @@ value = 100.0
 texture_progress = ExtResource( 5 )
 
 [node name="LvLabel" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 44.0

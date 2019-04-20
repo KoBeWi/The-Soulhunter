@@ -6,3 +6,4 @@
 >coś zrobić z ujemnymi U16 :/ (żeby automatycznie, albo uważać tam gdzie tak jest czy cuś)
 +własne error code (np. ERROR_CHAT) i handler u klienta dla każdego
 >zmienić tick time na u16? (żeby było 2 bajty mniej)
++cache do bazy danych

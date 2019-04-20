@@ -151,7 +151,6 @@ func process_packet(unpacker):
 				if (vec & Data.binary[i]) > 0:
 					stats[stat] = unpacker.get_u16()
 			
-			print(stats)
 			if !stats.empty():
 				emit_signal("stats", stats)
 		

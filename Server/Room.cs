@@ -203,6 +203,19 @@ public class Room : Viewport {
     }
 
     public void DisposeNode(ushort id) {
+        if (entityBindings.ContainsKey(id)) {
+            var node = entityBindings[id];
+            if (node.HasMeta("enemy")) {
+                foreach (object playerId in node.GetMeta("attackers") as Godot.Collections.Array) {
+                    var player = GetPlayerById((ushort)(int)Godot.GD.Convert(playerId, (int)Godot.Variant.Type.Int));
+
+                    if (player != null) {
+                        player.AddExperience(1);
+                    }
+                }
+            }
+        }
+
         entityBindings.Remove(id);
         stateHistory.Remove(id);
 
@@ -211,5 +224,13 @@ public class Room : Viewport {
 
     public object GetMapValue(string value) {
         return map.Get(value);
+    }
+
+    public Character GetPlayerById(ushort id) {
+        foreach (Character player in players)
+            if (player.GetPlayerId() == id)
+                return player;
+        
+        return null;
     }
 }

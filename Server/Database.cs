@@ -69,4 +69,15 @@ public class Database {
 
         return (ushort)found.GetValue(stat).AsInt32;
     }
+
+    public void SetStat(string login, string stat, ushort value) {
+        var collection = database.GetCollection<BsonDocument>("users");
+        var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
+
+        if (found != null) {
+            var filter = Builders<BsonDocument>.Filter.Empty;
+            var update = Builders<BsonDocument>.Update.Set(stat, value);
+            collection.UpdateOne(filter, update);
+        }
+    }
 }

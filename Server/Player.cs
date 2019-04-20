@@ -35,7 +35,7 @@ public class Player {
     public string GetLogin() {return login;}
 
     public void SetCharacter(string name) {
-        character = new Character(this, data);
+        character = new Character(this, data, database);
     }
 
     public Character GetCharacter() {return character;}

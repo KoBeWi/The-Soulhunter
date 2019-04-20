@@ -19,6 +19,7 @@ var attack = false
 
 onready var sprite = $Sprite
 onready var arm = $Sprite/ArmPosition
+onready var weapon_point = $Sprite/ArmPosition/Arm/WeaponHinge
 onready var chr = $Character
 onready var anim = $Animation
 
@@ -28,6 +29,7 @@ signal initiated
 
 func _ready():
 	if Com.register_node(self, "Player"): return
+	set_weapon(preload("res://Nodes/Weapons/0.tscn").instance())
 	
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
@@ -206,3 +208,10 @@ func check_map(map):
 func update_camera():
 	camera.limit_right = Com.game.map.width * 1920
 	camera.limit_bottom = Com.game.map.height * 1080
+
+func set_weapon(weapon):
+	if weapon_point.get_child_count() > 0:
+		weapon_point.get_chil(0).queue_free()
+	
+	weapon.player = self
+	weapon_point.add_child(weapon)

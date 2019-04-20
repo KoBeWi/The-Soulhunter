@@ -17,13 +17,9 @@ func on_initialized():
 	set_process(true)
 	set_physics_process(true)
 
-func init(ename = ""):
-	return
-#	add_to_group("enemies")
-#	if id == -1: id = $"../../..".get_enemy_number()
-#
-#	if Com.server:
-#		Network.send_data(["ENEMY", mapid, id, 0]) #0 to ma być id wroga (tutaj szkielet)
+func init(ename):
+	set_meta("enemy", ename)
+	set_meta("attackers", [])
 
 func _process(delta):
 	if Com.is_server:
@@ -39,6 +35,12 @@ func general_ai(delta): pass
 func hit(body):
 	if Com.is_server:
 		if body.is_in_group("player_attack"):
+			if has_meta("attackers"):
+				var id = body.player.get_meta("id")
+				
+				if !get_meta("attackers").has(id):
+					get_meta("attackers").append(id)
+			
 			damage(body.call("attack"))
 			on_hit()
 

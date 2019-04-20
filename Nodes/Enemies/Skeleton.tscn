@@ -20,8 +20,8 @@ var direction = 1
 
 func _ready():
 	if Com.register_node(self, \"Enemies/Skeleton\"): return
+	init(\"Skeleton\")
 	
-#	init(\"Skeleton\")
 	direction = 1 - randi()%2*2
 
 func server_ai(delta):

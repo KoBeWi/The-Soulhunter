@@ -12,8 +12,6 @@ onready var sprite = $Sprite
 
 func _ready():
 	if Com.register_node(self, \"Enemies/Bone\"): return
-	
-	init()
 
 func general_ai(delta):
 	velocity.y += 50

@@ -1,10 +1,9 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
 [ext_resource path="res://Graphics/Characters/Player.png" type="Texture" id=3]
 [ext_resource path="res://Graphics/Characters/PlayerArm.png" type="Texture" id=4]
-[ext_resource path="res://Nodes/Weapons/0.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fall"
@@ -167,7 +166,6 @@ next/Fall = "Fall"
 script = SubResource( 7 )
 
 [node name="Sprite" type="Sprite" parent="."]
-editor/display_folded = true
 texture = ExtResource( 3 )
 hframes = 14
 frame = 13
@@ -182,8 +180,6 @@ texture = ExtResource( 4 )
 
 [node name="WeaponHinge" type="Position2D" parent="Sprite/ArmPosition/Arm"]
 position = Vector2( 3, -11 )
-
-[node name="0" parent="Sprite/ArmPosition/Arm/WeaponHinge" instance=ExtResource( 5 )]
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -16 )

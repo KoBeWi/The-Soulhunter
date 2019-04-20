@@ -20,8 +20,8 @@ var direction = 1
 
 func _ready():
 	if Com.register_node(self, \"Enemies/BloodSkeleton\"): return
+	init(\"Blood Skeleton\")
 	
-#	init(\"Skeleton\")
 	direction = 1 - randi()%2*2
 
 func server_ai(delta):
@@ -118,7 +118,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
 	walk = vector[4]-1"
 
-[node name="Skeleton" index="0" instance=ExtResource( 1 )]
+[node name="Skeleton" instance=ExtResource( 1 )]
 modulate = Color( 1, 0, 0, 1 )
 script = SubResource( 1 )
 max_hp = 10
