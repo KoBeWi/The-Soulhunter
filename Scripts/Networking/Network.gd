@@ -129,9 +129,6 @@ func process_packet(unpacker):
 		"EQUIPMENT": ###
 			Com.game.update_equipment([])
 		
-		"EXPERIENCE": ###
-			Com.player.get_node("Character").experience += [][0]
-		
 		"INVENTORY": ###
 			Com.game.update_inventory([])
 		
@@ -160,31 +157,6 @@ func process_packet(unpacker):
 		"SOUL": ###
 			var enemy = Com.game.get_enemy([][0])
 			if enemy: enemy.create_soul([][1])
-		"SYNC": ###
-			var group = [][0]
-			var index = [][1]
-			
-			if group == "p":
-				var pos = []#get_data(["vector2"], [][3], [][2])[0]
-				var player = Com.game.get_player(index)
-				if player:
-					player.position = pos
-				else:
-					printerr("WARNING: Non-existent player index: ", index)
-			elif group == "e":
-				var enem_type = ""#extract_string([][3], [][2])
-				var enemy = Com.game.get_enemy(index)
-				
-#				if enem_type == "Skeleton": print_raw([][3])
-				
-				if !enemy:
-					enemy = load("res://Nodes/Enemies/" + enem_type + ".tscn").instance()
-					enemy.synced = true
-					enemy.id = index
-					Com.game.enemies.add_child(enemy)
-				
-				[][2] += enem_type.length()+1
-				enemy.sync_data([])
 
 func send_data(packet):
 	client.put_data(packet.data)
