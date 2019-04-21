@@ -31,15 +31,15 @@ func update_HUD(data):
 		update_bar("HP")
 	
 	if "max_mp" in data:
-		$HUD/MPBar.max_value = data.max_hp
+		$HUD/MPBar.max_value = data.max_mp
 		update_bar("MP")
 	
 	if "mp" in data:
-		$HUD/MPBar.value = data.max_hp
+		$HUD/MPBar.value = data.mp
 		update_bar("MP")
 	
-	if "lv" in data:
-		$HUD/LvLabel.text = str(data.lv)
+	if "level" in data:
+		$HUD/LvLabel.text = str(data.level)
 	
 	if "exp" in data:
 		var lv = int($HUD/LvLabel.text)

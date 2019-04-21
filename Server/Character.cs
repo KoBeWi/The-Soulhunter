@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MongoDB.Bson;
 
 public class Character {
@@ -47,6 +48,32 @@ public class Character {
         var experience = database.GetStat(name, "exp");
         experience += (ushort)val;
         database.SetStat(name, "exp", experience);
-        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), "exp"));
+
+        var stats = new List<string>();
+
+        var level = database.GetStat(name, "level");
+
+        var levelUp = false;
+        while (experience >= TotalExpForLevel(level)) {
+            Godot.GD.Print(level, " ", experience, " ", TotalExpForLevel(level));
+            level++;
+            levelUp = true;
+        }
+        if (levelUp) {
+            stats.Add("level");
+            database.SetStat(name, "level", level);
+        }
+
+        stats.Add("exp");
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
+    }
+
+
+    public ushort ExpForLevel(ushort level) {
+        return (ushort)(level * 10);
+    }
+        
+    public ushort TotalExpForLevel(ushort level) {
+        return (ushort)(level * (level + 1) * 5);
     }
 }

@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Resources/UI/BoldFont.tres" type="DynamicFont" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+func start(source, text, color, offset = Vector2(0, -32)):
+	source.get_parent().add_child(self)
+	position = source.position + offset
+	$Number.text = str(text)
+	modulate = color
+
+func end(end):
+	queue_free()"
+
+[sub_resource type="Animation" id=2]
+resource_name = "Pop"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Number:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( -64, -19 ), Vector2( -64, -46.4824 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Number:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="PopupNumber" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Number" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -64.0
+margin_top = -19.0
+margin_right = 64.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Pop"
+anims/Pop = SubResource( 2 )
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="end"]

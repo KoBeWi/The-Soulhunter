@@ -11,6 +11,9 @@ var uname = "" setget set_username
 var motion = Vector2()
 var last_server_position = Vector2()
 var main = false
+
+var last_exp = -1
+var last_level = -1
 #var enemies = []
 
 var last_controls = OS.get_ticks_msec()
@@ -156,6 +159,8 @@ func set_main():
 	camera.make_current()
 	add_child(camera)
 	
+	Network.connect("stats", self, "on_stats")
+	
 	Com.controls.set_master(self)
 
 func state_vector_types():
@@ -215,3 +220,14 @@ func set_weapon(weapon):
 	
 	weapon.player = self
 	weapon_point.add_child(weapon)
+
+func on_stats(stats):
+	if "level" in stats:
+		if last_exp > -1 and stats.exp > last_exp:
+			preload("res://Nodes/Effects/PopupText.tscn").instance().start(self, "Level Up!", Color(1, 1, 0.5))
+		last_exp = stats.exp
+	
+	if "exp" in stats:
+		if last_exp > -1 and stats.exp > last_exp:
+			preload("res://Nodes/Effects/PopupText.tscn").instance().start(self, str("EXP +", stats.exp - last_exp), Color.yellow)
+		last_exp = stats.exp
