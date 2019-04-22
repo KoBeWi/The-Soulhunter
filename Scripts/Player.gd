@@ -17,6 +17,8 @@ var last_level = -1
 #var enemies = []
 
 var last_controls = OS.get_ticks_msec()
+var desync = 0
+
 var jump = false
 var attack = false
 
@@ -182,6 +184,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	var target_position = Vector2(vector[1], vector[2])
 	
 	if !main or Com.time_greater(timestamp, last_controls + 1000):
+		desync = 0
 		var old_position = position
 		
 		if old_position.round() != target_position:
@@ -190,6 +193,13 @@ func apply_state_vector(timestamp, diff_vector, vector):
 			position = last_server_position
 		
 		if has_meta("initialized"): sprite.position += (old_position - position)
+	else:
+		if (target_position - position).length_squared() > 10000:
+			desync += 1
+			
+			if desync == 10:
+				position = target_position
+				desync = 0
 	
 	if (diff_vector & 2) > 0:
 		last_server_position.x = vector[1]
