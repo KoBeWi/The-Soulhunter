@@ -44,9 +44,9 @@ public class Character {
         }
     }
 
-    public void AddExperience(int val) {
+    public void AddExperience(ushort val) {
         var experience = database.GetStat(name, "exp");
-        experience += (ushort)val;
+        experience += val;
         database.SetStat(name, "exp", experience);
 
         var stats = new List<string>();

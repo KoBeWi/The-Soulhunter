@@ -3,9 +3,8 @@ extends KinematicBody2D
 
 onready var players = get_tree().get_nodes_in_group("players")
 
-export(int) var max_hp
-onready var hp = max_hp
-export(int) var xp
+export(String) var enemy_name
+var stats = {hp = 1}
 
 func on_client_create():
 	visible = false
@@ -17,9 +16,12 @@ func on_initialized():
 	set_process(true)
 	set_physics_process(true)
 
-func init(ename):
-	set_meta("enemy", ename)
+func init():
+	set_meta("enemy", enemy_name)
 	set_meta("attackers", [])
+	
+	stats = Res.enemies[enemy_name]
+	stats.hp = stats.max_hp
 
 func _process(delta):
 	if Com.is_server:
@@ -51,9 +53,9 @@ func on_hit(): pass
 func on_unhit(): pass
 
 func damage(attack):
-	hp -= attack.damage
+	stats.hp -= attack.damage
 	
-	if hp <= 0:
+	if stats.hp <= 0:
 		dead()
 
 func dead():
@@ -66,12 +68,12 @@ func create_drop(id):
 	var item = load("res://Nodes/Item.tscn").instance()
 	item.set_id(id)
 	item.position = position
-	get_node("../..").add_child(item)
+	get_parent().add_child(item)
 
 func create_soul(id):
 	if Com.server: return #nie powinno być potrzebne
 	
 	var soul = load("res://Nodes/Soul.tscn").instance()
-	get_node("../..").add_child(soul)
+	get_parent().add_child(soul)
 	soul.position = position
 	soul.set_id(id)

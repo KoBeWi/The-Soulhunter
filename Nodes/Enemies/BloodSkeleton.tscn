@@ -20,7 +20,7 @@ var direction = 1
 
 func _ready():
 	if Com.register_node(self, \"Enemies/BloodSkeleton\"): return
-	init(\"Blood Skeleton\")
+	init()
 	
 	direction = 1 - randi()%2*2
 
@@ -121,6 +121,5 @@ func apply_state_vector(timestamp, diff_vector, vector):
 [node name="Skeleton" instance=ExtResource( 1 )]
 modulate = Color( 1, 0, 0, 1 )
 script = SubResource( 1 )
-max_hp = 10
-xp = 3
+enemy_name = "Blood Skeleton"
 

@@ -210,7 +210,7 @@ public class Room : Viewport {
                     var player = GetPlayerById((ushort)(int)Godot.GD.Convert(playerId, (int)Godot.Variant.Type.Int));
 
                     if (player != null) {
-                        player.AddExperience(1);
+                        player.AddExperience(GetEnemyStat(node, "exp"));
                     }
                 }
             }
@@ -220,6 +220,10 @@ public class Room : Viewport {
         stateHistory.Remove(id);
 
         BroadcastPacket(new Packet(Packet.TYPE.REMOVE_ENTITY).AddU16(id));
+    }
+
+    public ushort GetEnemyStat(Node enemy, string stat) {
+        return (ushort)(int)Godot.GD.Convert((enemy.Get("stats") as Godot.Collections.Dictionary)[stat], (int)Godot.Variant.Type.Int);
     }
 
     public object GetMapValue(string value) {

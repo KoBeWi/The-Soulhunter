@@ -44,4 +44,4 @@ func update_HUD(data):
 	if "exp" in data:
 		var lv = int($HUD/LvLabel.text)
 		$HUD/ExpBar.max_value = exp_for_level(lv)
-		$HUD/ExpBar.value = data.exp - exp_for_level(lv-1)
+		$HUD/ExpBar.value = data.exp - total_exp_for_level(lv-1)

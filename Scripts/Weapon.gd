@@ -1,11 +1,11 @@
 extends StaticBody2D
 
-export var id = 0
+export(String) var weapon_name
 var data
 var player
 
 func _ready():
-	data = Res.items[id]
+	data = Res.items[weapon_name]
 
 func attack():
 	return {damage = data.attack} 

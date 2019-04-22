@@ -20,7 +20,7 @@ var direction = 1
 
 func _ready():
 	if Com.register_node(self, \"Enemies/Skeleton\"): return
-	init(\"Skeleton\")
+	init()
 	
 	direction = 1 - randi()%2*2
 
@@ -194,8 +194,7 @@ tracks/0/keys = {
 collision_layer = 0
 collision_mask = 3
 script = SubResource( 1 )
-max_hp = 4
-xp = 1
+enemy_name = "Skeleton"
 
 [node name="SpriteContainer" type="Node2D" parent="."]
 
