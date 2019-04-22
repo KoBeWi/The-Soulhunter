@@ -12,6 +12,7 @@ var motion = Vector2()
 var last_server_position = Vector2()
 var main = false
 
+var stats
 var last_exp = -1
 var last_level = -1
 #var enemies = []
@@ -241,3 +242,6 @@ func on_stats(stats):
 		if last_exp > -1 and stats.exp > last_exp:
 			preload("res://Nodes/Effects/PopupText.tscn").instance().start(self, str("EXP +", stats.exp - last_exp), Color.yellow)
 		last_exp = stats.exp
+
+func set_stats(_stats):
+	stats = parse_json(_stats)
