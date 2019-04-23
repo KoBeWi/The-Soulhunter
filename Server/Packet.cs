@@ -108,7 +108,7 @@ public class Packet {
             last_index = index;
 
             vec[index] = true;
-            statsToSend.Add(player.GetStat(stat));
+            statsToSend.Add(player.GetCharacter().GetStat(stat));
         }
 
         AddBoolArray(vec);

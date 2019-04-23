@@ -35,16 +35,14 @@ public class Player {
     public string GetLogin() {return login;}
 
     public void SetCharacter(string name) {
-        character = new Character(this, data, database);
+        Character chara = database.GetCharacter(name);
+        chara.SetPlayer(this);
+        character = chara;
     }
 
     public Character GetCharacter() {return character;}
 
     public void SendPacket(Packet packet) {
         packet.Send(upstream);
-    }
-
-    public ushort GetStat(string stat) {
-        return database.GetStat(login, stat); //można jakieś cache
     }
 }

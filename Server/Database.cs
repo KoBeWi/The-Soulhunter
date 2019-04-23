@@ -14,7 +14,7 @@ public class Database {
     }
 
     public Error RegisterUser(string login, string password) {
-        var collection = database.GetCollection<BsonDocument>("users");
+        var collection = database.GetCollection<BsonDocument>("players");
 
         if (collection.CountDocuments(new BsonDocument {{"login", login}} ) == 1) {
             return Error.FileAlreadyInUse;
@@ -22,22 +22,14 @@ public class Database {
 
         collection.InsertOne(new BsonDocument {
             {"login", login},
-            {"password", password},
-            {"location", 0},
-            // {"location", new BsonDocument {{"map_id", 0}, {"from", 5}} },
-            {"level", 1},
-            {"exp", 0},
-            {"hp", 120},
-            {"max_hp", 120},
-            {"mp", 80},
-            {"max_mp", 80}
+            {"password", password}
         } );
 
         return Error.Ok;
     }
 
     public Error TryLogin(string login, string password, Player player) {
-        var collection = database.GetCollection<BsonDocument>("users");
+        var collection = database.GetCollection<BsonDocument>("players");
         var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
 
         if (found == null) {
@@ -53,25 +45,14 @@ public class Database {
         }
 
         player.LogIn(found);
-        player.SetCharacter("dummy");
+        player.SetCharacter(login);
         Server.AddOnlinePlayer(player);
 
         return Error.Ok;
     }
 
-    public ushort GetStat(string login, string stat) {
-        var collection = database.GetCollection<BsonDocument>("users");
-        var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
-
-        if (found == null) {
-            return 0;
-        }
-
-        return (ushort)found.GetValue(stat).AsInt32;
-    }
-
     public void SetStat(string login, string stat, ushort value) {
-        var collection = database.GetCollection<BsonDocument>("users");
+        var collection = database.GetCollection<BsonDocument>("players");
         var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
 
         if (found != null) {
@@ -79,5 +60,34 @@ public class Database {
             var update = Builders<BsonDocument>.Update.Set(stat, value);
             collection.UpdateOne(filter, update);
         }
+    }
+
+    public BsonDocument CreateCharacter(string name) {
+        var collection = database.GetCollection<BsonDocument>("characters");
+
+        var data = new BsonDocument {
+            {"name", name},
+            {"location", 0},
+            {"level", 1},
+            {"exp", 0},
+            {"hp", 120},
+            {"max_hp", 120},
+            {"mp", 80},
+            {"max_mp", 80}
+        };
+
+        collection.InsertOne(data);
+        return data;
+    }
+
+    public Character GetCharacter(string name) {
+        var collection = database.GetCollection<BsonDocument>("characters");
+        var found = collection.Find(new BsonDocument {{"name", name}} ).FirstOrDefault();
+
+        if (found == null) {
+            found = CreateCharacter(name);
+        }
+
+        return new Character(found, this); //może powinno trzymać gdzieś instancje
     }
 }

@@ -33,11 +33,11 @@ region_rect = Rect2( 0, 0, 3840, 1080 )
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource( 4 )]
-position = Vector2( 1980, 837 )
+position = Vector2( 1980, 836 )
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource( 4 )]
-position = Vector2( 2240, 837 )
+position = Vector2( 2240, 836 )
 
 [node name="Skeleton3" parent="Enemies" instance=ExtResource( 4 )]
-position = Vector2( 2848, 448 )
+position = Vector2( 2848, 452 )
 

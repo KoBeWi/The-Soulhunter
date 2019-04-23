@@ -2,25 +2,24 @@ using System.Collections.Generic;
 using MongoDB.Bson;
 
 public class Character {
-    string name;
-    ushort playerId;
-    Database database;
+    private string name;
+    private ushort playerId;
+    private Database database;
+    private BsonDocument data;
 
-    int level;
-    int maxHp;
-    int hp;
+    private ushort currentMap;
+    private Room currentRoom;
 
-    ushort currentMap;
-    Room currentRoom;
+    private Player owner;
 
-    Player owner;
-
-    public Character(Player _owner, BsonDocument data, Database databas) {
-        owner = _owner;
-        name = data.GetValue("login").AsString;
-        currentMap = (ushort)data.GetValue("location").AsInt32;
+    public Character(BsonDocument dat, Database databas) {
+        currentMap = (ushort)dat.GetValue("location").AsInt32;
+        name = dat.GetValue("name").AsString;
+        data = dat;
         database = databas;
     }
+
+    public void SetPlayer(Player _owner) {owner = _owner;}
 
     public ushort GetMapId() {return currentMap;}
     public string GetName() {return name;}
@@ -45,13 +44,13 @@ public class Character {
     }
 
     public void AddExperience(ushort val) {
-        var experience = database.GetStat(name, "exp");
+        var experience = GetStat("exp");
         experience += val;
         database.SetStat(name, "exp", experience);
 
         var stats = new List<string>();
 
-        var level = database.GetStat(name, "level");
+        var level = GetStat("level");
 
         var levelUp = false;
         while (experience >= TotalExpForLevel(level)) {
@@ -68,6 +67,9 @@ public class Character {
         GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
     }
 
+    public ushort GetStat(string stat) {
+        return (ushort)data.GetValue(stat).AsInt32;
+    }
 
     public ushort ExpForLevel(ushort level) {
         return (ushort)(level * 10);
