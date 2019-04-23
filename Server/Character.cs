@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MongoDB.Bson;
+using Godot;
 
 public class Character {
     private string name;
@@ -11,6 +12,7 @@ public class Character {
     private Room currentRoom;
 
     private Player owner;
+    private Node playerNode;
 
     public Character(BsonDocument dat, Database databas) {
         currentMap = (ushort)dat.GetValue("location").AsInt32;
@@ -25,8 +27,10 @@ public class Character {
     public string GetName() {return name;}
     public Player GetPlayer() {return owner;}
 
-    public void SetRoom(Room room) {
-        currentRoom = room;
+    public void SetRoom(Room room) {currentRoom = room;}
+    public void SetNode(Node player) {
+        playerNode = player;
+        playerNode.Call("set_stats", data.ToJson());
     }
 
     public void RemoveFromRoom() {

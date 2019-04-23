@@ -73,7 +73,12 @@ public class Database {
             {"hp", 120},
             {"max_hp", 120},
             {"mp", 80},
-            {"max_mp", 80}
+            {"max_mp", 80},
+            {"attack", 1},
+            {"defense", 1},
+            {"magic_attack", 1},
+            {"magic_defense", 1},
+            {"luck", 1}
         };
 
         collection.InsertOne(data);

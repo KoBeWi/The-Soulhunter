@@ -126,6 +126,7 @@ public class Room : Viewport {
         newPlayer.SetMeta("id", lastEntityId);
 
         character.SetRoom(this);
+        character.SetNode(newPlayer);
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(4).AddU8(0)); //po co to ostatnie?; przedostatnie też mało poczebne
 
         foreach (var id in entityBindings.Keys) {
