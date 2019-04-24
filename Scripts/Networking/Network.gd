@@ -76,8 +76,12 @@ func process_packet(unpacker):
 		Packet.TYPE.CHAT:
 			emit_signal("chat_message", unpacker.get_u8(), unpacker.get_string(), unpacker.get_string())
 		
-		"DAMAGE": ###
-			Com.game.damage_number([], [], [])
+		Packet.TYPE.DAMAGE:
+			var entity = Com.game.get_entity(unpacker.get_u16())
+			var damage = unpacker.get_u16() - 10000
+			
+			if entity:
+				preload("res://Nodes/Effects/PopupText.tscn").instance().start(entity, -damage, Color.red)
 		
 		"DEAD": ###
 			var map = Com.game.map

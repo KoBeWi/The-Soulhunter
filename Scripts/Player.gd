@@ -195,7 +195,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 		
 		if has_meta("initialized"): sprite.position += (old_position - position)
 	else:
-		if (target_position - position).length_squared() > 10000:
+		if (last_server_position - position).length_squared() > 10000:
 			desync += 1
 			
 			if desync == 10:

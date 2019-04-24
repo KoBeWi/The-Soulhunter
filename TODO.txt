@@ -7,3 +7,4 @@
 +własne error code (np. ERROR_CHAT) i handler u klienta dla każdego
 >zmienić tick time na u16? (żeby było 2 bajty mniej)
 +cache do bazy danych
+>linear_interpolate

@@ -12,7 +12,8 @@ enum TYPE {
 	REMOVE_ENTITY,
 	TICK,
 	CHAT,
-	STATS
+	STATS,
+	DAMAGE
 }
 
 const stat_list = ["level", "exp", "hp", "max_hp", "mp", "max_mp"]

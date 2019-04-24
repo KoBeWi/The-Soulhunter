@@ -53,7 +53,9 @@ func on_hit(): pass
 func on_unhit(): pass
 
 func damage(attack):
-	stats.hp -= attack.damage
+	var damage = attack.damage
+	stats.hp -= damage
+	get_meta("room").call("Damage", get_meta("id"), damage)
 	
 	if stats.hp <= 0:
 		dead()

@@ -13,7 +13,8 @@ public class Packet {
         REMOVE_ENTITY,
         TICK,
         CHAT,
-        STATS
+        STATS,
+        DAMAGE
     }
 
     public static readonly byte[] zero = new byte[] {0};

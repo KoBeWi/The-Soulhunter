@@ -7,24 +7,29 @@
 resource_name = "Save Point"
 script/source = "extends Node2D
 
-var player_in = false
-
-func _ready():
-	call_deferred(\"init_player\")
+var players_in = []
 
 func _process(delta):
-	$PressUp.visible = player_in
-	
-	if Com.key_press(\"UP\"):
-		Network.send_data([\"save\"])
+	for player in players_in:
+		if player.controls.has(Controls.UP):
+			players_in.erase(player)
+			
+			if Com.is_server:
+				player.get_meta(\"room\").call(\"Save\", player.get_meta(\"id\"))
 
 func _body_enter(body):
+	if body.is_in_group(\"players\"):
+		players_in.append(body)
+	
 	if body == Com.player:
-		player_in = true
+		$PressUp.visible = true
 		
 func _body_exit(body):
+	if body.is_in_group(\"players\"):
+		players_in.erase(body)
+	
 	if body == Com.player:
-		player_in = false"
+		$PressUp.visible = false"
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 30, 15 )
@@ -60,7 +65,9 @@ position = Vector2( 0, -30 )
 shape = SubResource( 2 )
 
 [node name="PressUp" type="Sprite" parent="."]
-position = Vector2( 0, -160 )
+editor/display_folded = true
+visible = false
+position = Vector2( 0, -141.942 )
 texture = ExtResource( 2 )
 
 [node name="Animation" type="AnimationPlayer" parent="PressUp"]

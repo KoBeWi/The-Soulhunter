@@ -51,16 +51,16 @@ public class Database {
         return Error.Ok;
     }
 
-    public void SetStat(string login, string stat, ushort value) {
-        var collection = database.GetCollection<BsonDocument>("players");
-        var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
+    // public void SetStat(string login, string stat, ushort value) {
+    //     var collection = database.GetCollection<BsonDocument>("players");
+    //     var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
 
-        if (found != null) {
-            var filter = Builders<BsonDocument>.Filter.Empty;
-            var update = Builders<BsonDocument>.Update.Set(stat, value);
-            collection.UpdateOne(filter, update);
-        }
-    }
+    //     if (found != null) {
+    //         var filter = Builders<BsonDocument>.Filter.Empty;
+    //         var update = Builders<BsonDocument>.Update.Set(stat, value);
+    //         collection.UpdateOne(filter, update);
+    //     }
+    // }
 
     public BsonDocument CreateCharacter(string name) {
         var collection = database.GetCollection<BsonDocument>("characters");
@@ -94,5 +94,13 @@ public class Database {
         }
 
         return new Character(found, this); //może powinno trzymać gdzieś instancje
+    }
+
+    public void SaveCharacter(BsonDocument data) {
+        GD.Print("Saving ", data.GetValue("name").AsString);
+        var collection = database.GetCollection<BsonDocument>("characters");
+
+        var filter = Builders<BsonDocument>.Filter.Eq("_id", data.GetValue("_id").AsObjectId);
+        collection.ReplaceOneAsync(filter, data);
     }
 }

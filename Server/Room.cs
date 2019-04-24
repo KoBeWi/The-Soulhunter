@@ -238,4 +238,12 @@ public class Room : Viewport {
         
         return null;
     }
+
+    public void Damage(ushort id, int damage) {
+        BroadcastPacket(new Packet(Packet.TYPE.DAMAGE).AddU16(id).AddU16((ushort)(damage + 10000)));
+    }
+
+    public void Save(ushort playerId) {
+        GetPlayerById(playerId).Save();
+    }
 }
