@@ -1,5 +1,38 @@
 extends Control
 
+onready var main_stats = $Container/SheetContainer/CharacterSheet/Stats
+
+func _ready():
+	visible = false
+	Com.controls.connect("key_press", self, "on_key_press")
+	Network.connect("stats", self, "update_stats")
+
+func update_stats(stats):
+	if "attack" in stats:
+		main_stats.get_node("ATKValue").text = str(stats["attack"])
+
+func on_key_press(p_id, key, state):
+	if state == Controls.State.ACTION:
+		if key == Controls.MENU:
+			activate()
+	elif state == Controls.State.MENU:
+		if key == Controls.MENU:
+			deactivate()
+		
+		if key == Controls.ACCEPT:
+			pass
+		elif key == Controls.CANCEL:
+			pass
+
+func activate():
+	Com.controls.state = Controls.State.MENU
+	visible = true
+
+func deactivate():
+	Com.controls.state = Controls.State.ACTION
+	visible = false
+
+"""
 const eq_slot_order = [3, 7, 4, 0, 5, 1, 6, 2]
 
 onready var status = $StatusPanel
@@ -153,3 +186,4 @@ func update_equipment():
 			slot.get_node("ItemIcon").texture = load("res://Graphics/Items/" + str(item) + ".png")
 		slot.position = Vector2(116 + i%2*228, i/2 * 40)
 		equipment.add_child(slot)
+"""

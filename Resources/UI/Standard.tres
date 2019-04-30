@@ -1,23 +1,43 @@
-[gd_resource type="Theme" load_steps=3 format=2]
+[gd_resource type="Theme" load_steps=6 format=2]
 
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=1]
 
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.556863, 0.172549, 0.0823529, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.278431, 0.172549, 0.0823529, 1 )
+border_width_left = 2
+border_width_right = 2
+border_color = Color( 0.521569, 0.345098, 0.164706, 1 )
+
+[sub_resource type="StyleBoxLine" id=2]
+color = Color( 0.521569, 0.345098, 0.164706, 1 )
+thickness = 2
+
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.246094, 0.0865173, 0, 1 )
-border_blend = true
+bg_color = Color( 0.223529, 0.133333, 0.0392157, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.521569, 0.345098, 0.164706, 1 )
+corner_radius_top_left = 16
+corner_radius_bottom_right = 16
+anti_aliasing = false
 
 [resource]
 default_font = ExtResource( 1 )
-Button/colors/font_color = Color( 0, 0, 0, 1 )
+Button/colors/font_color = Color( 1, 1, 1, 1 )
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 Button/colors/font_color_hover = Color( 0, 0, 0, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/constants/hseparation = 0
 Button/fonts/font = null
 Button/styles/disabled = null
-Button/styles/focus = null
+Button/styles/focus = SubResource( 3 )
 Button/styles/hover = null
-Button/styles/normal = null
+Button/styles/normal = SubResource( 4 )
 Button/styles/pressed = null
 ButtonGroup/styles/panel = null
 CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
@@ -115,7 +135,7 @@ HScrollBar/styles/grabber_hilite = null
 HScrollBar/styles/scroll = null
 HScrollBar/styles/scroll_focus = null
 HSeparator/constants/separation = 0
-HSeparator/styles/separator = null
+HSeparator/styles/separator = SubResource( 2 )
 HSlider/icons/grabber = null
 HSlider/icons/grabber_hilite = null
 HSlider/icons/tick = null

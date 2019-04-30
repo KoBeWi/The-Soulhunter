@@ -1,161 +1,584 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Scripts/UI/PlayerMenu.gd" type="Script" id=1]
-[ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=2]
-[ext_resource path="res://Graphics/UI/InventorySelect.png" type="Texture" id=3]
+[ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=1]
+[ext_resource path="res://Scripts/UI/PlayerMenu.gd" type="Script" id=2]
+[ext_resource path="res://Nodes/UI/InventorySpace.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Graphics/UI/DescriptionPanel.png" type="Texture" id=4]
 [ext_resource path="res://Graphics/Items/0.png" type="Texture" id=5]
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=6]
 
-[node name="PlayerMenu" type="Control"]
+[node name="PlayerMenu" type="Panel"]
+margin_right = 736.0
+margin_bottom = 388.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Container" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SheetContainer" type="HBoxContainer" parent="Container"]
+margin_right = 736.0
+margin_bottom = 75.0
+
+[node name="Margin" type="Control" parent="Container/SheetContainer"]
+margin_right = 8.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="CharacterSheet" type="VBoxContainer" parent="Container/SheetContainer"]
 editor/display_folded = true
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 40.0
-margin_bottom = 40.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-script = ExtResource( 1 )
+margin_left = 8.0
+margin_right = 728.0
+margin_bottom = 75.0
+size_flags_horizontal = 3
 
-[node name="StatusPanel" type="Panel" parent="."]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 35.0
-margin_top = 55.0
-margin_right = 606.0
-margin_bottom = 443.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-theme = ExtResource( 2 )
+[node name="Separator" type="Control" parent="Container/SheetContainer/CharacterSheet"]
+margin_right = 720.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 0, 16 )
 
-[node name="ATK" type="Label" parent="StatusPanel"]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 21.0
-margin_top = 21.0
-margin_right = 127.0
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 2
-size_flags_vertical = 0
+[node name="Name" type="Label" parent="Container/SheetContainer/CharacterSheet"]
+margin_top = 16.0
+margin_right = 720.0
+margin_bottom = 33.0
+size_flags_vertical = 6
+text = "Character Name"
+align = 1
+valign = 1
+
+[node name="Separator2" type="Control" parent="Container/SheetContainer/CharacterSheet"]
+margin_top = 33.0
+margin_right = 720.0
+margin_bottom = 41.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="Stats" type="GridContainer" parent="Container/SheetContainer/CharacterSheet"]
+editor/display_folded = true
+margin_top = 41.0
+margin_right = 720.0
+margin_bottom = 75.0
+columns = 9
+
+[node name="ATK" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_right = 80.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
 text = "ATK"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 
-[node name="DEF" type="Label" parent="StatusPanel"]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 21.0
-margin_top = 42.0
-margin_right = 127.0
-margin_bottom = 56.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 2
-size_flags_vertical = 0
+[node name="ATKValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 80.0
+margin_right = 160.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "1"
+align = 2
+
+[node name="Control" type="Control" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 160.0
+margin_right = 240.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+
+[node name="DEF" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 240.0
+margin_right = 320.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
 text = "DEF"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 
-[node name="EXP" type="Label" parent="StatusPanel"]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 27.0
-margin_top = 342.0
+[node name="DEFValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 320.0
+margin_right = 400.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "1"
+align = 2
+
+[node name="Control2" type="Control" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 400.0
+margin_right = 480.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+
+[node name="MATK" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 480.0
+margin_right = 560.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "MATK"
+
+[node name="MATKValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 560.0
+margin_right = 640.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "1"
+align = 2
+
+[node name="Control3" type="Control" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 640.0
+margin_right = 720.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+
+[node name="MDEF" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_top = 17.0
+margin_right = 80.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+text = "MDEF"
+
+[node name="MDEFValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 80.0
+margin_top = 17.0
 margin_right = 160.0
-margin_bottom = 356.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 2
-size_flags_vertical = 0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+text = "1"
+align = 2
+
+[node name="Control4" type="Control" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 160.0
+margin_top = 17.0
+margin_right = 240.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+
+[node name="LCK" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 240.0
+margin_top = 17.0
+margin_right = 320.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+text = "LCK"
+
+[node name="LCKValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 320.0
+margin_top = 17.0
+margin_right = 400.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+text = "1"
+align = 2
+
+[node name="Margin2" type="Control" parent="Container/SheetContainer"]
+margin_left = 728.0
+margin_right = 736.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="Separator3" type="Control" parent="Container"]
+margin_top = 75.0
+margin_right = 736.0
+margin_bottom = 91.0
+rect_min_size = Vector2( 0, 16 )
+
+[node name="HSeparator" type="HSeparator" parent="Container"]
+margin_top = 91.0
+margin_right = 736.0
+margin_bottom = 91.0
+
+[node name="Buttons" type="HBoxContainer" parent="Container"]
+editor/display_folded = true
+margin_top = 91.0
+margin_right = 736.0
+margin_bottom = 139.0
+rect_min_size = Vector2( 0, 48 )
+alignment = 1
+
+[node name="Button" type="Button" parent="Container/Buttons"]
+margin_left = 112.0
+margin_right = 240.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 128, 0 )
+toggle_mode = true
+text = "Character"
+
+[node name="Button2" type="Button" parent="Container/Buttons"]
+margin_left = 240.0
+margin_right = 368.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 128, 0 )
+toggle_mode = true
+text = "Inventory"
+
+[node name="Button3" type="Button" parent="Container/Buttons"]
+margin_left = 368.0
+margin_right = 496.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 128, 0 )
+toggle_mode = true
+text = "Equipment"
+
+[node name="Button4" type="Button" parent="Container/Buttons"]
+margin_left = 496.0
+margin_right = 624.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 128, 0 )
+toggle_mode = true
+text = "Souls"
+
+[node name="HSeparator2" type="HSeparator" parent="Container"]
+margin_top = 139.0
+margin_right = 736.0
+margin_bottom = 139.0
+
+[node name="Separator4" type="Control" parent="Container"]
+margin_top = 139.0
+margin_right = 736.0
+margin_bottom = 155.0
+rect_min_size = Vector2( 0, 16 )
+
+[node name="Tabs" type="Control" parent="Container"]
+margin_top = 155.0
+margin_right = 736.0
+margin_bottom = 155.0
+
+[node name="Stats" type="HBoxContainer" parent="Container/Tabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Margin" type="Control" parent="Container/Tabs/Stats"]
+margin_right = 8.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="Grid" type="GridContainer" parent="Container/Tabs/Stats"]
+editor/display_folded = true
+margin_left = 8.0
+margin_right = 728.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 9
+
+[node name="EXP" type="Label" parent="Container/Tabs/Stats/Grid"]
+margin_right = 80.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
 text = "EXP"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 
-[node name="NEXT" type="Label" parent="StatusPanel"]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 14.0
-margin_top = 359.0
+[node name="EXPValue" type="Label" parent="Container/Tabs/Stats/Grid"]
+margin_left = 80.0
 margin_right = 160.0
-margin_bottom = 376.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 2
-size_flags_vertical = 0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "1"
+align = 2
+
+[node name="Control" type="Control" parent="Container/Tabs/Stats/Grid"]
+margin_left = 160.0
+margin_right = 240.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+
+[node name="NEXT" type="Label" parent="Container/Tabs/Stats/Grid"]
+margin_left = 240.0
+margin_right = 320.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
 text = "NEXT"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 
-[node name="Inventory" type="Position2D" parent="."]
-position = Vector2( 140, 252 )
+[node name="NEXTValue" type="Label" parent="Container/Tabs/Stats/Grid"]
+margin_left = 320.0
+margin_right = 400.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "1"
+align = 2
 
-[node name="Equipment" type="Position2D" parent="."]
-position = Vector2( 140, 92 )
+[node name="Control2" type="Control" parent="Container/Tabs/Stats/Grid"]
+margin_left = 400.0
+margin_right = 480.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
 
-[node name="InventorySelect" type="Sprite" parent="."]
-position = Vector2( 218, 288 )
-texture = ExtResource( 3 )
+[node name="Money" type="Label" parent="Container/Tabs/Stats/Grid"]
+margin_left = 480.0
+margin_right = 560.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Money"
 
-[node name="Description Panel" type="Sprite" parent="."]
-position = Vector2( 370, 372 )
-texture = ExtResource( 4 )
+[node name="MoneyValue" type="Label" parent="Container/Tabs/Stats/Grid"]
+margin_left = 560.0
+margin_right = 640.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "1"
+align = 2
 
-[node name="Icon" type="Sprite" parent="Description Panel"]
-position = Vector2( -208, 0 )
-texture = ExtResource( 5 )
+[node name="Control3" type="Control" parent="Container/Tabs/Stats/Grid"]
+margin_left = 640.0
+margin_right = 720.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
 
-[node name="Description" type="Label" parent="Description Panel"]
-anchor_left = 0.0
-anchor_top = 0.0
+[node name="Margin2" type="Control" parent="Container/Tabs/Stats"]
+margin_left = 728.0
+margin_right = 736.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="Inventory" type="VBoxContainer" parent="Container/Tabs"]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_right = -4.0
+
+[node name="Slots" type="GridContainer" parent="Container/Tabs/Inventory"]
+editor/display_folded = true
+margin_right = 728.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 0, 160 )
+columns = 5
+
+[node name="Slot1" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = -175.0
-margin_top = -7.0
-margin_right = 213.0
-margin_bottom = 7.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 2
-size_flags_vertical = 0
+margin_right = 145.0
+margin_bottom = 32.0
+
+[node name="Slot2" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_right = 290.0
+margin_bottom = 32.0
+
+[node name="Slot3" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_right = 435.0
+margin_bottom = 32.0
+
+[node name="Slot4" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_right = 580.0
+margin_bottom = 32.0
+
+[node name="Slot5" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_right = 725.0
+margin_bottom = 32.0
+
+[node name="Slot6" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 32.0
+margin_right = 145.0
+margin_bottom = 64.0
+
+[node name="Slot7" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 32.0
+margin_right = 290.0
+margin_bottom = 64.0
+
+[node name="Slot8" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 32.0
+margin_right = 435.0
+margin_bottom = 64.0
+
+[node name="Slot9" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 32.0
+margin_right = 580.0
+margin_bottom = 64.0
+
+[node name="Slot10" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 32.0
+margin_right = 725.0
+margin_bottom = 64.0
+
+[node name="Slot11" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 64.0
+margin_right = 145.0
+margin_bottom = 96.0
+
+[node name="Slot12" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 64.0
+margin_right = 290.0
+margin_bottom = 96.0
+
+[node name="Slot13" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 64.0
+margin_right = 435.0
+margin_bottom = 96.0
+
+[node name="Slot14" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 64.0
+margin_right = 580.0
+margin_bottom = 96.0
+
+[node name="Slot15" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 64.0
+margin_right = 725.0
+margin_bottom = 96.0
+
+[node name="Slot16" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 96.0
+margin_right = 145.0
+margin_bottom = 128.0
+
+[node name="Slot17" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 96.0
+margin_right = 290.0
+margin_bottom = 128.0
+
+[node name="Slot18" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 96.0
+margin_right = 435.0
+margin_bottom = 128.0
+
+[node name="Slot19" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 96.0
+margin_right = 580.0
+margin_bottom = 128.0
+
+[node name="Slot20" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 96.0
+margin_right = 725.0
+margin_bottom = 128.0
+
+[node name="Slot21" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 128.0
+margin_right = 145.0
+margin_bottom = 160.0
+
+[node name="Slot22" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 128.0
+margin_right = 290.0
+margin_bottom = 160.0
+
+[node name="Slot23" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 128.0
+margin_right = 435.0
+margin_bottom = 160.0
+
+[node name="Slot24" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 128.0
+margin_right = 580.0
+margin_bottom = 160.0
+
+[node name="Slot25" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 128.0
+margin_right = 725.0
+margin_bottom = 160.0
+
+[node name="Separator5" type="Control" parent="Container/Tabs/Inventory"]
+margin_top = 160.0
+margin_right = 728.0
+margin_bottom = 168.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="Description" type="HBoxContainer" parent="Container/Tabs/Inventory"]
+margin_top = 168.0
+margin_right = 728.0
+margin_bottom = 216.0
+rect_min_size = Vector2( 0, 48 )
+
+[node name="Panel1" type="NinePatchRect" parent="Container/Tabs/Inventory/Description"]
+margin_right = 56.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Icon" type="TextureRect" parent="Container/Tabs/Inventory/Description/Panel1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 4
+
+[node name="Panel2" type="NinePatchRect" parent="Container/Tabs/Inventory/Description"]
+margin_left = 56.0
+margin_right = 728.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 12.0
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Text" type="Label" parent="Container/Tabs/Inventory/Description/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
 custom_fonts/font = ExtResource( 6 )
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_fonts" ]
+text = "hello this is description"
 

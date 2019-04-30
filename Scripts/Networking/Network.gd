@@ -144,12 +144,13 @@ func process_packet(unpacker):
 		
 		Packet.TYPE.STATS:
 			var vec = unpacker.get_u8()
+			var vec2 = unpacker.get_u8()
 			var stats = {}
 			
 			for i in Packet.stat_list.size():
 				var stat = Packet.stat_list[i]
 				
-				if (vec & Data.binary[i]) > 0:
+				if ((vec if i < 8 else vec2) & Data.binary[i%8]) > 0:
 					stats[stat] = unpacker.get_u16()
 			
 			if !stats.empty():

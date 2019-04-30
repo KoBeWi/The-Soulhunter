@@ -95,10 +95,11 @@ public class Packet {
         return this;
     }
 
-    static readonly string[] statList = {"level", "exp", "hp", "max_hp", "mp", "max_mp"};
+    static readonly string[] statList = {"level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"};
 
     public Packet AddStats(Player player, params string[] stats) {
         var vec = new bool[8];
+        var vec2 = new bool[8];
         int last_index = -1;
 
         List<ushort> statsToSend = new List<ushort>();
@@ -108,11 +109,16 @@ public class Packet {
             if (index <= last_index) throw new Exception("Wrong order");
             last_index = index;
 
-            vec[index] = true;
+            if (index < 8)
+                vec[index] = true;
+            else
+                vec2[index%8] = true;
+            
             statsToSend.Add(player.GetCharacter().GetStat(stat));
         }
 
         AddBoolArray(vec);
+        AddBoolArray(vec2);
         foreach (ushort stat in statsToSend) AddU16(stat);
 
         return this;
