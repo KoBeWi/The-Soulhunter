@@ -10,6 +10,18 @@ func _ready():
 func update_stats(stats):
 	if "attack" in stats:
 		main_stats.get_node("ATKValue").text = str(stats["attack"])
+	
+	if "defense" in stats:
+		main_stats.get_node("DEFValue").text = str(stats["defense"])
+	
+	if "magic_attack" in stats:
+		main_stats.get_node("MATKValue").text = str(stats["magic_attack"])
+	
+	if "magic_defense" in stats:
+		main_stats.get_node("MDEFValue").text = str(stats["magic_defense"])
+	
+	if "luck" in stats:
+		main_stats.get_node("LCKValue").text = str(stats["luck"])
 
 func on_key_press(p_id, key, state):
 	if state == Controls.State.ACTION:

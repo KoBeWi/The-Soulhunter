@@ -65,6 +65,12 @@ public class Character {
         if (levelUp) {
             stats.Add("level");
             SetStat("level", level);
+
+            SetStat("attack", (ushort)(GetStat("attack")+1));
+            SetStat("defense", (ushort)(GetStat("defense")+1));
+            SetStat("magic_attack", (ushort)(GetStat("magic_attack")+1));
+            SetStat("magic_defense", (ushort)(GetStat("magic_defense")+1));
+            SetStat("luck", (ushort)(GetStat("luck")+1));
         }
 
         stats.Add("exp");

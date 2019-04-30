@@ -32,7 +32,6 @@ margin_bottom = 75.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="CharacterSheet" type="VBoxContainer" parent="Container/SheetContainer"]
-editor/display_folded = true
 margin_left = 8.0
 margin_right = 728.0
 margin_bottom = 75.0
@@ -59,7 +58,6 @@ margin_bottom = 41.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="Stats" type="GridContainer" parent="Container/SheetContainer/CharacterSheet"]
-editor/display_folded = true
 margin_top = 41.0
 margin_right = 720.0
 margin_bottom = 75.0
@@ -106,35 +104,35 @@ margin_right = 480.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 
-[node name="MATK" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+[node name="Control4" type="Control" parent="Container/SheetContainer/CharacterSheet/Stats"]
 margin_left = 480.0
 margin_right = 560.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
-text = "MATK"
 
-[node name="MATKValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+[node name="LCK" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
 margin_left = 560.0
 margin_right = 640.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "LCK"
+
+[node name="LCKValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+margin_left = 640.0
+margin_right = 720.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 text = "1"
 align = 2
 
-[node name="Control3" type="Control" parent="Container/SheetContainer/CharacterSheet/Stats"]
-margin_left = 640.0
-margin_right = 720.0
-margin_bottom = 17.0
-size_flags_horizontal = 3
-
-[node name="MDEF" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+[node name="MATK" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
 margin_top = 17.0
 margin_right = 80.0
 margin_bottom = 34.0
 size_flags_horizontal = 3
-text = "MDEF"
+text = "MATK"
 
-[node name="MDEFValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+[node name="MATKValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
 margin_left = 80.0
 margin_top = 17.0
 margin_right = 160.0
@@ -143,22 +141,22 @@ size_flags_horizontal = 3
 text = "1"
 align = 2
 
-[node name="Control4" type="Control" parent="Container/SheetContainer/CharacterSheet/Stats"]
+[node name="Control3" type="Control" parent="Container/SheetContainer/CharacterSheet/Stats"]
 margin_left = 160.0
 margin_top = 17.0
 margin_right = 240.0
 margin_bottom = 34.0
 size_flags_horizontal = 3
 
-[node name="LCK" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+[node name="MDEF" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
 margin_left = 240.0
 margin_top = 17.0
 margin_right = 320.0
 margin_bottom = 34.0
 size_flags_horizontal = 3
-text = "LCK"
+text = "MDEF"
 
-[node name="LCKValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
+[node name="MDEFValue" type="Label" parent="Container/SheetContainer/CharacterSheet/Stats"]
 margin_left = 320.0
 margin_top = 17.0
 margin_right = 400.0
