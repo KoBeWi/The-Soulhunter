@@ -1,40 +1,143 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Graphics/UI/EquipmentSlot.png" type="Texture" id=1]
 [ext_resource path="res://Graphics/Items/0.png" type="Texture" id=2]
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Graphics/UI/InventorySelect.png" type="Texture" id=4]
+[ext_resource path="res://Graphics/UI/InventorySpace.png" type="Texture" id=5]
+[ext_resource path="res://Resources/UI/SmallFont.tres" type="DynamicFont" id=6]
 
-[node name="InventorySpace" type="Sprite"]
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
 
+export(String) var type
+
+onready var item = $Container/Name/Label
+onready var selected = $Selected
+onready var icon = $Container/Icon/Image
+
+func _ready():
+	$Type/Name.text = type
+
+func set_item(item):
+	item.get_parent().region_rect.position.x = 0
+	item.text = item.name
+	icon.texture = null #icon
+
+func clear_item():
+	item.get_parent().region_rect.position.x = 16
+	item.text = \"\"
+	icon.texture = null #generic icon/type
+
+func empty():
+	return item.text == \"\"
+
+func select(node, in_eq):
+	if in_eq:
+		selected.modulate = Color.white
+	else:
+		selected.modulate = Color.yellow
+	selected.visible = (node == self)"
+
+[node name="EquipmentSlot" type="Control"]
+margin_right = 206.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
+script = SubResource( 1 )
+
+[node name="Container" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Icon" type="NinePatchRect" parent="Container"]
+editor/display_folded = true
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
 texture = ExtResource( 1 )
+region_rect = Rect2( 16, 0, 16, 16 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+__meta__ = {
+"_edit_group_": true
+}
 
-[node name="ItemIcon" type="Sprite" parent="." index="0"]
-
-position = Vector2( -94, 0 )
+[node name="Image" type="TextureRect" parent="Container/Icon"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
 texture = ExtResource( 2 )
+expand = true
+stretch_mode = 4
 
-[node name="ItemName" type="Label" parent="." index="1"]
+[node name="Name" type="NinePatchRect" parent="Container"]
+margin_left = 36.0
+margin_right = 206.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 16, 16 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+__meta__ = {
+"_edit_group_": true
+}
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = -52.0
-margin_top = -11.0
-margin_right = 100.0
-margin_bottom = 11.0
-rect_pivot_offset = Vector2( 0, 0 )
-mouse_filter = 2
-mouse_default_cursor_shape = 0
+[node name="Label" type="Label" parent="Container/Name"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 3 )
 text = "Rusty Sword"
 align = 1
 valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_fonts" ]
 
+[node name="Selected" type="NinePatchRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+texture = ExtResource( 4 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 10
+
+[node name="Type" type="NinePatchRect" parent="."]
+modulate = Color( 1, 1, 1, 0.752941 )
+self_modulate = Color( 0, 0.501961, 1, 1 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 11.5881
+margin_top = -14.0
+margin_right = 79.5881
+size_flags_horizontal = 2
+size_flags_vertical = 0
+texture = ExtResource( 5 )
+region_rect = Rect2( 0, 0, 16, 16 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Name" type="Label" parent="Type"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = 1.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 6 )
+text = "Accessory"
+align = 1
+valign = 1
 

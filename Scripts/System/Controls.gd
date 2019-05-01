@@ -21,7 +21,7 @@ func set_master(player):
 func _process(delta):
 	match state:
 		State.ACTION:
-			process_key_local(MENU, KEY_ENTER)
+			process_key_local(MENU, KEY_BACKSLASH)
 			process_key_local(MAP, KEY_BACKSPACE)
 			process_key_local(CHAT, KEY_T)
 			process_key_local(COMMAND, KEY_SLASH)
@@ -37,7 +37,7 @@ func _process(delta):
 			process_key_local(CANCEL, KEY_ESCAPE)
 		
 		State.MENU:
-			process_key_local(MENU, KEY_ENTER)
+			process_key_local(MENU, KEY_BACKSLASH)
 			process_key_local(ACCEPT, KEY_ENTER)
 			process_key_local(CANCEL, KEY_ESCAPE)
 			process_key_local(SWAP, KEY_TAB)

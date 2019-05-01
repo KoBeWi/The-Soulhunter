@@ -7,10 +7,18 @@ onready var buttons = $Container/Buttons
 onready var inventory = $Container/Tabs/Inventory/Slots
 onready var inventory_description = $Container/Tabs/Inventory/Description
 
+onready var equipment = $Container/Tabs/Equipment/Equipment
+onready var equipment_inventory = $Container/Tabs/Equipment/Inventory
+onready var equipment_description = $Container/Tabs/Equipment/Description
+
 enum TABS{STATS, INVENTORY, EQUIPMENT, SOULS}
 
 var current_tab
 var tab_buttons = ButtonGroup.new()
+
+var inventory_select = 0
+var equipment_select = 0
+var equipment_inventory_select = -1
 
 func _ready():
 	visible = false
@@ -22,7 +30,14 @@ func _ready():
 	
 	for slot in inventory.get_children():
 		slot.clear_item()
-	select_inventory(0)
+	select_inventory()
+	
+	for slot in equipment.get_children():
+		slot.clear_item()
+	for slot in equipment_inventory.get_children():
+		slot.clear_item()
+	select_equipment()
+	select_equipment_inventory()
 	
 	change_tab(TABS.STATS)
 
@@ -57,6 +72,58 @@ func on_key_press(p_id, key, state):
 		
 		if key == Controls.SWAP:
 			change_tab((current_tab+1) % TABS.size())
+		
+		if current_tab == TABS.INVENTORY:
+			var old_select = inventory_select
+			if key == Controls.RIGHT:
+				inventory_select = min(inventory_select + 1, inventory.get_child_count()-1)
+			elif key == Controls.LEFT:
+				inventory_select = max(inventory_select - 1, 0)
+			elif key == Controls.DOWN:
+				inventory_select = min(inventory_select + inventory.columns, inventory.get_child_count()-1)
+			elif key == Controls.UP:
+				inventory_select = max(inventory_select - inventory.columns, 0)
+			
+			if inventory_select != old_select:
+				select_inventory()
+		
+		elif current_tab == TABS.EQUIPMENT:
+			if equipment_inventory_select == -1:
+				var old_select = equipment_select
+				if key == Controls.RIGHT:
+					equipment_select = min(equipment_select + 1, equipment.get_child_count()-1)
+				elif key == Controls.LEFT:
+					equipment_select = max(equipment_select - 1, 0)
+				elif key == Controls.DOWN:
+					equipment_select = min(equipment_select + inventory.columns, equipment.get_child_count()-1)
+				elif key == Controls.UP:
+					equipment_select = max(equipment_select - inventory.columns, 0)
+				
+				if key == Controls.ACCEPT:
+					equipment_inventory_select = 0
+					select_equipment_inventory()
+					select_equipment()
+				
+				if equipment_select != old_select:
+					select_equipment()
+			else:
+				var old_select = equipment_inventory_select
+				if key == Controls.RIGHT:
+					equipment_inventory_select = min(equipment_inventory_select + 1, equipment_inventory.get_child_count()-1)
+				elif key == Controls.LEFT:
+					equipment_inventory_select = max(equipment_inventory_select - 1, 0)
+				elif key == Controls.DOWN:
+					equipment_inventory_select = min(equipment_inventory_select + inventory.columns, equipment_inventory.get_child_count()-1)
+				elif key == Controls.UP:
+					equipment_inventory_select = max(equipment_inventory_select - inventory.columns, 0)
+					
+				if key == Controls.CANCEL:
+					equipment_inventory_select = -1
+					select_equipment_inventory()
+					select_equipment()
+				
+				if equipment_inventory_select != old_select:
+					select_equipment_inventory()
 
 func activate():
 	Com.controls.state = Controls.State.MENU
@@ -73,13 +140,33 @@ func change_tab(i):
 	for tab in tabs.get_child_count():
 		tabs.get_child(tab).visible = (current_tab == tab)
 
-func select_inventory(i):
-	var selected = inventory.get_child(i)
+func select_inventory():
+	var selected = inventory.get_child(inventory_select)
 	for slot in inventory.get_children():
 		slot.select(selected)
 	
 	if selected.empty():
 		inventory_description.visible = false
+
+func select_equipment():
+	var selected = equipment.get_child(equipment_select)
+	for slot in equipment.get_children():
+		slot.select(selected, equipment_inventory_select == -1)
+	
+	if selected.empty():
+		equipment_description.visible = false
+
+func select_equipment_inventory():
+	if equipment_inventory_select > -1:
+		var selected = equipment_inventory.get_child(equipment_inventory_select)
+		for slot in equipment_inventory.get_children():
+			slot.select(selected)
+		
+		if selected.empty():
+			equipment_description.visible = false
+	else:
+		for slot in equipment_inventory.get_children():
+			slot.select(null)
 
 """
 const eq_slot_order = [3, 7, 4, 0, 5, 1, 6, 2]
