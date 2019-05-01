@@ -62,6 +62,7 @@ public class Character {
             level++;
             levelUp = true;
         }
+        
         if (levelUp) {
             stats.Add("level");
             SetStat("level", level);

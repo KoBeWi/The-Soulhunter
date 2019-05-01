@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/InventorySpaceFree.png-bc360a57d166537815910573fe5ca91c.stex"
+path="res://.import/3.png-645ae63e8d0bed4694f73cb14d90d40b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Graphics/UI/InventorySpaceFree.png"
-dest_files=[ "res://.import/InventorySpaceFree.png-bc360a57d166537815910573fe5ca91c.stex" ]
+source_file="res://Graphics/Items/3.png"
+dest_files=[ "res://.import/3.png-645ae63e8d0bed4694f73cb14d90d40b.stex" ]
 
 [params]
 

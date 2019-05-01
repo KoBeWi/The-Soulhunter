@@ -2,20 +2,22 @@
 
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=1]
 
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.556863, 0.172549, 0.0823529, 1 )
-
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.278431, 0.172549, 0.0823529, 1 )
 border_width_left = 2
 border_width_right = 2
 border_color = Color( 0.521569, 0.345098, 0.164706, 1 )
 
-[sub_resource type="StyleBoxLine" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.556863, 0.172549, 0.0823529, 1 )
+border_width_left = 2
+border_width_right = 2
+
+[sub_resource type="StyleBoxLine" id=3]
 color = Color( 0.521569, 0.345098, 0.164706, 1 )
 thickness = 2
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.223529, 0.133333, 0.0392157, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -31,14 +33,14 @@ default_font = ExtResource( 1 )
 Button/colors/font_color = Color( 1, 1, 1, 1 )
 Button/colors/font_color_disabled = Color( 0, 0, 0, 1 )
 Button/colors/font_color_hover = Color( 0, 0, 0, 1 )
-Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
+Button/colors/font_color_pressed = Color( 0.654902, 0.976471, 1, 1 )
 Button/constants/hseparation = 0
 Button/fonts/font = null
 Button/styles/disabled = null
-Button/styles/focus = SubResource( 3 )
+Button/styles/focus = null
 Button/styles/hover = null
-Button/styles/normal = SubResource( 4 )
-Button/styles/pressed = null
+Button/styles/normal = SubResource( 2 )
+Button/styles/pressed = SubResource( 1 )
 ButtonGroup/styles/panel = null
 CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -135,7 +137,7 @@ HScrollBar/styles/grabber_hilite = null
 HScrollBar/styles/scroll = null
 HScrollBar/styles/scroll_focus = null
 HSeparator/constants/separation = 0
-HSeparator/styles/separator = SubResource( 2 )
+HSeparator/styles/separator = SubResource( 3 )
 HSlider/icons/grabber = null
 HSlider/icons/grabber_hilite = null
 HSlider/icons/tick = null
@@ -211,7 +213,7 @@ OptionButton/styles/focus = null
 OptionButton/styles/hover = null
 OptionButton/styles/normal = null
 OptionButton/styles/pressed = null
-Panel/styles/panel = SubResource( 1 )
+Panel/styles/panel = SubResource( 4 )
 Panel/styles/panelf = null
 Panel/styles/panelnc = null
 PanelContainer/styles/panel = null

@@ -23,8 +23,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="SheetContainer" type="HBoxContainer" parent="Container"]
+editor/display_folded = true
 margin_right = 736.0
 margin_bottom = 75.0
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Margin" type="Control" parent="Container/SheetContainer"]
 margin_right = 8.0
@@ -32,6 +36,7 @@ margin_bottom = 75.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="CharacterSheet" type="VBoxContainer" parent="Container/SheetContainer"]
+editor/display_folded = true
 margin_left = 8.0
 margin_right = 728.0
 margin_bottom = 75.0
@@ -58,6 +63,7 @@ margin_bottom = 41.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="Stats" type="GridContainer" parent="Container/SheetContainer/CharacterSheet"]
+editor/display_folded = true
 margin_top = 41.0
 margin_right = 720.0
 margin_bottom = 75.0
@@ -183,7 +189,6 @@ margin_right = 736.0
 margin_bottom = 91.0
 
 [node name="Buttons" type="HBoxContainer" parent="Container"]
-editor/display_folded = true
 margin_top = 91.0
 margin_right = 736.0
 margin_bottom = 139.0
@@ -196,6 +201,7 @@ margin_right = 240.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 128, 0 )
 toggle_mode = true
+pressed = true
 text = "Character"
 
 [node name="Button2" type="Button" parent="Container/Buttons"]
@@ -239,6 +245,8 @@ margin_right = 736.0
 margin_bottom = 155.0
 
 [node name="Stats" type="HBoxContainer" parent="Container/Tabs"]
+editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -326,7 +334,6 @@ rect_min_size = Vector2( 8, 0 )
 
 [node name="Inventory" type="VBoxContainer" parent="Container/Tabs"]
 editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -536,6 +543,7 @@ margin_bottom = 168.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="Description" type="HBoxContainer" parent="Container/Tabs/Inventory"]
+editor/display_folded = true
 margin_top = 168.0
 margin_right = 728.0
 margin_bottom = 216.0
@@ -579,4 +587,526 @@ margin_right = -4.0
 margin_bottom = -4.0
 custom_fonts/font = ExtResource( 6 )
 text = "hello this is description"
+
+[node name="Equipment" type="VBoxContainer" parent="Container/Tabs"]
+editor/display_folded = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_right = -4.0
+
+[node name="Slots" type="GridContainer" parent="Container/Tabs/Equipment"]
+editor/display_folded = true
+margin_right = 728.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 0, 160 )
+columns = 5
+
+[node name="Slot1" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 145.0
+margin_bottom = 32.0
+
+[node name="Slot2" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_right = 290.0
+margin_bottom = 32.0
+
+[node name="Slot3" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_right = 435.0
+margin_bottom = 32.0
+
+[node name="Slot4" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_right = 580.0
+margin_bottom = 32.0
+
+[node name="Slot5" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_right = 725.0
+margin_bottom = 32.0
+
+[node name="Slot6" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 32.0
+margin_right = 145.0
+margin_bottom = 64.0
+
+[node name="Slot7" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 32.0
+margin_right = 290.0
+margin_bottom = 64.0
+
+[node name="Slot8" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 32.0
+margin_right = 435.0
+margin_bottom = 64.0
+
+[node name="Slot9" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 32.0
+margin_right = 580.0
+margin_bottom = 64.0
+
+[node name="Slot10" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 32.0
+margin_right = 725.0
+margin_bottom = 64.0
+
+[node name="Slot11" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 64.0
+margin_right = 145.0
+margin_bottom = 96.0
+
+[node name="Slot12" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 64.0
+margin_right = 290.0
+margin_bottom = 96.0
+
+[node name="Slot13" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 64.0
+margin_right = 435.0
+margin_bottom = 96.0
+
+[node name="Slot14" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 64.0
+margin_right = 580.0
+margin_bottom = 96.0
+
+[node name="Slot15" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 64.0
+margin_right = 725.0
+margin_bottom = 96.0
+
+[node name="Slot16" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 96.0
+margin_right = 145.0
+margin_bottom = 128.0
+
+[node name="Slot17" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 96.0
+margin_right = 290.0
+margin_bottom = 128.0
+
+[node name="Slot18" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 96.0
+margin_right = 435.0
+margin_bottom = 128.0
+
+[node name="Slot19" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 96.0
+margin_right = 580.0
+margin_bottom = 128.0
+
+[node name="Slot20" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 96.0
+margin_right = 725.0
+margin_bottom = 128.0
+
+[node name="Slot21" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 128.0
+margin_right = 145.0
+margin_bottom = 160.0
+
+[node name="Slot22" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 128.0
+margin_right = 290.0
+margin_bottom = 160.0
+
+[node name="Slot23" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 128.0
+margin_right = 435.0
+margin_bottom = 160.0
+
+[node name="Slot24" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 128.0
+margin_right = 580.0
+margin_bottom = 160.0
+
+[node name="Slot25" parent="Container/Tabs/Equipment/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 128.0
+margin_right = 725.0
+margin_bottom = 160.0
+
+[node name="Separator5" type="Control" parent="Container/Tabs/Equipment"]
+margin_top = 160.0
+margin_right = 728.0
+margin_bottom = 168.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="Description" type="HBoxContainer" parent="Container/Tabs/Equipment"]
+editor/display_folded = true
+margin_top = 168.0
+margin_right = 728.0
+margin_bottom = 216.0
+rect_min_size = Vector2( 0, 48 )
+
+[node name="Panel1" type="NinePatchRect" parent="Container/Tabs/Equipment/Description"]
+margin_right = 56.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Icon" type="TextureRect" parent="Container/Tabs/Equipment/Description/Panel1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 4
+
+[node name="Panel2" type="NinePatchRect" parent="Container/Tabs/Equipment/Description"]
+margin_left = 56.0
+margin_right = 728.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 12.0
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Text" type="Label" parent="Container/Tabs/Equipment/Description/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+custom_fonts/font = ExtResource( 6 )
+text = "hello this is description"
+
+[node name="Souls" type="VBoxContainer" parent="Container/Tabs"]
+editor/display_folded = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_right = -4.0
+
+[node name="Slots" type="GridContainer" parent="Container/Tabs/Souls"]
+editor/display_folded = true
+margin_right = 728.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 0, 160 )
+columns = 5
+
+[node name="Slot1" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 145.0
+margin_bottom = 32.0
+
+[node name="Slot2" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_right = 290.0
+margin_bottom = 32.0
+
+[node name="Slot3" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_right = 435.0
+margin_bottom = 32.0
+
+[node name="Slot4" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_right = 580.0
+margin_bottom = 32.0
+
+[node name="Slot5" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_right = 725.0
+margin_bottom = 32.0
+
+[node name="Slot6" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 32.0
+margin_right = 145.0
+margin_bottom = 64.0
+
+[node name="Slot7" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 32.0
+margin_right = 290.0
+margin_bottom = 64.0
+
+[node name="Slot8" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 32.0
+margin_right = 435.0
+margin_bottom = 64.0
+
+[node name="Slot9" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 32.0
+margin_right = 580.0
+margin_bottom = 64.0
+
+[node name="Slot10" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 32.0
+margin_right = 725.0
+margin_bottom = 64.0
+
+[node name="Slot11" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 64.0
+margin_right = 145.0
+margin_bottom = 96.0
+
+[node name="Slot12" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 64.0
+margin_right = 290.0
+margin_bottom = 96.0
+
+[node name="Slot13" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 64.0
+margin_right = 435.0
+margin_bottom = 96.0
+
+[node name="Slot14" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 64.0
+margin_right = 580.0
+margin_bottom = 96.0
+
+[node name="Slot15" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 64.0
+margin_right = 725.0
+margin_bottom = 96.0
+
+[node name="Slot16" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 96.0
+margin_right = 145.0
+margin_bottom = 128.0
+
+[node name="Slot17" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 96.0
+margin_right = 290.0
+margin_bottom = 128.0
+
+[node name="Slot18" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 96.0
+margin_right = 435.0
+margin_bottom = 128.0
+
+[node name="Slot19" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 96.0
+margin_right = 580.0
+margin_bottom = 128.0
+
+[node name="Slot20" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 96.0
+margin_right = 725.0
+margin_bottom = 128.0
+
+[node name="Slot21" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 128.0
+margin_right = 145.0
+margin_bottom = 160.0
+
+[node name="Slot22" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 145.0
+margin_top = 128.0
+margin_right = 290.0
+margin_bottom = 160.0
+
+[node name="Slot23" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 290.0
+margin_top = 128.0
+margin_right = 435.0
+margin_bottom = 160.0
+
+[node name="Slot24" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 435.0
+margin_top = 128.0
+margin_right = 580.0
+margin_bottom = 160.0
+
+[node name="Slot25" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 128.0
+margin_right = 725.0
+margin_bottom = 160.0
+
+[node name="Separator5" type="Control" parent="Container/Tabs/Souls"]
+margin_top = 160.0
+margin_right = 728.0
+margin_bottom = 168.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="Description" type="HBoxContainer" parent="Container/Tabs/Souls"]
+editor/display_folded = true
+margin_top = 168.0
+margin_right = 728.0
+margin_bottom = 216.0
+rect_min_size = Vector2( 0, 48 )
+
+[node name="Panel1" type="NinePatchRect" parent="Container/Tabs/Souls/Description"]
+margin_right = 56.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Icon" type="TextureRect" parent="Container/Tabs/Souls/Description/Panel1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 4
+
+[node name="Panel2" type="NinePatchRect" parent="Container/Tabs/Souls/Description"]
+margin_left = 56.0
+margin_right = 728.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 12.0
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Text" type="Label" parent="Container/Tabs/Souls/Description/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+custom_fonts/font = ExtResource( 6 )
+text = "hello this is description"
+
+[node name="Button5" type="Label" parent="."]
+margin_left = 304.141
+margin_top = 81.979
+margin_right = 432.141
+margin_bottom = 98.979
+rect_min_size = Vector2( 128, 0 )
+text = "[TAB]"
+align = 1
+valign = 1
 

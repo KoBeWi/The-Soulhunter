@@ -1,0 +1,13 @@
+[
+    {
+        "name": "Bone Throw",
+        "description": "Throw bones at foes.",
+        "type": "trigger"
+    },
+
+    {
+        "name": "Skeleton Disguise",
+        "description": "You look like skeleton!",
+        "type": "active"
+    }
+]

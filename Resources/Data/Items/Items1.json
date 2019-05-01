@@ -1,0 +1,25 @@
+[
+    {
+        "name": "Rusty Sword",
+        "description": "A very old and rusty sword. Looks like it might break at any moment.",
+        "type": "weapon",
+        "attack": 1
+    },
+
+    {
+        "name": "Vitality Potion",
+        "description": "A basic healing potion. Heals 10 HP.",
+        "type": "consumable"
+    },
+
+    {
+        "name": "Rusty Armor",
+        "description": "A very worn metal armor. A simple poke could break it.",
+        "type": "armor"},
+
+    {
+        "name": "Skull",
+        "description": "A skull of a skeleton. Spooky!",
+        "type":"material"
+    }
+]

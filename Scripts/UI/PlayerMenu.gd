@@ -1,11 +1,30 @@
 extends Control
 
 onready var main_stats = $Container/SheetContainer/CharacterSheet/Stats
+onready var tabs = $Container/Tabs
+onready var buttons = $Container/Buttons
+
+onready var inventory = $Container/Tabs/Inventory/Slots
+onready var inventory_description = $Container/Tabs/Inventory/Description
+
+enum TABS{STATS, INVENTORY, EQUIPMENT, SOULS}
+
+var current_tab
+var tab_buttons = ButtonGroup.new()
 
 func _ready():
 	visible = false
 	Com.controls.connect("key_press", self, "on_key_press")
 	Network.connect("stats", self, "update_stats")
+	
+	for button in buttons.get_children():
+		button.set_button_group(tab_buttons)
+	
+	for slot in inventory.get_children():
+		slot.clear_item()
+	select_inventory(0)
+	
+	change_tab(TABS.STATS)
 
 func update_stats(stats):
 	if "attack" in stats:
@@ -35,6 +54,9 @@ func on_key_press(p_id, key, state):
 			pass
 		elif key == Controls.CANCEL:
 			pass
+		
+		if key == Controls.SWAP:
+			change_tab((current_tab+1) % TABS.size())
 
 func activate():
 	Com.controls.state = Controls.State.MENU
@@ -43,6 +65,21 @@ func activate():
 func deactivate():
 	Com.controls.state = Controls.State.ACTION
 	visible = false
+
+func change_tab(i):
+	current_tab = i
+	buttons.get_child(i).pressed = true
+	
+	for tab in tabs.get_child_count():
+		tabs.get_child(tab).visible = (current_tab == tab)
+
+func select_inventory(i):
+	var selected = inventory.get_child(i)
+	for slot in inventory.get_children():
+		slot.select(selected)
+	
+	if selected.empty():
+		inventory_description.visible = false
 
 """
 const eq_slot_order = [3, 7, 4, 0, 5, 1, 6, 2]

@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Skeleton",
+        "description": "A reanimated human skeleton, which will throw a bone.",
+        "max_hp":4,
+        "exp":1,
+        "drops": [{"name": "Vitality Potion", "chance": 100}, {"name": "Skull", "chance": 200}]
+    },
+
+    {
+        "name": "Blood Skeleton",
+        "description": "A reanimated human skeleton, soaked in blood.",
+        "max_hp": 10,
+        "exp": 2
+    }
+]

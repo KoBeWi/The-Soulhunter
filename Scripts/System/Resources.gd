@@ -31,13 +31,18 @@ func read_generic_resources(resource, target):
 	dir.open("res://Resources/Data/" + resource)
 	dir.list_dir_begin(true)
 	
+	var id = 0
+	
 	var file_name = dir.get_next()
 	while file_name != "":
 		var file = File.new()
 		file.open("res://Resources/Data/" + resource + "/" + file_name, file.READ)
 		var text = file.get_as_text()
 		
-		var dict = parse_json(text)
-		target[dict.name] = dict
+		var ary = parse_json(text)
+		for dict in ary:
+			target[dict.name] = dict
+			dict.id = id
+			id += 1
 		
 		file_name = dir.get_next()
