@@ -99,13 +99,21 @@ public class Character {
     }
 
     public ushort[] GetInventory() {
-        var inventory = data.GetValue("inventory").AsBsonArray;
-        List<ushort> items = new List<ushort>();
+        return getArray("inventory");
+    }
 
-        foreach (var item in inventory) {
-            items.Add((ushort)item.AsInt32);
+    public ushort[] GetEquipment() {
+        return getArray("equipment");
+    }
+
+    private ushort[] getArray(string value) {
+        var array = data.GetValue(value).AsBsonArray;
+        List<ushort> result = new List<ushort>();
+
+        foreach (var item in array) {
+            result.Add((ushort)item.AsInt32);
         }
 
-        return items.ToArray();
+        return result.ToArray();
     }
 }

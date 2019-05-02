@@ -25,6 +25,7 @@ func _ready():
 	Com.controls.connect("key_press", self, "on_key_press")
 	Network.connect("stats", self, "update_stats")
 	Network.connect("inventory", self, "update_inventory")
+	Network.connect("equipment", self, "update_equipment")
 	
 	for button in buttons.get_children():
 		button.set_button_group(tab_buttons)
@@ -70,9 +71,20 @@ func update_inventory(items):
 	for i in inventory.get_child_count():
 		if i < stacks.size():
 			inventory.get_child(i).set_item(stacks[i])
+		else:
+			inventory.get_child(i).clear_item()
 	
 	select_inventory()
 	select_equipment_inventory()
+
+func update_equipment(items):
+	for i in 8:
+		if items[i] > 0:
+			equipment.get_child(i).set_item(Res.get_res(Res.items, items[i]).name)
+		else:
+			equipment.get_child(i).clear_item()
+	
+	select_equipment()
 
 func on_key_press(p_id, key, state):
 	if state == Controls.State.ACTION:
@@ -167,7 +179,7 @@ func select_inventory():
 	else:
 		inventory_description.visible = true
 		
-		var item = inventory.get_child(inventory_select).stack_item
+		var item = selected.stack_item
 		inventory_description.get_node("Panel2/Text").text = Res.items[item].description
 		inventory_description.get_node("Panel1/Icon").texture = Res.item_icon(item)
 
@@ -178,6 +190,12 @@ func select_equipment():
 	
 	if selected.empty():
 		equipment_description.visible = false
+	else:
+		equipment_description.visible = true
+		
+		var item = selected.item_name
+		equipment_description.get_node("Panel2/Text").text = Res.items[item].description
+		equipment_description.get_node("Panel1/Icon").texture = Res.item_icon(item)
 
 func select_equipment_inventory():
 	if equipment_inventory_select > -1:

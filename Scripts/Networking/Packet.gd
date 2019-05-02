@@ -14,7 +14,8 @@ enum TYPE {
 	CHAT,
 	STATS,
 	DAMAGE,
-	INVENTORY
+	INVENTORY,
+	EQUIPMENT
 }
 
 const stat_list = ["level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"]

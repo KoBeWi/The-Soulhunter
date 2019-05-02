@@ -16,6 +16,7 @@ signal error(code)
 signal chat_message(type, from, message)
 signal stats(data)
 signal inventory(items)
+signal equipment(items)
 
 func _ready():
 	set_process(false)
@@ -155,12 +156,21 @@ func process_packet(unpacker):
 			var amount = unpacker.get_u8()
 			for i in amount:
 				inventory.append(unpacker.get_u16())
-			print(inventory)
 			
 			emit_signal("inventory", inventory)
 		
-		"EQUIPMENT": ###
-			Com.game.update_equipment([])
+		Packet.TYPE.EQUIPMENT:
+			var equipment = []
+			
+			var equipped = unpacker.get_u8()
+			for i in 8:
+				if (equipped & Data.binary[i]):
+					equipment.append(unpacker.get_u16())
+				else:
+					equipment.append(0)
+			print(equipment)
+			
+			emit_signal("equipment", equipment)
 		
 		"MAP": ###
 			Com.player.chr.update_map([])

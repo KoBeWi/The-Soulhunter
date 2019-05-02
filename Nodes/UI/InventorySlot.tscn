@@ -27,9 +27,10 @@ func clear_item():
 	region_rect.position.x = 16
 	item.text = \"\"
 	amount_value.get_parent().visible = false
+	stack_item = null
 
 func empty():
-	return item.text == \"\"
+	return !stack_item
 
 func select(node):
 	selected.visible = (node == self)"

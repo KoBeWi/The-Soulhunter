@@ -16,21 +16,25 @@ onready var item = $Container/Name/Label
 onready var selected = $Selected
 onready var icon = $Container/Icon/Image
 
+var item_name
+
 func _ready():
 	$Type/Name.text = type
 
-func set_item(item):
+func set_item(_item_name):
 	item.get_parent().region_rect.position.x = 0
-	item.text = item.name
-	icon.texture = null #icon
+	item_name = _item_name
+	item.text = item_name
+	icon.texture = Res.item_icon(item_name)
 
 func clear_item():
 	item.get_parent().region_rect.position.x = 16
 	item.text = \"\"
 	icon.texture = null #generic icon/type
+	item_name = null
 
 func empty():
-	return item.text == \"\"
+	return !item_name
 
 func select(node, in_eq):
 	if in_eq:

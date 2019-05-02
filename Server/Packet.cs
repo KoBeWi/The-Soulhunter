@@ -15,7 +15,8 @@ public class Packet {
         CHAT,
         STATS,
         DAMAGE,
-        INVENTORY
+        INVENTORY,
+        EQUIPMENT
     }
 
     public static readonly byte[] zero = new byte[] {0};
@@ -55,7 +56,7 @@ public class Packet {
     public Packet AddU16Array(ushort[] array) {
         AddU8((byte)array.Length);
         foreach (var i in array) AddU16(i);
-        
+
         return this;
     }
 
@@ -128,6 +129,24 @@ public class Packet {
         AddBoolArray(vec);
         AddBoolArray(vec2);
         foreach (ushort stat in statsToSend) AddU16(stat);
+
+        return this;
+    }
+
+    public Packet AddEquipment(ushort[] equipment) {
+        bool[] isEq = new bool[8];
+
+        List<ushort> eq = new List<ushort>();
+
+        for (int i = 0; i < 8; i++) {
+            if (equipment[i] > 0) {
+                isEq[i] = true;
+                eq.Add(equipment[i]);
+            }
+        }
+
+        AddBoolArray(isEq);
+        foreach (var item in eq) { AddU16(item); }
 
         return this;
     }

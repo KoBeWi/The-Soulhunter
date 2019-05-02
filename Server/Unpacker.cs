@@ -54,6 +54,7 @@ public class Unpacker {
                 // player.SendPacket(new Packet(Packet.TYPE.STATS).AddStats(player, "level", "exp", "hp", "max_hp", "mp", "max_mp"));
                 player.SendPacket(new Packet(Packet.TYPE.STATS).AddStats(player, "level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"));
                 player.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(player.GetCharacter().GetInventory()));
+                player.SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(player.GetCharacter().GetEquipment()));
 
                 room.AddPlayer(player.GetCharacter());
             } else {
