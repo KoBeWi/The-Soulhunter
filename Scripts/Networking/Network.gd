@@ -16,6 +16,7 @@ signal log_in
 signal error(code)
 signal chat_message(type, from, message)
 signal stats(data)
+signal inventory(items)
 
 func _ready():
 	set_process(false)
@@ -130,12 +131,6 @@ func process_packet(unpacker):
 				if entity and is_instance_valid(entity):
 					Data.apply_state_vector(timestamp, unpacker, entity, diff_vector)
 		
-		"EQUIPMENT": ###
-			Com.game.update_equipment([])
-		
-		"INVENTORY": ###
-			Com.game.update_inventory([])
-		
 		Packet.TYPE.KEY_PRESS:
 			Com.controls.press_key(unpacker.get_u16(), unpacker.get_u8(), Controls.State.ACTION)
 		
@@ -156,12 +151,21 @@ func process_packet(unpacker):
 			if !stats.empty():
 				emit_signal("stats", stats)
 		
+		Packet.TYPE.INVENTORY:
+			var inventory = []
+			
+			var amount = unpacker.get_u8()
+			for i in amount:
+				inventory.append(unpacker.get_u16())
+			print(inventory)
+			
+			emit_signal("inventory", inventory)
+		
+		"EQUIPMENT": ###
+			Com.game.update_equipment([])
+		
 		"MAP": ###
 			Com.player.chr.update_map([])
-		
-		"SOUL": ###
-			var enemy = Com.game.get_enemy([][0])
-			if enemy: enemy.create_soul([][1])
 
 func send_data(packet):
 	client.put_data(packet.data)

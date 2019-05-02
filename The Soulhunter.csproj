@@ -69,7 +69,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\AssemblyInfo.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\Database.cs" />
     <Compile Include="Server\Packet.cs" />

@@ -12,10 +12,15 @@ onready var item = $ItemName
 onready var selected = $Selected
 onready var amount_value = $Amount/AmountValue
 
+var stack_item
+
 func set_item(stack):
 	region_rect.position.x = 0
-	item.text = item.name
-	amount_value.text = str(\"x\", item.amount)
+	
+	stack_item = stack.item
+	
+	item.text = stack.item
+	amount_value.text = str(\"x\", stack.amount)
 	amount_value.get_parent().visible = true
 
 func clear_item():

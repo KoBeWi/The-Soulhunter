@@ -14,7 +14,8 @@ public class Packet {
         TICK,
         CHAT,
         STATS,
-        DAMAGE
+        DAMAGE,
+        INVENTORY
     }
 
     public static readonly byte[] zero = new byte[] {0};
@@ -48,6 +49,13 @@ public class Packet {
         data.Add(new byte[] {(byte)(i / 256), (byte)(i % 256)});
         length += 2;
 
+        return this;
+    }
+
+    public Packet AddU16Array(ushort[] array) {
+        AddU8((byte)array.Length);
+        foreach (var i in array) AddU16(i);
+        
         return this;
     }
 

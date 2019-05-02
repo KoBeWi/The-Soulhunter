@@ -97,4 +97,15 @@ public class Character {
     public void Save() {
         database.SaveCharacter(data);
     }
+
+    public ushort[] GetInventory() {
+        var inventory = data.GetValue("inventory").AsBsonArray;
+        List<ushort> items = new List<ushort>();
+
+        foreach (var item in inventory) {
+            items.Add((ushort)item.AsInt32);
+        }
+
+        return items.ToArray();
+    }
 }

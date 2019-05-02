@@ -2,13 +2,13 @@
 
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=1]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.278431, 0.172549, 0.0823529, 1 )
 border_width_left = 2
 border_width_right = 2
 border_color = Color( 0.521569, 0.345098, 0.164706, 1 )
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.556863, 0.172549, 0.0823529, 1 )
 border_width_left = 2
 border_width_right = 2
@@ -39,8 +39,8 @@ Button/fonts/font = null
 Button/styles/disabled = null
 Button/styles/focus = null
 Button/styles/hover = null
-Button/styles/normal = SubResource( 2 )
-Button/styles/pressed = SubResource( 1 )
+Button/styles/normal = SubResource( 1 )
+Button/styles/pressed = SubResource( 2 )
 ButtonGroup/styles/panel = null
 CheckBox/colors/font_color = Color( 0, 0, 0, 1 )
 CheckBox/colors/font_color_disabled = Color( 0, 0, 0, 1 )

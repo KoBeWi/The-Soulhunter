@@ -46,3 +46,11 @@ func read_generic_resources(resource, target):
 			id += 1
 		
 		file_name = dir.get_next()
+
+func get_res(from, id):
+	for resource in from.values():
+		if resource.id == id:
+			return resource
+
+func item_icon(item):
+	return load(str("res://Graphics/Items/", items[item].id ,".png"))

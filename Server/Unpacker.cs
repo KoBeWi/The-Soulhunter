@@ -53,6 +53,7 @@ public class Unpacker {
                 player.SendPacket(new Packet(command).AddU8(0));
                 // player.SendPacket(new Packet(Packet.TYPE.STATS).AddStats(player, "level", "exp", "hp", "max_hp", "mp", "max_mp"));
                 player.SendPacket(new Packet(Packet.TYPE.STATS).AddStats(player, "level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"));
+                player.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(player.GetCharacter().GetInventory()));
 
                 room.AddPlayer(player.GetCharacter());
             } else {
