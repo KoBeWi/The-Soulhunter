@@ -5,6 +5,4 @@
 >zamienić rozmiar pakietu u16, żeby mogły być dłuższe
 >coś zrobić z ujemnymi U16 :/ (żeby automatycznie, albo uważać tam gdzie tak jest czy cuś)
 +własne error code (np. ERROR_CHAT) i handler u klienta dla każdego
->zmienić tick time na u8? (żeby było 3 bajty mniej)
-+cache do bazy danych
 >linear_interpolate

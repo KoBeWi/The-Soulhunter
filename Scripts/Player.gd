@@ -17,7 +17,8 @@ var last_exp = -1
 var last_level = -1
 #var enemies = []
 
-var last_controls = OS.get_ticks_msec()
+var last_tick = 0
+var last_controls = 0
 var desync = 0
 
 var jump = false
@@ -109,7 +110,7 @@ func _physics_process(delta):
 		anim.play("SwingAttack1" + direction())
 	
 	if !controls.empty():
-		last_controls = OS.get_ticks_msec()
+		last_controls = last_tick
 	key_press.clear()
 
 func on_key_press(p_id, key, state):
@@ -181,10 +182,13 @@ func get_state_vector():
 		]
 
 func apply_state_vector(timestamp, diff_vector, vector):
-	self.uname = vector[0]
-	var target_position = Vector2(vector[1], vector[2])
+	if vector[0] != uname:
+		self.uname = vector[0]
 	
-	if !main or Com.time_greater(timestamp, last_controls + 1000):
+	var target_position = Vector2(vector[1], vector[2])
+	last_tick = timestamp
+	
+	if !main or Com.time_greater(timestamp, last_controls + 5):
 		desync = 0
 		var old_position = position
 		

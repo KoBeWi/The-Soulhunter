@@ -56,7 +56,8 @@ public class Server : Node {
 
         NetworkStream stream = client.GetStream();
         Player player = new Player(stream, database);
-        new Packet(Packet.TYPE.HELLO).AddU32((uint)OS.GetTicksMsec()).Send(stream);
+        // new Packet(Packet.TYPE.HELLO).AddU32((uint)OS.GetTicksMsec()).Send(stream);
+        new Packet(Packet.TYPE.HELLO).Send(stream);
 
         var bytes = new byte[256];
 

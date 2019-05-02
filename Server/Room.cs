@@ -17,6 +17,7 @@ public class Room : Viewport {
     private List<Character> players;
     private Dictionary<Character, Node> playerNodes;
 
+    private byte ticks;
     private uint timeout;
 
     public override void _Ready() {
@@ -25,6 +26,7 @@ public class Room : Viewport {
         playerNodes = new Dictionary<Character, Node>();
         stateHistory = new Dictionary<ushort, Godot.Collections.Array>();
         lastEntityId = 0;
+        ticks = 0;
         timeout = 0;
 
         GetNode("InGame").Call("load_map", mapId);
@@ -87,7 +89,8 @@ public class Room : Viewport {
     }
 
     private Packet CreateStatePacket(bool full) {
-        var state = new Packet(Packet.TYPE.TICK).AddU32((uint)OS.GetTicksMsec());
+        // var state = new Packet(Packet.TYPE.TICK).AddU32((uint)OS.GetTicksMsec());
+        var state = new Packet(Packet.TYPE.TICK).AddU8(ticks++);
         state.AddU8((byte)entityBindings.Count);
 
         foreach (var id in entityBindings.Keys) {

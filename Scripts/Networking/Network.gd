@@ -4,7 +4,6 @@ enum{STRING, U8, U16}
 
 var client
 var account
-var server_delta = 0
 
 const server_host = "127.0.0.1"
 const server_port = 2412
@@ -50,7 +49,6 @@ func process_packet(unpacker):
 	
 	match unpacker.command:
 		Packet.TYPE.HELLO:
-			server_delta = unpacker.get_u32() - OS.get_ticks_msec()
 			emit_signal("connected")
 		
 		Packet.TYPE.LOGIN:
@@ -118,7 +116,7 @@ func process_packet(unpacker):
 			Com.game.remove_entity(unpacker.get_u16())
 		
 		Packet.TYPE.TICK:
-			var timestamp = unpacker.get_u32()
+			var timestamp = unpacker.get_u8()
 			var entity_count = unpacker.get_u8()
 			
 			for i in entity_count:

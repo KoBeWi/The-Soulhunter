@@ -46,4 +46,7 @@ func dispose_node(node):
 		node.queue_free()
 
 func time_greater(server, client):
-	return server > client + Network.server_delta
+	if server > client:
+		return true
+	elif server < 96 and client > 160:
+		return true
