@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 public class Server : Node {
     private static readonly PackedScene roomFactory = ResourceLoader.Load("res://Server/Nodes/Room.tscn") as PackedScene;
@@ -21,6 +22,8 @@ public class Server : Node {
 
     private bool available = true;
 
+    private List<Dictionary<string, object>> items = new List<Dictionary<string, object>>();
+
     public override void _Ready() {
         instance = this;
         server = new TcpListener(IPAddress.Parse("127.0.0.1"), 2412);
@@ -28,6 +31,8 @@ public class Server : Node {
 
         rooms = new Dictionary<int, List<Room>>();
         playersOnline = new List<Player>();
+
+        items.AddRange(JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(System.IO.File.ReadAllText("Resources/Data/Items/Items1.json")));
 
         mapList = new List<PackedScene>();
         foreach (var map in System.IO.Directory.GetFiles("Maps"))
@@ -148,5 +153,9 @@ public class Server : Node {
     }
 
     public static Server Instance() {return instance;}
-    public static Node GetControls() {return instance.controls;}    
+    public static Node GetControls() {return instance.controls;}
+
+    public static Dictionary<string, object> GetItem(int id) {
+        return instance.items[id];
+    }
 }

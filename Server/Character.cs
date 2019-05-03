@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Godot;
+using Newtonsoft.Json;
 
 public class Character {
     private string name;
@@ -15,11 +16,14 @@ public class Character {
     private Player owner;
     private Node playerNode;
 
+    private Dictionary<string, ushort> finalStats;
+
     public Character(BsonDocument dat, Database databas) {
         currentMap = (ushort)dat.GetValue("location").AsInt32;
         name = dat.GetValue("name").AsString;
         data = dat;
         database = databas;
+        syncStats();
     }
 
     public void SetPlayer(Player _owner) {owner = _owner;}
@@ -32,6 +36,7 @@ public class Character {
     public void SetNode(Node player) {
         playerNode = player;
         playerNode.Call("set_stats", data.ToJson());
+        // playerNode.Call("set_stats", JsonConvert.ToString(finalStats));
     }
 
     public void RemoveFromRoom() {
@@ -67,11 +72,11 @@ public class Character {
             stats.Add("level");
             SetStat("level", level);
 
-            SetStat("attack", (ushort)(GetStat("attack")+1));
-            SetStat("defense", (ushort)(GetStat("defense")+1));
-            SetStat("magic_attack", (ushort)(GetStat("magic_attack")+1));
-            SetStat("magic_defense", (ushort)(GetStat("magic_defense")+1));
-            SetStat("luck", (ushort)(GetStat("luck")+1));
+            SetStat("attack", (ushort)(getStat("attack")+1));
+            SetStat("defense", (ushort)(getStat("defense")+1));
+            SetStat("magic_attack", (ushort)(getStat("magic_attack")+1));
+            SetStat("magic_defense", (ushort)(getStat("magic_defense")+1));
+            SetStat("luck", (ushort)(getStat("luck")+1));
         }
 
         stats.Add("exp");
@@ -79,7 +84,32 @@ public class Character {
     }
 
     public ushort GetStat(string stat) {
+        return finalStats[stat];
+    }
+
+    private ushort getStat(string stat) {
         return (ushort)data.GetValue(stat).AsInt32;
+    }
+
+    static readonly string[] statList = {"level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"};
+
+    private void syncStats() {
+        finalStats = new Dictionary<string, ushort>();
+        foreach (string stat in statList) {
+            finalStats[stat] = getStat(stat);
+        }
+
+        foreach (ushort i in GetEquipment()) {
+            if (i > 0) {
+                var item = Server.GetItem(i);
+
+                foreach (var stat in statList) {
+                    if (item.ContainsKey(stat)) {
+                        finalStats[stat] += (ushort)(int)Godot.GD.Convert(item[stat], (int)Godot.Variant.Type.Int);
+                    }
+                }
+            }
+        }
     }
 
     public void SetStat(string stat, ushort value) {
