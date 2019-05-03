@@ -16,6 +16,8 @@ enum TABS{STATS, INVENTORY, EQUIPMENT, SOULS}
 var current_tab
 var tab_buttons = ButtonGroup.new()
 
+var stacks = {}
+
 var inventory_select = 0
 var equipment_select = 0
 var equipment_inventory_select = -1
@@ -39,7 +41,6 @@ func _ready():
 	for slot in equipment_inventory.get_children():
 		slot.clear_item()
 	select_equipment()
-	select_equipment_inventory()
 	
 	change_tab(TABS.STATS)
 
@@ -60,13 +61,15 @@ func update_stats(stats):
 		main_stats.get_node("LCKValue").text = str(stats["luck"])
 
 func update_inventory(items):
-	var stacks = {}
+	stacks = {}
 	
-	for item in items:
+	for i in items.size():
+		var item = items[i]
+		
 		if item in stacks:
 			stacks[item].amount += 1
 		else:
-			stacks[item] = {item = Res.get_res(Res.items, item).name, amount = 1}
+			stacks[item] = {item = Res.get_res(Res.items, item).name, amount = 1, origin = i}
 	
 	for i in inventory.get_child_count():
 		if i < stacks.size():
@@ -75,7 +78,7 @@ func update_inventory(items):
 			inventory.get_child(i).clear_item()
 	
 	select_inventory()
-	select_equipment_inventory()
+	update_equipment_inventory()
 
 func update_equipment(items):
 	for i in 8:
@@ -85,6 +88,23 @@ func update_equipment(items):
 			equipment.get_child(i).clear_item()
 	
 	select_equipment()
+
+func update_equipment_inventory():
+	var available = []
+	var filter = get_filter()
+	
+	for stack in stacks.values():
+		if Res.items[stack.item].type in filter:
+			for i in stack.amount:
+				available.append(stack.item)
+	
+	for i in equipment_inventory.get_child_count():
+		if i < available.size():
+			equipment_inventory.get_child(i).set_item(available[i])
+		else:
+			equipment_inventory.get_child(i).clear_item()
+	
+	select_equipment_inventory()
 
 func on_key_press(p_id, key, state):
 	if state == Controls.State.ACTION:
@@ -130,7 +150,6 @@ func on_key_press(p_id, key, state):
 				
 				if key == Controls.ACCEPT:
 					equipment_inventory_select = 0
-					select_equipment_inventory()
 					select_equipment()
 				
 				if equipment_select != old_select:
@@ -196,6 +215,8 @@ func select_equipment():
 		var item = selected.item_name
 		equipment_description.get_node("Panel2/Text").text = Res.items[item].description
 		equipment_description.get_node("Panel1/Icon").texture = Res.item_icon(item)
+	
+	update_equipment_inventory()
 
 func select_equipment_inventory():
 	if equipment_inventory_select > -1:
@@ -205,6 +226,33 @@ func select_equipment_inventory():
 		
 		if selected.empty():
 			equipment_description.visible = false
+		else:
+			equipment_description.visible = true
+			var item = selected.stack_item
+			equipment_description.get_node("Panel2/Text").text = Res.items[item].description
+			equipment_description.get_node("Panel1/Icon").texture = Res.item_icon(item)
 	else:
 		for slot in equipment_inventory.get_children():
 			slot.select(null)
+
+func get_filter():
+	match equipment_select:
+		0:
+			return ["weapon"]
+		1:
+			if false: #dual-wield
+				return ["weapon", "shield"]
+			else:
+				return ["shield"]
+		2:
+			return ["armor"]
+		3:
+			return ["helmet"]
+		4:
+			return ["legs"]
+		5:
+			return ["boots"]
+		6:
+			return ["cape"]
+		7, 8:
+			return ["accessory"]

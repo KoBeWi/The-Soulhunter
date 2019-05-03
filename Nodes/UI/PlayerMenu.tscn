@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=1]
 [ext_resource path="res://Scripts/UI/PlayerMenu.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Graphics/Items/0.png" type="Texture" id=5]
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=6]
 [ext_resource path="res://Nodes/UI/EquipmentSlot.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Nodes/UI/EquipmentInventorySlot.tscn" type="PackedScene" id=8]
 
 [node name="PlayerMenu" type="Panel"]
 margin_right = 736.0
@@ -637,100 +638,34 @@ margin_bottom = 72.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="Inventory" type="GridContainer" parent="Container/Tabs/Equipment"]
-editor/display_folded = true
 margin_top = 72.0
 margin_right = 728.0
 margin_bottom = 168.0
 columns = 4
 
-[node name="Slot1" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 182.0
-margin_bottom = 32.0
+[node name="InventorySpace" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot2" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 182.0
-margin_right = 364.0
-margin_bottom = 32.0
+[node name="InventorySpace2" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot3" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 364.0
-margin_right = 546.0
-margin_bottom = 32.0
+[node name="InventorySpace3" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot4" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 546.0
-margin_right = 728.0
-margin_bottom = 32.0
+[node name="InventorySpace4" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot5" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 32.0
-margin_right = 182.0
-margin_bottom = 64.0
+[node name="InventorySpace5" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot6" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 182.0
-margin_top = 32.0
-margin_right = 364.0
-margin_bottom = 64.0
+[node name="InventorySpace6" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot7" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 364.0
-margin_top = 32.0
-margin_right = 546.0
-margin_bottom = 64.0
+[node name="InventorySpace7" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot8" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 546.0
-margin_top = 32.0
-margin_right = 728.0
-margin_bottom = 64.0
+[node name="InventorySpace8" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot9" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 64.0
-margin_right = 182.0
-margin_bottom = 96.0
+[node name="InventorySpace9" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot10" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 182.0
-margin_top = 64.0
-margin_right = 364.0
-margin_bottom = 96.0
+[node name="InventorySpace10" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot11" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 364.0
-margin_top = 64.0
-margin_right = 546.0
-margin_bottom = 96.0
+[node name="InventorySpace11" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
-[node name="Slot12" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 546.0
-margin_top = 64.0
-margin_right = 728.0
-margin_bottom = 96.0
+[node name="InventorySpace12" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 8 )]
 
 [node name="Separator2" type="Control" parent="Container/Tabs/Equipment"]
 margin_top = 168.0
