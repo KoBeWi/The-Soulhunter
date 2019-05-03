@@ -96,6 +96,10 @@ public class Unpacker {
             }
 
             break;
+            case Packet.TYPE.EQUIP:
+            player.GetCharacter().EquipItem(GetU8(), GetU8());
+
+            break;
         }
     }
 }

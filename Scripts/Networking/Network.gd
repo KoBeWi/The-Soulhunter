@@ -168,7 +168,6 @@ func process_packet(unpacker):
 					equipment.append(unpacker.get_u16())
 				else:
 					equipment.append(0)
-			print(equipment)
 			
 			emit_signal("equipment", equipment)
 		

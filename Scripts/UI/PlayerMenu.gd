@@ -62,6 +62,7 @@ func update_stats(stats):
 
 func update_inventory(items):
 	stacks = {}
+	print(items)
 	
 	for i in items.size():
 		var item = items[i]
@@ -73,7 +74,7 @@ func update_inventory(items):
 	
 	for i in inventory.get_child_count():
 		if i < stacks.size():
-			inventory.get_child(i).set_item(stacks[i])
+			inventory.get_child(i).set_item(stacks[stacks.keys()[i]])
 		else:
 			inventory.get_child(i).clear_item()
 	
@@ -95,8 +96,7 @@ func update_equipment_inventory():
 	
 	for stack in stacks.values():
 		if Res.items[stack.item].type in filter:
-			for i in stack.amount:
-				available.append(stack.item)
+			available.append(stack)
 	
 	for i in equipment_inventory.get_child_count():
 		if i < available.size():
@@ -164,14 +164,24 @@ func on_key_press(p_id, key, state):
 					equipment_inventory_select = min(equipment_inventory_select + inventory.columns, equipment_inventory.get_child_count()-1)
 				elif key == Controls.UP:
 					equipment_inventory_select = max(equipment_inventory_select - inventory.columns, 0)
+				
+				if key == Controls.ACCEPT:
+					equip_item()
 					
 				if key == Controls.CANCEL:
 					equipment_inventory_select = -1
-					select_equipment_inventory()
 					select_equipment()
 				
 				if equipment_inventory_select != old_select:
 					select_equipment_inventory()
+
+func equip_item():
+	var selected = equipment_inventory.get_child(equipment_inventory_select)
+	
+	if !selected.empty():
+		Packet.new(Packet.TYPE.EQUIP).add_u8(equipment_select).add_u8(selected.stack.origin).send()
+		equipment_inventory_select = -1
+		select_equipment()
 
 func activate():
 	Com.controls.state = Controls.State.MENU

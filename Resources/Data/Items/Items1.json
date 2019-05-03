@@ -15,12 +15,42 @@
     {
         "name": "Rusty Armor",
         "description": "A very worn metal armor. A simple poke could break it.",
-        "type": "armor"
+        "type": "armor",
+        "defense": 1
     },
 
     {
         "name": "Skull",
         "description": "A skull of a skeleton. Spooky!",
         "type":"material"
+    },
+
+    {
+        "name": "Blunt Sword",
+        "description": "It was probably used too much.",
+        "type": "weapon",
+        "attack": 2
+    },
+
+    {
+        "name": "Cracked Helmet",
+        "description": "A helmet that survived a few clubs.",
+        "type": "helmet",
+        "defense": 1
+    },
+
+    {
+        "name": "Horned Helmet",
+        "description": "A helmet with long protounding horn, which can be used to pierce enemies.",
+        "type": "helmet",
+        "attack": 1,
+        "defense": 1
+    },
+
+    {
+        "name": "Hammer",
+        "description": "A standard hammer.",
+        "type": "weapon",
+        "attack": 3
     }
 ]

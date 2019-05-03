@@ -13,10 +13,12 @@ onready var selected = $Selected
 onready var amount_value = $Amount/AmountValue
 
 var stack_item
+var stack
 
-func set_item(stack):
+func set_item(_stack):
 	region_rect.position.x = 0
 	
+	stack = _stack
 	stack_item = stack.item
 	
 	item.text = stack.item

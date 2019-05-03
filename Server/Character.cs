@@ -94,6 +94,19 @@ public class Character {
         return (ushort)(level * (level + 1) * 5);
     }
 
+    public void EquipItem(byte slot, byte from) {
+        var equipment = data.GetValue("equipment").AsBsonArray;
+        var inventory = data.GetValue("inventory").AsBsonArray;
+
+        var oldEquip = equipment[slot];
+        equipment.AsBsonArray[slot] = inventory[from];
+        inventory.RemoveAt(from);
+        if (oldEquip > 0) inventory.Add(oldEquip);
+
+        owner.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(GetInventory()));
+        owner.SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(GetEquipment()));
+    }
+
     public void Save() {
         database.SaveCharacter(data);
     }
