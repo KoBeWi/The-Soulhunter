@@ -35,8 +35,8 @@ public class Character {
     public void SetRoom(Room room) {currentRoom = room;}
     public void SetNode(Node player) {
         playerNode = player;
-        playerNode.Call("set_stats", data.ToJson());
-        // playerNode.Call("set_stats", JsonConvert.ToString(finalStats));
+        // playerNode.Call("set_stats", data.ToJson());
+        playerNode.Call("set_stats", JsonConvert.SerializeObject(finalStats));
     }
 
     public void RemoveFromRoom() {
@@ -72,14 +72,31 @@ public class Character {
             stats.Add("level");
             SetStat("level", level);
 
+            stats.Add("exp");
+
+            SetStat("hp", (ushort)(getStat("hp")+10));
+            stats.Add("hp");
+            SetStat("max_hp", (ushort)(getStat("max_hp")+10));
+            stats.Add("max_hp");
+            SetStat("mp", (ushort)(getStat("mp")+5));
+            stats.Add("mp");
+            SetStat("max_mp", (ushort)(getStat("max_mp")+5));
+            stats.Add("max_mp");
             SetStat("attack", (ushort)(getStat("attack")+1));
+            stats.Add("attack");
             SetStat("defense", (ushort)(getStat("defense")+1));
+            stats.Add("defense");
             SetStat("magic_attack", (ushort)(getStat("magic_attack")+1));
+            stats.Add("magic_attack");
             SetStat("magic_defense", (ushort)(getStat("magic_defense")+1));
+            stats.Add("magic_defense");
             SetStat("luck", (ushort)(getStat("luck")+1));
+            stats.Add("luck");
+        } else {
+            stats.Add("exp");
         }
 
-        stats.Add("exp");
+        syncStats();
         GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
     }
 

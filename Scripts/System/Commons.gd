@@ -50,3 +50,9 @@ func time_greater(server, client):
 		return true
 	elif server < 96 and client > 160:
 		return true
+
+func exp_for_level(level):
+	return level * 10
+	
+func total_exp_for_level(level):
+	return level * (level + 1) * 5

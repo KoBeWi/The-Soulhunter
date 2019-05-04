@@ -247,7 +247,6 @@ margin_right = 736.0
 margin_bottom = 131.0
 
 [node name="Stats" type="HBoxContainer" parent="Container/Tabs"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -258,7 +257,6 @@ margin_bottom = 17.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="Grid" type="GridContainer" parent="Container/Tabs/Stats"]
-editor/display_folded = true
 margin_left = 8.0
 margin_right = 728.0
 margin_bottom = 17.0
@@ -335,6 +333,7 @@ margin_bottom = 17.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="Inventory" type="VBoxContainer" parent="Container/Tabs"]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -552,6 +551,7 @@ custom_fonts/font = ExtResource( 6 )
 text = "hello this is description"
 
 [node name="Equipment" type="VBoxContainer" parent="Container/Tabs"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0

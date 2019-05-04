@@ -7,3 +7,4 @@
 +własne error code (np. ERROR_CHAT) i handler u klienta dla każdego
 >linear_interpolate
 >zdehardkodować eq
++aktualizowanie statów gracza (Noda) przy syncu

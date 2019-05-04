@@ -116,7 +116,7 @@ public class Packet {
 
         foreach(string stat in stats) {
             var index = Array.IndexOf(statList, stat);
-            if (index <= last_index) throw new Exception("Wrong order");
+            if (index <= last_index) throw new Exception("Wrong order: " + stats);
             last_index = index;
 
             if (index < 8)

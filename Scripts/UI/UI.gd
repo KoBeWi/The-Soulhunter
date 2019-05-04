@@ -15,12 +15,6 @@ func update_bar(bar):
 	else:
 		label.modulate = Color.white
 
-func exp_for_level(level):
-	return level * 10
-	
-func total_exp_for_level(level):
-	return level * (level + 1) * 5
-
 func update_HUD(data):
 	if "max_hp" in data:
 		$HUD/HPBar.max_value = data.max_hp
@@ -43,5 +37,5 @@ func update_HUD(data):
 	
 	if "exp" in data:
 		var lv = int($HUD/LvLabel.text)
-		$HUD/ExpBar.max_value = exp_for_level(lv)
-		$HUD/ExpBar.value = data.exp - total_exp_for_level(lv-1)
+		$HUD/ExpBar.max_value = Com.exp_for_level(lv)
+		$HUD/ExpBar.value = data.exp - Com.total_exp_for_level(lv-1)

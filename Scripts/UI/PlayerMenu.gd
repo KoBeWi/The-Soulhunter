@@ -4,6 +4,8 @@ onready var main_stats = $Container/SheetContainer/CharacterSheet/Stats
 onready var tabs = $Container/Tabs
 onready var buttons = $Container/Buttons
 
+onready var detailed_stats = $Container/Tabs/Stats/Grid
+
 onready var inventory = $Container/Tabs/Inventory/Slots
 onready var inventory_description = $Container/Tabs/Inventory/Description
 
@@ -44,25 +46,33 @@ func _ready():
 	
 	change_tab(TABS.STATS)
 
+var level = 1
+
 func update_stats(stats):
+	if "level" in stats:
+		level = stats.level
+	
+	if "exp" in stats:
+		detailed_stats.get_node("EXPValue").text = str(stats.exp)
+		detailed_stats.get_node("NEXTValue").text = str(Com.exp_for_level(level) - stats.exp + Com.total_exp_for_level(level-1))
+	
 	if "attack" in stats:
-		main_stats.get_node("ATKValue").text = str(stats["attack"])
+		main_stats.get_node("ATKValue").text = str(stats.attack)
 	
 	if "defense" in stats:
-		main_stats.get_node("DEFValue").text = str(stats["defense"])
+		main_stats.get_node("DEFValue").text = str(stats.defense)
 	
 	if "magic_attack" in stats:
-		main_stats.get_node("MATKValue").text = str(stats["magic_attack"])
+		main_stats.get_node("MATKValue").text = str(stats.magic_attack)
 	
 	if "magic_defense" in stats:
-		main_stats.get_node("MDEFValue").text = str(stats["magic_defense"])
+		main_stats.get_node("MDEFValue").text = str(stats.magic_defense)
 	
 	if "luck" in stats:
-		main_stats.get_node("LCKValue").text = str(stats["luck"])
+		main_stats.get_node("LCKValue").text = str(stats.luck)
 
 func update_inventory(items):
 	stacks = {}
-	print(items)
 	
 	for i in items.size():
 		var item = items[i]

@@ -8,4 +8,5 @@ func _ready():
 	data = Res.items[weapon_name]
 
 func attack():
-	return {damage = data.attack + player.stats.attack}
+#	return {damage = data.attack + player.stats.attack}
+	return {damage = player.stats.attack}

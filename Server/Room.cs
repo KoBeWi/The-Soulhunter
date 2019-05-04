@@ -48,6 +48,7 @@ public class Room : Viewport {
             timeout++;
 
             if (timeout > 100) {
+                GD.Print("Removing room of map ", mapId);
                 Server.RemoveRoom(mapId, this);
             }
             return;
@@ -169,6 +170,7 @@ public class Room : Viewport {
         RegisterNode(newPlayer, (ushort)(int)newPlayer.GetMeta("type"));
         character.SetNewId(lastEntityId);
         newPlayer.SetMeta("id", lastEntityId);
+        newPlayer.SetMeta("room", this);
 
         character.SetRoom(this);
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(5).AddU16((ushort)position.x).AddU16((ushort)position.y).AddU8(0)); //po co to ostatnie?; przedostatnie też mało poczebne

@@ -248,4 +248,4 @@ func on_stats(stats):
 		last_exp = stats.exp
 
 func set_stats(_stats):
-	stats = parse_json("{" + _stats.right(_stats.find('"name"')))
+	stats = parse_json(_stats)
