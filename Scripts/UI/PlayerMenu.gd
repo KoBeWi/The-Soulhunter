@@ -192,7 +192,6 @@ func on_key_press(p_id, key, state):
 				
 				if key == Controls.ACCEPT:
 					equip_item()
-					preview_stats(null)
 					
 				if key == Controls.CANCEL:
 					equipment_inventory_select = -1

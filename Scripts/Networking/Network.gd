@@ -17,6 +17,7 @@ signal chat_message(type, from, message)
 signal stats(data)
 signal inventory(items)
 signal equipment(items)
+signal item_get(item)
 
 func _ready():
 	set_process(false)
@@ -121,7 +122,6 @@ func process_packet(unpacker):
 			var entity_count = unpacker.get_u8()
 			
 			for i in entity_count:
-#				print("_")
 				var id = unpacker.get_u16()
 				var diff_vector = unpacker.get_u8()
 				
@@ -170,6 +170,9 @@ func process_packet(unpacker):
 					equipment.append(0)
 			
 			emit_signal("equipment", equipment)
+		
+		Packet.TYPE.ITEM_GET:
+			emit_signal("item_get", unpacker.get_u16())
 		
 		"MAP": ###
 			Com.player.chr.update_map([])

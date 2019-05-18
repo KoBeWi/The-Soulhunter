@@ -18,7 +18,8 @@ const NODES = [
 	"Player",
 	"Enemies/Skeleton",
 	"Enemies/BloodSkeleton",
-	"Enemies/Bone"
+	"Enemies/Bone",
+	"Objects/Item"
 ]
 
 const binary = [1, 2, 4, 8, 16, 32, 64, 128]

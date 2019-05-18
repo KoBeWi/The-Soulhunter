@@ -251,4 +251,8 @@ public class Room : Viewport {
     public void Save(ushort playerId) {
         GetPlayerById(playerId).Save();
     }
+
+    public void ItemGet(ushort playerId, ushort itemId) {
+        GetPlayerById(playerId).GetPlayer().SendPacket(new Packet(Packet.TYPE.ITEM_GET).AddU16(itemId));
+    }
 }

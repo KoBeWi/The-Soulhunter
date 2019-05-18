@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Panel
+
+onready var label = $HBoxContainer/Label
+onready var icon = $HBoxContainer/TextureRect
+
+func _ready():
+	set_text(\"abc\")
+
+func set_text(text):
+	label.text = text
+	margin_left = -(label.get_font(\"font\").get_string_size(text).x + 16)
+
+func set_icon(image):
+	icon.visible = true
+	icon.texture = image
+	margin_left -= 32
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	queue_free()"
+
+[sub_resource type="Animation" id=2]
+resource_name = "Disappear"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="InfoLabel" type="Panel"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -387.0
+margin_top = -32.0
+script = SubResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_right = 375.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+custom_fonts/font = ExtResource( 1 )
+text = "Text"
+align = 2
+valign = 1
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_left = 379.0
+margin_right = 387.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+visible = false
+margin_left = 384.0
+margin_right = 416.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 0 )
+expand = true
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Disappear = SubResource( 2 )
+
+[connection signal="timeout" from="Timer" to="AnimationPlayer" method="play" binds= [ "Disappear" ]]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

@@ -1,7 +1,5 @@
 extends Node
 
-const ENEMY_NAMES = ["Skeleton"] ##enum?
-
 onready var controls = $Controls
 
 var game

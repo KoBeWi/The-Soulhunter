@@ -17,7 +17,8 @@ public class Packet {
         DAMAGE,
         INVENTORY,
         EQUIPMENT,
-        EQUIP
+        EQUIP,
+        ITEM_GET
     }
 
     public static readonly byte[] zero = new byte[] {0};

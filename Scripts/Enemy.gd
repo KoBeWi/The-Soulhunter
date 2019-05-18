@@ -62,13 +62,26 @@ func damage(attack):
 
 func dead():
 	on_dead()
+	create_drop(stats.drops)
 	Com.dispose_node(self)
 
 func on_dead(): pass
 
-func create_drop(id):
-	var item = load("res://Nodes/Item.tscn").instance()
-	item.set_id(id)
+func create_drop(drops):
+	if drops.empty(): return
+	
+	var i = 0
+	var full_sum = 0
+	for drop in drops: full_sum += int(drop.chance)
+	var sum = drops[i].chance
+	
+	var random = randi() % full_sum
+	while sum < full_sum:
+		i += 1
+		sum += drops[i].chance
+	
+	var item = load("res://Nodes/Objects/Item.tscn").instance()
+	item.item = drops[i].name
 	item.position = position
 	get_parent().add_child(item)
 
