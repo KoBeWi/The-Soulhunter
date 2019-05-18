@@ -24,6 +24,8 @@ var inventory_select = 0
 var equipment_select = 0
 var equipment_inventory_select = -1
 
+var newest_stats = {}
+
 func _ready():
 	visible = false
 	Com.controls.connect("key_press", self, "on_key_press")
@@ -57,19 +59,22 @@ func update_stats(stats):
 		detailed_stats.get_node("NEXTValue").text = str(Com.exp_for_level(level) - stats.exp + Com.total_exp_for_level(level-1))
 	
 	if "attack" in stats:
-		main_stats.get_node("ATKValue").text = str(stats.attack)
+		set_main_stat("ATKValue", stats.attack)
 	
 	if "defense" in stats:
-		main_stats.get_node("DEFValue").text = str(stats.defense)
+		set_main_stat("DEFValue", stats.defense)
 	
 	if "magic_attack" in stats:
-		main_stats.get_node("MATKValue").text = str(stats.magic_attack)
+		set_main_stat("MATKValue", stats.magic_attack)
 	
 	if "magic_defense" in stats:
-		main_stats.get_node("MDEFValue").text = str(stats.magic_defense)
+		set_main_stat("MDEFValue", stats.magic_defense)
 	
 	if "luck" in stats:
-		main_stats.get_node("LCKValue").text = str(stats.luck)
+		set_main_stat("LCKValue", stats.luck)
+	
+	for stat in stats:
+		newest_stats[stat] = stats[stat]
 
 func update_inventory(items):
 	stacks = {}
@@ -116,6 +121,19 @@ func update_equipment_inventory():
 	
 	select_equipment_inventory()
 
+func set_main_stat(stat, value, compare = false):
+	var node = main_stats.get_node(stat)
+	var old_value = int(node.text)
+	node.text = str(value)
+	
+	if compare:
+		if old_value > value:
+			node.modulate = Color.hotpink
+		elif old_value < value:
+			node.modulate = Color.cyan
+		else:
+			node.modulate = Color.white
+
 func on_key_press(p_id, key, state):
 	if state == Controls.State.ACTION:
 		if key == Controls.MENU:
@@ -123,11 +141,6 @@ func on_key_press(p_id, key, state):
 	elif state == Controls.State.MENU:
 		if key == Controls.MENU:
 			deactivate()
-		
-		if key == Controls.ACCEPT:
-			pass
-		elif key == Controls.CANCEL:
-			pass
 		
 		if key == Controls.SWAP:
 			change_tab((current_tab+1) % TABS.size())
@@ -177,10 +190,12 @@ func on_key_press(p_id, key, state):
 				
 				if key == Controls.ACCEPT:
 					equip_item()
+					preview_stats(null)
 					
 				if key == Controls.CANCEL:
 					equipment_inventory_select = -1
 					select_equipment()
+					preview_stats(null)
 				
 				if equipment_inventory_select != old_select:
 					select_equipment_inventory()
@@ -246,14 +261,30 @@ func select_equipment_inventory():
 		
 		if selected.empty():
 			equipment_description.visible = false
+			preview_stats(null)
 		else:
 			equipment_description.visible = true
 			var item = selected.stack_item
 			equipment_description.get_node("Panel2/Text").text = Res.items[item].description
 			equipment_description.get_node("Panel1/Icon").texture = Res.item_icon(item)
+			preview_stats(item)
 	else:
 		for slot in equipment_inventory.get_children():
 			slot.select(null)
+
+const MAIN_STAT_LIST = ["attack", "defense", "magic_attack", "magic_defense", "luck"]
+const STAT_LABELS = {attack = "ATKValue", defense = "DEFValue", magic_attack = "MATKValue", magic_defense = "MDEFValue", luck = "LCKValue"}
+
+func preview_stats(item):
+	if item:
+		var data = Res.items[item]
+		
+		for stat in MAIN_STAT_LIST:
+			if stat in data:
+				set_main_stat(STAT_LABELS[stat], newest_stats[stat] + data[stat], true)
+	else:
+		for stat in MAIN_STAT_LIST:
+			set_main_stat(STAT_LABELS[stat], newest_stats[stat])
 
 func get_filter():
 	match equipment_select:
