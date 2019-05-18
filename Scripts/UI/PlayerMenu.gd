@@ -59,19 +59,19 @@ func update_stats(stats):
 		detailed_stats.get_node("NEXTValue").text = str(Com.exp_for_level(level) - stats.exp + Com.total_exp_for_level(level-1))
 	
 	if "attack" in stats:
-		set_main_stat("ATKValue", stats.attack)
+		set_main_stat("attack", stats.attack)
 	
 	if "defense" in stats:
-		set_main_stat("DEFValue", stats.defense)
+		set_main_stat("defense", stats.defense)
 	
 	if "magic_attack" in stats:
-		set_main_stat("MATKValue", stats.magic_attack)
+		set_main_stat("magic_attack", stats.magic_attack)
 	
 	if "magic_defense" in stats:
-		set_main_stat("MDEFValue", stats.magic_defense)
+		set_main_stat("magic_defense", stats.magic_defense)
 	
 	if "luck" in stats:
-		set_main_stat("LCKValue", stats.luck)
+		set_main_stat("luck", stats.luck)
 	
 	for stat in stats:
 		newest_stats[stat] = stats[stat]
@@ -122,8 +122,8 @@ func update_equipment_inventory():
 	select_equipment_inventory()
 
 func set_main_stat(stat, value, compare = false):
-	var node = main_stats.get_node(stat)
-	var old_value = int(node.text)
+	var node = main_stats.get_node(STAT_LABELS[stat])
+	var old_value = newest_stats.get(stat, 0)
 	node.text = str(value)
 	
 	if compare:
@@ -133,6 +133,8 @@ func set_main_stat(stat, value, compare = false):
 			node.modulate = Color.cyan
 		else:
 			node.modulate = Color.white
+	else:
+		node.modulate = Color.white
 
 func on_key_press(p_id, key, state):
 	if state == Controls.State.ACTION:
@@ -278,13 +280,14 @@ const STAT_LABELS = {attack = "ATKValue", defense = "DEFValue", magic_attack = "
 func preview_stats(item):
 	if item:
 		var data = Res.items[item]
+		var data2 = Res.items[equipment.get_child(equipment_select).item_name]
 		
 		for stat in MAIN_STAT_LIST:
 			if stat in data:
-				set_main_stat(STAT_LABELS[stat], newest_stats[stat] + data[stat], true)
+				set_main_stat(stat, newest_stats[stat] + data[stat] - data2.get(stat, 0), true)
 	else:
 		for stat in MAIN_STAT_LIST:
-			set_main_stat(STAT_LABELS[stat], newest_stats[stat])
+			set_main_stat(stat, newest_stats[stat])
 
 func get_filter():
 	match equipment_select:

@@ -150,8 +150,15 @@ public class Character {
         inventory.RemoveAt(from);
         if (oldEquip > 0) inventory.Add(oldEquip);
 
+        syncStats();
+
         owner.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(GetInventory()));
         owner.SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(GetEquipment()));
+
+        var stats = new List<string>();
+        var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
+        foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
     }
 
     public void Save() {
