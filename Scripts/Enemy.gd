@@ -62,7 +62,7 @@ func damage(attack):
 
 func dead():
 	on_dead()
-	create_drop(stats.drops)
+	create_drop(stats.get("drops", {}))
 	Com.dispose_node(self)
 
 func on_dead(): pass
@@ -70,20 +70,21 @@ func on_dead(): pass
 func create_drop(drops):
 	if drops.empty(): return
 	
-	var i = 0
+	var i = -1
 	var full_sum = 0
 	for drop in drops: full_sum += int(drop.chance)
-	var sum = drops[i].chance
+	var sum = 1000 - full_sum
 	
-	var random = randi() % full_sum
-	while sum < full_sum:
+	var random = randi() % 1000
+	while sum < random:
 		i += 1
 		sum += drops[i].chance
 	
-	var item = load("res://Nodes/Objects/Item.tscn").instance()
-	item.item = drops[i].name
-	item.position = position
-	get_parent().add_child(item)
+	if i > -1:
+		var item = load("res://Nodes/Objects/Item.tscn").instance()
+		item.item = Res.items[drops[i].name].id
+		item.position = position
+		get_parent().call_deferred("add_child", item)
 
 func create_soul(id):
 	if Com.server: return #nie powinno być potrzebne

@@ -8,8 +8,12 @@ script/source = "extends Panel
 onready var label = $HBoxContainer/Label
 onready var icon = $HBoxContainer/TextureRect
 
-func _ready():
-	set_text(\"abc\")
+var move_down = 0
+
+func _process(delta):
+	if move_down > 0:
+		move_down -= delta * 64
+		rect_position.y += delta * 64
 
 func set_text(text):
 	label.text = text
@@ -20,8 +24,11 @@ func set_icon(image):
 	icon.texture = image
 	margin_left -= 32
 
+func move_down(how_much):
+	move_down += how_much * 32
+
 func _on_AnimationPlayer_animation_finished(anim_name):
-	queue_free()"
+	get_parent().free_label(self)"
 
 [sub_resource type="Animation" id=2]
 resource_name = "Disappear"

@@ -18,3 +18,10 @@ func push_label(type, data):
 			var item = Res.get_res(Res.items, data[0])
 			label.set_text(item.name)
 			label.set_icon(Res.item_icon(item.name))
+
+func free_label(label):
+	label.queue_free()
+	
+	for other_label in get_children():
+		if other_label.get_index() > label.get_index():
+			other_label.move_down(other_label.get_index() - label.get_index())

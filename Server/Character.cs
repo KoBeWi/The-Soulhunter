@@ -183,4 +183,10 @@ public class Character {
 
         return result.ToArray();
     }
+
+    public void AddItem(ushort id) {
+        var inventory = data.GetValue("inventory").AsBsonArray;
+        inventory.Add(id);
+        //chyba trzeba odświeżyć
+    }
 }

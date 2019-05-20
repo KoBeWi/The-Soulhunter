@@ -23,8 +23,8 @@ func _physics_process(delta):
 	if move_and_collide(gravity):
 		gravity.y = 0
 
-func set_item(iname):
-	item = iname
+func set_item(id):
+	item = id
 	$Sprite.texture = load(str(\"res://Graphics/Items/\", item, \".png\"))
 
 func _body_enter(body):

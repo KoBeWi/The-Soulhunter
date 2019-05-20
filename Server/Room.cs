@@ -253,6 +253,8 @@ public class Room : Viewport {
     }
 
     public void ItemGet(ushort playerId, ushort itemId) {
-        GetPlayerById(playerId).GetPlayer().SendPacket(new Packet(Packet.TYPE.ITEM_GET).AddU16(itemId));
+        var character = GetPlayerById(playerId);
+        character.AddItem(itemId);
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ITEM_GET).AddU16(itemId));
     }
 }
