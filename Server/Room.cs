@@ -276,4 +276,10 @@ public class Room : Viewport {
         character.AddItem(itemId);
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ITEM_GET).AddU16(itemId));
     }
+
+    public void SoulGet(ushort playerId, ushort soulId) {
+        var character = GetPlayerById(playerId);
+        character.AddSoul(soulId);
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.SOUL_GET).AddU16(soulId));
+    }
 }

@@ -189,4 +189,10 @@ public class Character {
         inventory.Add(id);
         //chyba trzeba odświeżyć
     }
+
+    public void AddSoul(ushort id) {
+        var souls = data.GetValue("souls").AsBsonArray;
+        souls.Add(id);
+        //tu pewnie też
+    }
 }

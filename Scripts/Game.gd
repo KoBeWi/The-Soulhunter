@@ -87,8 +87,8 @@ func add_entity(type, id):
 		node.on_client_create()
 	else:
 		node.visible = false
-		set_process(false)
-		set_physics_process(false)
+		node.set_process(false)
+		node.set_physics_process(false)
 
 func register_entity(node, id):
 	entity_list[id] = node

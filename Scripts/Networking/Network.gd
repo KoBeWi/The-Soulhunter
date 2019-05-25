@@ -18,6 +18,7 @@ signal stats(data)
 signal inventory(items)
 signal equipment(items)
 signal item_get(item)
+signal soul_get(soul)
 
 func _ready():
 	set_process(false)
@@ -71,6 +72,7 @@ func process_packet(unpacker):
 				emit_signal("log_in")
 			else:
 				emit_signal("error", result)
+		
 		Packet.TYPE.REGISTER:
 			emit_signal("error", unpacker.get_u8())
 		
@@ -95,14 +97,6 @@ func process_packet(unpacker):
 					printerr("WARNING: Wrong enemy id for dead: ", [][1])
 			elif [][0] == "player":
 				map.get_node("Players/" + [][1]).dead()
-		
-		"DROP": ###
-			var map = Com.game.map
-			var enemy = map.get_enemy([][0])
-			if enemy:
-				enemy.create_drop([][1])
-			else:
-				printerr("WARNING: Wrong enemy id for drop: ", [][0])
 		
 		Packet.TYPE.ENTER_ROOM:
 			Com.game.change_map(unpacker.get_u16())
@@ -180,6 +174,9 @@ func process_packet(unpacker):
 		
 		Packet.TYPE.ITEM_GET:
 			emit_signal("item_get", unpacker.get_u16())
+		
+		Packet.TYPE.SOUL_GET:
+			emit_signal("soul_get", unpacker.get_u16())
 		
 		"MAP": ###
 			Com.player.chr.update_map([])

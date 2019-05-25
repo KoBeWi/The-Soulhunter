@@ -18,7 +18,8 @@ enum TYPE {
 	INVENTORY,
 	EQUIPMENT,
 	EQUIP,
-	ITEM_GET
+	ITEM_GET,
+	SOUL_GET
 }
 
 const stat_list = ["level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"]

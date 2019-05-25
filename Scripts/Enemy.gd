@@ -5,6 +5,7 @@ onready var players = get_tree().get_nodes_in_group("players")
 
 export(String) var enemy_name
 var stats = {hp = 1}
+var last_attacker
 
 func init():
 	set_meta("enemy", enemy_name)
@@ -27,13 +28,15 @@ func general_ai(delta): pass
 func hit(body):
 	if Com.is_server:
 		if body.is_in_group("player_attack"):
+			last_attacker = body.player.get_meta("id")
+			
 			if has_meta("attackers"):
 				var id = body.player.get_meta("id")
 				
 				if !get_meta("attackers").has(id):
 					get_meta("attackers").append(id)
 			
-			damage(body.call("attack"))
+			damage(body.attack())
 			on_hit()
 
 func unhit(body):
@@ -70,10 +73,13 @@ func create_drop():
 func create_soul():
 	var soul_drop = get_random(stats.get("souls", {}))
 	
-	if soul_drop > -1:
+	if soul_drop > -1 and last_attacker:
+		get_meta("room").call("SoulGet", last_attacker, Res.souls[stats.souls[soul_drop].name].id)
+		
 		var soul = load("res://Nodes/Effects/Soul.tscn").instance()
 		soul.soul = stats.souls[soul_drop].name
 		soul.position = position
+		soul.player_id = last_attacker
 		get_parent().call_deferred("add_child", soul)
 
 func get_random(from):

@@ -1,5 +1,9 @@
 [
     {
+        "name": "Dummy"
+    },
+
+    {
         "name": "Bone Throw",
         "description": "Throw bones at foes.",
         "type": "trigger"

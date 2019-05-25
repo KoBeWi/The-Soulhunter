@@ -1,72 +1,14 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Graphics/Objects/Soul.png" type="Texture" id=1]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Sprite
-
-const TYPE_COLOR = {
-	\"trigger\": Color(1, 0, 0),
-	\"active\": Color(0, 0, 1),
-	\"augment\": Color(1, 1, 0),
-	\"ability\": Color(0, 1, 0),
-	\"enchant\": Color(1, 0, 1),
-	\"catalyst\": Color(0, 1, 1),
-	\"extension\": Color(1, 1, 1, 0.5),
-	\"mastery\": Color(0, 0, 0),
-	\"identity\": Color(1, 1, 1)
-	}
-const speed = 24
-
-var direction = 0
-var soul setget set_id
-var timer = 10
-var dir = 0
-
-func _ready():
-	if Com.register_node(self, \"Effects/Soul\", true): return
-
-func _physics_process(delta):
-	timer -= 1
-	var move = Vector2(sin(direction), cos(direction))
-	translate(move * speed)
-	if timer > 0: return
-	
-	var target = Com.player.global_position - global_position
-	var angle_to_target = move.angle_to(target)
-	if dir == 0:
-		dir = sign(angle_to_target)
-	
-	if abs(angle_to_target) > 0.2: direction += abs(angle_to_target)/6 * dir
-	
-#	if global_position.distance_to(Com.player.global_position) < speed*2:
-#		Com.game.got_soul(soul)
-#		queue_free()
-
-func set_id(id):
-	soul = id
-	modulate = TYPE_COLOR[Res.souls[id].type]
-#	direction = (global_position - Com.player.global_position).angle()
-
-func state_vector_types():
-	return [
-			Data.TYPE.U16,
-			Data.TYPE.U16,
-			Data.TYPE.U16
-		]
-
-func get_state_vector():
-	return [
-			TYPE_COLOR.keys().find(Res.souls[soul].type) if soul else -1,
-			round(position.x),
-			round(position.y)
-		]
-
-func apply_state_vector(timestamp, diff_vector, vector):
-	modulate = TYPE_COLOR[TYPE_COLOR.keys()[vector[0]]]
-	position = Vector2(vector[1], vector[2])"
+[ext_resource path="res://Scripts/Soul.gd" type="Script" id=2]
 
 [node name="Soul" type="Sprite"]
+z_index = 200
 texture = ExtResource( 1 )
-script = SubResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
 
