@@ -117,6 +117,21 @@ public class Room : Viewport {
         return state;
     }
 
+    private Packet CreateNodeInitializer(Node node, ushort id) {
+        var state = new Packet(Packet.TYPE.INITIALIZER);
+        
+        var types = node.Call("state_vector_types") as Godot.Collections.Array;
+        var data = node.Call("get_state_vector") as Godot.Collections.Array;
+
+        bool[] diffVector = new bool[data.Count];
+        for (int i = 0; i < diffVector.Length; i++) diffVector[i] = true;
+
+        state.AddU16(id);
+        state.AddStateVector(types, data, diffVector);
+
+        return state;
+    }
+
     public int AddPlayer(Character character) {
         var newPlayer = playerFactory.Instance();
         
@@ -167,7 +182,7 @@ public class Room : Viewport {
         newPlayer.GetParent().RemoveChild(newPlayer);
         entityRoot.AddChild(newPlayer);
 
-        RegisterNode(newPlayer, (ushort)(int)newPlayer.GetMeta("type"));
+        RegisterNode(newPlayer, (ushort)(int)newPlayer.GetMeta("type"), false);
         character.SetNewId(lastEntityId);
         newPlayer.SetMeta("id", lastEntityId);
         newPlayer.SetMeta("room", this);
@@ -200,12 +215,16 @@ public class Room : Viewport {
         }
     }
 
-    public void RegisterNode(Node node, ushort type) {
-        node.SetMeta("type", type);
-        entityBindings.Add((ushort)++lastEntityId, node);
-        node.SetMeta("id", lastEntityId);
+    public void RegisterNode(Node node, ushort type, bool clientOnly) {
+        lastEntityId++;
+        if (!clientOnly) {
+            entityBindings.Add((ushort)lastEntityId, node);
+            node.SetMeta("type", type);
+            node.SetMeta("id", lastEntityId);
+        }
 
         BroadcastPacket(new Packet(Packet.TYPE.ADD_ENTITY).AddU16(type).AddU16(lastEntityId));
+        if (clientOnly) BroadcastPacket(CreateNodeInitializer(node, lastEntityId));
     }
 
     public void DisposeNode(ushort id) {

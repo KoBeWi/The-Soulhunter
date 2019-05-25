@@ -126,9 +126,16 @@ func process_packet(unpacker):
 				var diff_vector = unpacker.get_u8()
 				
 				var entity = Com.game.get_entity(id)
-				
 				if entity and is_instance_valid(entity):
 					Data.apply_state_vector(timestamp, unpacker, entity, diff_vector)
+		
+		Packet.TYPE.INITIALIZER:
+			var id = unpacker.get_u16()
+			var diff_vector = unpacker.get_u8()
+			
+			var entity = Com.game.get_entity(id)
+			if entity and is_instance_valid(entity):
+				Data.apply_state_vector(-1, unpacker, entity, diff_vector)
 		
 		Packet.TYPE.KEY_PRESS:
 			Com.controls.press_key(unpacker.get_u16(), unpacker.get_u8(), Controls.State.ACTION)

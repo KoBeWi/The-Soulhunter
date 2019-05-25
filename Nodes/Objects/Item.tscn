@@ -11,12 +11,6 @@ var gravity = Vector2()
 func _ready():
 	if Com.register_node(self, \"Objects/Item\"): return
 
-func on_client_create():
-	visible = false
-
-func on_initialized():
-	visible = true
-
 func _physics_process(delta):
 	gravity.y += 1
 	

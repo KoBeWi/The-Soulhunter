@@ -19,6 +19,7 @@ const NODES = [
 	"Enemies/Skeleton",
 	"Enemies/BloodSkeleton",
 	"Enemies/Bone",
+	"Effects/Soul",
 	"Objects/Item"
 ]
 
@@ -40,5 +41,10 @@ static func apply_state_vector(timestamp, unpacker, node, diff_vector):
 	
 	node.apply_state_vector(timestamp, diff_vector, final_vector)
 	if !node.has_meta("initalized"):
-		node.on_initialized()
+		if node.has_method("on_initialized"):
+			node.on_initialized()
+		else:
+			node.visible = true
+			node.set_process(true)
+			node.set_physics_process(true)
 		node.set_meta("initialized", true)

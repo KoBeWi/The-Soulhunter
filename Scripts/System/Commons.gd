@@ -28,10 +28,12 @@ func key_press(key):
 func key_hold(key):
 	return keys.has(key)
 
-func register_node(node, type):
+func register_node(node, type, client_only = false):
 	if is_server:
 		node.set_meta("room", node.find_parent("InGame").get_parent())
-		node.get_meta("room").call("RegisterNode", node, Data.NODES.find(type))
+		node.get_meta("room").call("RegisterNode", node, Data.NODES.find(type), client_only)
+		if client_only: node.queue_free()
+		return client_only
 	elif !node.has_meta("valid"):
 		node.queue_free()
 		return true

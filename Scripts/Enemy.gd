@@ -6,16 +6,6 @@ onready var players = get_tree().get_nodes_in_group("players")
 export(String) var enemy_name
 var stats = {hp = 1}
 
-func on_client_create():
-	visible = false
-	set_process(false)
-	set_physics_process(false)
-
-func on_initialized():
-	visible = true
-	set_process(true)
-	set_physics_process(true)
-
 func init():
 	set_meta("enemy", enemy_name)
 	set_meta("attackers", [])
@@ -62,34 +52,41 @@ func damage(attack):
 
 func dead():
 	on_dead()
-	create_drop(stats.get("drops", {}))
+	create_drop()
+	create_soul()
 	Com.dispose_node(self)
 
 func on_dead(): pass
 
-func create_drop(drops):
-	if drops.empty(): return
+func create_drop():
+	var drop = get_random(stats.get("drops", {}))
+	
+	if drop > -1:
+		var item = load("res://Nodes/Objects/Item.tscn").instance()
+		item.item = Res.items[stats.drops[drop].name].id
+		item.position = position
+		get_parent().call_deferred("add_child", item)
+
+func create_soul():
+	var soul_drop = get_random(stats.get("souls", {}))
+	
+	if soul_drop > -1:
+		var soul = load("res://Nodes/Effects/Soul.tscn").instance()
+		soul.soul = stats.souls[soul_drop].name
+		soul.position = position
+		get_parent().call_deferred("add_child", soul)
+
+func get_random(from):
+	if from.empty(): return -1
 	
 	var i = -1
 	var full_sum = 0
-	for drop in drops: full_sum += int(drop.chance)
+	for drop in from: full_sum += int(drop.chance)
 	var sum = 1000 - full_sum
 	
 	var random = randi() % 1000
 	while sum < random:
 		i += 1
-		sum += drops[i].chance
+		sum += from[i].chance
 	
-	if i > -1:
-		var item = load("res://Nodes/Objects/Item.tscn").instance()
-		item.item = Res.items[drops[i].name].id
-		item.position = position
-		get_parent().call_deferred("add_child", item)
-
-func create_soul(id):
-	if Com.server: return #nie powinno być potrzebne
-	
-	var soul = load("res://Nodes/Soul.tscn").instance()
-	get_parent().add_child(soul)
-	soul.position = position
-	soul.set_id(id)
+	return i

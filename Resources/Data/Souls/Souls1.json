@@ -9,5 +9,11 @@
         "name": "Skeleton Disguise",
         "description": "You look like skeleton!",
         "type": "active"
+    },
+    
+    {
+        "name": "Enchanced Bone Throw",
+        "description": "Increases speed of thrown bones.",
+        "type": "extension"
     }
 ]

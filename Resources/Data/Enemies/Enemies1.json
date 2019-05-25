@@ -4,13 +4,15 @@
         "description": "A reanimated human skeleton, which will throw a bone.",
         "max_hp":4,
         "exp":1,
-        "drops": [{"name": "Vitality Potion", "chance": 100}, {"name": "Skull", "chance": 200}]
+        "drops": [{"name": "Vitality Potion", "chance": 100}, {"name": "Skull", "chance": 200}],
+        "souls": [{"name": "Bone Throw", "chance": 400}, {"name": "Skeleton Disguise", "chance": 100}]
     },
 
     {
         "name": "Blood Skeleton",
         "description": "A reanimated human skeleton, soaked in blood.",
         "max_hp": 10,
-        "exp": 2
+        "exp": 2,
+        "souls": [{"name": "Enchanced Bone Throw", "chance": 200}]
     }
 ]
