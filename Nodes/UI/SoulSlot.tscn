@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=1]
+[ext_resource path="res://Nodes/UI/SoulSlot.gd" type="Script" id=2]
+[ext_resource path="res://Graphics/Objects/Soul.png" type="Texture" id=3]
+[ext_resource path="res://Graphics/UI/SoulSlot.png" type="Texture" id=4]
+
+[node name="SoulSlot" type="HBoxContainer"]
+margin_right = 157.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 0, 32 )
+size_flags_horizontal = 3
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+type = "Bullet"
+soul = "Bone Throw"
+
+[node name="Icon" type="TextureRect" parent="."]
+self_modulate = Color( 1, 0, 0, 1 )
+margin_right = 24.0
+margin_bottom = 32.0
+texture = ExtResource( 3 )
+stretch_mode = 4
+
+[node name="LeftRect" type="NinePatchRect" parent="Icon"]
+modulate = Color( 0.6, 0, 0, 1 )
+show_behind_parent = true
+anchor_bottom = 1.0
+margin_top = -0.166084
+margin_right = 71.0
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Type" type="Label" parent="."]
+margin_left = 24.0
+margin_right = 65.0
+margin_bottom = 32.0
+size_flags_vertical = 5
+text = "Bullet"
+valign = 1
+
+[node name="Control" type="Control" parent="."]
+margin_left = 65.0
+margin_right = 73.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="Name" type="Label" parent="."]
+show_behind_parent = true
+margin_left = 73.0
+margin_right = 157.0
+margin_bottom = 32.0
+size_flags_vertical = 5
+text = "Bone Throw"
+valign = 1
+
+[node name="RightRect" type="NinePatchRect" parent="Name"]
+modulate = Color( 0.2, 0, 0, 1 )
+show_behind_parent = true
+margin_left = -12.0
+margin_top = 2.7799
+margin_right = 90.0
+margin_bottom = 28.7799
+texture = ExtResource( 4 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
