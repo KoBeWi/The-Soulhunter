@@ -103,7 +103,7 @@ public class Server : Node {
             var m_h = (int)map.GetState().GetNodePropertyValue(0, 6);
 
             if (x >= m_x && y >= m_y && x < m_x + m_w && y < m_y + m_h) {
-                return instance.GetRoom((ushort)(int)GD.Convert(map.GetState().GetNodePropertyValue(0, 2), (int)Variant.Type.Int));
+                return instance.GetRoom((ushort)(int)GD.Convert(map.GetState().GetNodePropertyValue(0, 2), Variant.Type.Int));
             }
         }
 

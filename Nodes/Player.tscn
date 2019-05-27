@@ -207,7 +207,6 @@ collision_mask = 0
 
 [node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource( 10 )
-
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]

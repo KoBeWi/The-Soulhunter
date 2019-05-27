@@ -1,16 +1,16 @@
 extends Control
 
+const MAIN_STAT_LIST = ["attack", "defense", "magic_attack", "magic_defense", "luck"]
+const STAT_LABELS = {attack = "ATKValue", defense = "DEFValue", magic_attack = "MATKValue", magic_defense = "MDEFValue", luck = "LCKValue"}
+
 onready var main_stats = $Container/SheetContainer/CharacterSheet/Stats
 onready var tabs = $Container/Tabs
 onready var buttons = $Container/Buttons
-
-enum TABS{STATS, INVENTORY, EQUIPMENT, SOULS}
 
 var current_tab
 var tab_buttons = ButtonGroup.new()
 
 var stacks = {}
-
 var newest_stats = {}
 
 func _ready():
@@ -25,23 +25,12 @@ func _ready():
 	for button in buttons.get_children():
 		button.set_button_group(tab_buttons)
 	
-	change_tab(TABS.STATS)
+	change_tab(0)
 
 func update_stats(stats):
-	if "attack" in stats:
-		set_main_stat("attack", stats.attack)
-	
-	if "defense" in stats:
-		set_main_stat("defense", stats.defense)
-	
-	if "magic_attack" in stats:
-		set_main_stat("magic_attack", stats.magic_attack)
-	
-	if "magic_defense" in stats:
-		set_main_stat("magic_defense", stats.magic_defense)
-	
-	if "luck" in stats:
-		set_main_stat("luck", stats.luck)
+	for stat in MAIN_STAT_LIST:
+		if stat in stats:
+			set_main_stat(stat, stats[stat])
 	
 	for stat in stats:
 		newest_stats[stat] = stats[stat]
@@ -70,7 +59,7 @@ func on_key_press(p_id, key, state):
 			deactivate()
 		
 		if key == Controls.SWAP:
-			change_tab((current_tab+1) % TABS.size())
+			change_tab((current_tab+1) % tabs.get_child_count())
 		
 		tabs.get_child(current_tab).on_press_key(key)
 
@@ -88,9 +77,6 @@ func change_tab(i):
 	
 	for tab in tabs.get_child_count():
 		tabs.get_child(tab).visible = (current_tab == tab)
-
-const MAIN_STAT_LIST = ["attack", "defense", "magic_attack", "magic_defense", "luck"]
-const STAT_LABELS = {attack = "ATKValue", defense = "DEFValue", magic_attack = "MATKValue", magic_defense = "MDEFValue", luck = "LCKValue"}
 
 func preview_stats(item, item2):
 	if item:

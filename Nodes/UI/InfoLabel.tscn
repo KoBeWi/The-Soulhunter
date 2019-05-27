@@ -88,6 +88,5 @@ autostart = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Disappear = SubResource( 2 )
-
 [connection signal="timeout" from="Timer" to="AnimationPlayer" method="play" binds= [ "Disappear" ]]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

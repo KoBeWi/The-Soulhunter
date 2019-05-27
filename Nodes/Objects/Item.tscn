@@ -62,5 +62,4 @@ shape = SubResource( 2 )
 
 [node name="Collider" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 2 )
-
 [connection signal="body_entered" from="Area2D" to="." method="_body_enter"]

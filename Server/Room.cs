@@ -232,7 +232,7 @@ public class Room : Viewport {
             var node = entityBindings[id];
             if (node.HasMeta("enemy")) {
                 foreach (object playerId in node.GetMeta("attackers") as Godot.Collections.Array) {
-                    var player = GetPlayerById((ushort)(int)Godot.GD.Convert(playerId, (int)Godot.Variant.Type.Int));
+                    var player = GetPlayerById((ushort)(int)Godot.GD.Convert(playerId, Godot.Variant.Type.Int));
 
                     if (player != null) {
                         player.AddExperience(GetEnemyStat(node, "exp"));
@@ -248,7 +248,7 @@ public class Room : Viewport {
     }
 
     public ushort GetEnemyStat(Node enemy, string stat) {
-        return (ushort)(int)Godot.GD.Convert((enemy.Get("stats") as Godot.Collections.Dictionary)[stat], (int)Godot.Variant.Type.Int);
+        return (ushort)(int)Godot.GD.Convert((enemy.Get("stats") as Godot.Collections.Dictionary)[stat], Godot.Variant.Type.Int);
     }
 
     public object GetMapValue(string value) {

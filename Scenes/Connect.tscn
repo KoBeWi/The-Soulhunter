@@ -44,4 +44,3 @@ rect_scale = Vector2( 4, 4 )
 custom_fonts/font = ExtResource( 1 )
 text = "Connecting to server..."
 script = SubResource( 2 )
-

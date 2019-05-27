@@ -24,4 +24,3 @@ margin_bottom = 452.0
 [node name="Chat" parent="." instance=ExtResource( 5 )]
 
 [node name="Labels" parent="." instance=ExtResource( 6 )]
-

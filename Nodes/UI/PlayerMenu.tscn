@@ -845,12 +845,11 @@ custom_fonts/font = ExtResource( 8 )
 text = "hello this is description"
 
 [node name="Souls" type="VBoxContainer" parent="Container/Tabs"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
 margin_right = -4.0
-margin_bottom = 246.0
+margin_bottom = 247.0
 custom_constants/separation = 8
 script = ExtResource( 11 )
 
@@ -883,9 +882,9 @@ text = "Mage"
 editor/display_folded = true
 margin_top = 32.0
 margin_right = 728.0
-margin_bottom = 208.0
+margin_bottom = 191.0
 size_flags_vertical = 3
-custom_constants/vseparation = 16
+custom_constants/vseparation = 8
 columns = 2
 
 [node name="Bullet" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
@@ -928,9 +927,9 @@ margin_right = 130.0
 
 [node name="Augment" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
-margin_top = 48.0
+margin_top = 40.0
 margin_right = 364.0
-margin_bottom = 80.0
+margin_bottom = 72.0
 type = "Augment"
 soul = "STR+"
 color = Color( 1, 1, 0, 1 )
@@ -962,9 +961,9 @@ margin_right = 48.0
 [node name="Enchant" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
 margin_left = 364.0
-margin_top = 48.0
+margin_top = 40.0
 margin_right = 728.0
-margin_bottom = 80.0
+margin_bottom = 72.0
 type = "Enchant"
 soul = "Razor Blade"
 color = Color( 1, 0, 1, 1 )
@@ -994,9 +993,9 @@ modulate = Color( 0.2, 0, 0.2, 1 )
 
 [node name="Extension" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
-margin_top = 96.0
+margin_top = 80.0
 margin_right = 364.0
-margin_bottom = 128.0
+margin_bottom = 112.0
 type = "Extension"
 soul = "Enchanced Bone Throw"
 color = Color( 1, 1, 1, 0.501961 )
@@ -1028,9 +1027,9 @@ margin_right = 172.0
 [node name="Catalyst" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
 margin_left = 364.0
-margin_top = 96.0
+margin_top = 80.0
 margin_right = 728.0
-margin_bottom = 128.0
+margin_bottom = 112.0
 type = "Catalyst"
 soul = "Bone Synthesis"
 color = Color( 0, 1, 1, 1 )
@@ -1061,9 +1060,9 @@ margin_right = 113.0
 
 [node name="Ability" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
-margin_top = 144.0
+margin_top = 120.0
 margin_right = 364.0
-margin_bottom = 176.0
+margin_bottom = 152.0
 type = "Ability"
 soul = "Double Jump"
 color = Color( 0, 1, 0, 1 )
@@ -1095,9 +1094,9 @@ margin_right = 96.0
 [node name="Matery" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
 margin_left = 364.0
-margin_top = 144.0
+margin_top = 120.0
 margin_right = 728.0
-margin_bottom = 176.0
+margin_bottom = 152.0
 type = "Mastery"
 soul = "Soul Hunt"
 color = Color( 0, 0, 0, 1 )
@@ -1126,10 +1125,9 @@ text = "Soul Hunt"
 modulate = Color( 0, 0, 0, 1 )
 
 [node name="Description" type="HBoxContainer" parent="Container/Tabs/Souls"]
-editor/display_folded = true
-margin_top = 216.0
+margin_top = 199.0
 margin_right = 728.0
-margin_bottom = 264.0
+margin_bottom = 247.0
 rect_min_size = Vector2( 0, 48 )
 
 [node name="Panel1" type="NinePatchRect" parent="Container/Tabs/Souls/Description"]
@@ -1151,7 +1149,6 @@ expand = true
 stretch_mode = 4
 
 [node name="Panel2" type="NinePatchRect" parent="Container/Tabs/Souls/Description"]
-editor/display_folded = true
 margin_left = 56.0
 margin_right = 728.0
 margin_bottom = 48.0
@@ -1182,7 +1179,6 @@ rect_min_size = Vector2( 128, 0 )
 text = "[TAB]"
 align = 1
 valign = 1
-
 
 [editable path="Container/Tabs/Souls/Slots/Bullet"]
 

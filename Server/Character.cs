@@ -122,7 +122,7 @@ public class Character {
 
                 foreach (var stat in statList) {
                     if (item.ContainsKey(stat)) {
-                        finalStats[stat] += (ushort)(int)Godot.GD.Convert(item[stat], (int)Godot.Variant.Type.Int);
+                        finalStats[stat] += (ushort)(int)Godot.GD.Convert(item[stat], Godot.Variant.Type.Int);
                     }
                 }
             }

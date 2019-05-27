@@ -93,6 +93,5 @@ margin_top = 210.0
 margin_right = 516.0
 margin_bottom = 227.0
 custom_fonts/font = ExtResource( 2 )
-
 [connection signal="pressed" from="Log-in" to="." method="_on_Login_pressed"]
 [connection signal="pressed" from="Register" to="." method="_on_Register_pressed"]
