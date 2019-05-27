@@ -1,14 +1,18 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=1]
-[ext_resource path="res://Scripts/UI/PlayerMenu.gd" type="Script" id=2]
-[ext_resource path="res://Nodes/UI/InventorySlot.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Graphics/UI/DescriptionPanel.png" type="Texture" id=4]
-[ext_resource path="res://Graphics/Items/0.png" type="Texture" id=5]
-[ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=6]
-[ext_resource path="res://Nodes/UI/EquipmentSlot.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Graphics/Objects/Soul.png" type="Texture" id=8]
-[ext_resource path="res://Nodes/UI/SoulSlot.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scripts/UI/PlayerMenu/Main.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/UI/PlayerMenu/Stats.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/UI/PlayerMenu/Inventory.gd" type="Script" id=4]
+[ext_resource path="res://Nodes/UI/InventorySlot.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Graphics/UI/DescriptionPanel.png" type="Texture" id=6]
+[ext_resource path="res://Graphics/Items/0.png" type="Texture" id=7]
+[ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Scripts/UI/PlayerMenu/Equipment.gd" type="Script" id=9]
+[ext_resource path="res://Nodes/UI/EquipmentSlot.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scripts/UI/PlayerMenu/Souls.gd" type="Script" id=11]
+[ext_resource path="res://Graphics/Objects/Soul.png" type="Texture" id=12]
+[ext_resource path="res://Nodes/UI/SoulSlot.tscn" type="PackedScene" id=13]
 
 [node name="PlayerMenu" type="Panel"]
 margin_right = 736.0
@@ -253,6 +257,7 @@ editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 3 )
 
 [node name="Margin" type="Control" parent="Container/Tabs/Stats"]
 margin_right = 8.0
@@ -343,6 +348,7 @@ anchor_bottom = 1.0
 margin_left = 4.0
 margin_right = -4.0
 custom_constants/separation = 8
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -353,41 +359,41 @@ margin_right = 728.0
 margin_bottom = 192.0
 columns = 4
 
-[node name="Slot1" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot1" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 182.0
 margin_bottom = 32.0
 
-[node name="Slot2" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot2" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
 margin_right = 364.0
 margin_bottom = 32.0
 
-[node name="Slot3" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot3" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
 margin_right = 546.0
 margin_bottom = 32.0
 
-[node name="Slot4" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot4" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
 margin_right = 728.0
 margin_bottom = 32.0
 
-[node name="Slot5" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot5" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 32.0
 margin_right = 182.0
 margin_bottom = 64.0
 
-[node name="Slot6" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot6" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
@@ -395,7 +401,7 @@ margin_top = 32.0
 margin_right = 364.0
 margin_bottom = 64.0
 
-[node name="Slot7" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot7" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
@@ -403,7 +409,7 @@ margin_top = 32.0
 margin_right = 546.0
 margin_bottom = 64.0
 
-[node name="Slot8" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot8" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
@@ -411,14 +417,14 @@ margin_top = 32.0
 margin_right = 728.0
 margin_bottom = 64.0
 
-[node name="Slot9" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot9" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 64.0
 margin_right = 182.0
 margin_bottom = 96.0
 
-[node name="Slot10" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot10" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
@@ -426,7 +432,7 @@ margin_top = 64.0
 margin_right = 364.0
 margin_bottom = 96.0
 
-[node name="Slot11" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot11" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
@@ -434,7 +440,7 @@ margin_top = 64.0
 margin_right = 546.0
 margin_bottom = 96.0
 
-[node name="Slot12" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot12" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
@@ -442,14 +448,14 @@ margin_top = 64.0
 margin_right = 728.0
 margin_bottom = 96.0
 
-[node name="Slot13" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot13" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 96.0
 margin_right = 182.0
 margin_bottom = 128.0
 
-[node name="Slot14" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot14" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
@@ -457,7 +463,7 @@ margin_top = 96.0
 margin_right = 364.0
 margin_bottom = 128.0
 
-[node name="Slot15" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot15" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
@@ -465,7 +471,7 @@ margin_top = 96.0
 margin_right = 546.0
 margin_bottom = 128.0
 
-[node name="Slot16" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot16" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
@@ -473,14 +479,14 @@ margin_top = 96.0
 margin_right = 728.0
 margin_bottom = 128.0
 
-[node name="Slot17" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot17" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 128.0
 margin_right = 182.0
 margin_bottom = 160.0
 
-[node name="Slot18" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot18" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
@@ -488,7 +494,7 @@ margin_top = 128.0
 margin_right = 364.0
 margin_bottom = 160.0
 
-[node name="Slot19" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot19" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
@@ -496,7 +502,7 @@ margin_top = 128.0
 margin_right = 546.0
 margin_bottom = 160.0
 
-[node name="Slot20" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot20" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
@@ -504,14 +510,14 @@ margin_top = 128.0
 margin_right = 728.0
 margin_bottom = 160.0
 
-[node name="Slot21" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot21" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 160.0
 margin_right = 182.0
 margin_bottom = 192.0
 
-[node name="Slot22" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot22" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
@@ -519,7 +525,7 @@ margin_top = 160.0
 margin_right = 364.0
 margin_bottom = 192.0
 
-[node name="Slot23" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot23" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
@@ -527,7 +533,7 @@ margin_top = 160.0
 margin_right = 546.0
 margin_bottom = 192.0
 
-[node name="Slot24" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 3 )]
+[node name="Slot24" parent="Container/Tabs/Inventory/Slots" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
@@ -547,7 +553,7 @@ editor/display_folded = true
 margin_right = 56.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -556,7 +562,7 @@ patch_margin_bottom = 4
 [node name="Icon" type="TextureRect" parent="Container/Tabs/Inventory/Description/Panel1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 5 )
+texture = ExtResource( 7 )
 expand = true
 stretch_mode = 4
 
@@ -567,7 +573,7 @@ margin_right = 728.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 12.0
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -580,7 +586,7 @@ margin_left = 4.0
 margin_top = 4.0
 margin_right = -4.0
 margin_bottom = -4.0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = ExtResource( 8 )
 text = "hello this is description"
 
 [node name="Equipment" type="VBoxContainer" parent="Container/Tabs"]
@@ -592,6 +598,7 @@ margin_left = 4.0
 margin_right = -4.0
 margin_bottom = 248.0
 custom_constants/separation = 4
+script = ExtResource( 9 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -602,34 +609,34 @@ margin_right = 728.0
 margin_bottom = 64.0
 columns = 4
 
-[node name="EquipmentSlot" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 7 )]
+[node name="EquipmentSlot" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 10 )]
 margin_right = 182.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 type = "Left Hand"
 
-[node name="EquipmentSlot2" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 7 )]
+[node name="EquipmentSlot2" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 10 )]
 margin_left = 182.0
 margin_right = 364.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 type = "Right Hand"
 
-[node name="EquipmentSlot3" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 7 )]
+[node name="EquipmentSlot3" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 10 )]
 margin_left = 364.0
 margin_right = 546.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 type = "Chest"
 
-[node name="EquipmentSlot4" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 7 )]
+[node name="EquipmentSlot4" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 10 )]
 margin_left = 546.0
 margin_right = 728.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 type = "Head"
 
-[node name="EquipmentSlot5" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 7 )]
+[node name="EquipmentSlot5" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 10 )]
 margin_top = 32.0
 margin_right = 182.0
 margin_bottom = 64.0
@@ -637,7 +644,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 type = "Legs"
 
-[node name="EquipmentSlot6" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 7 )]
+[node name="EquipmentSlot6" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 10 )]
 margin_left = 182.0
 margin_top = 32.0
 margin_right = 364.0
@@ -646,7 +653,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 type = "Back"
 
-[node name="EquipmentSlot7" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 7 )]
+[node name="EquipmentSlot7" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 10 )]
 margin_left = 364.0
 margin_top = 32.0
 margin_right = 546.0
@@ -655,7 +662,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 type = "Accessory"
 
-[node name="EquipmentSlot8" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 7 )]
+[node name="EquipmentSlot8" parent="Container/Tabs/Equipment/Equipment" instance=ExtResource( 10 )]
 margin_left = 546.0
 margin_top = 32.0
 margin_right = 728.0
@@ -671,41 +678,41 @@ margin_right = 728.0
 margin_bottom = 196.0
 columns = 4
 
-[node name="InventorySpace" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 182.0
 margin_bottom = 32.0
 
-[node name="InventorySpace2" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace2" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
 margin_right = 364.0
 margin_bottom = 32.0
 
-[node name="InventorySpace3" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace3" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
 margin_right = 546.0
 margin_bottom = 32.0
 
-[node name="InventorySpace4" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace4" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
 margin_right = 728.0
 margin_bottom = 32.0
 
-[node name="InventorySpace5" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace5" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 32.0
 margin_right = 182.0
 margin_bottom = 64.0
 
-[node name="InventorySpace6" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace6" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
@@ -713,7 +720,7 @@ margin_top = 32.0
 margin_right = 364.0
 margin_bottom = 64.0
 
-[node name="InventorySpace7" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace7" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
@@ -721,7 +728,7 @@ margin_top = 32.0
 margin_right = 546.0
 margin_bottom = 64.0
 
-[node name="InventorySpace8" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace8" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
@@ -729,14 +736,14 @@ margin_top = 32.0
 margin_right = 728.0
 margin_bottom = 64.0
 
-[node name="InventorySpace9" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace9" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 64.0
 margin_right = 182.0
 margin_bottom = 96.0
 
-[node name="InventorySpace10" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace10" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
@@ -744,7 +751,7 @@ margin_top = 64.0
 margin_right = 364.0
 margin_bottom = 96.0
 
-[node name="InventorySpace11" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace11" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
@@ -752,7 +759,7 @@ margin_top = 64.0
 margin_right = 546.0
 margin_bottom = 96.0
 
-[node name="InventorySpace12" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace12" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
@@ -760,14 +767,14 @@ margin_top = 64.0
 margin_right = 728.0
 margin_bottom = 96.0
 
-[node name="InventorySpace13" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace13" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 96.0
 margin_right = 182.0
 margin_bottom = 128.0
 
-[node name="InventorySpace14" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace14" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 182.0
@@ -775,7 +782,7 @@ margin_top = 96.0
 margin_right = 364.0
 margin_bottom = 128.0
 
-[node name="InventorySpace15" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace15" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 364.0
@@ -783,7 +790,7 @@ margin_top = 96.0
 margin_right = 546.0
 margin_bottom = 128.0
 
-[node name="InventorySpace16" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 3 )]
+[node name="InventorySpace16" parent="Container/Tabs/Equipment/Inventory" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 546.0
@@ -802,7 +809,7 @@ rect_min_size = Vector2( 0, 48 )
 margin_right = 56.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -811,7 +818,7 @@ patch_margin_bottom = 4
 [node name="Icon" type="TextureRect" parent="Container/Tabs/Equipment/Description/Panel1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 5 )
+texture = ExtResource( 7 )
 expand = true
 stretch_mode = 4
 
@@ -821,7 +828,7 @@ margin_right = 728.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 12.0
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -834,16 +841,18 @@ margin_left = 4.0
 margin_top = 4.0
 margin_right = -4.0
 margin_bottom = -4.0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = ExtResource( 8 )
 text = "hello this is description"
 
 [node name="Souls" type="VBoxContainer" parent="Container/Tabs"]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
 margin_right = -4.0
 margin_bottom = 246.0
 custom_constants/separation = 8
+script = ExtResource( 11 )
 
 [node name="Identity" type="NinePatchRect" parent="Container/Tabs/Souls"]
 editor/display_folded = true
@@ -860,7 +869,7 @@ alignment = 1
 margin_left = 332.0
 margin_right = 356.0
 margin_bottom = 24.0
-texture = ExtResource( 8 )
+texture = ExtResource( 12 )
 stretch_mode = 6
 
 [node name="Label" type="Label" parent="Container/Tabs/Souls/Identity/HBoxContainer"]
@@ -871,6 +880,7 @@ margin_bottom = 20.0
 text = "Mage"
 
 [node name="Slots" type="GridContainer" parent="Container/Tabs/Souls"]
+editor/display_folded = true
 margin_top = 32.0
 margin_right = 728.0
 margin_bottom = 208.0
@@ -878,11 +888,13 @@ size_flags_vertical = 3
 custom_constants/vseparation = 16
 columns = 2
 
-[node name="Bullet" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 9 )]
+[node name="Bullet" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+editor/display_folded = true
 margin_right = 364.0
 margin_bottom = 32.0
 
-[node name="Active" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 9 )]
+[node name="Active" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+editor/display_folded = true
 margin_left = 364.0
 margin_right = 728.0
 margin_bottom = 32.0
@@ -890,7 +902,32 @@ type = "Active"
 soul = "Skeleton Disguise"
 color = Color( 0, 0, 1, 1 )
 
-[node name="Augment" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 9 )]
+[node name="Icon" parent="Container/Tabs/Souls/Slots/Active" index="0"]
+self_modulate = Color( 0, 0, 1, 1 )
+
+[node name="LeftRect" parent="Container/Tabs/Souls/Slots/Active/Icon" index="0"]
+modulate = Color( 0, 0, 0.6, 1 )
+margin_right = 74.0
+
+[node name="Type" parent="Container/Tabs/Souls/Slots/Active" index="1"]
+margin_right = 68.0
+text = "Active"
+
+[node name="Control" parent="Container/Tabs/Souls/Slots/Active" index="2"]
+margin_left = 68.0
+margin_right = 76.0
+
+[node name="Name" parent="Container/Tabs/Souls/Slots/Active" index="3"]
+margin_left = 76.0
+margin_right = 200.0
+text = "Skeleton Disguise"
+
+[node name="RightRect" parent="Container/Tabs/Souls/Slots/Active/Name" index="0"]
+modulate = Color( 0, 0, 0.2, 1 )
+margin_right = 130.0
+
+[node name="Augment" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+editor/display_folded = true
 margin_top = 48.0
 margin_right = 364.0
 margin_bottom = 80.0
@@ -898,7 +935,32 @@ type = "Augment"
 soul = "STR+"
 color = Color( 1, 1, 0, 1 )
 
-[node name="Enchant" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 9 )]
+[node name="Icon" parent="Container/Tabs/Souls/Slots/Augment" index="0"]
+self_modulate = Color( 1, 1, 0, 1 )
+
+[node name="LeftRect" parent="Container/Tabs/Souls/Slots/Augment/Icon" index="0"]
+modulate = Color( 0.6, 0.6, 0, 1 )
+margin_right = 94.0
+
+[node name="Type" parent="Container/Tabs/Souls/Slots/Augment" index="1"]
+margin_right = 88.0
+text = "Augment"
+
+[node name="Control" parent="Container/Tabs/Souls/Slots/Augment" index="2"]
+margin_left = 88.0
+margin_right = 96.0
+
+[node name="Name" parent="Container/Tabs/Souls/Slots/Augment" index="3"]
+margin_left = 96.0
+margin_right = 138.0
+text = "STR+"
+
+[node name="RightRect" parent="Container/Tabs/Souls/Slots/Augment/Name" index="0"]
+modulate = Color( 0.2, 0.2, 0, 1 )
+margin_right = 48.0
+
+[node name="Enchant" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+editor/display_folded = true
 margin_left = 364.0
 margin_top = 48.0
 margin_right = 728.0
@@ -907,7 +969,31 @@ type = "Enchant"
 soul = "Razor Blade"
 color = Color( 1, 0, 1, 1 )
 
-[node name="Extension" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 9 )]
+[node name="Icon" parent="Container/Tabs/Souls/Slots/Enchant" index="0"]
+self_modulate = Color( 1, 0, 1, 1 )
+
+[node name="LeftRect" parent="Container/Tabs/Souls/Slots/Enchant/Icon" index="0"]
+modulate = Color( 0.6, 0, 0.6, 1 )
+margin_right = 89.0
+
+[node name="Type" parent="Container/Tabs/Souls/Slots/Enchant" index="1"]
+margin_right = 83.0
+text = "Enchant"
+
+[node name="Control" parent="Container/Tabs/Souls/Slots/Enchant" index="2"]
+margin_left = 83.0
+margin_right = 91.0
+
+[node name="Name" parent="Container/Tabs/Souls/Slots/Enchant" index="3"]
+margin_left = 91.0
+margin_right = 175.0
+text = "Razor Blade"
+
+[node name="RightRect" parent="Container/Tabs/Souls/Slots/Enchant/Name" index="0"]
+modulate = Color( 0.2, 0, 0.2, 1 )
+
+[node name="Extension" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+editor/display_folded = true
 margin_top = 96.0
 margin_right = 364.0
 margin_bottom = 128.0
@@ -915,7 +1001,32 @@ type = "Extension"
 soul = "Enchanced Bone Throw"
 color = Color( 1, 1, 1, 0.501961 )
 
-[node name="Catalyst" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 9 )]
+[node name="Icon" parent="Container/Tabs/Souls/Slots/Extension" index="0"]
+self_modulate = Color( 1, 1, 1, 0.501961 )
+
+[node name="LeftRect" parent="Container/Tabs/Souls/Slots/Extension/Icon" index="0"]
+modulate = Color( 0.6, 0.6, 0.6, 0.501961 )
+margin_right = 99.0
+
+[node name="Type" parent="Container/Tabs/Souls/Slots/Extension" index="1"]
+margin_right = 93.0
+text = "Extension"
+
+[node name="Control" parent="Container/Tabs/Souls/Slots/Extension" index="2"]
+margin_left = 93.0
+margin_right = 101.0
+
+[node name="Name" parent="Container/Tabs/Souls/Slots/Extension" index="3"]
+margin_left = 101.0
+margin_right = 267.0
+text = "Enchanced Bone Throw"
+
+[node name="RightRect" parent="Container/Tabs/Souls/Slots/Extension/Name" index="0"]
+modulate = Color( 0.2, 0.2, 0.2, 0.501961 )
+margin_right = 172.0
+
+[node name="Catalyst" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+editor/display_folded = true
 margin_left = 364.0
 margin_top = 96.0
 margin_right = 728.0
@@ -925,7 +1036,31 @@ soul = "Bone Synthesis"
 color = Color( 0, 1, 1, 1 )
 no_select = true
 
-[node name="Ability" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 9 )]
+[node name="Icon" parent="Container/Tabs/Souls/Slots/Catalyst" index="0"]
+self_modulate = Color( 0, 1, 1, 1 )
+
+[node name="LeftRect" parent="Container/Tabs/Souls/Slots/Catalyst/Icon" index="0"]
+modulate = Color( 0, 0.6, 0.6, 1 )
+margin_right = 88.0
+
+[node name="Type" parent="Container/Tabs/Souls/Slots/Catalyst" index="1"]
+margin_right = 82.0
+text = "Catalyst"
+
+[node name="Control" parent="Container/Tabs/Souls/Slots/Catalyst" index="2"]
+margin_left = 82.0
+margin_right = 90.0
+
+[node name="Name" parent="Container/Tabs/Souls/Slots/Catalyst" index="3"]
+visible = false
+text = "Bone Synthesis"
+
+[node name="RightRect" parent="Container/Tabs/Souls/Slots/Catalyst/Name" index="0"]
+modulate = Color( 0, 0.2, 0.2, 1 )
+margin_right = 113.0
+
+[node name="Ability" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+editor/display_folded = true
 margin_top = 144.0
 margin_right = 364.0
 margin_bottom = 176.0
@@ -934,7 +1069,31 @@ soul = "Double Jump"
 color = Color( 0, 1, 0, 1 )
 no_select = true
 
-[node name="Matery" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 9 )]
+[node name="Icon" parent="Container/Tabs/Souls/Slots/Ability" index="0"]
+self_modulate = Color( 0, 1, 0, 1 )
+
+[node name="LeftRect" parent="Container/Tabs/Souls/Slots/Ability/Icon" index="0"]
+modulate = Color( 0, 0.6, 0, 1 )
+margin_right = 75.0
+
+[node name="Type" parent="Container/Tabs/Souls/Slots/Ability" index="1"]
+margin_right = 69.0
+text = "Ability"
+
+[node name="Control" parent="Container/Tabs/Souls/Slots/Ability" index="2"]
+margin_left = 69.0
+margin_right = 77.0
+
+[node name="Name" parent="Container/Tabs/Souls/Slots/Ability" index="3"]
+visible = false
+text = "Double Jump"
+
+[node name="RightRect" parent="Container/Tabs/Souls/Slots/Ability/Name" index="0"]
+modulate = Color( 0, 0.2, 0, 1 )
+margin_right = 96.0
+
+[node name="Matery" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+editor/display_folded = true
 margin_left = 364.0
 margin_top = 144.0
 margin_right = 728.0
@@ -943,6 +1102,28 @@ type = "Mastery"
 soul = "Soul Hunt"
 color = Color( 0, 0, 0, 1 )
 no_select = true
+
+[node name="Icon" parent="Container/Tabs/Souls/Slots/Matery" index="0"]
+self_modulate = Color( 0, 0, 0, 1 )
+
+[node name="LeftRect" parent="Container/Tabs/Souls/Slots/Matery/Icon" index="0"]
+modulate = Color( 0, 0, 0, 1 )
+margin_right = 88.0
+
+[node name="Type" parent="Container/Tabs/Souls/Slots/Matery" index="1"]
+margin_right = 82.0
+text = "Mastery"
+
+[node name="Control" parent="Container/Tabs/Souls/Slots/Matery" index="2"]
+margin_left = 82.0
+margin_right = 90.0
+
+[node name="Name" parent="Container/Tabs/Souls/Slots/Matery" index="3"]
+visible = false
+text = "Soul Hunt"
+
+[node name="RightRect" parent="Container/Tabs/Souls/Slots/Matery/Name" index="0"]
+modulate = Color( 0, 0, 0, 1 )
 
 [node name="Description" type="HBoxContainer" parent="Container/Tabs/Souls"]
 editor/display_folded = true
@@ -956,7 +1137,7 @@ editor/display_folded = true
 margin_right = 56.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -965,7 +1146,7 @@ patch_margin_bottom = 4
 [node name="Icon" type="TextureRect" parent="Container/Tabs/Souls/Description/Panel1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 8 )
+texture = ExtResource( 12 )
 expand = true
 stretch_mode = 4
 
@@ -976,7 +1157,7 @@ margin_right = 728.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 12.0
-texture = ExtResource( 4 )
+texture = ExtResource( 6 )
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -989,7 +1170,7 @@ margin_left = 4.0
 margin_top = 4.0
 margin_right = -4.0
 margin_bottom = -4.0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = ExtResource( 8 )
 text = "hello this is description"
 
 [node name="Button5" type="Label" parent="."]
@@ -1002,3 +1183,19 @@ text = "[TAB]"
 align = 1
 valign = 1
 
+
+[editable path="Container/Tabs/Souls/Slots/Bullet"]
+
+[editable path="Container/Tabs/Souls/Slots/Active"]
+
+[editable path="Container/Tabs/Souls/Slots/Augment"]
+
+[editable path="Container/Tabs/Souls/Slots/Enchant"]
+
+[editable path="Container/Tabs/Souls/Slots/Extension"]
+
+[editable path="Container/Tabs/Souls/Slots/Catalyst"]
+
+[editable path="Container/Tabs/Souls/Slots/Ability"]
+
+[editable path="Container/Tabs/Souls/Slots/Matery"]

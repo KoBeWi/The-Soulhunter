@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=1]
-[ext_resource path="res://Nodes/UI/SoulSlot.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/UI/SoulSlot.gd" type="Script" id=2]
 [ext_resource path="res://Graphics/Objects/Soul.png" type="Texture" id=3]
 [ext_resource path="res://Graphics/UI/SoulSlot.png" type="Texture" id=4]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Nodes/UI/LabelManager.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/UI/LabelManager.gd" type="Script" id=1]
 
 [node name="Labels" type="Control"]
 anchor_left = 1.0
