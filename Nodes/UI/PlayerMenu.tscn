@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=1]
 [ext_resource path="res://Scripts/UI/PlayerMenu/Main.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Scripts/UI/PlayerMenu/Souls.gd" type="Script" id=11]
 [ext_resource path="res://Graphics/Objects/Soul.png" type="Texture" id=12]
 [ext_resource path="res://Nodes/UI/SoulSlot.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Graphics/UI/SoulSelect.png" type="Texture" id=14]
 
 [node name="PlayerMenu" type="Panel"]
 margin_right = 736.0
@@ -879,7 +880,6 @@ margin_bottom = 20.0
 text = "Mage"
 
 [node name="Slots" type="GridContainer" parent="Container/Tabs/Souls"]
-editor/display_folded = true
 margin_top = 32.0
 margin_right = 728.0
 margin_bottom = 191.0
@@ -1125,6 +1125,7 @@ text = "Soul Hunt"
 modulate = Color( 0, 0, 0, 1 )
 
 [node name="Description" type="HBoxContainer" parent="Container/Tabs/Souls"]
+editor/display_folded = true
 margin_top = 199.0
 margin_right = 728.0
 margin_bottom = 247.0
@@ -1149,6 +1150,7 @@ expand = true
 stretch_mode = 4
 
 [node name="Panel2" type="NinePatchRect" parent="Container/Tabs/Souls/Description"]
+editor/display_folded = true
 margin_left = 56.0
 margin_right = 728.0
 margin_bottom = 48.0
@@ -1170,7 +1172,7 @@ margin_bottom = -4.0
 custom_fonts/font = ExtResource( 8 )
 text = "hello this is description"
 
-[node name="Button5" type="Label" parent="."]
+[node name="Tab" type="Label" parent="."]
 margin_left = 304.141
 margin_top = 81.979
 margin_right = 432.141
@@ -1179,6 +1181,16 @@ rect_min_size = Vector2( 128, 0 )
 text = "[TAB]"
 align = 1
 valign = 1
+
+[node name="SoulSelect" type="NinePatchRect" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 14 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [editable path="Container/Tabs/Souls/Slots/Bullet"]
 
