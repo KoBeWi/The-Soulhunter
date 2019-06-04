@@ -87,7 +87,7 @@ public class Server : Node {
 
             var unpacker = new Unpacker(bytes);
 
-            GD.Print("Received packet: " + ((Packet.TYPE)unpacker.GetCommand()).ToString());
+            GD.Print("Received packet: " + unpacker.GetCommand().ToString());
 
             unpacker.HandlePacket(database, player);
         }

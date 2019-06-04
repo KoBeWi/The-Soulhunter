@@ -22,6 +22,10 @@ func on_press_key(key):
 	elif key == Controls.UP:
 		select = max(select - slots.columns, 0)
 	
+	if key == Controls.ACCEPT:
+		inventory_mode()
+#	if key == Controls.CANCEL:
+	
 	if select != old_select:
 		select()
 
@@ -37,3 +41,12 @@ func select():
 	var selected = slots.get_child(select)
 	select_rect.rect_size = selected.rect_size
 	select_rect.rect_position = selected.get_global_rect().position - main.get_global_rect().position
+
+func inventory_mode():
+	$Slots.visible = false
+	$Inventory.visible = true
+	
+	var slot = slots.get_child(select)
+	for item in $Inventory.get_children():
+		item.get_node("RightRect/HBoxContainer/Icon").self_modulate = slot.color
+		item.get_node("RightRect").self_modulate = slot.color.darkened(0.8)

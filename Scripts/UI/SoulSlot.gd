@@ -18,5 +18,5 @@ func _process(delta):
 	$Icon.self_modulate = color
 	$Icon/LeftRect.modulate = color.darkened(0.4)
 	$Name/RightRect.modulate = color.darkened(0.8)
-	
+
 	$Name.visible = !no_select

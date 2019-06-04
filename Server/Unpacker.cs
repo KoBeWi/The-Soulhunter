@@ -36,7 +36,7 @@ public class Unpacker {
         return data[offset-1];
     }
 
-    public int GetCommand() { return (int)command; }
+    public Packet.TYPE GetCommand() { return command; }
 
     public void  HandlePacket(Database database, Player player) {
         switch (command) {
