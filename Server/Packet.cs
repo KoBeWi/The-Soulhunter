@@ -19,7 +19,9 @@ public class Packet {
         INVENTORY,
         EQUIPMENT,
         SOULS,
+        SOUL_EQUIPMENT,
         EQUIP,
+        EQUIP_SOUL,
         ITEM_GET,
         SOUL_GET
     }
@@ -143,7 +145,7 @@ public class Packet {
 
         List<ushort> eq = new List<ushort>();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < equipment.Length; i++) {
             if (equipment[i] > 0) {
                 isEq[i] = true;
                 eq.Add(equipment[i]);

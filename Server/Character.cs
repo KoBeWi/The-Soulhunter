@@ -150,15 +150,33 @@ public class Character {
         inventory.RemoveAt(from);
         if (oldEquip > 0) inventory.Add(oldEquip);
 
-        syncStats();
-
         owner.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(GetInventory()));
         owner.SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(GetEquipment()));
 
+        syncStats();
         var stats = new List<string>();
         var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
         foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
         GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
+    }
+
+    public void EquipSoul(byte slot, byte from) {
+        var equipment = data.GetValue("soul_equipment").AsBsonArray;
+        var inventory = data.GetValue("souls").AsBsonArray;
+
+        var oldEquip = equipment[slot];
+        equipment.AsBsonArray[slot] = inventory[from];
+        inventory.RemoveAt(from);
+        if (oldEquip > 0) inventory.Add(oldEquip);
+
+        owner.SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(owner.GetCharacter().GetSouls()));
+        owner.SendPacket(new Packet(Packet.TYPE.SOUL_EQUIPMENT).AddEquipment(owner.GetCharacter().GetSoulEquipment()));
+
+        // syncStats();
+        // var stats = new List<string>();
+        // var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
+        // foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
+        // GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
     }
 
     public void Save() {
@@ -169,12 +187,16 @@ public class Character {
         return getArray("inventory");
     }
 
+    public ushort[] GetEquipment() {
+        return getArray("equipment");
+    }
+
     public ushort[] GetSouls() {
         return getArray("souls");
     }
 
-    public ushort[] GetEquipment() {
-        return getArray("equipment");
+    public ushort[] GetSoulEquipment() {
+        return getArray("soul_equipment");
     }
 
     private ushort[] getArray(string value) {

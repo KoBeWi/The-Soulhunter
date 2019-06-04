@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=1]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Panel
@@ -28,7 +31,11 @@ func move_down(how_much):
 	move_down += how_much * 32
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	get_parent().free_label(self)"
+	get_parent().free_label(self)
+
+func set_colors(color, icon_color = Color.white):
+	self_modulate = color
+	icon.modulate = icon_color"
 
 [sub_resource type="Animation" id=2]
 resource_name = "Disappear"
@@ -52,6 +59,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -387.0
 margin_top = -32.0
+custom_styles/panel = SubResource( 3 )
 script = SubResource( 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]

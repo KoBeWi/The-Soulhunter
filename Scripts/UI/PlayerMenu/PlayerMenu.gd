@@ -22,6 +22,7 @@ func _ready():
 	Network.connect("inventory", $Container/Tabs/Equipment, "update_equipment_inventory")
 	Network.connect("equipment", $Container/Tabs/Equipment, "update_equipment")
 	Network.connect("souls", $Container/Tabs/Souls, "sync_souls")
+	Network.connect("soul_equipment", $Container/Tabs/Souls, "update_equipment")
 	
 	for button in buttons.get_children():
 		button.set_button_group(tab_buttons)

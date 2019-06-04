@@ -11,7 +11,7 @@ const TYPE_COLOR = {
 	"ability": Color(0, 1, 0),
 	"mastery": Color(0, 0, 0),
 	"identity": Color(1, 1, 1)
-	}
+}
 const SPEED = 24
 const SPEED_SQ = SPEED * SPEED
 

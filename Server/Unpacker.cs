@@ -56,6 +56,7 @@ public class Unpacker {
                 player.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(player.GetCharacter().GetInventory()));
                 player.SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(player.GetCharacter().GetEquipment()));
                 player.SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(player.GetCharacter().GetSouls()));
+                player.SendPacket(new Packet(Packet.TYPE.SOUL_EQUIPMENT).AddEquipment(player.GetCharacter().GetSoulEquipment()));
 
                 room.AddPlayer(player.GetCharacter());
             } else {
@@ -99,6 +100,10 @@ public class Unpacker {
             break;
             case Packet.TYPE.EQUIP:
             player.GetCharacter().EquipItem(GetU8(), GetU8());
+
+            break;
+            case Packet.TYPE.EQUIP_SOUL:
+            player.GetCharacter().EquipSoul(GetU8(), GetU8());
 
             break;
         }

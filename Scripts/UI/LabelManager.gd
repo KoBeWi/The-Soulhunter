@@ -22,10 +22,14 @@ func push_label(type, data):
 			var item = Res.get_res(Res.items, data[0])
 			label.set_text(item.name)
 			label.set_icon(Res.item_icon(item.name))
+			label.set_colors(Color.orangered)
 		SOUL:
 			var soul = Res.get_res(Res.souls, data[0])
 			label.set_text(soul.name)
 			label.set_icon(preload("res://Graphics/Objects/Soul.png"))
+			
+			var color = Soul.TYPE_COLOR[soul.type]
+			label.set_colors(color.darkened(0.8), color)
 
 func free_label(label):
 	label.queue_free()

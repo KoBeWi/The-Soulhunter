@@ -18,6 +18,7 @@ signal stats(data)
 signal inventory(items)
 signal equipment(items)
 signal souls(souls)
+signal soul_equipment(souls)
 signal item_get(item)
 signal soul_get(soul)
 
@@ -169,6 +170,18 @@ func process_packet(unpacker):
 				souls.append(unpacker.get_u16())
 			
 			emit_signal("souls", souls)
+		
+		Packet.TYPE.SOUL_EQUIPMENT:
+			var equipment = []
+			
+			var equipped = unpacker.get_u8()
+			for i in 8:
+				if (equipped & Data.binary[i]):
+					equipment.append(unpacker.get_u16())
+				else:
+					equipment.append(0)
+			
+			emit_signal("soul_equipment", equipment)
 		
 		Packet.TYPE.ITEM_GET:
 			emit_signal("item_get", unpacker.get_u16())

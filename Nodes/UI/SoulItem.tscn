@@ -7,23 +7,26 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends HBoxContainer
 
-var soul_name
+var stack
 
 func set_color(color : Color):
 	$RightRect/HBoxContainer/Icon.self_modulate = color
 	$RightRect.self_modulate = color.darkened(0.8)
 
 func set_soul(soul):
-	soul_name = soul.soul
+	stack = soul
 	$RightRect/HBoxContainer/Icon.modulate.a = 1
 	$RightRect/HBoxContainer/Name.text = soul.soul
 	$RightRect/HBoxContainer/Amount.text = str(soul.amount)
 
 func clear_soul():
-	soul_name = null
+	stack = null
 	$RightRect/HBoxContainer/Icon.modulate.a = 0
 	$RightRect/HBoxContainer/Name.text = \"---\"
-	$RightRect/HBoxContainer/Amount.text = \"\""
+	$RightRect/HBoxContainer/Amount.text = \"\"
+
+func empty():
+	return $RightRect/HBoxContainer/Amount.text == \"\""
 
 [node name="SoulItem" type="HBoxContainer"]
 margin_right = 157.0

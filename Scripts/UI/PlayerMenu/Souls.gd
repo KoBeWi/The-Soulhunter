@@ -7,6 +7,18 @@ onready var slots = $Slots
 onready var inventory = $Inventory
 onready var description = $Description
 
+const SOUL_DESCRIPTIONS = {
+	"trigger": "Up + Attack to use",
+	"active": "Shift to activate, either toggled or held",
+	"augment": "Passive effect on character",
+	"enchant": "Passive effect on equipment",
+	"extension": "Passive upgrade on other souls",
+	"catalyst": "Used for soul forging",
+	"ability": "Active special abilities",
+	"mastery": "Powerful permanent abilities",
+	"identity": "Determines the very essence"
+}
+
 var inventory_mode = false
 var souls = []
 var soul_stacks = {}
@@ -50,6 +62,10 @@ func on_press_key(key):
 		if inventory_select != old_select:
 			select_inventory()
 		
+		if key == Controls.ACCEPT:
+			equip_soul()
+			slot_mode()
+		
 		if key == Controls.CANCEL:
 			slot_mode()
 
@@ -69,21 +85,18 @@ func select():
 	select_rect.rect_size = selected.rect_size
 	select_rect.rect_position = selected.get_global_rect().position - main.get_global_rect().position
 	
-	if false and selected.soul_name:
-		description.visible = true
-		description.get_node("Panel2/Text").text = Res.souls[selected.soul_name].description
-		description.get_node("Panel1/Icon").modulate = slots.get_child(select).color
-	else:
-		description.visible = false
+	description.visible = true
+	description.get_node("Panel2/Text").text = SOUL_DESCRIPTIONS[Soul.TYPE_COLOR.keys()[select]]
+	description.get_node("Panel1/Icon").modulate = slots.get_child(select).color
 
 func select_inventory():
 	var selected = inventory.get_child(inventory_select)
 	select_rect.rect_size = selected.rect_size
 	select_rect.rect_position = selected.get_global_rect().position - main.get_global_rect().position
 	
-	if selected.soul_name:
+	if !selected.empty():
 		description.visible = true
-		description.get_node("Panel2/Text").text = Res.souls[selected.soul_name].description
+		description.get_node("Panel2/Text").text = Res.souls[selected.stack.soul].description
 		description.get_node("Panel1/Icon").modulate = slots.get_child(select).color
 	else:
 		description.visible = false
@@ -130,3 +143,20 @@ func update_inventory():
 			inventory.get_child(i).clear_soul()
 	
 	select_inventory()
+
+func update_equipment(souls):
+	for i in 8:
+		if souls[i] > 0:
+			slots.get_child(i).set_soul(Res.get_res(Res.souls, souls[i]).name)
+		else:
+			slots.get_child(i).clear_soul()
+	
+	select()
+
+func equip_soul():
+	var selected = inventory.get_child(inventory_select)
+	
+	if !selected.empty():
+		Packet.new(Packet.TYPE.EQUIP_SOUL).add_u8(select).add_u8(selected.stack.origin).send()
+		inventory_select = -1
+		select()
