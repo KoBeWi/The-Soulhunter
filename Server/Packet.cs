@@ -18,6 +18,7 @@ public class Packet {
         STATS,
         INVENTORY,
         EQUIPMENT,
+        SOULS,
         EQUIP,
         ITEM_GET,
         SOUL_GET

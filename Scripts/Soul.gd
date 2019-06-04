@@ -5,10 +5,10 @@ const TYPE_COLOR = {
 	"trigger": Color(1, 0, 0),
 	"active": Color(0, 0, 1),
 	"augment": Color(1, 1, 0),
-	"ability": Color(0, 1, 0),
 	"enchant": Color(1, 0, 1),
 	"extension": Color(1, 1, 1, 0.5),
 	"catalyst": Color(0, 1, 1),
+	"ability": Color(0, 1, 0),
 	"mastery": Color(0, 0, 0),
 	"identity": Color(1, 1, 1)
 	}

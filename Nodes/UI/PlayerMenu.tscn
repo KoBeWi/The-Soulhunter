@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Resources/UI/Standard.tres" type="Theme" id=1]
-[ext_resource path="res://Scripts/UI/PlayerMenu/Main.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/UI/PlayerMenu/PlayerMenu.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/UI/PlayerMenu/Stats.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/UI/PlayerMenu/Inventory.gd" type="Script" id=4]
 [ext_resource path="res://Nodes/UI/InventorySlot.tscn" type="PackedScene" id=5]
@@ -881,7 +881,6 @@ margin_bottom = 20.0
 text = "Mage"
 
 [node name="Slots" type="GridContainer" parent="Container/Tabs/Souls"]
-editor/display_folded = true
 margin_top = 32.0
 margin_right = 728.0
 margin_bottom = 191.0
@@ -889,10 +888,11 @@ size_flags_vertical = 3
 custom_constants/vseparation = 8
 columns = 2
 
-[node name="Bullet" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
+[node name="Trigger" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
 margin_right = 364.0
 margin_bottom = 32.0
+type = "Trigger"
 
 [node name="Active" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
@@ -1101,14 +1101,14 @@ margin_right = 728.0
 margin_bottom = 152.0
 type = "Mastery"
 soul = "Soul Hunt"
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
 no_select = true
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Matery" index="0"]
-self_modulate = Color( 0, 0, 0, 1 )
+self_modulate = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
 
 [node name="LeftRect" parent="Container/Tabs/Souls/Slots/Matery/Icon" index="0"]
-modulate = Color( 0, 0, 0, 1 )
+modulate = Color( 0.0376471, 0.0376471, 0.0376471, 1 )
 margin_right = 88.0
 
 [node name="Type" parent="Container/Tabs/Souls/Slots/Matery" index="1"]
@@ -1124,9 +1124,10 @@ visible = false
 text = "Soul Hunt"
 
 [node name="RightRect" parent="Container/Tabs/Souls/Slots/Matery/Name" index="0"]
-modulate = Color( 0, 0, 0, 1 )
+modulate = Color( 0.012549, 0.012549, 0.012549, 1 )
 
 [node name="Inventory" type="GridContainer" parent="Container/Tabs/Souls"]
+editor/display_folded = true
 visible = false
 margin_top = 192.0
 margin_right = 728.0
@@ -1244,8 +1245,6 @@ patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
 patch_margin_bottom = 4
-
-[editable path="Container/Tabs/Souls/Slots/Bullet"]
 
 [editable path="Container/Tabs/Souls/Slots/Active"]
 

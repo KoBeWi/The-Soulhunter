@@ -7,7 +7,23 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends HBoxContainer
 
-"
+var soul_name
+
+func set_color(color : Color):
+	$RightRect/HBoxContainer/Icon.self_modulate = color
+	$RightRect.self_modulate = color.darkened(0.8)
+
+func set_soul(soul):
+	soul_name = soul.soul
+	$RightRect/HBoxContainer/Icon.modulate.a = 1
+	$RightRect/HBoxContainer/Name.text = soul.soul
+	$RightRect/HBoxContainer/Amount.text = str(soul.amount)
+
+func clear_soul():
+	soul_name = null
+	$RightRect/HBoxContainer/Icon.modulate.a = 0
+	$RightRect/HBoxContainer/Name.text = \"---\"
+	$RightRect/HBoxContainer/Amount.text = \"\""
 
 [node name="SoulItem" type="HBoxContainer"]
 margin_right = 157.0
@@ -40,10 +56,25 @@ margin_bottom = 32.0
 texture = ExtResource( 3 )
 stretch_mode = 4
 
-[node name="Type" type="Label" parent="RightRect/HBoxContainer"]
+[node name="Name" type="Label" parent="RightRect/HBoxContainer"]
 margin_left = 24.0
-margin_right = 65.0
+margin_right = 131.0
 margin_bottom = 32.0
+size_flags_horizontal = 3
 size_flags_vertical = 5
 text = "Bullet"
 valign = 1
+
+[node name="Amount" type="Label" parent="RightRect/HBoxContainer"]
+margin_left = 131.0
+margin_right = 149.0
+margin_bottom = 32.0
+size_flags_vertical = 5
+text = "99"
+valign = 1
+
+[node name="Control" type="Control" parent="RightRect/HBoxContainer"]
+margin_left = 149.0
+margin_right = 157.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 8, 0 )

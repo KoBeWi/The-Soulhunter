@@ -203,7 +203,7 @@ public class Room : Viewport {
         character.GetPlayer().SendPacket(CreateStatePacket(true));
     }
 
-    public void BroadcastPacket(Packet packet) {
+    public void BroadcastPacket(Packet packet) { //wywala gdy usunie się gracza podczas wysyłania
         foreach (var player in players) {
             player.GetPlayer().SendPacket(packet);
         }

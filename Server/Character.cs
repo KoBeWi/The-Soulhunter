@@ -169,6 +169,10 @@ public class Character {
         return getArray("inventory");
     }
 
+    public ushort[] GetSouls() {
+        return getArray("souls");
+    }
+
     public ushort[] GetEquipment() {
         return getArray("equipment");
     }

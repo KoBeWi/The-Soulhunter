@@ -17,6 +17,7 @@ signal chat_message(type, from, message)
 signal stats(data)
 signal inventory(items)
 signal equipment(items)
+signal souls(souls)
 signal item_get(item)
 signal soul_get(soul)
 
@@ -85,18 +86,6 @@ func process_packet(unpacker):
 			
 			if entity:
 				preload("res://Nodes/Effects/PopupText.tscn").instance().start(entity, -damage, Color.red)
-		
-		"DEAD": ###
-			var map = Com.game.map
-			
-			if [][0] == "e":
-				var enemy = map.get_enemy([][1])
-				if enemy:
-					enemy.dead()
-				else:
-					printerr("WARNING: Wrong enemy id for dead: ", [][1])
-			elif [][0] == "player":
-				map.get_node("Players/" + [][1]).dead()
 		
 		Packet.TYPE.ENTER_ROOM:
 			Com.game.change_map(unpacker.get_u16())
@@ -171,6 +160,15 @@ func process_packet(unpacker):
 					equipment.append(0)
 			
 			emit_signal("equipment", equipment)
+		
+		Packet.TYPE.SOULS:
+			var souls = []
+			
+			var amount = unpacker.get_u8()
+			for i in amount:
+				souls.append(unpacker.get_u16())
+			
+			emit_signal("souls", souls)
 		
 		Packet.TYPE.ITEM_GET:
 			emit_signal("item_get", unpacker.get_u16())
