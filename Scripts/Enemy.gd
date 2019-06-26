@@ -11,7 +11,7 @@ func init():
 	set_meta("enemy", enemy_name)
 	set_meta("attackers", [])
 	
-	stats = Res.enemies[enemy_name]
+	stats = Res.enemies[enemy_name].duplicate()
 	stats.hp = stats.max_hp
 
 func _process(delta):

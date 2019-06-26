@@ -61,9 +61,11 @@ func on_hit():
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 21 )
 
-[node name="Bone" type="KinematicBody2D"]
+[node name="Bone" type="KinematicBody2D" groups=[
+"player_attack",
+]]
 collision_layer = 0
-collision_mask = 4
+collision_mask = 5
 script = SubResource( 1 )
 
 [node name="Collider" type="CollisionShape2D" parent="."]

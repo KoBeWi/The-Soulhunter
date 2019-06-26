@@ -37,6 +37,7 @@ signal initiated
 func _ready():
 	if Com.register_node(self, "Player"): return
 	set_weapon(preload("res://Nodes/Weapons/0.tscn").instance())
+	get_weapon().set_disabled(true)
 	
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
@@ -102,8 +103,11 @@ func _physics_process(delta):
 		if controls.has(Controls.UP):
 			var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
 			get_parent().add_child(bone)
+			bone.position = position + Vector2(0, -80)
+			bone.velocity.x = abs(bone.velocity.x) * direction_i()
 			bone.player = self
 		else:
+			get_weapon().set_disabled(false)
 			attack = true
 			arm.visible = true
 			anim.playback_speed = 4
@@ -134,6 +138,12 @@ func direction():
 	else:
 		return "R"
 
+func direction_i():
+	if sprite.flip_h:
+		return -1
+	else:
+		return 1
+
 func damage(amount):
 	chr.hp -= amount
 
@@ -141,6 +151,7 @@ func attack_end():
 	attack = false
 	arm.visible = false
 	anim.playback_speed = 8
+	get_weapon().set_disabled(true)
 
 func weapon_enter(body):
 	if !attack: return
@@ -235,6 +246,9 @@ func set_weapon(weapon):
 	
 	weapon.player = self
 	weapon_point.add_child(weapon)
+
+func get_weapon() -> Weapon:
+	return weapon_point.get_child(0)
 
 func on_stats(stats):
 	if "level" in stats:

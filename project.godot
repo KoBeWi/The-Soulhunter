@@ -38,6 +38,11 @@ _global_script_classes=[ {
 "class": "Unpacker",
 "language": "GDScript",
 "path": "res://Scripts/Networking/Unpacker.gd"
+}, {
+"base": "StaticBody2D",
+"class": "Weapon",
+"language": "GDScript",
+"path": "res://Scripts/Weapon.gd"
 } ]
 _global_script_class_icons={
 "Controls": "",
@@ -45,7 +50,8 @@ _global_script_class_icons={
 "Enemy": "",
 "Packet": "",
 "Soul": "",
-"Unpacker": ""
+"Unpacker": "",
+"Weapon": ""
 }
 
 [application]
