@@ -99,10 +99,15 @@ func _physics_process(delta):
 	motion = move_and_slide_with_snap(motion, Vector2.DOWN * 32 if !jump else Vector2(), Vector2.UP, true)
 	
 	if key_press.has(Controls.ATTACK) and !attack:
-		attack = true
-		arm.visible = true
-		anim.playback_speed = 4
-		anim.play("SwingAttack1" + direction())
+		if controls.has(Controls.UP):
+			var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
+			get_parent().add_child(bone)
+			bone.player = self
+		else:
+			attack = true
+			arm.visible = true
+			anim.playback_speed = 4
+			anim.play("SwingAttack1" + direction())
 	
 	if !controls.empty():
 		last_controls = last_tick

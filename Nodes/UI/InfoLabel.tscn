@@ -2,10 +2,10 @@
 
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=1]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="GDScript" id=1]
+[sub_resource type="GDScript" id=2]
 script/source = "extends Panel
 
 onready var label = $HBoxContainer/Label
@@ -37,8 +37,7 @@ func set_colors(color, icon_color = Color.white):
 	self_modulate = color
 	icon.modulate = icon_color"
 
-[sub_resource type="Animation" id=2]
-resource_name = "Disappear"
+[sub_resource type="Animation" id=3]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
@@ -59,8 +58,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -387.0
 margin_top = -32.0
-custom_styles/panel = SubResource( 3 )
-script = SubResource( 1 )
+custom_styles/panel = SubResource( 1 )
+script = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
@@ -95,6 +94,6 @@ one_shot = true
 autostart = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Disappear = SubResource( 2 )
+anims/Disappear = SubResource( 3 )
 [connection signal="timeout" from="Timer" to="AnimationPlayer" method="play" binds= [ "Disappear" ]]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

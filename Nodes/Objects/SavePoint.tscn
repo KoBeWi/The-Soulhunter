@@ -78,6 +78,5 @@ anims/Idle = SubResource( 3 )
 
 [node name="Shape" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( 30, -15, 40, 15, -40, 15, -30, -15 )
-
 [connection signal="body_entered" from="EffectArea" to="." method="_body_enter"]
 [connection signal="body_exited" from="EffectArea" to="." method="_body_exit"]

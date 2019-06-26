@@ -36,6 +36,9 @@ func hit(body):
 				if !get_meta("attackers").has(id):
 					get_meta("attackers").append(id)
 			
+			if body.has_method("on_hit"):
+				body.on_hit()
+			
 			damage(body.attack())
 			on_hit()
 

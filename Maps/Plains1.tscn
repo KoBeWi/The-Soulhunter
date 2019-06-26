@@ -2,8 +2,9 @@
 
 [ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=2]
-[ext_resource path="res://Nodes/Projectiles/SavePoint.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Nodes/Objects/SavePoint.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Nodes/Backgrounds/Plains.tscn" type="PackedScene" id=4]
+
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 1 )
