@@ -39,3 +39,6 @@ func update_HUD(data):
 		var lv = int($HUD/LvLabel.text)
 		$HUD/ExpBar.max_value = Com.exp_for_level(lv)
 		$HUD/ExpBar.value = data.exp - Com.total_exp_for_level(lv-1)
+
+func reg_mp():
+	update_HUD({mp = min($HUD/MPBar.value+1, $HUD/MPBar.max_value)})

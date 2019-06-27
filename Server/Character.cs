@@ -4,7 +4,7 @@ using MongoDB.Bson;
 using Godot;
 using Newtonsoft.Json;
 
-public class Character {
+public class Character : Godot.Object {
     private string name;
     private ushort playerId;
     private Database database;
@@ -35,8 +35,10 @@ public class Character {
     public void SetRoom(Room room) {currentRoom = room;}
     public void SetNode(Node player) {
         playerNode = player;
-        // playerNode.Call("set_stats", data.ToJson());
+        playerNode.SetMeta("character", this);
         playerNode.Call("set_stats", JsonConvert.SerializeObject(finalStats));
+        playerNode.Call("set_equipment", JsonConvert.SerializeObject(getArray("equipment")));
+        playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
     }
 
     public void RemoveFromRoom() {
@@ -127,6 +129,9 @@ public class Character {
                 }
             }
         }
+
+        if (playerNode != null)
+            playerNode.Call("set_stats", JsonConvert.SerializeObject(finalStats));
     }
 
     public void SetStat(string stat, ushort value) {
@@ -165,8 +170,14 @@ public class Character {
         var inventory = data.GetValue("souls").AsBsonArray;
 
         var oldEquip = equipment[slot];
-        equipment.AsBsonArray[slot] = inventory[from];
-        inventory.RemoveAt(from);
+
+        if (from < 255) {
+            equipment.AsBsonArray[slot] = inventory[from];
+            inventory.RemoveAt(from);
+        } else {
+            equipment.AsBsonArray[slot] = 0;
+        }
+
         if (oldEquip > 0) inventory.Add(oldEquip);
 
         owner.SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(owner.GetCharacter().GetSouls()));
@@ -220,5 +231,11 @@ public class Character {
         var souls = data.GetValue("souls").AsBsonArray;
         souls.Add(id);
         //tu pewnie też
+    }
+
+    public void SyncStat(string stat, ushort value) {
+        SetStat(stat, value);
+        finalStats[stat] = value;//TODO: wygląda na hack
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), new string[] {stat}));
     }
 }

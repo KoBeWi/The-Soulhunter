@@ -15,6 +15,8 @@ var main = false
 var stats
 var last_exp = -1
 var last_level = -1
+var equipment
+var souls
 #var enemies = []
 
 var last_tick = 0
@@ -33,6 +35,7 @@ onready var anim = $Animation
 var camera
 
 signal initiated
+signal reg_mp
 
 func _ready():
 	if Com.register_node(self, "Player"): return
@@ -101,11 +104,7 @@ func _physics_process(delta):
 	
 	if key_press.has(Controls.ATTACK) and !attack:
 		if controls.has(Controls.UP):
-			var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
-			get_parent().add_child(bone)
-			bone.position = position + Vector2(0, -80)
-			bone.velocity.x = abs(bone.velocity.x) * direction_i()
-			bone.player = self
+			trigger_soul()
 		else:
 			get_weapon().set_disabled(false)
 			attack = true
@@ -116,6 +115,29 @@ func _physics_process(delta):
 	if !controls.empty():
 		last_controls = last_tick
 	key_press.clear()
+
+func trigger_soul():
+	if !Com.is_server: return ##TODO: klient może dostawać info
+	
+	var soul
+	if souls[0] > 0:
+		soul = Res.get_res(Res.souls, souls[0])
+	
+	if soul:
+		if "mp" in soul:
+			if stats.mp < soul.mp: return
+			stats.mp -= soul.mp
+		
+		get_meta("character").call("SyncStat", "mp", stats.mp)
+		
+		match int(souls[0]):
+			1:
+				var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
+				get_parent().add_child(bone)
+				bone.position = position + Vector2(0, -80)
+				bone.velocity.x = abs(bone.velocity.x) * direction_i()
+				bone.player = self
+	
 
 func on_key_press(p_id, key, state):
 	if (!main or state == Controls.State.ACTION) and p_id == get_meta("id"):
@@ -263,3 +285,15 @@ func on_stats(stats):
 
 func set_stats(_stats):
 	stats = parse_json(_stats)
+
+func set_equipment(eq):
+	equipment = parse_json(eq)
+
+func set_souls(suls):
+	souls = parse_json(suls)
+
+func reg_mp():
+	if Com.is_server:
+		stats.mp = min(stats.mp + 1, stats.max_mp)
+	else:
+		emit_signal("reg_mp")

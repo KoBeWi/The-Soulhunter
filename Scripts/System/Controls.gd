@@ -1,7 +1,7 @@
 class_name Controls
 extends Node
 
-enum{ATTACK, JUMP, SWAP, UP, RIGHT, DOWN, LEFT, ACCEPT, CANCEL, MAP, MENU, CHAT, COMMAND}
+enum{ATTACK, JUMP, UP, RIGHT, DOWN, LEFT, SOUL, SWAP, ACCEPT, CANCEL, MAP, MENU, CHAT, COMMAND}
 
 enum State{ACTION, CHAT, MENU}
 var state = State.ACTION
@@ -41,6 +41,7 @@ func _process(delta):
 			process_key_local(ACCEPT, KEY_ENTER)
 			process_key_local(CANCEL, KEY_ESCAPE)
 			process_key_local(SWAP, KEY_TAB)
+			process_key_local(SOUL, KEY_SHIFT)
 			
 			process_key_local(CHAT, KEY_T)
 			process_key_local(COMMAND, KEY_SLASH)

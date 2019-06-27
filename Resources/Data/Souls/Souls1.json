@@ -6,7 +6,8 @@
     {
         "name": "Bone Throw",
         "description": "Throw bones at foes.",
-        "type": "trigger"
+        "type": "trigger",
+        "mp": 8
     },
 
     {

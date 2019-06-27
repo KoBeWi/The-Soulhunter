@@ -7,6 +7,5 @@
 +własne error code (np. ERROR_CHAT) i handler u klienta dla każdego
 >linear_interpolate
 >zdehardkodować eq
-+aktualizowanie statów gracza (Noda) przy syncu
 +inventory_dirty i request jak się otwiera, a jak się nei zmieniło to czeka na pusty
 +potwierdzenie save
