@@ -83,11 +83,11 @@ func change_tab(i):
 func preview_stats(item, item2):
 	if item:
 		var data = Res.items[item]
-		var data2 = Res.items[item2]
+		var data2 = Res.items[item2] if item2 else null
 		
 		for stat in MAIN_STAT_LIST:
 			if stat in data:
-				set_main_stat(stat, newest_stats[stat] + data[stat] - data2.get(stat, 0), true)
+				set_main_stat(stat, newest_stats[stat] + data[stat] - data2.get(stat, 0) if item2 else newest_stats[stat] + data[stat], true)
 	else:
 		for stat in MAIN_STAT_LIST:
 			set_main_stat(stat, newest_stats[stat])

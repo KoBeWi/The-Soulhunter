@@ -99,7 +99,8 @@ func select_inventory():
 	
 	if !selected.empty():
 		description.visible = true
-		description.get_node("Panel2/Text").text = Res.souls[selected.stack.soul].description
+		var soul = Res.souls[selected.stack.soul]
+		description.get_node("Panel2/Text").text = soul.description + (str("\nMP: ", soul.mp) if "mp" in soul else "")
 		description.get_node("Panel1/Icon").modulate = slots.get_child(select).color
 	else:
 		description.visible = false

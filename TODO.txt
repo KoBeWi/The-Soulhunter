@@ -9,3 +9,4 @@
 >zdehardkodować eq
 +inventory_dirty i request jak się otwiera, a jak się nei zmieniło to czeka na pusty
 +potwierdzenie save
++-aktualizacja ekwipunku na serwerze

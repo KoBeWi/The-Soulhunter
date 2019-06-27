@@ -39,8 +39,6 @@ signal reg_mp
 
 func _ready():
 	if Com.register_node(self, "Player"): return
-	set_weapon(preload("res://Nodes/Weapons/0.tscn").instance())
-	get_weapon().set_disabled(true)
 	
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
@@ -106,11 +104,15 @@ func _physics_process(delta):
 		if controls.has(Controls.UP):
 			trigger_soul()
 		else:
-			get_weapon().set_disabled(false)
-			attack = true
-			arm.visible = true
-			anim.playback_speed = 4
-			anim.play("SwingAttack1" + direction())
+			if get_weapon():
+				get_weapon().set_disabled(false)
+				attack = true
+				arm.visible = true
+				anim.playback_speed = 4
+				anim.play("SwingAttack1" + direction())
+			
+	elif key_press.has(Controls.SOUL) and !attack:
+		active_soul()
 	
 	if !controls.empty():
 		last_controls = last_tick
@@ -137,6 +139,24 @@ func trigger_soul():
 				bone.position = position + Vector2(0, -80)
 				bone.velocity.x = abs(bone.velocity.x) * direction_i()
 				bone.player = self
+
+func active_soul():
+	if !Com.is_server: return ##TODO: klient może dostawać info
+	
+	var soul
+	if souls[1] > 0:
+		soul = Res.get_res(Res.souls, souls[1])
+	
+	if soul:
+		if "mp" in soul:
+			if stats.mp < soul.mp: return
+			stats.mp -= soul.mp
+		
+		get_meta("character").call("SyncStat", "mp", stats.mp)
+		
+		match int(souls[1]):
+			2:
+				pass
 	
 
 func on_key_press(p_id, key, state):
@@ -197,6 +217,7 @@ func set_main():
 	add_child(camera)
 	
 	Network.connect("stats", self, "on_stats")
+	Network.connect("equipment", self, "on_eq")
 	
 	Com.controls.set_master(self)
 
@@ -264,12 +285,18 @@ func update_camera():
 
 func set_weapon(weapon):
 	if weapon_point.get_child_count() > 0:
-		weapon_point.get_chil(0).queue_free()
+		weapon_point.get_child(0).queue_free()
 	
-	weapon.player = self
-	weapon_point.add_child(weapon)
+	if weapon > 0:
+		var weap = load(str("res://Nodes/Weapons/", Res.get_res(Res.items, weapon).name ,".tscn")).instance()
+		weap.player = self
+		weap.set_disabled(true)
+		weapon_point.add_child(weap)
 
 func get_weapon() -> Weapon:
+	if weapon_point.get_child_count() == 0:
+		return null
+	
 	return weapon_point.get_child(0)
 
 func on_stats(stats):
@@ -283,11 +310,17 @@ func on_stats(stats):
 			preload("res://Nodes/Effects/PopupText.tscn").instance().start(self, str("EXP +", stats.exp - last_exp), Color.yellow)
 		last_exp = stats.exp
 
+func on_eq(eq):
+	set_weapon(eq[0])
+
 func set_stats(_stats):
 	stats = parse_json(_stats)
 
 func set_equipment(eq):
 	equipment = parse_json(eq)
+	
+	if equipment[0]:
+		set_weapon(eq[0])
 
 func set_souls(suls):
 	souls = parse_json(suls)
