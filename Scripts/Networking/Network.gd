@@ -87,6 +87,8 @@ func process_packet(unpacker):
 			
 			if entity:
 				preload("res://Nodes/Effects/PopupText.tscn").instance().start(entity, -damage, Color.red)
+				if entity.has_method("_on_damage"):
+					entity._on_damage(damage)
 		
 		Packet.TYPE.ENTER_ROOM:
 			Com.game.change_map(unpacker.get_u16())

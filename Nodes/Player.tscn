@@ -202,15 +202,18 @@ valign = 1
 position = Vector2( 4.50741, -48.9376 )
 
 [node name="Hitbox" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 0
+collision_layer = 0
+collision_mask = 2
 
 [node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource( 10 )
 
 [node name="ManaTimer" type="Timer" parent="."]
 autostart = true
+
+[node name="Invincibility" type="Timer" parent="."]
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]
 [connection signal="timeout" from="ManaTimer" to="." method="reg_mp"]
+[connection signal="timeout" from="Invincibility" to="." method="on_not_invincible"]

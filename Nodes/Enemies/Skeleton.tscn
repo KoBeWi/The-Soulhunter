@@ -190,9 +190,10 @@ tracks/0/keys = {
 "values": [ 0, 3, 4, 3 ]
 }
 
-[node name="Skeleton" type="KinematicBody2D"]
-collision_layer = 0
-collision_mask = 3
+[node name="Skeleton" type="KinematicBody2D" groups=[
+"enemies",
+]]
+collision_layer = 2
 script = SubResource( 1 )
 enemy_name = "Skeleton"
 
@@ -224,7 +225,6 @@ playback_speed = 8.0
 anims/Idle = SubResource( 4 )
 anims/Throw = SubResource( 5 )
 anims/Walk = SubResource( 6 )
-
 [connection signal="body_entered" from="Hitbox" to="." method="hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="unhit"]
 [connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]

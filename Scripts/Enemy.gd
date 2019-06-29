@@ -4,6 +4,7 @@ extends KinematicBody2D
 onready var players = get_tree().get_nodes_in_group("players")
 
 export(String) var enemy_name
+export(int) var attack = 10
 var stats = {hp = 1}
 var last_attacker
 

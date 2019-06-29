@@ -8,4 +8,3 @@ script = ExtResource( 1 )
 [node name="Entities" type="Node2D" parent="."]
 
 [node name="Effects" type="Node2D" parent="."]
-

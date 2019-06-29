@@ -42,3 +42,6 @@ func update_HUD(data):
 
 func reg_mp():
 	update_HUD({mp = min($HUD/MPBar.value+1, $HUD/MPBar.max_value)})
+
+func player_damaged(amount):
+	update_HUD({hp = $HUD/HPBar.value - amount})

@@ -43,6 +43,7 @@ func add_main_player(player):
 	player.connect("initiated", self, "start")
 	add_child(player)
 	player.connect("reg_mp", player.get_node("PlayerCamera/UI"), "reg_mp")
+	player.connect("damaged", player.get_node("PlayerCamera/UI"), "player_damaged")
 	UI = player.get_node("PlayerCamera/UI") #też \/
 	menu = UI.get_node("PlayerMenu") #niepotrzebne
 

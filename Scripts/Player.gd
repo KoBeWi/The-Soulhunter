@@ -17,11 +17,11 @@ var last_exp = -1
 var last_level = -1
 var equipment
 var souls
-#var enemies = []
 
 var last_tick = 0
 var last_controls = 0
 var desync = 0
+var newest_enemy = null
 
 var jump = false
 var attack = false
@@ -36,6 +36,7 @@ var camera
 
 signal initiated
 signal reg_mp
+signal damaged
 
 func _ready():
 	if Com.register_node(self, "Player"): return
@@ -186,8 +187,11 @@ func direction_i():
 	else:
 		return 1
 
-func damage(amount):
-	chr.hp -= amount
+func damage(enemy):
+	if Com.is_server:
+		var damage = enemy.attack
+		stats.hp = max(0, stats.hp - damage)
+		get_meta("room").call("Damage", get_meta("id"), damage)
 
 func attack_end():
 	attack = false
@@ -266,10 +270,14 @@ func apply_state_vector(timestamp, diff_vector, vector):
 		last_server_position.y = vector[2]
 
 func on_hit(body):
-	pass # Replace with function body.
+	if body.is_in_group("enemies"):
+		newest_enemy = body
+		damage(newest_enemy)
+		$Invincibility.start()
 
 func on_unhit(body):
-	pass # Replace with function body.
+	if body == newest_enemy:
+		newest_enemy = null
 
 func check_map(map):
 	if position.x >= map.width * 1920:
@@ -330,3 +338,11 @@ func reg_mp():
 		stats.mp = min(stats.mp + 1, stats.max_mp)
 	else:
 		emit_signal("reg_mp")
+
+
+func on_not_invincible():
+	if newest_enemy:
+		damage(newest_enemy)
+
+func _on_damage(amount):
+	emit_signal("damaged", amount)
