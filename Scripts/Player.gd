@@ -4,6 +4,8 @@ const GRAVITY = 100
 const SPEED = 500
 const JUMP = 1500
 
+enum ACTIONS{NONE, SKELETON}
+
 var controls = {}
 var key_press = {}
 
@@ -11,6 +13,12 @@ var uname = "" setget set_username
 var motion = Vector2()
 var last_server_position = Vector2()
 var main = false
+var action = ACTIONS.NONE
+var cached_action = ACTIONS.NONE
+
+var jump = false
+var attack = false
+var skeleton = false
 
 var stats
 var last_exp = -1
@@ -22,9 +30,6 @@ var last_tick = 0
 var last_controls = 0
 var desync = 0
 var newest_enemy = null
-
-var jump = false
-var attack = false
 
 onready var sprite = $Sprite
 onready var arm = $Sprite/ArmPosition
@@ -64,6 +69,21 @@ func _process(delta):
 	
 	if camera:
 		camera.position = sprite.position
+	
+	if action != ACTIONS.NONE:
+		cached_action = action
+	
+	match action:
+		ACTIONS.SKELETON:
+			if skeleton:
+				sprite.visible = true
+				$Skeleton.visible = false
+			else:
+				sprite.visible = false
+				$Skeleton.visible = true
+			skeleton = !skeleton
+			
+			action = ACTIONS.NONE
 
 func _physics_process(delta):
 	var flip = sprite.flip_h
@@ -102,15 +122,18 @@ func _physics_process(delta):
 	motion = move_and_slide_with_snap(motion, Vector2.DOWN * 32 if !jump else Vector2(), Vector2.UP, true)
 	
 	if key_press.has(Controls.ATTACK) and !attack:
-		if controls.has(Controls.UP):
-			trigger_soul()
+		if skeleton:
+			pass
 		else:
-			if get_weapon():
-				get_weapon().set_disabled(false)
-				attack = true
-				arm.visible = true
-				anim.playback_speed = 4
-				anim.play("SwingAttack1" + direction())
+			if controls.has(Controls.UP):
+				trigger_soul()
+			else:
+				if get_weapon():
+					get_weapon().set_disabled(false)
+					attack = true
+					arm.visible = true
+					anim.playback_speed = 4
+					anim.play("SwingAttack1" + direction())
 			
 	elif key_press.has(Controls.SOUL) and !attack:
 		active_soul()
@@ -157,7 +180,7 @@ func active_soul():
 		
 		match int(souls[1]):
 			2:
-				pass
+				action = ACTIONS.SKELETON
 	
 
 func on_key_press(p_id, key, state):
@@ -224,50 +247,6 @@ func set_main():
 	Network.connect("equipment", self, "on_eq")
 	
 	Com.controls.set_master(self)
-
-func state_vector_types():
-	return [
-			Data.TYPE.STRING,
-			Data.TYPE.U16,
-			Data.TYPE.U16
-		]
-
-func get_state_vector():
-	return [
-			uname,
-			round(position.x),
-			round(position.y)
-		]
-
-func apply_state_vector(timestamp, diff_vector, vector):
-	if vector[0] != uname:
-		self.uname = vector[0]
-	
-	var target_position = Vector2(vector[1], vector[2])
-	last_tick = timestamp
-	
-	if !main or Com.time_greater(timestamp, last_controls + 5):
-		desync = 0
-		var old_position = position
-		
-		if old_position.round() != target_position:
-			position = target_position
-		elif last_server_position != Vector2():
-			position = last_server_position
-		
-		if has_meta("initialized"): sprite.position += (old_position - position)
-	else:
-		if (last_server_position - position).length_squared() > 10000:
-			desync += 1
-			
-			if desync == 10:
-				position = target_position
-				desync = 0
-	
-	if (diff_vector & 2) > 0:
-		last_server_position.x = vector[1]
-	if (diff_vector & 4) > 0:
-		last_server_position.y = vector[2]
 
 func on_hit(body):
 	if body.is_in_group("enemies"):
@@ -346,3 +325,53 @@ func on_not_invincible():
 
 func _on_damage(amount):
 	emit_signal("damaged", amount)
+
+func state_vector_types():
+	return [
+			Data.TYPE.STRING,
+			Data.TYPE.U16,
+			Data.TYPE.U16,
+			Data.TYPE.U8
+		]
+
+func get_state_vector():
+	set_deferred("cached_action", ACTIONS.NONE)
+	
+	return [
+			uname,
+			round(position.x),
+			round(position.y),
+			int(cached_action)
+		]
+
+func apply_state_vector(timestamp, diff_vector, vector):
+	if vector[0] != uname:
+		self.uname = vector[0]
+	
+	var target_position = Vector2(vector[1], vector[2])
+	last_tick = timestamp
+	
+	if !main or Com.time_greater(timestamp, last_controls + 5):
+		desync = 0
+		var old_position = position
+		
+		if old_position.round() != target_position:
+			position = target_position
+		elif last_server_position != Vector2():
+			position = last_server_position
+		
+		if has_meta("initialized"): sprite.position += (old_position - position)
+	else:
+		if (last_server_position - position).length_squared() > 10000:
+			desync += 1
+			
+			if desync == 10:
+				position = target_position
+				desync = 0
+	
+	if (diff_vector & 2) > 0:
+		last_server_position.x = vector[1]
+	if (diff_vector & 4) > 0:
+		last_server_position.y = vector[2]
+	
+	action = vector[3]

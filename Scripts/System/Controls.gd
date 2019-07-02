@@ -31,6 +31,7 @@ func _process(delta):
 			process_key(LEFT, KEY_LEFT)
 			process_key(JUMP, KEY_SPACE)
 			process_key(ATTACK, KEY_CONTROL)
+			process_key(SOUL, KEY_SHIFT)
 		
 		State.CHAT:
 			process_key_local(ACCEPT, KEY_ENTER)

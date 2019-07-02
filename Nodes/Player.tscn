@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
 [ext_resource path="res://Graphics/Characters/Player.png" type="Texture" id=3]
 [ext_resource path="res://Graphics/Characters/PlayerArm.png" type="Texture" id=4]
+[ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fall"
@@ -180,6 +181,13 @@ texture = ExtResource( 4 )
 
 [node name="WeaponHinge" type="Position2D" parent="Sprite/ArmPosition/Arm"]
 position = Vector2( 3, -11 )
+
+[node name="Skeleton" type="Sprite" parent="."]
+visible = false
+position = Vector2( 29, -11 )
+texture = ExtResource( 5 )
+flip_h = true
+hframes = 10
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -16 )
