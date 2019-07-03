@@ -163,6 +163,8 @@ public class Character : Godot.Object {
         var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
         foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
         GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
+        
+        playerNode.Call("set_equipment", JsonConvert.SerializeObject(getArray("equipment")));
     }
 
     public void EquipSoul(byte slot, byte from) {
@@ -188,6 +190,8 @@ public class Character : Godot.Object {
         // var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
         // foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
         // GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
+        
+        playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
     }
 
     public void Save() {

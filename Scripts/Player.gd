@@ -307,7 +307,7 @@ func set_equipment(eq):
 	equipment = parse_json(eq)
 	
 	if equipment[0]:
-		set_weapon(eq[0])
+		set_weapon(int(equipment[0]))
 
 func set_souls(suls):
 	souls = parse_json(suls)
