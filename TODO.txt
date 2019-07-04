@@ -10,4 +10,3 @@
 +inventory_dirty i request jak się otwiera, a jak się nei zmieniło to czeka na pusty
 +potwierdzenie save
 >zablokować puste nazwy i hasła
-+debug account na skrócie
