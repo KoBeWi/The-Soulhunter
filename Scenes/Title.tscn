@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Graphics/UI/Title.png" type="Texture" id=1]
 [ext_resource path="res://Graphics/UI/TitleText.png" type="Texture" id=2]
@@ -84,6 +84,10 @@ func _input(event):
 						self.select = 0
 						$Menu/Register/LoginInput.grab_focus()
 						$Menu/Register/LoginInput.select_all()
+	
+	if event is InputEventKey:
+		if event.pressed and event.scancode == KEY_F1:
+			Packet.new(Packet.TYPE.LOGIN).add_string(\"KoBeWi\").add_string(\"vEryHaRdAnDlOnGpAsSwOrD\").send()
 
 func update_state():
 	$Menu/Texts.visible = state == MAIN
@@ -143,9 +147,16 @@ func show_message(_message, color):
 
 func on_connect():
 	$Menu.show()
+	$Focus.show()
 	$Connecting.hide()
 	$Connecting.percent_visible = 1
-	$Connecting/AnimationPlayer.stop()"
+	$Connecting/AnimationPlayer.stop()
+
+func on_long_connect():
+	$Connecting.text = \"Connecting to server (server is not responding for too long)...\"
+	$Connecting/AnimationPlayer.play(\"LongConnecting\")
+	$Connecting.modulate = Color(1, 0.7, 0.6)
+"
 
 [sub_resource type="Animation" id=2]
 resource_name = "Connecting"
@@ -164,9 +175,26 @@ tracks/0/keys = {
 "values": [ 0.857143, 1.0 ]
 }
 
-[sub_resource type="StyleBoxEmpty" id=4]
+[sub_resource type="Animation" id=5]
+resource_name = "LongConnecting"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.944444, 1.0 ]
+}
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 border_width_bottom = 2
 border_color = Color( 1, 1, 1, 1 )
@@ -189,7 +217,6 @@ texture = ExtResource( 2 )
 stretch_mode = 4
 
 [node name="Connecting" type="Label" parent="."]
-editor/display_folded = true
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 32.0
@@ -198,13 +225,18 @@ margin_right = 296.008
 margin_bottom = -32.0
 custom_fonts/font = ExtResource( 3 )
 text = "Connecting to server..."
-percent_visible = 0.857143
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Connecting"]
 autoplay = "Connecting"
 anims/Connecting = SubResource( 2 )
+anims/LongConnecting = SubResource( 5 )
+
+[node name="Timer" type="Timer" parent="Connecting"]
+wait_time = 5.0
+autostart = true
 
 [node name="Status" type="Label" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -220,6 +252,7 @@ align = 1
 wait_time = 2.0
 
 [node name="Menu" type="Control" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -288,8 +321,8 @@ align = 1
 margin_top = 56.0
 margin_right = 341.0
 margin_bottom = 82.0
-custom_styles/focus = SubResource( 4 )
-custom_styles/normal = SubResource( 3 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
 custom_fonts/font = ExtResource( 4 )
 caret_blink = true
 
@@ -305,8 +338,8 @@ align = 1
 margin_top = 114.0
 margin_right = 341.0
 margin_bottom = 140.0
-custom_styles/focus = SubResource( 4 )
-custom_styles/normal = SubResource( 3 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
 custom_fonts/font = ExtResource( 4 )
 secret = true
 secret_character = "◦"
@@ -337,8 +370,8 @@ align = 1
 margin_top = 56.0
 margin_right = 341.0
 margin_bottom = 82.0
-custom_styles/focus = SubResource( 4 )
-custom_styles/normal = SubResource( 3 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
 custom_fonts/font = ExtResource( 4 )
 caret_blink = true
 
@@ -354,8 +387,8 @@ align = 1
 margin_top = 114.0
 margin_right = 341.0
 margin_bottom = 140.0
-custom_styles/focus = SubResource( 4 )
-custom_styles/normal = SubResource( 3 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
 custom_fonts/font = ExtResource( 4 )
 caret_blink = true
 
@@ -386,6 +419,7 @@ margin_bottom = 374.0
 text = "Register"
 
 [node name="Focus" type="ColorRect" parent="."]
+visible = false
 margin_left = 214.0
 margin_top = 348.822
 margin_right = 587.0
@@ -400,6 +434,7 @@ margin_right = 678.261
 margin_bottom = 459.281
 rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 5 )
+[connection signal="timeout" from="Connecting/Timer" to="." method="on_long_connect"]
 [connection signal="timeout" from="Status/Timer" to="Status" method="hide"]
 [connection signal="pressed" from="Menu/LoginButton" to="." method="_on_Login_pressed"]
 [connection signal="pressed" from="Menu/RegisterButton" to="." method="_on_Register_pressed"]
