@@ -38,6 +38,11 @@ func register_node(node, type, client_only = false):
 		node.queue_free()
 		return true
 
+func register_special_node(node):
+	if is_server:
+		node.set_meta("room", node.find_parent("InGame").get_parent())
+		node.get_meta("room").call("RegisterSpecialNode", node)
+
 func dispose_node(node):
 	if is_server:
 		node.get_meta("room").call("DisposeNode", node.get_meta("id"))

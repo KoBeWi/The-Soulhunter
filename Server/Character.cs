@@ -214,12 +214,27 @@ public class Character : Godot.Object {
         return getArray("soul_equipment");
     }
 
+    public string[] GetChests() {
+        return getStringArray("chests");
+    }
+
     private ushort[] getArray(string value) {
         var array = data.GetValue(value).AsBsonArray;
         List<ushort> result = new List<ushort>();
 
         foreach (var item in array) {
             result.Add((ushort)item.AsInt32);
+        }
+
+        return result.ToArray();
+    }
+
+    private string[] getStringArray(string value) {
+        var array = data.GetValue(value).AsBsonArray;
+        List<string> result = new List<string>();
+
+        foreach (var item in array) {
+            result.Add(item.AsString);
         }
 
         return result.ToArray();

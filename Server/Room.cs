@@ -13,6 +13,7 @@ public class Room : Viewport {
     ushort lastEntityId;
     private Dictionary<ushort, Node> entityBindings;
     private Dictionary<ushort, Godot.Collections.Array> stateHistory;
+    private List<Node> specialNodes;
 
     private List<Character> players;
     private Dictionary<Character, Node> playerNodes;
@@ -25,6 +26,7 @@ public class Room : Viewport {
         entityBindings = new Dictionary<ushort, Node>();
         playerNodes = new Dictionary<Character, Node>();
         stateHistory = new Dictionary<ushort, Godot.Collections.Array>();
+        specialNodes = new List<Node>();
         lastEntityId = 0;
         ticks = 0;
         timeout = 0;
@@ -144,21 +146,10 @@ public class Room : Viewport {
         character.SetNewId(lastEntityId);
         newPlayer.SetMeta("id", lastEntityId);
 
-        character.SetRoom(this);
         character.SetNode(newPlayer);
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(4).AddU8(0)); //po co to ostatnie?; przedostatnie też mało poczebne
 
-        foreach (var id in entityBindings.Keys) {
-            if (id == lastEntityId) continue;
-
-            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY)
-                    .AddU16((ushort)(int)entityBindings[id].GetMeta("type"))
-                    .AddU16(id));
-        }
-
-        players.Add(character);
-
-        character.GetPlayer().SendPacket(CreateStatePacket(true));
+        initializePlayer(character);
 
         return lastEntityId; //niepotrzebne?
     }
@@ -187,8 +178,13 @@ public class Room : Viewport {
         newPlayer.SetMeta("id", lastEntityId);
         newPlayer.SetMeta("room", this);
 
-        character.SetRoom(this);
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(5).AddU16((ushort)position.x).AddU16((ushort)position.y).AddU8(0)); //po co to ostatnie?; przedostatnie też mało poczebne
+
+        initializePlayer(character);
+    }
+
+    private void initializePlayer(Character character) {
+        character.SetRoom(this);
 
         foreach (var id in entityBindings.Keys) {
             if (id == lastEntityId) continue;
@@ -196,6 +192,10 @@ public class Room : Viewport {
             character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ADD_ENTITY)
                     .AddU16((ushort)(int)entityBindings[id].GetMeta("type"))
                     .AddU16(id));
+        }
+
+        foreach (var node in specialNodes) {
+            //TODO
         }
 
         players.Add(character);
@@ -225,6 +225,21 @@ public class Room : Viewport {
 
         BroadcastPacket(new Packet(Packet.TYPE.ADD_ENTITY).AddU16(type).AddU16(lastEntityId));
         if (clientOnly) BroadcastPacket(CreateNodeInitializer(node, lastEntityId));
+    }
+
+    public void RegisterSpecialNode(Node node) {
+        specialNodes.Add(node);
+    }
+
+    public object GetSpecialNodeData(Node node, Character player) {
+        RoomUtility.DATA dataType = (RoomUtility.DATA)(int)(node.Call("get_data"));
+
+        switch (dataType) {
+            case RoomUtility.DATA.CHEST:
+            return RoomUtility.IsChestOpened(player, (int)node.Get("_id"));
+        }
+
+        return null;
     }
 
     public void DisposeNode(ushort id) {

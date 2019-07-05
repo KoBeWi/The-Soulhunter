@@ -14,6 +14,10 @@ enum CHATS {
 	WHISPER
 }
 
+enum ROOM_UTILITY {
+	CHEST
+}
+
 const NODES = [
 	"Player",
 	"Enemies/Skeleton",

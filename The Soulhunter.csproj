@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Server\AssemblyInfo.cs" />
+    <Compile Include="Server\RoomUtility.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\Database.cs" />
     <Compile Include="Server\Packet.cs" />
