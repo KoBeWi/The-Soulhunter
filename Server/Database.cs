@@ -67,7 +67,7 @@ public class Database {
 
         var data = new BsonDocument {
             {"name", name},
-            {"location", 0},
+            {"location", 5},
             {"level", 1},
             {"exp", 0},
             {"hp", 120},

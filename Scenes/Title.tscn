@@ -175,7 +175,7 @@ tracks/0/keys = {
 "values": [ 0.857143, 1.0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 resource_name = "LongConnecting"
 length = 1.2
 loop = true
@@ -192,9 +192,9 @@ tracks/0/keys = {
 "values": [ 0.944444, 1.0 ]
 }
 
-[sub_resource type="StyleBoxEmpty" id=3]
+[sub_resource type="StyleBoxEmpty" id=4]
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 border_width_bottom = 2
 border_color = Color( 1, 1, 1, 1 )
@@ -229,7 +229,7 @@ text = "Connecting to server..."
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Connecting"]
 autoplay = "Connecting"
 anims/Connecting = SubResource( 2 )
-anims/LongConnecting = SubResource( 5 )
+anims/LongConnecting = SubResource( 3 )
 
 [node name="Timer" type="Timer" parent="Connecting"]
 wait_time = 5.0
@@ -321,8 +321,8 @@ align = 1
 margin_top = 56.0
 margin_right = 341.0
 margin_bottom = 82.0
-custom_styles/focus = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 4 )
 caret_blink = true
 
@@ -338,8 +338,8 @@ align = 1
 margin_top = 114.0
 margin_right = 341.0
 margin_bottom = 140.0
-custom_styles/focus = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 4 )
 secret = true
 secret_character = "◦"
@@ -370,8 +370,8 @@ align = 1
 margin_top = 56.0
 margin_right = 341.0
 margin_bottom = 82.0
-custom_styles/focus = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 4 )
 caret_blink = true
 
@@ -387,8 +387,8 @@ align = 1
 margin_top = 114.0
 margin_right = 341.0
 margin_bottom = 140.0
-custom_styles/focus = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 4 )
 caret_blink = true
 
