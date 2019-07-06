@@ -12,6 +12,7 @@ onready var entities = $Entities
 onready var effects = $Effects
 
 var entity_list = {}
+var special_entity_list = {}
 
 func _process(delta):
 	return ##do wywalenia to wszystko (może oprócz mapy)
@@ -92,6 +93,9 @@ func add_entity(type, id):
 		node.set_process(false)
 		node.set_physics_process(false)
 
+func register_special_entity(entity):
+	special_entity_list[entity.get_meta("id")] = entity
+
 func register_entity(node, id):
 	entity_list[id] = node
 
@@ -103,6 +107,9 @@ func remove_entity(id):
 
 func get_entity(id):
 	return entity_list.get(id)
+
+func get_special_entity(id):
+	return special_entity_list.get(id)
 
 func start(): ##:/
 	Com.player.get_node("PlayerCamera/Fade/ColorRect").color.a = 0

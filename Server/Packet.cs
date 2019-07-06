@@ -12,6 +12,7 @@ public class Packet {
         ADD_ENTITY,
         REMOVE_ENTITY,
         TICK,
+        SPECIAL_DATA,
         INITIALIZER,
         CHAT,
         DAMAGE,

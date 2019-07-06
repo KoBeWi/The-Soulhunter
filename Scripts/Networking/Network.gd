@@ -115,6 +115,13 @@ func process_packet(unpacker):
 				if entity and is_instance_valid(entity):
 					Data.apply_state_vector(timestamp, unpacker, entity, diff_vector)
 		
+		Packet.TYPE.SPECIAL_DATA:
+			var id = unpacker.get_string()
+			
+			var entity = Com.game.get_special_entity(id)
+			if entity and is_instance_valid(entity):
+				entity.apply_data(unpacker)
+		
 		Packet.TYPE.INITIALIZER:
 			var id = unpacker.get_u16()
 			var diff_vector = unpacker.get_u8()

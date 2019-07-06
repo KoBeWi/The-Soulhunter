@@ -2,18 +2,13 @@
 
 [ext_resource path="res://Graphics/Objects/Chest.png" type="Texture" id=1]
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=1]
 script/source = "extends Area2D
 
-var id
 var opened
 
 func _ready():
 	Com.register_special_node(self)
-	if Com.is_server:
-		id = str(get_meta(\"room\").get(\"mapId\"), \"_\", get_position_in_parent())
-	else:
-		id = str(get_position_in_parent())
 
 func on_enter(body):
 	if body.is_in_group(\"players\"):
@@ -24,14 +19,18 @@ func on_exit(body):
 		pass
 
 func get_data():
-	return Data.ROOM_UTILITY.CHEST"
+	return Data.ROOM_UTILITY.CHEST
+
+func apply_data(unpacker):
+	opened = unpacker.get_u8() == 1
+	print(opened)"
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 32, 32 )
 
 [node name="Chest" type="Area2D"]
 collision_layer = 0
-script = SubResource( 3 )
+script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

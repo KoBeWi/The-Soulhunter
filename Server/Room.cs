@@ -195,7 +195,8 @@ public class Room : Viewport {
         }
 
         foreach (var node in specialNodes) {
-            //TODO
+            var packet = new Packet(Packet.TYPE.SPECIAL_DATA).AddString(node.GetMeta("id") as string);
+            character.GetPlayer().SendPacket(GetSpecialNodeData(packet, node, character));
         }
 
         players.Add(character);
@@ -231,12 +232,12 @@ public class Room : Viewport {
         specialNodes.Add(node);
     }
 
-    public object GetSpecialNodeData(Node node, Character player) {
+    public Packet GetSpecialNodeData(Packet packet, Node node, Character player) {
         RoomUtility.DATA dataType = (RoomUtility.DATA)(int)(node.Call("get_data"));
 
         switch (dataType) {
             case RoomUtility.DATA.CHEST:
-            return RoomUtility.IsChestOpened(player, (int)node.Get("_id"));
+            return packet.AddU8(RoomUtility.IsChestOpened(player, (string)node.GetMeta("id")) ? (byte)1 : (byte)0);
         }
 
         return null;

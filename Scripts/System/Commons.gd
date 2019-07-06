@@ -42,6 +42,10 @@ func register_special_node(node):
 	if is_server:
 		node.set_meta("room", node.find_parent("InGame").get_parent())
 		node.get_meta("room").call("RegisterSpecialNode", node)
+		node.set_meta("id", str(node.get_meta("room").get("mapId"), "_", node.get_position_in_parent()))
+	else:
+		node.set_meta("id", str(Com.game.map.mapid, "_", node.get_position_in_parent()))
+		Com.game.register_special_entity(node)
 
 func dispose_node(node):
 	if is_server:
