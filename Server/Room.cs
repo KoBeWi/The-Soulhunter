@@ -298,4 +298,12 @@ public class Room : Viewport {
         character.AddSoul(soulId);
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.SOUL_GET).AddU16(soulId));
     }
+
+    public void Interact(RoomUtility.DATA type, Node node, ushort playerId) {
+        switch (type) {
+            case RoomUtility.DATA.CHEST:
+            RoomUtility.OpenChest(node.GetMeta("id") as string, (ushort)(int)node.Get("item"), GetPlayerById(playerId));
+            break;
+        }
+    }
 }

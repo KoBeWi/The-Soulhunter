@@ -30,6 +30,7 @@ var last_tick = 0
 var last_controls = 0
 var desync = 0
 var newest_enemy = null
+var interactable
 
 onready var sprite = $Sprite
 onready var arm = $Sprite/ArmPosition
@@ -137,6 +138,9 @@ func _physics_process(delta):
 			
 	elif key_press.has(Controls.SOUL) and !attack:
 		active_soul()
+	
+	if interactable and key_press.has(Controls.UP):
+		interactable.interact(self)
 	
 	if !controls.empty():
 		last_controls = last_tick
@@ -325,6 +329,13 @@ func on_not_invincible():
 
 func _on_damage(amount):
 	emit_signal("damaged", amount)
+
+func set_interactable(node):
+	interactable = node
+
+func reset_interactable(node):
+	if interactable == node:
+		interactable = null
 
 func state_vector_types():
 	return [

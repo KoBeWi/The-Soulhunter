@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MongoDB.Driver;
 using MongoDB.Bson;
@@ -216,6 +217,10 @@ public class Character : Godot.Object {
 
     public string[] GetChests() {
         return getStringArray("chests");
+    }
+
+    public void SetChestOpened(string id) {
+        data.GetValue("chests").AsBsonArray.Add(id);
     }
 
     private ushort[] getArray(string value) {

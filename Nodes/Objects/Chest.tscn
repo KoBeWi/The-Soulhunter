@@ -5,6 +5,8 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Area2D
 
+export var item = 0
+
 var opened
 
 func _ready():
@@ -12,24 +14,30 @@ func _ready():
 
 func on_enter(body):
 	if body.is_in_group(\"players\"):
-		pass
+		body.set_interactable(self)
 
 func on_exit(body):
 	if body.is_in_group(\"players\"):
-		pass
+		body.reset_interactable(self)
+
+func interact(player):
+	if Com.is_server:
+		get_meta(\"room\").call(\"Interact\", get_data(), self, player.get_meta(\"id\"))
 
 func get_data():
 	return Data.ROOM_UTILITY.CHEST
 
 func apply_data(unpacker):
 	opened = unpacker.get_u8() == 1
-	print(opened)"
+	if opened:
+		$Sprite.frame = 2"
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 32, 32 )
 
 [node name="Chest" type="Area2D"]
 collision_layer = 0
+collision_mask = 2
 script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -39,3 +47,4 @@ hframes = 3
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
 [connection signal="body_entered" from="." to="." method="on_enter"]
+[connection signal="body_exited" from="." to="." method="on_exit"]
