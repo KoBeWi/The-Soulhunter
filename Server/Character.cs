@@ -152,8 +152,14 @@ public class Character : Godot.Object {
         var inventory = data.GetValue("inventory").AsBsonArray;
 
         var oldEquip = equipment[slot];
-        equipment.AsBsonArray[slot] = inventory[from];
-        inventory.RemoveAt(from);
+
+        if (from < 255) {
+            equipment.AsBsonArray[slot] = inventory[from];
+            inventory.RemoveAt(from);
+        } else {
+            equipment.AsBsonArray[slot] = 0;
+        }
+
         if (oldEquip > 0) inventory.Add(oldEquip);
 
         owner.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(GetInventory()));

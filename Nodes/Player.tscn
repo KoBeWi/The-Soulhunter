@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
@@ -56,6 +56,84 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 8, 9, 10 ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "StabAttack1L"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 13 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/ArmPosition:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 270.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/ArmPosition:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -4, -25 ), Vector2( -25, -25 ), Vector2( -14, -25 ) ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "StabAttack1R"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 13 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/ArmPosition:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/ArmPosition:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 4, -25 ), Vector2( 25, -25 ), Vector2( 14, -25 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -176,6 +254,8 @@ playback_speed = 8.0
 anims/Fall = SubResource( 1 )
 anims/Idle = SubResource( 2 )
 anims/Jump = SubResource( 3 )
+anims/StabAttack1L = SubResource( 13 )
+anims/StabAttack1R = SubResource( 12 )
 anims/SwingAttack1L = SubResource( 4 )
 anims/SwingAttack1R = SubResource( 5 )
 anims/Walk = SubResource( 6 )
@@ -185,11 +265,11 @@ script = SubResource( 7 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
 hframes = 14
-frame = 13
 region_rect = Rect2( 43, 10, 0.5, 0 )
 
 [node name="ArmPosition" type="Position2D" parent="Sprite"]
 position = Vector2( 14, -25 )
+rotation = 4.71239
 
 [node name="Arm" type="Sprite" parent="Sprite/ArmPosition"]
 position = Vector2( 0, -13 )
@@ -222,10 +302,8 @@ size_flags_horizontal = 2
 size_flags_vertical = 0
 valign = 1
 
-[node name="NumberPoint" type="Position2D" parent="."]
-position = Vector2( 4.50741, -48.9376 )
-
 [node name="Hitbox" type="Area2D" parent="."]
+editor/display_folded = true
 collision_layer = 0
 collision_mask = 2
 
@@ -238,6 +316,7 @@ autostart = true
 [node name="Invincibility" type="Timer" parent="."]
 
 [node name="PressUp" type="Sprite" parent="."]
+editor/display_folded = true
 visible = false
 position = Vector2( 0, -96 )
 texture = ExtResource( 6 )

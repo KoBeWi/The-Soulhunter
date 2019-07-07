@@ -11,7 +11,6 @@ public class RoomUtility {
     }
 
     public static void OpenChest(string chestId, ushort item, Character player) {
-        Console.WriteLine(IsChestOpened(player, chestId));
         if (IsChestOpened(player, chestId)) {
             return;
         }

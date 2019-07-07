@@ -50,6 +50,8 @@ func _ready():
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
 	arm.visible = false
+	
+	set_weapon(0)
 
 func set_username(n):
 	uname = n
@@ -134,7 +136,7 @@ func _physics_process(delta):
 					attack = true
 					arm.visible = true
 					anim.playback_speed = 4
-					anim.play("SwingAttack1" + direction())
+					anim.play(get_weapon().attack_type + direction())
 			
 	elif key_press.has(Controls.SOUL) and !attack:
 		active_soul()
@@ -198,9 +200,7 @@ func on_key_release(p_id, key, state):
 
 func flip(f = sprite.flip_h):
 	sprite.flip_h = f
-	var oldpos = arm.position
-	arm.position = Vector2(-oldpos.x, oldpos.y)
-	
+	arm.position.x *= -1
 
 func direction():
 	if sprite.flip_h:
@@ -278,11 +278,15 @@ func set_weapon(weapon):
 	if weapon_point.get_child_count() > 0:
 		weapon_point.get_child(0).queue_free()
 	
+	var weap = preload("res://Nodes/Weapons/Fist.tscn")
 	if weapon > 0:
-		var weap = load(str("res://Nodes/Weapons/", Res.get_res(Res.items, weapon).name ,".tscn")).instance()
-		weap.player = self
-		weap.set_disabled(true)
-		weapon_point.add_child(weap)
+		weap = load(str("res://Nodes/Weapons/", Res.get_res(Res.items, weapon).name ,".tscn")).instance()
+	else:
+		weap = weap.instance()
+	
+	weap.player = self
+	weap.set_disabled(true)
+	weapon_point.add_child(weap)
 
 func get_weapon() -> Weapon:
 	if weapon_point.get_child_count() == 0:

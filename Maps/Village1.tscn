@@ -10,7 +10,7 @@
 [node name="Map" type="Node2D"]
 script = ExtResource( 1 )
 location = "Plains"
-mapid = 5
+mapid = 6
 map_x = 32771
 map_y = 32767
 width = 3

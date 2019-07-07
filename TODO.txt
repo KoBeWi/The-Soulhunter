@@ -10,5 +10,4 @@
 +inventory_dirty i request jak się otwiera, a jak się nei zmieniło to czeka na pusty
 +potwierdzenie save
 >zablokować puste nazwy i hasła
-+zablokować interakcje z otwartymi skrzyniami
->przenieść ^ do gracza (ten z save)
+>może zrobić, że nie da się założyć tego samego (w sensie robi się return czy coś)

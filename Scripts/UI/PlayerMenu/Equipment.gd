@@ -116,6 +116,9 @@ func on_press_key(key):
 			inventory_select = 0
 			select()
 		
+		if key == Controls.SOUL:
+			unequip_item()
+		
 		if select != old_select:
 			select()
 	else:
@@ -145,6 +148,14 @@ func equip_item():
 	
 	if !selected.empty():
 		Packet.new(Packet.TYPE.EQUIP).add_u8(select).add_u8(selected.stack.origin).send()
+		inventory_select = -1
+		select()
+
+func unequip_item():
+	var selected = slots.get_child(select)
+	
+	if !selected.empty():
+		Packet.new(Packet.TYPE.EQUIP).add_u8(select).add_u8(255).send()
 		inventory_select = -1
 		select()
 

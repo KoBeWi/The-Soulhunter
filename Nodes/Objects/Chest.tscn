@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Graphics/Objects/Chest.png" type="Texture" id=1]
 
@@ -21,8 +21,13 @@ func on_exit(body):
 		body.reset_interactable(self)
 
 func interact(player):
+	opened = true
+	player.reset_interactable(self)
+	
 	if Com.is_server:
 		get_meta(\"room\").call(\"Interact\", get_data(), self, player.get_meta(\"id\"))
+	else:
+		$AnimationPlayer.play(\"Open\")
 
 func get_data():
 	return Data.ROOM_UTILITY.CHEST
@@ -35,6 +40,21 @@ func apply_data(unpacker):
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 32, 32 )
 
+[sub_resource type="Animation" id=3]
+resource_name = "Open"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1, 2 ]
+}
+
 [node name="Chest" type="Area2D"]
 collision_layer = 0
 collision_mask = 2
@@ -46,5 +66,8 @@ hframes = 3
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Open = SubResource( 3 )
 [connection signal="body_entered" from="." to="." method="on_enter"]
 [connection signal="body_exited" from="." to="." method="on_exit"]
