@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
 [ext_resource path="res://Graphics/Characters/Player.png" type="Texture" id=3]
 [ext_resource path="res://Graphics/Characters/PlayerArm.png" type="Texture" id=4]
 [ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=5]
+[ext_resource path="res://Graphics/UI/PressUp.png" type="Texture" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fall"
@@ -146,6 +147,21 @@ length = 32.0
 [sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 24, 48 )
 
+[sub_resource type="Animation" id=11]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 0.25, 4 ),
+"update": 0,
+"values": [ Vector2( 0, -116 ), Vector2( 0, -96 ) ]
+}
+
 [node name="Player" type="KinematicBody2D" groups=[
 "players",
 ]]
@@ -220,6 +236,14 @@ shape = SubResource( 10 )
 autostart = true
 
 [node name="Invincibility" type="Timer" parent="."]
+
+[node name="PressUp" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -96 )
+texture = ExtResource( 6 )
+
+[node name="Animation" type="AnimationPlayer" parent="PressUp"]
+anims/Idle = SubResource( 11 )
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]

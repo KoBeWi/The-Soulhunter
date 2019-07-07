@@ -332,10 +332,15 @@ func _on_damage(amount):
 
 func set_interactable(node):
 	interactable = node
+	if !Com.is_server:
+		$PressUp.visible = true
+		$PressUp/Animation.play("Idle")
 
 func reset_interactable(node):
 	if interactable == node:
 		interactable = null
+		if !Com.is_server:
+			$PressUp.visible = false
 
 func state_vector_types():
 	return [

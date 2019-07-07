@@ -13,11 +13,11 @@ func _ready():
 	Com.register_special_node(self)
 
 func on_enter(body):
-	if body.is_in_group(\"players\"):
+	if !opened and body.is_in_group(\"players\"):
 		body.set_interactable(self)
 
 func on_exit(body):
-	if body.is_in_group(\"players\"):
+	if !opened and body.is_in_group(\"players\"):
 		body.reset_interactable(self)
 
 func interact(player):

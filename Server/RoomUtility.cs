@@ -10,9 +10,14 @@ public class RoomUtility {
         return Array.Exists(player.GetChests(), id => id == chestId);
     }
 
-    public static void OpenChest(string id, ushort item, Character player) {
+    public static void OpenChest(string chestId, ushort item, Character player) {
+        Console.WriteLine(IsChestOpened(player, chestId));
+        if (IsChestOpened(player, chestId)) {
+            return;
+        }
+
         player.AddItem(item);
-        player.SetChestOpened(id);
+        player.SetChestOpened(chestId);
         player.GetPlayer().SendPacket(new Packet(Packet.TYPE.ITEM_GET).AddU16(item));
     }
 }
