@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Graphics/Objects/SavePoint.png" type="Texture" id=1]
 
-[sub_resource type="GDScript" id=12]
+[sub_resource type="GDScript" id=1]
 resource_name = "Save Point"
 script/source = "extends Node2D
 
@@ -20,11 +20,11 @@ func _body_exit(body):
 	if body.is_in_group(\"players\"):
 		body.reset_interactable(self)"
 
-[sub_resource type="RectangleShape2D" id=13]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 30, 15 )
 
 [node name="SavePoint" type="StaticBody2D"]
-script = SubResource( 12 )
+script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -36,7 +36,7 @@ position = Vector2( 0, -14.3075 )
 
 [node name="Shape" type="CollisionShape2D" parent="EffectArea"]
 position = Vector2( 0, -30 )
-shape = SubResource( 13 )
+shape = SubResource( 2 )
 
 [node name="Shape" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( 30, -15, 40, 15, -40, 15, -30, -15 )

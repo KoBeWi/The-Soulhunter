@@ -58,7 +58,7 @@ tracks/0/keys = {
 "values": [ 8, 9, 10 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=4]
 resource_name = "StabAttack1L"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -97,7 +97,7 @@ tracks/2/keys = {
 "values": [ Vector2( -4, -25 ), Vector2( -25, -25 ), Vector2( -14, -25 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=5]
 resource_name = "StabAttack1R"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -136,8 +136,7 @@ tracks/2/keys = {
 "values": [ Vector2( 4, -25 ), Vector2( 25, -25 ), Vector2( 14, -25 ) ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "SwingAttack1L"
+[sub_resource type="Animation" id=6]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite/ArmPosition:rotation_degrees")
 tracks/0/interp = 1
@@ -163,8 +162,7 @@ tracks/1/keys = {
 "values": [ 13 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "SwingAttack1R"
+[sub_resource type="Animation" id=7]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite/ArmPosition:rotation_degrees")
 tracks/0/interp = 1
@@ -190,7 +188,7 @@ tracks/1/keys = {
 "values": [ 13 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=8]
 length = 4.0
 loop = true
 step = 1.0
@@ -207,7 +205,7 @@ tracks/0/keys = {
 "values": [ 4, 5, 6, 7 ]
 }
 
-[sub_resource type="GDScript" id=7]
+[sub_resource type="GDScript" id=9]
 script/source = "extends AnimationPlayer
 
 func _on_Animation_animation_finished(anim_name):
@@ -216,16 +214,16 @@ func _on_Animation_animation_finished(anim_name):
 	elif anim_name.find(\"Attack\"):
 		$\"..\".attack_end()"
 
-[sub_resource type="RectangleShape2D" id=8]
+[sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 24, 32 )
 
-[sub_resource type="RayShape2D" id=9]
+[sub_resource type="RayShape2D" id=11]
 length = 32.0
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=12]
 extents = Vector2( 24, 48 )
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=13]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:position")
@@ -254,13 +252,13 @@ playback_speed = 8.0
 anims/Fall = SubResource( 1 )
 anims/Idle = SubResource( 2 )
 anims/Jump = SubResource( 3 )
-anims/StabAttack1L = SubResource( 13 )
-anims/StabAttack1R = SubResource( 12 )
-anims/SwingAttack1L = SubResource( 4 )
-anims/SwingAttack1R = SubResource( 5 )
-anims/Walk = SubResource( 6 )
+anims/StabAttack1L = SubResource( 4 )
+anims/StabAttack1R = SubResource( 5 )
+anims/SwingAttack1L = SubResource( 6 )
+anims/SwingAttack1R = SubResource( 7 )
+anims/Walk = SubResource( 8 )
 next/Fall = "Fall"
-script = SubResource( 7 )
+script = SubResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
@@ -287,11 +285,11 @@ hframes = 10
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -16 )
-shape = SubResource( 8 )
+shape = SubResource( 10 )
 
 [node name="ColliderRay" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 16 )
-shape = SubResource( 9 )
+shape = SubResource( 11 )
 
 [node name="Name" type="Label" parent="."]
 margin_left = -19.0
@@ -308,7 +306,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
-shape = SubResource( 10 )
+shape = SubResource( 12 )
 
 [node name="ManaTimer" type="Timer" parent="."]
 autostart = true
@@ -322,7 +320,7 @@ position = Vector2( 0, -96 )
 texture = ExtResource( 6 )
 
 [node name="Animation" type="AnimationPlayer" parent="PressUp"]
-anims/Idle = SubResource( 11 )
+anims/Idle = SubResource( 13 )
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]
