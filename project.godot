@@ -91,3 +91,7 @@ ui_accept={
 2d_physics/layer_1="map"
 2d_physics/layer_2="player"
 2d_physics/layer_3="enemy"
+
+[rendering]
+
+environment/default_clear_color=Color( 0, 0.74902, 1, 1 )

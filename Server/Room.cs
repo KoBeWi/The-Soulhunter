@@ -41,9 +41,8 @@ public class Room : Viewport {
         GD.Print("Created new room of map ", mapId);
     }
 
-    public void SetMap(ushort id) {
-        mapId = id;
-    }
+    public void SetMap(ushort id) { mapId = id; }
+    public ushort GetMap() { return mapId; }
 
     public void Tick() {
         if (players.Count == 0) {

@@ -33,7 +33,12 @@ public class Character : Godot.Object {
     public string GetName() {return name;}
     public Player GetPlayer() {return owner;}
 
-    public void SetRoom(Room room) {currentRoom = room;}
+    public void SetRoom(Room room) {
+        currentRoom = room;
+        currentMap = room.GetMap();
+        SetStat("location", currentMap);
+    }
+
     public void SetNode(Node player) {
         playerNode = player;
         playerNode.SetMeta("character", this);
