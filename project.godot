@@ -73,7 +73,6 @@ gdscript/warnings/enable=false
 [display]
 
 window/size/width=800
-window/size/resizable=false
 window/dpi/allow_hidpi=true
 
 [input]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=1]
 
@@ -10,6 +10,7 @@ script/source = "extends Panel
 
 onready var label = $HBoxContainer/Label
 onready var icon = $HBoxContainer/TextureRect
+onready var bar = $TextureProgress
 
 var move_down = 0
 
@@ -30,12 +31,21 @@ func set_icon(image):
 func move_down(how_much):
 	move_down += how_much * 32
 
+func restart():
+	$Timer.start()
+
 func _on_AnimationPlayer_animation_finished(anim_name):
 	get_parent().free_label(self)
 
 func set_colors(color, icon_color = Color.white):
 	self_modulate = color
-	icon.modulate = icon_color"
+	icon.modulate = icon_color
+
+func set_bar(value, max_value):
+	bar.value = value
+	bar.max_value = max_value
+	bar.texture_under.width = rect_size.x
+	bar.texture_progress.width = rect_size.x"
 
 [sub_resource type="Animation" id=3]
 tracks/0/type = "value"
@@ -51,6 +61,22 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 6 )
+width = 387
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 5 )
+width = 387
+
 [node name="InfoLabel" type="Panel"]
 anchor_left = 1.0
 anchor_top = 1.0
@@ -62,6 +88,7 @@ custom_styles/panel = SubResource( 1 )
 script = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -95,5 +122,16 @@ autostart = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Disappear = SubResource( 3 )
+
+[node name="TextureProgress" type="TextureProgress" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -4.0
+margin_bottom = -3.0
+rect_scale = Vector2( 1, 4 )
+value = 50.0
+texture_under = SubResource( 7 )
+texture_progress = SubResource( 4 )
 [connection signal="timeout" from="Timer" to="AnimationPlayer" method="play" binds= [ "Disappear" ]]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

@@ -9,11 +9,13 @@ var player
 var keys = {}
 var pressed_keys = {}
 
+signal enemy_attacked(enemy, damage)
+
 func _process(delta):
 	for key in keys.keys():
 		pressed_keys[key] = true
 
-##niepotrzebne
+##niepotrzebne??
 func press_key(key):
 	keys[key] = true
 

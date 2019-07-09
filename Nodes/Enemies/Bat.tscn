@@ -92,10 +92,9 @@ func apply_state_vector(timestamp, diff_vector, vector):
 extents = Vector2( 32, 32 )
 
 [sub_resource type="Animation" id=4]
-loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("../Bat/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -113,7 +112,7 @@ length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("../Bat/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -130,10 +129,10 @@ tracks/0/keys = {
 ]]
 collision_layer = 2
 script = SubResource( 1 )
-enemy_name = "Huge Frog"
-attack = 15
+enemy_name = "Bat"
 
 [node name="Sprite" type="Sprite" parent="."]
+z_index = 2
 texture = ExtResource( 1 )
 hframes = 4
 

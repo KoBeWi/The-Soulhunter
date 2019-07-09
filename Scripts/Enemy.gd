@@ -49,6 +49,10 @@ func unhit(body):
 func on_hit(): pass
 func on_unhit(): pass
 
+func pop_name(damage):
+	if enemy_name:
+		Com.emit_signal("enemy_attacked", self, damage)
+
 func damage(attack):
 	var damage = attack.damage
 	stats.hp -= damage
