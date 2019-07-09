@@ -7,7 +7,7 @@
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=5]
 [ext_resource path="res://Nodes/Backgrounds/Plains.tscn" type="PackedScene" id=6]
 
-[node name="Map" type="Node2D"]
+[node name="Map" type="Area2D"]
 script = ExtResource( 1 )
 location = "Plains"
 mapid = 6

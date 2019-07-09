@@ -100,3 +100,6 @@ func get_random(from):
 		sum += from[i].chance
 	
 	return i
+
+func _dispose():
+	Com.dispose_node(self)

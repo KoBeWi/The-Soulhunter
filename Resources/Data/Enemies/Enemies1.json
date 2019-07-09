@@ -1,5 +1,12 @@
 [
     {
+        "name": "Huge Frog",
+        "description": "It's big.",
+        "max_hp":5,
+        "exp":1
+    },
+
+    {
         "name": "Skeleton",
         "description": "A reanimated human skeleton, which will throw a bone.",
         "max_hp":4,

@@ -1,11 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Nodes/Objects/SavePoint.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=3]
-[ext_resource path="res://Nodes/Backgrounds/Forest.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Nodes/Enemies/Frog.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Nodes/Backgrounds/Forest.tscn" type="PackedScene" id=5]
 
-[node name="Map" type="Node2D"]
+[node name="Map" type="Area2D"]
 script = ExtResource( 1 )
 location = "Plains"
 mapid = 8
@@ -41,6 +42,16 @@ tile_data = PoolIntArray( 458773, 17, 0, 458774, 4, 0, 458775, 4, 0, 458776, 4, 
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Background" parent="." instance=ExtResource( 4 )]
+[node name="Frog" parent="Enemies" instance=ExtResource( 4 )]
+position = Vector2( 960, 592 )
+
+[node name="Frog2" parent="Enemies" instance=ExtResource( 4 )]
+position = Vector2( 3840, 720 )
+
+[node name="Frog3" parent="Enemies" instance=ExtResource( 4 )]
+position = Vector2( 2816, 1872 )
+
+[node name="Background" parent="." instance=ExtResource( 5 )]
+[connection signal="body_exited" from="." to="." method="on_exit"]
 
 [editable path="Background"]

@@ -5,7 +5,7 @@
 [ext_resource path="res://Graphics/Backgrounds/Cave.png" type="Texture" id=3]
 [ext_resource path="res://Nodes/Enemies/Skeleton.tscn" type="PackedScene" id=4]
 
-[node name="Map" type="Node2D"]
+[node name="Map" type="Area2D"]
 script = ExtResource( 1 )
 location = "Cave"
 mapid = 3
@@ -37,4 +37,3 @@ position = Vector2( 1111.46, 1859.96 )
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource( 4 )]
 position = Vector2( 1063.97, 1348.25 )
-

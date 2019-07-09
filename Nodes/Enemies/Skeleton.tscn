@@ -65,12 +65,13 @@ func server_ai(delta):
 				get_parent().add_child(bone)
 
 func general_ai(delta):
-	sprite.scale.x = -direction
-	
-	if sprite.position.length_squared() > 1:
-		sprite.position *= 0.8
-	else:
-		sprite.position = Vector2()
+	if !Com.is_server:
+		sprite.scale.x = -direction
+		
+		if sprite.position.length_squared() > 1:
+			sprite.position *= 0.8
+		else:
+			sprite.position = Vector2()
 	
 	if state != previous_state:
 		previous_state = state
