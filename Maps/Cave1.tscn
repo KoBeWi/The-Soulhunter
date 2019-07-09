@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=2]
 [ext_resource path="res://Graphics/Backgrounds/Cave.png" type="Texture" id=3]
 [ext_resource path="res://Nodes/Enemies/Skeleton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Nodes/Enemies/Bat.tscn" type="PackedScene" id=5]
 
 [node name="Map" type="Area2D"]
 script = ExtResource( 1 )
@@ -36,8 +37,14 @@ region_rect = Rect2( 0, 0, 3840, 1080 )
 [node name="Skeleton" parent="Enemies" instance=ExtResource( 4 )]
 position = Vector2( 1980, 836 )
 
-[node name="Skeleton2" parent="Enemies" instance=ExtResource( 4 )]
-position = Vector2( 2240, 836 )
+[node name="Bat" parent="Enemies" instance=ExtResource( 5 )]
+position = Vector2( 2336, 160 )
 
-[node name="Skeleton3" parent="Enemies" instance=ExtResource( 4 )]
-position = Vector2( 2848, 452 )
+[node name="Bat2" parent="Enemies" instance=ExtResource( 5 )]
+position = Vector2( 2176, 160 )
+
+[node name="Bat3" parent="Enemies" instance=ExtResource( 5 )]
+position = Vector2( 1952, 160 )
+
+[node name="Bat4" parent="Enemies" instance=ExtResource( 5 )]
+position = Vector2( 896, 416 )
