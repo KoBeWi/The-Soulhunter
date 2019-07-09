@@ -17,6 +17,7 @@ edges = [ false, false, false, false, false, false, false, false ]
 holes = [ false, false ]
 
 [node name="TileMap" type="TileMap" parent="."]
+z_index = 1
 position = Vector2( 0, 1080 )
 tile_set = ExtResource( 2 )
 format = 1

@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Graphics/Enemies/Frog.png" type="Texture" id=1]
+[ext_resource path="res://Graphics/Enemies/Bat.png" type="Texture" id=1]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Skeleton"
@@ -9,19 +9,38 @@ script/source = "extends Enemy
 onready var animation = $Animation
 onready var sprite = $Sprite
 
-enum {IDLE, JUMP}
+enum {IDLE, FLY}
 var state = IDLE
 var previous_state = IDLE
 
 var motion = Vector2()
 var direction = 1
 
+const START_FLY = 150.0
+var fly = START_FLY
+
 func _ready():
-	if Com.register_node(self, \"Enemies/Frog\"): return
+	if Com.register_node(self, \"Enemies/Bat\"): return
 	init()
 	
-	direction = 1 - randi()%2*2
-	sprite.flip_h = direction < 0
+	direction = 1
+
+func server_ai(delta):
+	if state == IDLE:
+		var radar = 100000
+		var closest_player
+		
+		for player in players:
+			var dist = player.global_position.distance_squared_to(global_position)
+			
+			if dist < radar:
+				radar = dist
+				closest_player = player
+		
+		if closest_player and closest_player.position.y > position.y and closest_player.global_position.distance_squared_to(global_position) < 160000:
+			state = FLY
+			direction = sign(closest_player.global_position.x - global_position.x)
+			sprite.flip_h = direction < 0
 
 func general_ai(delta):
 	if !Com.is_server:
@@ -34,37 +53,14 @@ func general_ai(delta):
 			previous_state = state
 			
 			match state:
-				IDLE:
-					animation.play(\"Fall\")
-				JUMP:
-					animation.play(\"Jump\")
+				FLY:
+					animation.play(\"Swoop\")
 	
-	motion.y += 100
-	
-	if state == JUMP:
-		motion.x = direction * 350
-	else:
-		motion.x = 0
-	
-	var col = move_and_collide(motion * delta)
-	if col:
-		if col.normal.x == 0:
-			motion.y = 0
-			state = IDLE
-		elif state == JUMP:
-			direction *= -1
-			sprite.flip_h = direction < 0
-			
-			if col.normal.y != 0:
-				state = IDLE
-
-func do_jump():
-	state = JUMP
-	motion.y = -1400
-
-func _on_animation_finished(anim_name):
-	if anim_name:
-		animation.play(\"Idle\")
+	if state == FLY:
+		motion.x = direction * (350 * (1 - fly / START_FLY))
+		motion.y = max(fly, 0)
+		fly -= 1
+		position += motion * delta
 
 func state_vector_types():
 	return [
@@ -93,43 +89,11 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	sprite.flip_h = direction < 0"
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 45, 32 )
-
-[sub_resource type="Animation" id=3]
-resource_name = "Fall"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 3, 4 ]
-}
+extents = Vector2( 32, 32 )
 
 [sub_resource type="Animation" id=4]
-length = 3.0
 loop = true
 step = 1.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 1, 0 ]
-}
-
-[sub_resource type="Animation" id=5]
-resource_name = "Jump"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -140,10 +104,28 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 2 ]
+"values": [ 0 ]
 }
 
-[node name="Frog" type="KinematicBody2D" groups=[
+[sub_resource type="Animation" id=3]
+resource_name = "Swoop"
+length = 4.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 2 ]
+}
+
+[node name="Bat" type="KinematicBody2D" groups=[
 "enemies",
 ]]
 collision_layer = 2
@@ -153,11 +135,10 @@ attack = 15
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
-hframes = 5
+hframes = 4
 frame = 1
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 16 )
 shape = SubResource( 2 )
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -166,19 +147,12 @@ collision_layer = 4
 collision_mask = 0
 
 [node name="TriggerCollider" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2( 0, 16 )
 shape = SubResource( 2 )
 
 [node name="Animation" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
 playback_speed = 8.0
-anims/Fall = SubResource( 3 )
 anims/Idle = SubResource( 4 )
-anims/Jump = SubResource( 5 )
-
-[node name="JumpTimer" type="Timer" parent="."]
-autostart = true
+anims/Swoop = SubResource( 3 )
 [connection signal="body_entered" from="Hitbox" to="." method="hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="unhit"]
-[connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]
-[connection signal="timeout" from="JumpTimer" to="." method="do_jump"]

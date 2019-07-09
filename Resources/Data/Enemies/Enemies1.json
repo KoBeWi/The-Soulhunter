@@ -1,16 +1,23 @@
 [
     {
+        "name": "Bat",
+        "description": "A nocturnal creature lurking on ceilings ready to swoop down on its prey.",
+        "max_hp":1,
+        "exp":1
+    },
+
+    {
         "name": "Huge Frog",
         "description": "It's big.",
         "max_hp":5,
-        "exp":1
+        "exp":2
     },
 
     {
         "name": "Skeleton",
         "description": "A reanimated human skeleton, which will throw a bone.",
         "max_hp":4,
-        "exp":1,
+        "exp":2,
         "drops": [{"name": "Vitality Potion", "chance": 100}, {"name": "Skull", "chance": 200}],
         "souls": [{"name": "Bone Throw", "chance": 400}, {"name": "Skeleton Disguise", "chance": 100}]
     },
@@ -19,7 +26,7 @@
         "name": "Blood Skeleton",
         "description": "A reanimated human skeleton, soaked in blood.",
         "max_hp": 10,
-        "exp": 2,
+        "exp": 3,
         "souls": [{"name": "Enchanced Bone Throw", "chance": 200}]
     }
 ]

@@ -20,6 +20,7 @@ enum ROOM_UTILITY {
 
 const NODES = [
 	"Player",
+	"Enemies/Bat",
 	"Enemies/Skeleton",
 	"Enemies/Frog",
 	"Enemies/BloodSkeleton",

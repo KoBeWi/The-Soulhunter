@@ -13,11 +13,12 @@ export var edges = []
 export var holes = []
 
 func _ready():
-	var shape_node = CollisionShape2D.new()
-	var shape = RectangleShape2D.new()
-	shape.extents = Vector2(width * 1920, height * 1080)
-	shape_node.shape = shape
-	add_child(shape_node)
+	if !Engine.editor_hint:
+		var shape_node = CollisionShape2D.new()
+		var shape = RectangleShape2D.new()
+		shape.extents = Vector2(width * 1920, height * 1080)
+		shape_node.shape = shape
+		add_child(shape_node)
 
 func _draw():
 	if Engine.editor_hint:
