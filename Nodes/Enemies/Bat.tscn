@@ -90,7 +90,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 32, 32 )
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -148,7 +148,7 @@ shape = SubResource( 2 )
 [node name="Animation" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
 playback_speed = 8.0
-anims/Idle = SubResource( 5 )
+anims/Idle = SubResource( 3 )
 anims/Swoop = SubResource( 4 )
 [connection signal="body_entered" from="Hitbox" to="." method="hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="unhit"]

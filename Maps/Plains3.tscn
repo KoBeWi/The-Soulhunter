@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=2]
-[ext_resource path="res://Nodes/Backgrounds/Plains.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Nodes/Enemies/Ladybug.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Nodes/Enemies/Frog.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Nodes/Backgrounds/Plains.tscn" type="PackedScene" id=5]
 
 [node name="Map" type="Area2D"]
 script = ExtResource( 1 )
@@ -24,7 +26,19 @@ tile_data = PoolIntArray( 589839, 5, 0, 589840, 5, 0, 655374, 17, 0, 655375, 4, 
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Background" parent="." instance=ExtResource( 3 )]
+[node name="Ladybug" parent="Enemies" instance=ExtResource( 3 )]
+position = Vector2( 1984, 615 )
+
+[node name="Ladybug2" parent="Enemies" instance=ExtResource( 3 )]
+position = Vector2( 3456, 768 )
+
+[node name="Frog" parent="Enemies" instance=ExtResource( 4 )]
+position = Vector2( 2816, 912 )
+
+[node name="Frog2" parent="Enemies" instance=ExtResource( 4 )]
+position = Vector2( 1389, 656 )
+
+[node name="Background" parent="." instance=ExtResource( 5 )]
 
 [node name="Layer1" parent="Background" index="0"]
 motion_scale = Vector2( 0.5, 0.5 )

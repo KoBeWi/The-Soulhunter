@@ -21,7 +21,6 @@ func _ready():
 	init()
 	
 	direction = 1 - randi()%2*2
-	sprite.flip_h = direction < 0
 
 func general_ai(delta):
 	if !Com.is_server:

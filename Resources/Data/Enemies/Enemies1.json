@@ -14,6 +14,13 @@
     },
 
     {
+        "name": "Monstrous Ladybug",
+        "description": "Too big to be called a bug. Too dangerous to be called a lady.",
+        "max_hp":10,
+        "exp":2
+    },
+
+    {
         "name": "Skeleton",
         "description": "A reanimated human skeleton, which will throw a bone.",
         "max_hp":4,

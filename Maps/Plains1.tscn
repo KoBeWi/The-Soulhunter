@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=2]
-[ext_resource path="res://Nodes/Backgrounds/Plains.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Nodes/Enemies/Ladybug.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Nodes/Enemies/Skeleton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Nodes/Enemies/Frog.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Nodes/Backgrounds/Plains.tscn" type="PackedScene" id=6]
 
 [node name="Map" type="Area2D"]
 script = ExtResource( 1 )
@@ -30,4 +33,16 @@ tile_data = PoolIntArray( -1, 0, 0, -65536, 0, 1, -65535, 0, 1, -65534, 0, 1, -6
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Background" parent="." instance=ExtResource( 3 )]
+[node name="Ladybug" parent="Enemies" instance=ExtResource( 3 )]
+position = Vector2( 2944, 800 )
+
+[node name="Skeleton" parent="Enemies" instance=ExtResource( 4 )]
+position = Vector2( 320, 836 )
+
+[node name="Frog" parent="Enemies" instance=ExtResource( 5 )]
+position = Vector2( 1152, 725 )
+
+[node name="Frog2" parent="Enemies" instance=ExtResource( 5 )]
+position = Vector2( 2496, 912 )
+
+[node name="Background" parent="." instance=ExtResource( 6 )]
