@@ -32,5 +32,3 @@ position = Vector2( 1856, 720 )
 position = Vector2( 704, 464 )
 
 [node name="Background" parent="." instance=ExtResource( 4 )]
-
-[editable path="Background"]

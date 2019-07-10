@@ -37,10 +37,9 @@ func server_ai(delta):
 				radar = dist
 				closest_player = player
 		
-		if closest_player and closest_player.position.y > position.y and closest_player.global_position.distance_squared_to(global_position) < 160000:
+		if closest_player and closest_player.position.y > position.y and closest_player.global_position.distance_squared_to(global_position) < 250000:
 			state = FLY
 			direction = sign(closest_player.global_position.x - global_position.x)
-			sprite.flip_h = direction < 0
 
 func general_ai(delta):
 	if !Com.is_server:
@@ -91,10 +90,10 @@ func apply_state_vector(timestamp, diff_vector, vector):
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 32, 32 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=5]
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Bat/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -106,13 +105,12 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "Swoop"
+[sub_resource type="Animation" id=4]
 length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Bat/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -150,7 +148,7 @@ shape = SubResource( 2 )
 [node name="Animation" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
 playback_speed = 8.0
-anims/Idle = SubResource( 4 )
-anims/Swoop = SubResource( 3 )
+anims/Idle = SubResource( 5 )
+anims/Swoop = SubResource( 4 )
 [connection signal="body_entered" from="Hitbox" to="." method="hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="unhit"]
