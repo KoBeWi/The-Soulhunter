@@ -1,55 +1,55 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=1]
+[ext_resource path="res://Graphics/Enemies/Knight.png" type="Texture" id=1]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Skeleton"
 script/source = "extends Enemy
 
 onready var animation = $Animation
-onready var sprite = $SpriteContainer
+onready var sprite = $Sprite
+onready var timer = $Timer
 
 enum {IDLE, WALK, ATTACK}
 var state = IDLE
 var previous_state = IDLE
 
-var walk = 0
 var attac = 0
 var delay = 0
 var direction = 1
 
 func _ready():
-	if Com.register_node(self, \"Enemies/Skeleton\"): return
+	if Com.register_node(self, \"Enemies/Knight\"): return
 	init()
 	
 	direction = 1 - randi()%2*2
 
 func server_ai(delta):
-	#TODO: chodzi za wykrytym graczem?
 	delay -= 1
 	
 	var radar = 100000
+	var closest_player
 	
 	for player in players:
 		var dist = player.global_position.distance_squared_to(global_position)
 		
 		if dist < radar:
 			direction = sign(player.global_position.x - global_position.x)
+			closest_player
 			radar = dist
 	
 	match state:
 		IDLE:
-			if delay <= 0 and randi()%200 == 0:
-				state = WALK
-				walk = 1 - randi()%2*2
-				delay = 30
-			elif radar < 250000 and randi()%100 == 0:
-				state = ATTACK
+			if closest_player:
+				if delay <= 0 and randi()%200 == 0:
+					state = WALK
+					delay = 30
+				elif randi()%100 == 0:
+					state = ATTACK
 	
 		WALK:
 			if delay <= 0 and randi()%200 == 0:
 				state = IDLE
-				walk = 0
 				delay = 20
 		
 		ATTACK:
@@ -57,12 +57,12 @@ func server_ai(delta):
 			
 			if attac >= 0.3:
 				attac = 0
-				state = IDLE ##inaczej
+				state = IDLE
 				
-				var bone = preload(\"res://Nodes/Enemies/Bone.tscn\").instance()
-				bone.position = position + Vector2(0, -80)
-				bone.velocity.x = abs(bone.velocity.x) * direction
-				get_parent().add_child(bone)
+				var dagger = preload(\"res://Nodes/Enemies/Dagger.tscn\").instance()
+				dagger.position = position
+				dagger.velocity.x = abs(dagger.velocity.x) * direction
+				get_parent().add_child(dagger)
 
 func general_ai(delta):
 	if !Com.is_server:
@@ -84,7 +84,7 @@ func general_ai(delta):
 			ATTACK:
 				animation.play(\"Throw\")
 	
-	move_and_collide(Vector2(walk * 6, 1))
+	move_and_collide(Vector2(direction * 6 if state == WALK else 0, 1))
 
 func _on_animation_finished(anim_name):
 	if anim_name == \"Throw\":
@@ -95,7 +95,6 @@ func state_vector_types():
 			Data.TYPE.U16,
 			Data.TYPE.U16,
 			Data.TYPE.U8,
-			Data.TYPE.U8,
 			Data.TYPE.U8
 		]
 
@@ -104,8 +103,7 @@ func get_state_vector():
 			round(position.x),
 			round(position.y),
 			state,
-			direction+1,
-			walk+1
+			direction+1
 		]
 
 func apply_state_vector(timestamp, diff_vector, vector):
@@ -115,62 +113,42 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
 	
 	state = vector[2]
-	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
-	walk = vector[4]-1"
+	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp."
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 24, 48 )
-
-[sub_resource type="Animation" id=3]
-resource_name = "Bone Walk"
-length = 4.0
-loop = true
-step = 1.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 2, 3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 5, 6, 7, 6 ]
-}
+extents = Vector2( 60, 60 )
 
 [sub_resource type="Animation" id=4]
-length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 2, 3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 1 ]
+"values": [ 0 ]
 }
 
 [sub_resource type="Animation" id=5]
 resource_name = "Throw"
-length = 3.0
+length = 2.0
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 7, 8, 9 ]
+"values": [ 5, 6 ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -178,7 +156,7 @@ length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -187,26 +165,22 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1, 2, 3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 3, 4, 3 ]
+"values": [ 1, 2, 3, 4 ]
 }
 
-[node name="Skeleton" type="KinematicBody2D" groups=[
+[node name="Knight" type="KinematicBody2D" groups=[
 "enemies",
 ]]
 collision_layer = 2
 script = SubResource( 1 )
-enemy_name = "Skeleton"
+enemy_name = "Undead Knight"
+attack = 15
 
-[node name="SpriteContainer" type="Node2D" parent="."]
-
-[node name="Sprite" type="Sprite" parent="SpriteContainer"]
-position = Vector2( -20, 0 )
+[node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
-hframes = 10
-frame = 7
+hframes = 7
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 12 )
 shape = SubResource( 2 )
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -215,13 +189,11 @@ collision_layer = 4
 collision_mask = 0
 
 [node name="TriggerCollider" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2( 0, 12 )
 shape = SubResource( 2 )
 
 [node name="Animation" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
-playback_speed = 8.0
-"anims/Bone Walk" = SubResource( 3 )
+playback_speed = 2.0
 anims/Idle = SubResource( 4 )
 anims/Throw = SubResource( 5 )
 anims/Walk = SubResource( 6 )

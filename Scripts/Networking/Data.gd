@@ -24,8 +24,10 @@ const NODES = [
 	"Enemies/Frog",
 	"Enemies/Ladybug",
 	"Enemies/Skeleton",
+	"Enemies/Knight",
 	"Enemies/BloodSkeleton",
 	"Enemies/Bone",
+	"Enemies/Dagger",
 	"Projectiles/PBone",
 	"Effects/Soul",
 	"Objects/Item"

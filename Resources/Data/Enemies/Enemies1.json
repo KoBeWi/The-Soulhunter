@@ -30,9 +30,16 @@
     },
 
     {
+        "name": "Undead Knight",
+        "description": "Throws daggers relentlessly, unable to find peace.",
+        "max_hp":13,
+        "exp":3
+    },
+
+    {
         "name": "Blood Skeleton",
         "description": "A reanimated human skeleton, soaked in blood.",
-        "max_hp": 10,
+        "max_hp": 15,
         "exp": 3,
         "souls": [{"name": "Enchanced Bone Throw", "chance": 200}]
     }

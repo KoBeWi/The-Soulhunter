@@ -93,7 +93,6 @@ attack = 12
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 3
-frame = 1
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )

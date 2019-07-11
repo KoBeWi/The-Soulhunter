@@ -1,5 +1,13 @@
 -błąd +dodatek >zmiana
 
++mapa
++game over
++pomoc w menu gracza
++info o klawiszach, gdy gracz wchodzi
+
+>zablokować puste nazwy i hasła
+
++potwierdzenie save
 +usuwanie gracza z controls, gdy wychodzi z servera
 -zabezpieczyć stream.write w każdym miejscu
 >zamienić rozmiar pakietu u16, żeby mogły być dłuższe
@@ -8,6 +16,4 @@
 >linear_interpolate
 >zdehardkodować eq
 +inventory_dirty i request jak się otwiera, a jak się nei zmieniło to czeka na pusty
-+potwierdzenie save
->zablokować puste nazwy i hasła
 >może zrobić, że nie da się założyć tego samego (w sensie robi się return czy coś)
