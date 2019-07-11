@@ -60,7 +60,7 @@ func on_key_press(p_id, key, state):
 		if key == Controls.MENU:
 			deactivate()
 		
-		if key == Controls.SWAP:
+		if key == Controls.MAP:
 			change_tab((current_tab+1) % tabs.get_child_count())
 		
 		tabs.get_child(current_tab).on_press_key(key)

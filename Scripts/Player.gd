@@ -15,6 +15,7 @@ var last_server_position = Vector2()
 var main = false
 var action = ACTIONS.NONE
 var cached_action = ACTIONS.NONE
+var last_room
 
 var jump = false
 var attack = false
@@ -43,6 +44,7 @@ var camera
 signal initiated
 signal reg_mp
 signal damaged
+signal room_changed(room)
 
 func _ready():
 	if Com.register_node(self, "Player"): return
@@ -75,6 +77,20 @@ func _process(delta):
 	
 	if action != ACTIONS.NONE:
 		cached_action = action
+	
+	var room
+	if Com.is_server:
+	 	room = Vector2(get_meta("map").map_x + int(position.x)/1920, get_meta("map").map_y + int(position.y)/1080)
+	elif Com.game.map:
+		room = Vector2(Com.game.map.map_x + int(position.x)/1920, Com.game.map.map_y + int(position.y)/1080)
+	
+	if room and room != last_room:
+		last_room = room
+		
+		if Com.is_server:
+			pass
+		else:
+			emit_signal("room_changed", room)
 	
 	match action:
 		ACTIONS.SKELETON:

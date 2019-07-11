@@ -20,7 +20,6 @@ tracks/0/keys = {
 }
 
 [node name="Map" type="Control"]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 1 )

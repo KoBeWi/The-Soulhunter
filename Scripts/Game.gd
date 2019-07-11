@@ -1,7 +1,5 @@
 extends Node2D
 
-var UI #do wywalenia
-var menu #pewnie też
 var map
 var last_room
 
@@ -13,20 +11,6 @@ onready var effects = $Effects
 
 var entity_list = {}
 var special_entity_list = {}
-
-func _process(delta):
-	return ##do wywalenia to wszystko (może oprócz mapy)
-	if Com.key_press("MAP"): #nie tej mapy
-		var map = Com.player.get_node("Camera/UI/Map")
-		map.visible = !map.visible
-	
-	var room = [map.map_x + int(Com.player.position.x)/1920, map.map_y + int(Com.player.position.y)/1080] #przenieść na server
-	if room != last_room:
-		UI.get_node("Map").set_room(room)
-		last_room = room
-		if !Com.player.chr.map.has(room):
-			Com.player.chr.map.append(room)
-			Network.send_data(["DISCOVER", room[0], room[1]]) #nie powinno wysyłać na samym początku
 
 func load_map(id):
 	map = Res.maps[id].instance()
@@ -45,39 +29,6 @@ func add_main_player(player):
 	add_child(player)
 	player.connect("reg_mp", player.get_node("PlayerCamera/UI"), "reg_mp")
 	player.connect("damaged", player.get_node("PlayerCamera/UI"), "player_damaged")
-	UI = player.get_node("PlayerCamera/UI") #też \/
-	menu = UI.get_node("PlayerMenu") #niepotrzebne
-
-func damage_number(group, id, damage):
-	var node
-#	if group == "p":
-#		for player in players.get_children():
-#			if player.id == id:
-#				node = player
-#				break
-#	elif group == "e":
-#		node = enemies.get_child(id)
-	
-	if !node:
-		print("WARNING: Damage number for non-existing object")
-		return
-	node.damage(damage)
-	
-	var label = load("res://Nodes/DamageNumber.tscn").instance()
-	label.get_node("Number").set_text(str(damage))
-	
-	if node.has_node("NumberPoint"):
-		label.position = node.get_node("NumberPoint").position
-	
-	label.global_position = node.global_position
-	effects.add_child(label)
-
-func got_soul(soul): ##do HUDu
-	print(soul)
-
-func get_enemy_number():
-	last_enemy += 1
-	return last_enemy
 
 func add_entity(type, id):
 	var node = load(str("res://Nodes/", Data.NODES[type], ".tscn")).instance()

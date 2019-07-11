@@ -6,11 +6,13 @@ onready var way = load("res://Graphics/Map/Way.png")
 onready var corner = load("res://Graphics/Map/Corner.png")
 onready var edge = load("res://Graphics/Map/Edge.png")
 
-var cam_x = 0
-var cam_y = 0
+var cam
+var pos
 
 func _ready():
+	visible = false
 	Com.controls.connect("key_press", self, "on_key_press")
+	Com.player.connect("room_changed", self, "set_room")
 
 func _draw():
 	for map in Res.maps:
@@ -29,6 +31,18 @@ func on_key_press(p_id, key, state):
 	elif state == Controls.State.MAP:
 		if key == Controls.MAP:
 			deactivate()
+		elif key == Controls.UP:
+			cam.y -= 1
+			update()
+		elif key == Controls.RIGHT:
+			cam.x += 1
+			update()
+		elif key == Controls.DOWN:
+			cam.y += 1
+			update()
+		elif key == Controls.LEFT:
+			cam.x -= 1
+			update()
 
 func activate():
 	Com.controls.state = Controls.State.MAP
@@ -42,8 +56,8 @@ func get_border(source, x, y, dir):
 	return source.borders[(x + y * source.width)*4 + dir]
 
 func draw_room(x, y, u_border, r_border, d_border, l_border):
-	x -= 32768 - cam_x
-	y -= 32768 - cam_y
+	x -= 32768 + cam.x
+	y -= 32768 + cam.y
 	
 	draw_set_transform(Vector2(x * 30, y * 30), 0, Vector2(1, 1))
 	draw_texture(middle, Vector2(), Color(0, 0.5, 0))
@@ -71,4 +85,10 @@ func draw_room(x, y, u_border, r_border, d_border, l_border):
 		draw_texture(corner, Vector2(), Color(1, 0.8, 0))
 
 func set_room(room):
-	$Position.position = Vector2((room[0] - 32768 + cam_x) * 30 + 15, (room[1] - 32768 + cam_x) * 30 + 15)
+	cam = room - Vector2(32768, 32768)
+	pos = cam
+	update()
+
+func update():
+	.update()
+	$Position.position = Vector2((pos.x - cam.x) * 30 + 15, (pos.y - cam.y) * 30 + 15)

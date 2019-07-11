@@ -142,6 +142,7 @@ public class Room : Viewport {
         
         newPlayer.Set("uname", character.GetName());
         newPlayer.Set("position", map.GetNode("SavePoint/PlayerSpot").Get("global_position")); //nie można lepiej?
+        newPlayer.SetMeta("map", map);
         newPlayer.Call("start");
         
         playerNodes.Add(character, newPlayer);
@@ -180,6 +181,7 @@ public class Room : Viewport {
         character.SetNewId(lastEntityId);
         newPlayer.SetMeta("id", lastEntityId);
         newPlayer.SetMeta("room", this);
+        newPlayer.SetMeta("map", map);
 
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.ENTER_ROOM).AddU16(mapId).AddU16(lastEntityId).AddU8(5).AddU16((ushort)position.x).AddU16((ushort)position.y).AddU8(0)); //po co to ostatnie?; przedostatnie też mało poczebne
 
