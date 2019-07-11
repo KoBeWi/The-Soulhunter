@@ -17,8 +17,6 @@ map_y = 32767
 width = 3
 height = 2
 borders = [ 1, 0, 1, 2, 1, 2, 1, 0 ]
-edges = [ false, false, false, false, false, false, false, false ]
-holes = [ false, false ]
 
 [node name="Back" type="TileMap" parent="."]
 modulate = Color( 0.501961, 0.501961, 0.501961, 1 )

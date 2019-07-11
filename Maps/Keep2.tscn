@@ -15,8 +15,6 @@ map_y = 32766
 width = 1
 height = 3
 borders = [ 1, 0, 1, 2, 1, 2, 1, 0 ]
-edges = [ false, false, false, false, false, false, false, false ]
-holes = [ false, false ]
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )

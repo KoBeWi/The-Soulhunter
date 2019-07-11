@@ -16,8 +16,6 @@ map_y = 32767
 width = 3
 height = 1
 borders = [ 1, 0, 1, 2, 1, 2, 1, 0 ]
-edges = [ false, false, false, false, false, false, false, false ]
-holes = [ false, false ]
 
 [node name="SavePoint" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1352, 880 )

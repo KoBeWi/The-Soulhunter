@@ -15,8 +15,6 @@ map_y = 32768
 width = 2
 height = 1
 borders = [ 1, 0, 1, 2, 1, 2, 1, 0 ]
-edges = [ false, false, false, false, false, false, false, false ]
-holes = [ false, false ]
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = 1
