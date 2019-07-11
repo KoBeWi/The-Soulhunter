@@ -41,7 +41,7 @@ func _process(delta):
 			process_key_local(MENU, KEY_BACKSLASH)
 			process_key_local(ACCEPT, KEY_ENTER)
 			process_key_local(CANCEL, KEY_BACKSPACE)
-			process_key_local(SWAP, KEY_TAB)
+#			process_key_local(SWAP, KEY_TAB)
 			process_key_local(SOUL, KEY_SHIFT)
 			
 			process_key_local(CHAT, KEY_T)
@@ -51,7 +51,13 @@ func _process(delta):
 			process_key_local(DOWN, KEY_DOWN)
 			process_key_local(RIGHT, KEY_RIGHT)
 			process_key_local(LEFT, KEY_LEFT)
-			process_key_local(JUMP, KEY_SPACE)
+		
+		State.MAP:
+			process_key_local(UP, KEY_UP)
+			process_key_local(DOWN, KEY_DOWN)
+			process_key_local(RIGHT, KEY_RIGHT)
+			process_key_local(LEFT, KEY_LEFT)
+			process_key_local(MAP, KEY_TAB)
 
 func process_key(key_id, key):
 	if Input.is_key_pressed(key) and !controls.has(key_id):

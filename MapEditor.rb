@@ -3,22 +3,22 @@ include Gosu
 
 SZ = 30
 
-def get_value(name, source)
+def get_value(name, source, start)
 	line = source.find{|line| line.start_with?(name)}
-	{value: eval(line.split(/=\s*/).last), index: source.index(line)}
+	{value: eval(line.split(/=\s*/).last), index: source.index(line) + start}
 end
 
 MAPS = []
 
 (Dir.entries("Maps") - [".", ".."]).each do |file|
 	lines = File.readlines("Maps/" + file)
-	start = lines.find_index{|line| line.start_with?("location")}
-	stop = lines.find_index{|line| line.start_with?("edges")}
-	extract = lines#[start..stop]
+	start = lines.find_index{|line| line.start_with?("map_x")}
+	stop = lines.find_index{|line| line.start_with?("borders")}
+	extract = lines[start..stop]
 	
-	MAPS << {mapid: get_value("mapid", extract), map_x: get_value("map_x", extract), map_y: get_value("map_y", extract),
-		width: get_value("width", extract), height: get_value("height", extract), file: file,
-		borders: get_value("borders", extract), edges: get_value("edges", extract), holes: get_value("holes", extract)}
+	MAPS << {map_x: get_value("map_x", extract, start), map_y: get_value("map_y", extract, start),
+		width: get_value("width", extract, start), height: get_value("height", extract, start), file: file,
+		borders: get_value("borders", extract, start)}
 end
 
 def get_border(borders, dir, i)
@@ -27,22 +27,6 @@ end
 
 def set_border(borders, dir, i, val)
 	borders[i*4 + dir] = val
-end
-
-def get_edge(edges, dir, i)
-	edges[i*4 + dir] ||= false
-end
-
-def set_edge(edges, dir, i, val)
-	edges[i*4 + dir] = val
-end
-
-def get_hole(borders, i)
-	borders[i] ||= false
-end
-
-def set_hole(borders, i, val)
-	borders[i] = val
 end
 
 def img(name)
@@ -61,6 +45,7 @@ class GameWindow < Window
 	end
 
 	def draw
+		i = 0
 		translate(-@scx * SZ, -@scy * SZ) do
 			MAPS.each do |room|
 				room[:width][:value].times do |dx|
@@ -69,23 +54,18 @@ class GameWindow < Window
 						y = room[:map_y][:value]
 						w = room[:width][:value]
 						h = room[:height][:value]
-						next if get_hole(room[:holes][:value], dx + dy*w)
 						border = lambda{|dir| get_border(room[:borders][:value], dir, dx + dy*w)}
-						edge = lambda{|dir| get_edge(room[:edges][:value], dir, dx + dy*w)}
 						
-						img("Graphics/Map/Room").draw((x + dx) * SZ, (y + dy) * SZ, 0)
+						img("Graphics/Map/Room").draw((x + dx) * SZ, (y + dy) * SZ, 0, 1, 1, Color.from_hsv(i*20%360, 1, 1))
 						
 						img("Graphics/Map/#{border.call(0) == 1 ? 'Wall' : 'Way'}").draw_rot((x + dx) * SZ + SZ/2, (y + dy) * SZ + SZ/2, 0, 0, 0.5, 0.5, 1, 1, Color::RED) if border.call(0) > 0
 						img("Graphics/Map/#{border.call(1) == 1 ? 'Wall' : 'Way'}").draw_rot((x + dx) * SZ + SZ/2, (y + dy) * SZ + SZ/2, 0, 90, 0.5, 0.5, 1, 1, Color::RED) if border.call(1) > 0
 						img("Graphics/Map/#{border.call(2) == 1 ? 'Wall' : 'Way'}").draw_rot((x + dx) * SZ + SZ/2, (y + dy) * SZ + SZ/2, 0, 180, 0.5, 0.5, 1, 1, Color::RED) if border.call(2) > 0
 						img("Graphics/Map/#{border.call(3) == 1 ? 'Wall' : 'Way'}").draw_rot((x + dx) * SZ + SZ/2, (y + dy) * SZ + SZ/2, 0, 270, 0.5, 0.5, 1, 1, Color::RED) if border.call(3) > 0
-						
-						img("Graphics/Map/Edge").draw_rot((x + dx) * SZ + SZ/2, (y + dy) * SZ + SZ/2, 0, 0, 0.5, 0.5, 1, 1, Color::RED) if edge.call(0)
-						img("Graphics/Map/Edge").draw_rot((x + dx) * SZ + SZ/2, (y + dy) * SZ + SZ/2, 0, 90, 0.5, 0.5, 1, 1, Color::RED) if edge.call(1)
-						img("Graphics/Map/Edge").draw_rot((x + dx) * SZ + SZ/2, (y + dy) * SZ + SZ/2, 0, 180, 0.5, 0.5, 1, 1, Color::RED) if edge.call(2)
-						img("Graphics/Map/Edge").draw_rot((x + dx) * SZ + SZ/2, (y + dy) * SZ + SZ/2, 0, 270, 0.5, 0.5, 1, 1, Color::RED) if edge.call(3)
 					end
 				end
+
+				i += 1
 			end
 		end
 	end
@@ -107,25 +87,10 @@ class GameWindow < Window
 				border = get_border(room[:borders][:value], 3, id)
 				set_border(room[:borders][:value], 3, id, (border+1)%3)
 			end
-			
-			if key == Kb1
-				edge = get_edge(room[:edges][:value], 0, id)
-				set_edge(room[:edges][:value], 0, id, !edge)
-			elsif key == Kb2
-				edge = get_edge(room[:edges][:value], 1, id)
-				set_edge(room[:edges][:value], 1, id, !edge)
-			elsif key == Kb3
-				edge = get_edge(room[:edges][:value], 2, id)
-				set_edge(room[:edges][:value], 2, id, !edge)
-			elsif key == Kb4
-				edge = get_edge(room[:edges][:value], 3, id)
-				set_edge(room[:edges][:value], 3, id, !edge)
-			end
-			
-			if key == KbH
-				hole = get_hole(room[:holes][:value], id)
-				set_hole(room[:holes][:value], id, !hole)
-			end
+		end
+
+		if key == KbRight
+			@scx += 1
 		end
 	end
 
@@ -156,15 +121,11 @@ class GameWindow < Window
 				case key
 					when :borders
 					lines[value[:index]] = "borders = [ " + value[:value].join(", ") + " ]\n"
-					when :edges
-					lines[value[:index]] = "edges = [ " + value[:value].join(", ") + " ]\n"
-					when :holes
-					lines[value[:index]] = "holes = [ " + value[:value].join(", ") + " ]\n"
 				end
 			end
 			
-			f = File.new("Maps/" + map[:file], "w")
-			f.puts lines.join
+			f = File.new("Maps/" + map[:file], "wb")
+			f.puts lines.join.encode(universal_newline: true)
 			f.close
 		end
 	end
