@@ -6,6 +6,7 @@
 +info o klawiszach, gdy gracz wchodzi
 
 >zablokować puste nazwy i hasła
++więcej postaci że można
 
 +potwierdzenie save
 +usuwanie gracza z controls, gdy wychodzi z servera

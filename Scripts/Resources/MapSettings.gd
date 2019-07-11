@@ -9,8 +9,6 @@ export var width = 0
 export var height = 0
 
 export var borders = []
-export var edges = []
-export var holes = []
 
 func _ready():
 	if !Engine.editor_hint:

@@ -23,6 +23,14 @@ margin_right = 368.0
 margin_bottom = -155.791
 
 [node name="Map" parent="." instance=ExtResource( 4 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
 
 [node name="Chat" parent="." instance=ExtResource( 5 )]
 anchor_top = 1.0

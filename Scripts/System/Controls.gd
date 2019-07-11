@@ -3,7 +3,7 @@ extends Node
 
 enum{ATTACK, JUMP, UP, RIGHT, DOWN, LEFT, SOUL, SWAP, ACCEPT, CANCEL, MAP, MENU, CHAT, COMMAND}
 
-enum State{ACTION, CHAT, MENU}
+enum State{ACTION, CHAT, MENU, MAP}
 var state = State.ACTION
 
 signal key_press(p_id, key, state)
@@ -22,7 +22,7 @@ func _process(delta):
 	match state:
 		State.ACTION:
 			process_key_local(MENU, KEY_BACKSLASH)
-			process_key_local(MAP, KEY_BACKSPACE)
+			process_key_local(MAP, KEY_TAB)
 			process_key_local(CHAT, KEY_T)
 			process_key_local(COMMAND, KEY_SLASH)
 			
@@ -35,12 +35,12 @@ func _process(delta):
 		
 		State.CHAT:
 			process_key_local(ACCEPT, KEY_ENTER)
-			process_key_local(CANCEL, KEY_ESCAPE)
+			process_key_local(CANCEL, KEY_BACKSPACE)
 		
 		State.MENU:
 			process_key_local(MENU, KEY_BACKSLASH)
 			process_key_local(ACCEPT, KEY_ENTER)
-			process_key_local(CANCEL, KEY_ESCAPE)
+			process_key_local(CANCEL, KEY_BACKSPACE)
 			process_key_local(SWAP, KEY_TAB)
 			process_key_local(SOUL, KEY_SHIFT)
 			
