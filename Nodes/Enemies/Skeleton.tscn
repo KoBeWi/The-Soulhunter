@@ -7,7 +7,7 @@ resource_name = "Skeleton"
 script/source = "extends Enemy
 
 onready var animation = $Animation
-onready var sprite = $SpriteContainer
+onready var sprite = $Sprite
 
 enum {IDLE, WALK, ATTACK}
 var state = IDLE
@@ -66,7 +66,7 @@ func server_ai(delta):
 
 func general_ai(delta):
 	if !Com.is_server:
-		sprite.scale.x = -direction
+		sprite.flip_h = direction > 0
 		
 		if sprite.position.length_squared() > 1:
 			sprite.position *= 0.8
@@ -119,7 +119,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	walk = vector[4]-1"
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 24, 48 )
+extents = Vector2( 24, 52 )
 
 [sub_resource type="Animation" id=3]
 resource_name = "Bone Walk"
@@ -127,7 +127,7 @@ length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -136,24 +136,23 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1, 2, 3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 5, 6, 7, 6 ]
+"values": [ 3, 4, 3, 5 ]
 }
 
 [sub_resource type="Animation" id=4]
-length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 2, 3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 1 ]
+"values": [ 0 ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -161,7 +160,7 @@ resource_name = "Throw"
 length = 3.0
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -170,7 +169,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1, 2 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ 7, 8, 9 ]
+"values": [ 5, 6, 7 ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -178,7 +177,7 @@ length = 4.0
 loop = true
 step = 1.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("SpriteContainer/Sprite:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -187,7 +186,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1, 2, 3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 3, 4, 3 ]
+"values": [ 0, 1, 0, 2 ]
 }
 
 [node name="Skeleton" type="KinematicBody2D" groups=[
@@ -197,16 +196,12 @@ collision_layer = 2
 script = SubResource( 1 )
 enemy_name = "Skeleton"
 
-[node name="SpriteContainer" type="Node2D" parent="."]
-
-[node name="Sprite" type="Sprite" parent="SpriteContainer"]
-position = Vector2( -20, 0 )
+[node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
-hframes = 10
-frame = 7
+hframes = 8
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 12 )
+position = Vector2( 0, 8 )
 shape = SubResource( 2 )
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -215,7 +210,7 @@ collision_layer = 4
 collision_mask = 0
 
 [node name="TriggerCollider" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2( 0, 12 )
+position = Vector2( 0, 8 )
 shape = SubResource( 2 )
 
 [node name="Animation" type="AnimationPlayer" parent="."]

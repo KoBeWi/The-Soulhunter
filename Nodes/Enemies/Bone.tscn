@@ -6,12 +6,13 @@
 resource_name = "Bone"
 script/source = "extends Enemy
 
-var velocity = Vector2(300, -800)
+var velocity = Vector2(250, -800)
 
 onready var sprite = $Sprite
 
 func _ready():
 	if Com.register_node(self, \"Enemies/Bone\"): return
+	velocity.x += randi()%25
 
 func general_ai(delta):
 	velocity.y += 50
@@ -55,7 +56,7 @@ func on_hit():
 	Com.dispose_node(self)"
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 8, 21 )
+extents = Vector2( 5, 10 )
 
 [node name="Bone" type="KinematicBody2D" groups=[
 "enemies",

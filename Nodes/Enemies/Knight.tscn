@@ -117,7 +117,7 @@ func _on_Timer_timeout():
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 60, 60 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 loop = true
 step = 1.0
 tracks/0/type = "value"
@@ -133,7 +133,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "Throw"
 length = 2.0
 step = 1.0
@@ -150,7 +150,7 @@ tracks/0/keys = {
 "values": [ 5, 6 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 length = 4.0
 loop = true
 step = 1.0
@@ -193,9 +193,9 @@ shape = SubResource( 2 )
 [node name="Animation" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
 playback_speed = 2.0
-anims/Idle = SubResource( 4 )
-anims/Throw = SubResource( 5 )
-anims/Walk = SubResource( 6 )
+anims/Idle = SubResource( 3 )
+anims/Throw = SubResource( 4 )
+anims/Walk = SubResource( 5 )
 
 [node name="Timer" type="Timer" parent="."]
 [connection signal="body_entered" from="Hitbox" to="." method="hit"]
