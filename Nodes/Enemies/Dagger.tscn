@@ -6,7 +6,7 @@
 resource_name = "Bone"
 script/source = "extends Enemy
 
-var velocity = Vector2(300, -800)
+var velocity = Vector2(600, 0)
 
 onready var sprite = $Sprite
 
@@ -44,6 +44,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
 	
 	velocity.x = vector[2] - 10000
+	sprite.flip_h = velocity.x < 0
 
 func on_hit():
 	Com.dispose_node(self)"
@@ -56,6 +57,7 @@ extents = Vector2( 30, 12 )
 ]]
 collision_layer = 2
 script = SubResource( 1 )
+attack = 20
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )

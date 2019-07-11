@@ -8,50 +8,35 @@ script/source = "extends Enemy
 
 onready var animation = $Animation
 onready var sprite = $Sprite
-onready var timer = $Timer
 
 enum {IDLE, WALK, ATTACK}
 var state = IDLE
 var previous_state = IDLE
 
 var attac = 0
-var delay = 0
 var direction = 1
+var closest_player
 
 func _ready():
 	if Com.register_node(self, \"Enemies/Knight\"): return
 	init()
 	
 	direction = 1 - randi()%2*2
+	$Timer.start()
 
 func server_ai(delta):
-	delay -= 1
-	
-	var radar = 100000
-	var closest_player
+	var radar = 250000
+	closest_player = null
 	
 	for player in players:
 		var dist = player.global_position.distance_squared_to(global_position)
 		
 		if dist < radar:
 			direction = sign(player.global_position.x - global_position.x)
-			closest_player
+			closest_player = player
 			radar = dist
 	
 	match state:
-		IDLE:
-			if closest_player:
-				if delay <= 0 and randi()%200 == 0:
-					state = WALK
-					delay = 30
-				elif randi()%100 == 0:
-					state = ATTACK
-	
-		WALK:
-			if delay <= 0 and randi()%200 == 0:
-				state = IDLE
-				delay = 20
-		
 		ATTACK:
 			attac += delta
 			
@@ -66,8 +51,6 @@ func server_ai(delta):
 
 func general_ai(delta):
 	if !Com.is_server:
-		sprite.scale.x = -direction
-		
 		if sprite.position.length_squared() > 1:
 			sprite.position *= 0.8
 		else:
@@ -113,7 +96,23 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
 	
 	state = vector[2]
-	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp."
+	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
+	sprite.flip_h = direction < 0
+
+func _on_Timer_timeout():
+	match state:
+		IDLE:
+			if closest_player:
+				if randi()%2 == 0:
+					state = WALK
+				else:
+					state = ATTACK
+	
+		WALK:
+			if closest_player and randi()%2 == 0:
+				state = ATTACK
+			else:
+				state = IDLE"
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 60, 60 )
@@ -197,6 +196,9 @@ playback_speed = 2.0
 anims/Idle = SubResource( 4 )
 anims/Throw = SubResource( 5 )
 anims/Walk = SubResource( 6 )
+
+[node name="Timer" type="Timer" parent="."]
 [connection signal="body_entered" from="Hitbox" to="." method="hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="unhit"]
 [connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
