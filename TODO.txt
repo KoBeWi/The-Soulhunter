@@ -1,12 +1,12 @@
 -błąd +dodatek >zmiana
 
-+mapa
 +game over
 +pomoc w menu gracza
 +info o klawiszach, gdy gracz wchodzi
 +puszczanie klaiwszy po zmianie stanu sterowania (np. idzie grazc i mapa)
 +leczenie po zapisie
 
++sterowanie
 >zablokować puste nazwy i hasła
 +więcej postaci że można
 

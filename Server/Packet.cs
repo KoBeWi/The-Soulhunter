@@ -25,7 +25,8 @@ public class Packet {
         EQUIP,
         EQUIP_SOUL,
         ITEM_GET,
-        SOUL_GET
+        SOUL_GET,
+        GAME_OVER
     }
 
     public static readonly byte[] zero = new byte[] {0};

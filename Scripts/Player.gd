@@ -58,7 +58,6 @@ func _ready():
 func set_username(n):
 	uname = n
 	$Name.text = "<" + uname + ">"
-#	anim.play("Idle")
 
 func on_initialized():
 	visible = true
@@ -235,24 +234,15 @@ func damage(enemy):
 		var damage = enemy.attack
 		stats.hp = max(0, stats.hp - damage)
 		get_meta("room").call("Damage", get_meta("id"), damage)
+		
+		if stats.hp <= 0:
+			get_meta("room").call("GameOver", get_meta("id"))
 
 func attack_end():
 	attack = false
 	arm.visible = false
 	anim.playback_speed = 8
 	get_weapon().set_disabled(true)
-
-func weapon_enter(body):
-	if !attack: return
-	
-#	if Com.server and body.is_in_group ("enemies"):
-#		Network.send_data(["DAMAGE", "mapid", "p", id, body.id, "N"])
-		#enemies.append(body.get_name())
-
-func weapon_exit(body):
-	return
-#	if self == Com.player and body.get("is_enemy"):
-#		enemies.erase(body.get_name())
 
 func set_main():
 	Com.player = self

@@ -288,4 +288,11 @@ public class Character : Godot.Object {
         finalStats[stat] = value;//TODO: wygląda na hack
         GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), new string[] {stat}));
     }
+
+    public void GameOver(ushort time) {
+        SetStat("game_over", time);
+    }
+    public ushort GetGameOverTime() {
+        return (ushort)Mathf.Max((Data.MAX_GAME_OVER_TIME - (OS.GetTicksMsec()/1000 - getStat("game_over"))), 0);
+    }
 }

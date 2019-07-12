@@ -319,4 +319,10 @@ public class Room : Viewport {
                 return;
             }
     }
+
+    public void GameOver(ushort playerId) {
+        var player = GetPlayerById(playerId);
+        player.GameOver((ushort)(OS.GetTicksMsec()/1000));
+        player.GetPlayer().SendPacket(new Packet(Packet.TYPE.GAME_OVER).AddU16(player.GetGameOverTime()));
+    }
 }

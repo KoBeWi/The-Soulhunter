@@ -210,6 +210,9 @@ func process_packet(unpacker):
 		
 		Packet.TYPE.SOUL_GET:
 			emit_signal("soul_get", unpacker.get_u16())
+		
+		Packet.TYPE.GAME_OVER:
+			get_tree().quit()
 
 func send_data(packet):
 	client.put_data(packet.data)

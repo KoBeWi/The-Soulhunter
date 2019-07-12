@@ -1,4 +1,6 @@
 public class Data {
+    public const ushort MAX_GAME_OVER_TIME = 120;
+
     public enum TYPE {
         U8,
         U16,
