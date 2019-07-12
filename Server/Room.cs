@@ -311,4 +311,12 @@ public class Room : Viewport {
             break;
         }
     }
+
+    public void DiscoverRoom(ushort playerId, Vector2 room) {
+        foreach (Character player in players)
+            if (player.GetPlayerId() == playerId) {
+                player.Discover((int)room.x + " " + (int)room.y);
+                return;
+            }
+    }
 }

@@ -6,13 +6,15 @@ onready var way = load("res://Graphics/Map/Way.png")
 onready var corner = load("res://Graphics/Map/Corner.png")
 onready var edge = load("res://Graphics/Map/Edge.png")
 
-var cam
-var pos
+var map_data = {}
+var cam = Vector2()
+var pos = Vector2()
 
 func _ready():
 	visible = false
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.player.connect("room_changed", self, "set_room")
+	Network.connect("map", self, "set_map")
 
 func _draw():
 	for map in Res.maps:
@@ -21,6 +23,9 @@ func _draw():
 			for dy in range(map.height):
 				var x = map.map_x + dx
 				var y = map.map_y + dy
+				
+				if not Vector2(x, y) in map_data:
+					continue
 				
 				draw_room(x, y, get_border(map, dx, dy, 0), get_border(map, dx, dy, 1), get_border(map, dx, dy, 2), get_border(map, dx, dy, 3))
 
@@ -87,6 +92,13 @@ func draw_room(x, y, u_border, r_border, d_border, l_border):
 func set_room(room):
 	cam = room - Vector2(32768, 32768)
 	pos = cam
+	if not room in map_data:
+		map_data[room] = true
+	
+	update()
+
+func set_map(map):
+	map_data = map
 	update()
 
 func update():

@@ -19,6 +19,7 @@ signal inventory(items)
 signal equipment(items)
 signal souls(souls)
 signal soul_equipment(souls)
+signal map(map)
 signal item_get(item)
 signal soul_get(soul)
 
@@ -195,14 +196,20 @@ func process_packet(unpacker):
 			
 			emit_signal("soul_equipment", equipment)
 		
+		Packet.TYPE.MAP:
+			var map = {}
+			
+			var length = unpacker.get_u8()
+			for i in length/2:
+				map[Vector2(unpacker.get_u16(), unpacker.get_u16())] = true
+			
+			emit_signal("map", map)
+		
 		Packet.TYPE.ITEM_GET:
 			emit_signal("item_get", unpacker.get_u16())
 		
 		Packet.TYPE.SOUL_GET:
 			emit_signal("soul_get", unpacker.get_u16())
-		
-		"MAP": ###
-			Com.player.chr.update_map([])
 
 func send_data(packet):
 	client.put_data(packet.data)

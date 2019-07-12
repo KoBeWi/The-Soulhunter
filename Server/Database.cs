@@ -83,7 +83,8 @@ public class Database {
             {"equipment", new BsonArray {0, 0, 0, 0, 0, 0, 0, 0}},
             {"souls", new BsonArray()},
             {"soul_equipment", new BsonArray {0, 0, 0, 0, 0, 0, 0}},
-            {"chests", new BsonArray()}
+            {"chests", new BsonArray()},
+            {"discovered", new BsonArray()}
         };
 
         collection.InsertOne(data);

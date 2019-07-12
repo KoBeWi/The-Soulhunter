@@ -57,6 +57,7 @@ public class Unpacker {
                 player.SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(player.GetCharacter().GetEquipment()));
                 player.SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(player.GetCharacter().GetSouls()));
                 player.SendPacket(new Packet(Packet.TYPE.SOUL_EQUIPMENT).AddEquipment(player.GetCharacter().GetSoulEquipment()));
+                player.SendPacket(new Packet(Packet.TYPE.MAP).AddU16Array(player.GetCharacter().GetDiscovered()));
 
                 room.AddPlayer(player.GetCharacter());
             } else {

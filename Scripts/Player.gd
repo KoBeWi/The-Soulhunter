@@ -88,7 +88,7 @@ func _process(delta):
 		last_room = room
 		
 		if Com.is_server:
-			pass
+			get_meta("room").call("DiscoverRoom", get_meta("id"), room)
 		else:
 			emit_signal("room_changed", room)
 	

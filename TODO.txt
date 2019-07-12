@@ -4,6 +4,8 @@
 +game over
 +pomoc w menu gracza
 +info o klawiszach, gdy gracz wchodzi
++puszczanie klaiwszy po zmianie stanu sterowania (np. idzie grazc i mapa)
++leczenie po zapisie
 
 >zablokować puste nazwy i hasła
 +więcej postaci że można
@@ -18,3 +20,4 @@
 >zdehardkodować eq
 +inventory_dirty i request jak się otwiera, a jak się nei zmieniło to czeka na pusty
 >może zrobić, że nie da się założyć tego samego (w sensie robi się return czy coś)
+>nie wysyłać od razu wszystkiego

@@ -234,6 +234,21 @@ public class Character : Godot.Object {
         data.GetValue("chests").AsBsonArray.Add(id);
     }
 
+    public ushort[] GetDiscovered() {
+        List<ushort> coords = new List<ushort>();
+        foreach (var room in getStringArray("discovered")) {
+            var xy = room.Split(" ");
+            coords.Add(ushort.Parse(xy[0]));
+            coords.Add(ushort.Parse(xy[1]));
+        }
+        return coords.ToArray();
+    }
+
+    public void Discover(string room) {
+        var discovered = data.GetValue("discovered").AsBsonArray;
+        if (!discovered.Contains(room)) discovered.Add(room);
+    }
+
     private ushort[] getArray(string value) {
         var array = data.GetValue(value).AsBsonArray;
         List<ushort> result = new List<ushort>();
