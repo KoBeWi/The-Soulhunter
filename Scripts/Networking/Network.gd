@@ -5,10 +5,8 @@ enum{STRING, U8, U16}
 var client
 var account
 
-const server_host = "127.0.0.1"
+var server_host = "127.0.0.1"
 const server_port = 2412
-#const server_host = "0.tcp.eu.ngrok.io"
-#const server_port = 18200
 
 signal connected
 signal log_in
@@ -28,6 +26,9 @@ func _ready():
 	set_process(false)
 
 func connect_client():
+	if OS.has_feature("build"):
+		server_host = "serveo.net"
+	
 	client = StreamPeerTCP.new()
 	client.connect_to_host(server_host, server_port)
 	set_process(true)

@@ -32,13 +32,14 @@ func _process(delta):
 		
 		State.CHAT:
 			process_key_local(ACCEPT, KEY_ENTER)
-			process_key_local(CANCEL, KEY_BACKSPACE)
+			process_key_local(CANCEL, KEY_ESCAPE)
 		
 		State.MENU:
 			process_key_local(MENU, KEY_BACKSLASH)
 			process_key_local(ACCEPT, KEY_ENTER)
 			process_key_local(CANCEL, KEY_BACKSPACE)
 			process_key_local(SOUL, KEY_SHIFT)
+			process_key_local(MAP, KEY_TAB)
 			
 			process_key_local(CHAT, KEY_T)
 			process_key_local(COMMAND, KEY_SLASH)

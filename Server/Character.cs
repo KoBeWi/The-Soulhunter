@@ -292,6 +292,7 @@ public class Character : Godot.Object {
     public void GameOver(ushort time) {
         data = database.GetCharacterData(this);
         SetStat("game_over", time);
+        currentMap = (ushort)data.GetValue("location").AsInt32;
         database.SaveCharacter(data);
     }
     public ushort GetGameOverTime() {

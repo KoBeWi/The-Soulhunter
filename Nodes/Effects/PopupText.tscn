@@ -61,5 +61,4 @@ valign = 1
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Pop"
 anims/Pop = SubResource( 2 )
-
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="end"]

@@ -7,7 +7,7 @@ resource_name = "Skeleton"
 script/source = "extends Enemy
 
 onready var animation = $Animation
-onready var sprite = $SpriteContainer
+onready var sprite = $Sprite
 
 enum {IDLE, WALK, ATTACK}
 var state = IDLE
@@ -25,7 +25,7 @@ func _ready():
 	direction = 1 - randi()%2*2
 
 func server_ai(delta):
-	#TODO: rzucza tylko gdy gracz w pobliżu, chodzi za wykrytym graczem
+	#TODO: chodzi za wykrytym graczem?
 	delay -= 1
 	
 	var radar = 100000
@@ -43,7 +43,7 @@ func server_ai(delta):
 				state = WALK
 				walk = 1 - randi()%2*2
 				delay = 30
-			elif randi()%30 == 0:
+			elif radar < 250000 and randi()%100 == 0:
 				state = ATTACK
 	
 		WALK:
@@ -65,12 +65,13 @@ func server_ai(delta):
 				get_parent().add_child(bone)
 
 func general_ai(delta):
-	sprite.scale.x = -direction
-	
-	if sprite.position.length_squared() > 1:
-		sprite.position *= 0.8
-	else:
-		sprite.position = Vector2()
+	if !Com.is_server:
+		sprite.flip_h = direction > 0
+		
+		if sprite.position.length_squared() > 1:
+			sprite.position *= 0.8
+		else:
+			sprite.position = Vector2()
 	
 	if state != previous_state:
 		previous_state = state
@@ -85,9 +86,8 @@ func general_ai(delta):
 	
 	move_and_collide(Vector2(walk * 6, 1))
 
-func _on_animation_finished(anim_name): ##potrzebne?
+func _on_animation_finished(anim_name):
 	if anim_name == \"Throw\":
-		attac = 0
 		animation.play(\"Idle\")
 
 func state_vector_types():
@@ -118,8 +118,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
 	walk = vector[4]-1"
 
-[node name="Skeleton" instance=ExtResource( 1 )]
+[node name="Skeleton" index="0" instance=ExtResource( 1 )]
 modulate = Color( 1, 0, 0, 1 )
 script = SubResource( 1 )
 enemy_name = "Blood Skeleton"
-

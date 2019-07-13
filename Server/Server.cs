@@ -26,7 +26,7 @@ public class Server : Node {
 
     public override void _Ready() {
         instance = this;
-        server = new TcpListener(IPAddress.Parse("127.0.0.1"), 2412);
+        server = new TcpListener(IPAddress.Parse("0.0.0.0"), 2412);
         database = new Database();
 
         rooms = new Dictionary<int, List<Room>>();
@@ -160,7 +160,7 @@ public class Server : Node {
     }
 
     public static ushort GetSeconds() {
-        return (ushort)(OS.GetTicksMsec()/1000 + 120);
+        return (ushort)(OS.GetTicksMsec()/1000 + Data.MAX_GAME_OVER_TIME);
     }
 
     public static void SetupPlayer(Character character) {

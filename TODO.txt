@@ -5,14 +5,20 @@
 +info o klawiszach, gdy gracz wchodzi
 +puszczanie klaiwszy po zmianie stanu sterowania (np. idzie grazc i mapa)
 +leczenie po zapisie
--wysrywa się serwer po kontynuacji z przegranej
++kucanie
+>skrzynie nie dzialajo na wielu graczy?
++kolory postaci
+-wychodzący gracz się nie wylogowyje?
+-można przeżyć z 0 hp? (albo buguje się wartość)
 
+-zwalone tło jak większe okno
 +sterowanie
 >zablokować puste nazwy i hasła
 >przerobić title na Controls
 +więcej postaci że można
 -jak gracz wychodzi z gameovera to się nie wylogowuje
 -a potem wgl łączy się znowu z serwerem wtf
++informacje jak ktoś wchodzi albo umiera
 
 +potwierdzenie save
 +usuwanie gracza z controls, gdy wychodzi z servera
