@@ -1,6 +1,6 @@
 extends Node
 
-onready var controls = $Controls
+onready var controls : Controls = $Controls
 
 var game
 var is_server = false

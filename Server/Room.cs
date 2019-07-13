@@ -159,6 +159,8 @@ public class Room : Viewport {
     }
 
     public void RemovePlayer(Character character, bool free = true, ushort idOverride = 0) {
+        if (!players.Contains(character)) return;
+
         players.Remove(character);
         if (free) {
             playerNodes[character].QueueFree();
@@ -322,7 +324,8 @@ public class Room : Viewport {
 
     public void GameOver(ushort playerId) {
         var player = GetPlayerById(playerId);
-        player.GameOver((ushort)(OS.GetTicksMsec()/1000));
+        player.GameOver(Server.GetSeconds());
         player.GetPlayer().SendPacket(new Packet(Packet.TYPE.GAME_OVER).AddU16(player.GetGameOverTime()));
+        RemovePlayer(player);
     }
 }

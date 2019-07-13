@@ -103,6 +103,11 @@ public class Database {
         return new Character(found, this); //może powinno trzymać gdzieś instancje
     }
 
+    public BsonDocument GetCharacterData(Character character) {
+        var collection = database.GetCollection<BsonDocument>("characters");
+        return collection.Find(new BsonDocument {{"name", character.GetName()}} ).FirstOrDefault();
+    }
+
     public void SaveCharacter(BsonDocument data) {
         GD.Print("Saving ", data.GetValue("name").AsString);
         var collection = database.GetCollection<BsonDocument>("characters");

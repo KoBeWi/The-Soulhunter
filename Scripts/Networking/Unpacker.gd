@@ -6,12 +6,12 @@ var command
 var offset = 0
 var size = 0
 
-func _init(_data, _size):
+func _init(_data, _size) -> void:
 	data = _data
 	size = _size
 	command = get_u8()
 
-func get_string():
+func get_string() -> String:
 	var string = PoolByteArray()
 	
 	while data[offset] > 0:
@@ -23,21 +23,21 @@ func get_string():
 #	print("string ", string.get_string_from_ascii())
 	return string.get_string_from_ascii()
 
-func get_u8():
+func get_u8() -> int:
 #	print("u8 ", data[offset])
 	offset += 1
 	return data[offset-1]
 
-func get_u16():
+func get_u16() -> int:
 #	print("u16 ", data[offset] * 256 + data[offset+1])
 	offset += 2
 	return data[offset-2] * 256 + data[offset-1]
 
-func get_u32():
+func get_u32() -> int:
 	offset += 4
 	return data[offset-4] * 16777216 + data[offset-3] * 65536 + data[offset-2] * 256 + data[offset-1]
 
-func get_position():
+func get_position() -> Vector2:
 	var mode = get_u8()
 	var offset
 	

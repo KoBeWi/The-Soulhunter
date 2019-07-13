@@ -22,6 +22,7 @@ signal soul_equipment(souls)
 signal map(map)
 signal item_get(item)
 signal soul_get(soul)
+signal game_over(time)
 
 func _ready():
 	set_process(false)
@@ -49,7 +50,7 @@ func _process(delta):
 #		print(data[0])
 		process_packet(Unpacker.new(data[1], packet_size[1][0]))
 
-func process_packet(unpacker):
+func process_packet(unpacker : Unpacker):
 #	if data.size() <= 0: return ##inaczej zabezpieczyć
 	print("Received: ", Packet.TYPE.keys()[unpacker.command], " /", unpacker.size)
 	
@@ -212,7 +213,7 @@ func process_packet(unpacker):
 			emit_signal("soul_get", unpacker.get_u16())
 		
 		Packet.TYPE.GAME_OVER:
-			get_tree().quit()
+			emit_signal("game_over", unpacker.get_u16())
 
 func send_data(packet):
 	client.put_data(packet.data)

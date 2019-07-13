@@ -255,8 +255,6 @@ func set_main():
 	
 	Network.connect("stats", self, "on_stats")
 	Network.connect("equipment", self, "on_eq")
-	
-	Com.controls.set_master(self)
 
 func on_hit(body):
 	if body.is_in_group("enemies"):

@@ -116,7 +116,7 @@ public class Packet {
 
     static readonly string[] statList = {"level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"};
 
-    public Packet AddStats(Player player, params string[] stats) {
+    public Packet AddStats(Character player, params string[] stats) {
         var vec = new bool[8];
         var vec2 = new bool[8];
         int last_index = -1;
@@ -133,7 +133,7 @@ public class Packet {
             else
                 vec2[index%8] = true;
             
-            statsToSend.Add(player.GetCharacter().GetStat(stat));
+            statsToSend.Add(player.GetStat(stat));
         }
 
         AddBoolArray(vec);

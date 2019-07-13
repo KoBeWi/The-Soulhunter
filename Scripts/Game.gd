@@ -12,6 +12,11 @@ onready var effects = $Effects
 var entity_list = {}
 var special_entity_list = {}
 
+func _ready():
+	if !Com.is_server:
+		Network.connect("game_over", self, "on_over")
+		Com.controls.state = Controls.State.ACTION
+
 func load_map(id):
 	map = Res.maps[id].instance()
 	add_child(map)
@@ -61,6 +66,15 @@ func get_entity(id):
 
 func get_special_entity(id):
 	return special_entity_list.get(id)
+
+func on_over(time):
+	var game_over = preload("res://Scenes/GameOver.tscn").instance()
+	game_over.get_node("Title").visible = false
+	game_over.set_time(time)
+	Com.player.visible = false
+	Com.player.set_process(false)
+	Com.player.set_physics_process(false)
+	add_child(game_over)
 
 func start(): ##:/
 	Com.player.get_node("PlayerCamera/Fade/ColorRect").color.a = 0

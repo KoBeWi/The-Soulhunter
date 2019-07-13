@@ -105,7 +105,7 @@ public class Character : Godot.Object {
         }
 
         syncStats();
-        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, stats.ToArray()));
     }
 
     public ushort GetStat(string stat) {
@@ -174,7 +174,7 @@ public class Character : Godot.Object {
         var stats = new List<string>();
         var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
         foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
-        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, stats.ToArray()));
         
         playerNode.Call("set_equipment", JsonConvert.SerializeObject(getArray("equipment")));
     }
@@ -201,7 +201,7 @@ public class Character : Godot.Object {
         // var stats = new List<string>();
         // var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
         // foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
-        // GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), stats.ToArray()));
+        // GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, stats.ToArray()));
         
         playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
     }
@@ -286,13 +286,15 @@ public class Character : Godot.Object {
     public void SyncStat(string stat, ushort value) {
         SetStat(stat, value);
         finalStats[stat] = value;//TODO: wygląda na hack
-        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(GetPlayer(), new string[] {stat}));
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, new string[] {stat}));
     }
 
     public void GameOver(ushort time) {
+        data = database.GetCharacterData(this);
         SetStat("game_over", time);
+        database.SaveCharacter(data);
     }
     public ushort GetGameOverTime() {
-        return (ushort)Mathf.Max((Data.MAX_GAME_OVER_TIME - (OS.GetTicksMsec()/1000 - getStat("game_over"))), 0);
+        return (ushort)Mathf.Max((Data.MAX_GAME_OVER_TIME - (Server.GetSeconds() - getStat("game_over"))), 0);
     }
 }

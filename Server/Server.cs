@@ -158,4 +158,22 @@ public class Server : Node {
     public static Dictionary<string, object> GetItem(int id) {
         return instance.items[id];
     }
+
+    public static ushort GetSeconds() {
+        return (ushort)(OS.GetTicksMsec()/1000 + 120);
+    }
+
+    public static void SetupPlayer(Character character) {
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.LOGIN).AddU8(0));
+        // character.GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(character, "level", "exp", "hp", "max_hp", "mp", "max_mp"));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(character, "level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(character.GetInventory()));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(character.GetEquipment()));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(character.GetSouls()));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.SOUL_EQUIPMENT).AddEquipment(character.GetSoulEquipment()));
+        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.MAP).AddU16Array(character.GetDiscovered()));
+
+        var room = Server.Instance().GetRoom(character.GetMapId());
+        room.AddPlayer(character);
+    }
 }

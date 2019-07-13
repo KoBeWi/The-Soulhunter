@@ -3,8 +3,8 @@ extends Node
 
 enum{ATTACK, JUMP, UP, RIGHT, DOWN, LEFT, SOUL, ACCEPT, CANCEL, MAP, MENU, CHAT, COMMAND}
 
-enum State{ACTION, CHAT, MENU, MAP}
-var state = State.ACTION
+enum State{NONE, ACTION, CHAT, MENU, MAP, GAME_OVER}
+var state = State.NONE
 
 signal key_press(p_id, key, state)
 signal key_release(p_id, key, state)
@@ -14,9 +14,6 @@ var controls = {}
 
 func _ready():
 	set_process(false)
-
-func set_master(player):
-	set_process(true)
 
 func _process(delta):
 	match state:
@@ -57,6 +54,10 @@ func _process(delta):
 			process_key_local(RIGHT, KEY_RIGHT)
 			process_key_local(LEFT, KEY_LEFT)
 			process_key_local(MAP, KEY_TAB)
+		
+		State.GAME_OVER:
+			process_key_local(ACCEPT, KEY_ENTER)
+			process_key_local(CANCEL, KEY_BACKSPACE)
 
 func process_key(key_id, key):
 	if Input.is_key_pressed(key) and !controls.has(key_id):
@@ -70,11 +71,17 @@ func process_key_local(key_id, key):
 	if Input.is_key_pressed(key) and !controls.has(key_id):
 		controls[key_id] = true
 		Com.press_key(key_id)
-		press_key(Com.player.get_meta("id"), key_id)
+		if Com.player and is_instance_valid(Com.player):
+			press_key(Com.player.get_meta("id"), key_id)
+		else:
+			press_key(-1, key_id)
 	elif !Input.is_key_pressed(key) and controls.has(key_id):
 		controls.erase(key_id)
 		Com.release_key(key_id)
-		release_key(Com.player.get_meta("id"), key_id)
+		if Com.player and is_instance_valid(Com.player):
+			release_key(Com.player.get_meta("id"), key_id)
+		else:
+			release_key(-1, key_id)
 
 func press_key(player_id, key, state_override = state):
 	emit_signal("key_press", player_id, key, state_override)

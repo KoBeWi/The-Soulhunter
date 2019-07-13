@@ -21,7 +21,9 @@ func _ready():
 	
 	Network.connect(\"error\", self, \"on_error\")
 	Network.connect(\"log_in\", self, \"on_log_in\")
+	Network.connect(\"game_over\", self, \"on_game_over\")
 	
+	Com.controls.set_process(true)
 	self.select = 0
 
 func _input(event):
@@ -108,8 +110,8 @@ func set_select(s):
 			$Focus.rect_position.y += $Menu/Register.get_child(2 + select*2).rect_position.y
 
 func on_log_in():
-	Network.account = $Menu/Login/LoginInput.text
-	get_tree().current_scene = Com.game
+#	Network.account = $Menu/Login/LoginInput.text ##po co tu było?
+#	get_tree().current_scene = Com.game ##też
 	queue_free()
 
 func on_error(code):
@@ -156,7 +158,14 @@ func on_long_connect():
 	$Connecting.text = \"Connecting to server (server is not responding for too long)...\"
 	$Connecting/AnimationPlayer.play(\"LongConnecting\")
 	$Connecting.modulate = Color(1, 0.7, 0.6)
-"
+
+func on_game_over(time):
+	var game_over = preload(\"res://Scenes/GameOver.tscn\").instance()
+	game_over.set_time(time)
+	
+	$\"/root\".add_child(game_over)
+	get_tree().current_scene = game_over
+	queue_free()"
 
 [sub_resource type="Animation" id=2]
 resource_name = "Connecting"

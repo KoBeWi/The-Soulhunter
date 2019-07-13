@@ -48,18 +48,17 @@ public class Unpacker {
             var error = database.TryLogin(GetString(), GetString(), player);
 
             if (error == Error.Ok) {
-                var room = Server.Instance().GetRoom(player.GetCharacter().GetMapId());
+                var gameOver = player.GetCharacter().GetGameOverTime();
+                if (gameOver > Server.GetSeconds() + Data.MAX_GAME_OVER_TIME) {
+                    gameOver = 0;
+                    player.GetCharacter().GameOver(0);
+                }
 
-                player.SendPacket(new Packet(command).AddU8(0));
-                // player.SendPacket(new Packet(Packet.TYPE.STATS).AddStats(player, "level", "exp", "hp", "max_hp", "mp", "max_mp"));
-                player.SendPacket(new Packet(Packet.TYPE.STATS).AddStats(player, "level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"));
-                player.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(player.GetCharacter().GetInventory()));
-                player.SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(player.GetCharacter().GetEquipment()));
-                player.SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(player.GetCharacter().GetSouls()));
-                player.SendPacket(new Packet(Packet.TYPE.SOUL_EQUIPMENT).AddEquipment(player.GetCharacter().GetSoulEquipment()));
-                player.SendPacket(new Packet(Packet.TYPE.MAP).AddU16Array(player.GetCharacter().GetDiscovered()));
-
-                room.AddPlayer(player.GetCharacter());
+                if (gameOver > 0) {
+                    player.SendPacket(new Packet(Packet.TYPE.GAME_OVER).AddU16(gameOver));
+                } else {
+                    Server.SetupPlayer(player.GetCharacter());
+                }
             } else {
                 player.SendPacket(new Packet(command).AddU8((byte)error));
             }
@@ -105,6 +104,12 @@ public class Unpacker {
             break;
             case Packet.TYPE.EQUIP_SOUL:
             player.GetCharacter().EquipSoul(GetU8(), GetU8());
+
+            break;
+            case Packet.TYPE.GAME_OVER:
+            if (player.GetCharacter().GetGameOverTime() <= 0) {
+                Server.SetupPlayer(player.GetCharacter());
+            }
 
             break;
         }
