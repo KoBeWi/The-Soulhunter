@@ -10,6 +10,7 @@ var controls = {}
 var key_press = {}
 
 var uname = "" setget set_username
+var hue = 0
 var motion = Vector2()
 var last_server_position = Vector2()
 var main = false
@@ -357,6 +358,7 @@ func state_vector_types():
 			Data.TYPE.STRING,
 			Data.TYPE.U16,
 			Data.TYPE.U16,
+			Data.TYPE.U16,
 			Data.TYPE.U8
 		]
 
@@ -365,6 +367,7 @@ func get_state_vector():
 	
 	return [
 			uname,
+			int(hue),
 			round(position.x),
 			round(position.y),
 			int(cached_action)
@@ -373,8 +376,10 @@ func get_state_vector():
 func apply_state_vector(timestamp, diff_vector, vector):
 	if vector[0] != uname:
 		self.uname = vector[0]
+	sprite.self_modulate.h = vector[1] / 360.0
+	hue = vector[1]
 	
-	var target_position = Vector2(vector[1], vector[2])
+	var target_position = Vector2(vector[2], vector[3])
 	last_tick = timestamp
 	
 	if !main or Com.time_greater(timestamp, last_controls + 5):
@@ -395,12 +400,12 @@ func apply_state_vector(timestamp, diff_vector, vector):
 				position = target_position
 				desync = 0
 	
-	if (diff_vector & 2) > 0:
-		last_server_position.x = vector[1]
 	if (diff_vector & 4) > 0:
-		last_server_position.y = vector[2]
+		last_server_position.x = vector[2]
+	if (diff_vector & 8) > 0:
+		last_server_position.y = vector[3]
 	
-	action = vector[3]
+	action = vector[4]
 
 func set_frame():
 	sprite2.frame = sprite.frame

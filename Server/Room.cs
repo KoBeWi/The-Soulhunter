@@ -141,7 +141,7 @@ public class Room : Viewport {
         var newPlayer = playerFactory.Instance();
         
         newPlayer.Set("uname", character.GetName());
-        Console.WriteLine(mapId);
+        newPlayer.Set("hue", character.GetHue());
         newPlayer.Set("position", map.GetNode("SavePoint/PlayerSpot").Get("global_position")); //nie można lepiej?
         newPlayer.SetMeta("map", map);
         newPlayer.Call("start");

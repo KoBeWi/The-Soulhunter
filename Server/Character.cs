@@ -298,7 +298,12 @@ public class Character : Godot.Object {
         currentMap = (ushort)data.GetValue("location").AsInt32;
         database.SaveCharacter(data);
     }
+
     public ushort GetGameOverTime() {
         return (ushort)Mathf.Max((Data.MAX_GAME_OVER_TIME - (Server.GetSeconds() - getStat("game_over"))), 0);
+    }
+
+    public ushort GetHue() {
+        return getStat("hue");
     }
 }

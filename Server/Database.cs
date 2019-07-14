@@ -67,7 +67,7 @@ public class Database {
         var collection = database.GetCollection<BsonDocument>("characters");
         //hack
         var collection2 = database.GetCollection<BsonDocument>("players");
-        var found = collection2.Find(new BsonDocument {{"name", name}} ).FirstOrDefault();
+        var found = collection2.Find(new BsonDocument {{"login", name}} ).FirstOrDefault();
 
         var data = new BsonDocument {
             {"name", name},
