@@ -30,29 +30,29 @@ enum TYPE {
 
 const stat_list = ["level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"]
 
-var data
+var data : PoolByteArray
 
-func _init(command):
+func _init(command) -> void:
 	data = PoolByteArray()
 	data.append(1)
 	add_u8(command)
 
-func add_string(string):
+func add_string(string : String) -> Packet:
 	data.append_array(string.to_ascii())
 	data.append(0)
 	data[0] += string.length() + 1
 	return self
 
-func add_u8(i):
+func add_u8(i : int) -> Packet:
 	data.append(i % 256)
 	data[0] += 1
 	return self
 
-func add_u16(i):
+func add_u16(i : int) -> Packet:
 	data.append(i / 256)
 	data.append(i % 256)
 	data[0] += 2
 	return self
 
-func send():
+func send() -> void:
 	Network.send_data(self)

@@ -1,12 +1,12 @@
 class_name Unpacker
 extends Reference
 
-var data
-var command
-var offset = 0
-var size = 0
+var data : PoolByteArray
+var command : int
+var offset := 0
+var size := 0
 
-func _init(_data, _size) -> void:
+func _init(_data : PoolByteArray, _size : int) -> void:
 	data = _data
 	size = _size
 	command = get_u8()

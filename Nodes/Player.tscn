@@ -1,11 +1,12 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
-[ext_resource path="res://Graphics/Characters/Player.png" type="Texture" id=3]
+[ext_resource path="res://Graphics/Characters/PlayerClear.png" type="Texture" id=3]
 [ext_resource path="res://Graphics/Characters/PlayerArm.png" type="Texture" id=4]
-[ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=5]
-[ext_resource path="res://Graphics/UI/PressUp.png" type="Texture" id=6]
+[ext_resource path="res://Graphics/Characters/PlayerValue.png" type="Texture" id=5]
+[ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=6]
+[ext_resource path="res://Graphics/UI/PressUp.png" type="Texture" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fall"
@@ -214,6 +215,9 @@ func _on_Animation_animation_finished(anim_name):
 	elif anim_name.find(\"Attack\"):
 		$\"..\".attack_end()"
 
+[sub_resource type="CanvasItemMaterial" id=14]
+blend_mode = 1
+
 [sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 24, 32 )
 
@@ -261,11 +265,13 @@ next/Fall = "Fall"
 script = SubResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="."]
+self_modulate = Color( 1, 0, 0, 1 )
 texture = ExtResource( 3 )
 hframes = 14
 region_rect = Rect2( 43, 10, 0.5, 0 )
 
 [node name="ArmPosition" type="Position2D" parent="Sprite"]
+visible = false
 position = Vector2( 14, -25 )
 rotation = 4.71239
 
@@ -276,18 +282,25 @@ texture = ExtResource( 4 )
 [node name="WeaponHinge" type="Position2D" parent="Sprite/ArmPosition/Arm"]
 position = Vector2( 3, -11 )
 
+[node name="Sprite" type="Sprite" parent="Sprite"]
+material = SubResource( 14 )
+texture = ExtResource( 5 )
+hframes = 14
+
 [node name="Skeleton" type="Sprite" parent="."]
 visible = false
 position = Vector2( 29, -11 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 flip_h = true
 hframes = 10
 
 [node name="Collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, -16 )
 shape = SubResource( 10 )
 
 [node name="ColliderRay" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, 16 )
 shape = SubResource( 11 )
 
@@ -302,6 +315,7 @@ valign = 1
 
 [node name="Hitbox" type="Area2D" parent="."]
 editor/display_folded = true
+visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -317,11 +331,12 @@ autostart = true
 editor/display_folded = true
 visible = false
 position = Vector2( 0, -96 )
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 
 [node name="Animation" type="AnimationPlayer" parent="PressUp"]
 anims/Idle = SubResource( 13 )
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
+[connection signal="frame_changed" from="Sprite" to="." method="set_frame"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]
 [connection signal="timeout" from="ManaTimer" to="." method="reg_mp"]

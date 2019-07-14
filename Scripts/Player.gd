@@ -34,6 +34,7 @@ var newest_enemy = null
 var interactable
 
 onready var sprite = $Sprite
+onready var sprite2 = $Sprite/Sprite
 onready var arm = $Sprite/ArmPosition
 onready var weapon_point = $Sprite/ArmPosition/Arm/WeaponHinge
 onready var chr = $Character
@@ -215,6 +216,7 @@ func on_key_release(p_id, key, state):
 
 func flip(f = sprite.flip_h):
 	sprite.flip_h = f
+	sprite2.flip_h = f
 	arm.position.x *= -1
 
 func direction():
@@ -399,3 +401,6 @@ func apply_state_vector(timestamp, diff_vector, vector):
 		last_server_position.y = vector[2]
 	
 	action = vector[3]
+
+func set_frame():
+	sprite2.frame = sprite.frame

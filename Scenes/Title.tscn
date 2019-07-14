@@ -1,10 +1,12 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Graphics/UI/Title.png" type="Texture" id=1]
 [ext_resource path="res://Graphics/UI/TitleText.png" type="Texture" id=2]
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Resources/UI/BiggerFont.tres" type="DynamicFont" id=4]
-[ext_resource path="res://Graphics/UI/Enter.png" type="Texture" id=5]
+[ext_resource path="res://Graphics/Characters/PlayerClear.png" type="Texture" id=5]
+[ext_resource path="res://Graphics/Characters/PlayerValue.png" type="Texture" id=6]
+[ext_resource path="res://Graphics/UI/Enter.png" type="Texture" id=7]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "LoginScreen"
@@ -64,7 +66,12 @@ func _input(event):
 						self.select = 1
 						$Menu/Register/PasswordInput.grab_focus()
 					1:
-						Packet.new(Packet.TYPE.REGISTER).add_string($Menu/Register/LoginInput.text).add_string($Menu/Register/PasswordInput.text).send()
+						self.select = 2
+						$Menu/Register/Hue.grab_focus()
+						$Menu/Preview.visible = true
+					2:
+						Packet.new(Packet.TYPE.REGISTER).add_string($Menu/Register/LoginInput.text).add_string($Menu/Register/PasswordInput.text).add_u16($Menu/Register/Hue.value).send()
+						$Menu/Preview.visible = false
 	elif Input.is_action_just_pressed(\"ui_cancel\"):
 		match state:
 			LOGIN:
@@ -86,6 +93,10 @@ func _input(event):
 						self.select = 0
 						$Menu/Register/LoginInput.grab_focus()
 						$Menu/Register/LoginInput.select_all()
+					1:
+						self.select = 1
+						$Menu/Register/PasswordInput.grab_focus()
+						$Menu/Register/PasswordInput.select_all()
 	
 	if event is InputEventKey:
 		if event.pressed and event.scancode == KEY_F1:
@@ -99,7 +110,7 @@ func update_state():
 
 func set_select(s):
 	select = s
-	$Focus.rect_position = $Menu.rect_position
+	$Focus.rect_position.y = $Menu.rect_position.y
 	
 	match state:
 		MAIN:
@@ -143,6 +154,7 @@ func on_error(code):
 			update_state()
 
 func show_message(_message, color):
+	$Status.show()
 	$Status.text = _message
 	$Status.modulate = color
 	$Status/Timer.start()
@@ -165,7 +177,10 @@ func on_game_over(time):
 	
 	$\"/root\".add_child(game_over)
 	get_tree().current_scene = game_over
-	queue_free()"
+	queue_free()
+
+func on_hue(value):
+	$Menu/Preview.self_modulate.h = value / 360.0"
 
 [sub_resource type="Animation" id=2]
 resource_name = "Connecting"
@@ -207,6 +222,19 @@ tracks/0/keys = {
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 border_width_bottom = 2
 border_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 98, 98 )
+
+[sub_resource type="CanvasItemMaterial" id=8]
+blend_mode = 1
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 98, 98 )
 
 [node name="LoginScreen" type="Control"]
 anchor_right = 1.0
@@ -354,8 +382,22 @@ secret = true
 secret_character = "◦"
 caret_blink = true
 
+[node name="Preview" type="TextureRect" parent="Menu"]
+visible = false
+self_modulate = Color( 1, 0, 0, 1 )
+margin_left = 358.944
+margin_top = 36.9641
+margin_right = 1730.94
+margin_bottom = 134.964
+texture = SubResource( 6 )
+
+[node name="Value" type="TextureRect" parent="Menu/Preview"]
+material = SubResource( 8 )
+margin_right = 1372.0
+margin_bottom = 98.0
+texture = SubResource( 7 )
+
 [node name="Register" type="VBoxContainer" parent="Menu"]
-editor/display_folded = true
 visible = false
 margin_right = 341.0
 margin_bottom = 54.0
@@ -401,6 +443,22 @@ custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 4 )
 caret_blink = true
 
+[node name="Label4" type="Label" parent="Menu/Register"]
+margin_top = 144.0
+margin_right = 341.0
+margin_bottom = 168.0
+custom_fonts/font = ExtResource( 4 )
+text = "Hue"
+align = 1
+
+[node name="Hue" type="HSlider" parent="Menu/Register"]
+margin_top = 172.0
+margin_right = 341.0
+margin_bottom = 188.0
+custom_styles/focus = SubResource( 4 )
+max_value = 360.0
+step = 10.0
+
 [node name="Password" type="LineEdit" parent="Menu"]
 visible = false
 margin_left = 322.0
@@ -442,8 +500,9 @@ margin_top = 359.281
 margin_right = 678.261
 margin_bottom = 459.281
 rect_scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 5 )
+texture = ExtResource( 7 )
 [connection signal="timeout" from="Connecting/Timer" to="." method="on_long_connect"]
 [connection signal="timeout" from="Status/Timer" to="Status" method="hide"]
+[connection signal="value_changed" from="Menu/Register/Hue" to="." method="on_hue"]
 [connection signal="pressed" from="Menu/LoginButton" to="." method="_on_Login_pressed"]
 [connection signal="pressed" from="Menu/RegisterButton" to="." method="_on_Register_pressed"]

@@ -55,10 +55,16 @@ func _process(delta):
 			process_key_local(RIGHT, KEY_RIGHT)
 			process_key_local(LEFT, KEY_LEFT)
 			process_key_local(MAP, KEY_TAB)
+			
+			process_key_local(CHAT, KEY_T)
+			process_key_local(COMMAND, KEY_SLASH)
 		
 		State.GAME_OVER:
 			process_key_local(ACCEPT, KEY_ENTER)
 			process_key_local(CANCEL, KEY_BACKSPACE)
+			
+			process_key_local(CHAT, KEY_T)
+			process_key_local(COMMAND, KEY_SLASH)
 
 func process_key(key_id, key):
 	if Input.is_key_pressed(key) and !controls.has(key_id):

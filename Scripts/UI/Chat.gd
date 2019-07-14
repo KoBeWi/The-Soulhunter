@@ -5,6 +5,7 @@ const chat_colors = [Color(0.8, 0.8, 0.8), Color(1, 1, 0.4), Color(0.3, 0.5, 1),
 
 onready var font = load("res://Resources/UI/DefaultFont.tres")
 
+var last_state
 var mode = Data.CHATS.GLOBAL
 var whisper = ""
 var last_whisper = ""
@@ -55,8 +56,10 @@ func parse_command(command):
 		whisper = last_whisper
 		return true
 
+const CHAT_ACTIVE = [Controls.State.ACTION, Controls.State.MENU, Controls.State.MAP, Controls.State.GAME_OVER]
+
 func on_key_press(p_id, key, state):
-	if state == Controls.State.ACTION:
+	if state in CHAT_ACTIVE:
 		if key == Controls.CHAT:
 			return activate()
 		elif key == Controls.COMMAND:
@@ -84,6 +87,7 @@ func on_key_press(p_id, key, state):
 			reset()
 
 func activate():
+	last_state = Com.controls.state
 	Com.controls.state = Controls.State.CHAT
 	update_mode()
 	history.scroll_active = true
@@ -99,7 +103,7 @@ func reset():
 	input.release_focus()
 	
 	if Com.controls.state == Controls.State.CHAT:
-		Com.controls.state = Controls.State.ACTION
+		Com.controls.state = last_state
 
 func mode_text(type, add_whisper):
 	return str("[", default_chats[type], (" to " + whisper) if add_whisper else "", "] ")

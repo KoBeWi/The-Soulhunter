@@ -41,7 +41,7 @@ public class Unpacker {
     public void  HandlePacket(Database database, Player player) {
         switch (command) {
             case Packet.TYPE.REGISTER:
-            player.SendPacket(new Packet(command).AddU8((byte)database.RegisterUser(GetString(), GetString())));
+            player.SendPacket(new Packet(command).AddU8((byte)database.RegisterUser(GetString(), GetString(), GetU16())));
 
             break;
             case Packet.TYPE.LOGIN:

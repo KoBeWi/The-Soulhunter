@@ -207,6 +207,9 @@ public class Character : Godot.Object {
     }
 
     public void Save() {
+        SetStat("hp", GetStat("max_hp"));
+        SetStat("mp", GetStat("max_mp"));
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, new String[] {"hp", "mp"}));
         database.SaveCharacter(data);
     }
 

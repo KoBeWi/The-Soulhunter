@@ -13,7 +13,7 @@ public class Database {
         database = client.GetDatabase("the_soulhunter");
     }
 
-    public Error RegisterUser(string login, string password) {
+    public Error RegisterUser(string login, string password, ushort hue) {
         var collection = database.GetCollection<BsonDocument>("players");
 
         if (collection.CountDocuments(new BsonDocument {{"login", login}} ) == 1) {
@@ -22,7 +22,8 @@ public class Database {
 
         collection.InsertOne(new BsonDocument {
             {"login", login},
-            {"password", password}
+            {"password", password},
+            {"hue", hue} //po prostu nie ;_;
         } );
 
         return Error.Ok;
@@ -64,6 +65,9 @@ public class Database {
 
     public BsonDocument CreateCharacter(string name) {
         var collection = database.GetCollection<BsonDocument>("characters");
+        //hack
+        var collection2 = database.GetCollection<BsonDocument>("players");
+        var found = collection2.Find(new BsonDocument {{"name", name}} ).FirstOrDefault();
 
         var data = new BsonDocument {
             {"name", name},
@@ -85,7 +89,8 @@ public class Database {
             {"soul_equipment", new BsonArray {0, 0, 0, 0, 0, 0, 0}},
             {"chests", new BsonArray()},
             {"discovered", new BsonArray()},
-            {"game_over", 0}
+            {"game_over", 0},
+            {"hue", found.GetValue("hue").AsInt32}
         };
 
         collection.InsertOne(data);
