@@ -26,16 +26,19 @@ func _ready():
 	Network.connect(\"game_over\", self, \"on_game_over\")
 	
 	Com.controls.set_process(true)
+	Com.controls.connect(\"key_press\", self, \"on_key_press\")
+	Com.controls.state = Controls.State.MENU
+	
 	self.select = 0
 
-func _input(event):
+func on_key_press(p_id, key, _state):
 	if state == MAIN:
-		if Input.is_action_just_pressed(\"ui_down\") and select < max_select:
+		if key == Controls.DOWN and select < max_select:
 			self.select += 1
-		elif Input.is_action_just_pressed(\"ui_up\") and select > 0:
+		elif key == Controls.UP and select > 0:
 			self.select -= 1
 	
-	if Input.is_action_just_pressed(\"ui_accept\"):
+	if key == Controls.ACCEPT:
 		match state:
 			MAIN:
 				match select:
@@ -72,7 +75,7 @@ func _input(event):
 					2:
 						Packet.new(Packet.TYPE.REGISTER).add_string($Menu/Register/LoginInput.text).add_string($Menu/Register/PasswordInput.text).add_u16($Menu/Register/Hue.value).send()
 						$Menu/Preview.visible = false
-	elif Input.is_action_just_pressed(\"ui_cancel\"):
+	elif key == Controls.CANCEL:
 		match state:
 			LOGIN:
 				match select:
@@ -97,7 +100,8 @@ func _input(event):
 						self.select = 1
 						$Menu/Register/PasswordInput.grab_focus()
 						$Menu/Register/PasswordInput.select_all()
-	
+
+func _input(event):
 	if event is InputEventKey:
 		if event.pressed and event.scancode == KEY_F1:
 			Packet.new(Packet.TYPE.LOGIN).add_string(\"KoBeWi\").add_string(\"vEryHaRdAnDlOnGpAsSwOrD\").send()

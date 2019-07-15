@@ -77,8 +77,10 @@ func _notification(what):
 		if visible:
 			select_rect.visible = true
 			if inventory_mode:
+				inventory_help()
 				select_inventory()
 			else:
+				slot_help()
 				select()
 		else:
 			select_rect.visible = false
@@ -106,6 +108,7 @@ func select_inventory():
 		description.visible = false
 
 func inventory_mode():
+	inventory_help()
 	$Slots.visible = false
 	$Inventory.visible = true
 	
@@ -118,10 +121,23 @@ func inventory_mode():
 	call_deferred("update_inventory")
 
 func slot_mode():
+	slot_help()
 	$Slots.visible = true
 	$Inventory.visible = false
 	inventory_mode = false
 	select()
+
+func inventory_help():
+	main.get_help("Select").visible = true
+	main.get_help("Select").set_text("Equip")
+	main.get_help("Unequip").visible = false
+	main.get_help("Cancel").visible = true
+
+func slot_help():
+	main.get_help("Select").visible = true
+	main.get_help("Select").set_text("Select")
+	main.get_help("Unequip").visible = true
+	main.get_help("Cancel").visible = false
 
 func sync_souls(data):
 	souls = data

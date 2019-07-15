@@ -91,3 +91,6 @@ func preview_stats(item, item2):
 	else:
 		for stat in MAIN_STAT_LIST:
 			set_main_stat(stat, newest_stats[stat])
+
+func get_help(help):
+	return $Help.get_node(help)

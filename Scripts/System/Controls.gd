@@ -2,6 +2,7 @@ class_name Controls
 extends Node
 
 enum{ATTACK, JUMP, UP, RIGHT, DOWN, LEFT, SOUL, ACCEPT, CANCEL, MAP, MENU, CHAT, COMMAND, CLOSE_CHAT}
+const NAMES = ["ATTACK", "JUMP", "UP", "RIGHT", "DOWN", "LEFT", "SOUL", "ACCEPT", "CANCEL", "MAP", "MENU", "CHAT", "COMMAND", "CLOSE_CHAT"]
 
 enum State{NONE, ACTION, CHAT, MENU, MAP, GAME_OVER}
 var state = State.NONE

@@ -60,3 +60,9 @@ func on_press_key(key):
 	
 	if select != old_select:
 		select()
+
+func _notification(what):
+	if what == NOTIFICATION_VISIBILITY_CHANGED and visible:
+		main.get_help("Select").visible = false
+		main.get_help("Unequip").visible = false
+		main.get_help("Cancel").visible = false

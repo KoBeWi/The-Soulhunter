@@ -1,6 +1,6 @@
 -błąd +dodatek >zmiana
 
-+pomoc w menu gracza
++pomoc do mapy i menu (że można otworzyć je)
 +info o klawiszach, gdy gracz wchodzi
 +puszczanie klaiwszy po zmianie stanu sterowania (np. idzie grazc i mapa)
 +kucanie

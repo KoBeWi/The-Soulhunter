@@ -1,8 +1,13 @@
 extends HBoxContainer
 
+export(NodePath) var main = @"../../.."
+
 onready var stat_list = $Grid
 
 var level = 1
+
+func _ready():
+	main = get_node(main)
 
 func update_stats(stats):
 	if "level" in stats:
@@ -14,3 +19,9 @@ func update_stats(stats):
 
 func on_press_key(key):
 	pass
+
+func _notification(what):
+	if what == NOTIFICATION_VISIBILITY_CHANGED and visible:
+		main.get_help("Select").visible = false
+		main.get_help("Unequip").visible = false
+		main.get_help("Cancel").visible = false

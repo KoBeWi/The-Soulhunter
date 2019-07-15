@@ -44,9 +44,10 @@ func update_equipment_inventory(items = null):
 	select_inventory()
 
 func select():
+	slot_help()
 	var selected = slots.get_child(select)
 	for slot in slots.get_children():
-		slot.select(selected, inventory_select == -1)
+		slot.select(selected, !is_slot_selected())
 	
 	if selected.empty():
 		description.visible = false
@@ -61,6 +62,7 @@ func select():
 
 func select_inventory():
 	if inventory_select > -1:
+		inventory_help()
 		var selected = inventory.get_child(inventory_select)
 		for slot in inventory.get_children():
 			slot.select(selected)
@@ -99,9 +101,12 @@ func get_filter():
 			return ["cape"]
 		7, 8:
 			return ["accessory"]
-			
+
+func is_slot_selected():
+	return inventory_select != -1
+
 func on_press_key(key):
-	if inventory_select == -1:
+	if !is_slot_selected():
 		var old_select = select
 		if key == Controls.RIGHT:
 			select = min(select + 1, slots.get_child_count()-1)
@@ -161,3 +166,22 @@ func unequip_item():
 
 func preview_stats(item):
 	main.preview_stats(item, slots.get_child(select).item_name)
+
+func _notification(what):
+	if what == NOTIFICATION_VISIBILITY_CHANGED and visible:
+		if is_slot_selected():
+			inventory_help()
+		else:
+			slot_help()
+
+func inventory_help():
+	main.get_help("Select").visible = true
+	main.get_help("Select").set_text("Equip")
+	main.get_help("Unequip").visible = false
+	main.get_help("Cancel").visible = true
+
+func slot_help():
+	main.get_help("Select").visible = true
+	main.get_help("Select").set_text("Select")
+	main.get_help("Unequip").visible = true
+	main.get_help("Cancel").visible = false
