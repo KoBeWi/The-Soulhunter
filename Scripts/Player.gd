@@ -8,6 +8,7 @@ enum ACTIONS{NONE, SKELETON}
 
 var controls = {}
 var key_press = {}
+var key_release = {}
 
 var uname = "" setget set_username
 var hue = 0
@@ -16,8 +17,10 @@ var last_server_position = Vector2()
 var main = false
 var action = ACTIONS.NONE
 var cached_action = ACTIONS.NONE
+var animation = "Idle"
 var last_room
 
+var crouch = false
 var jump = false
 var attack = false
 var skeleton = false
@@ -39,6 +42,7 @@ onready var sprite2 = $Sprite/Sprite
 onready var weapon_point = $Sprite/WeaponHinge
 onready var chr = $Character
 onready var anim = $Animation
+onready var hitbox = $Hitbox
 
 var camera
 
@@ -101,50 +105,85 @@ func _process(delta):
 				sprite.visible = false
 				$Skeleton.visible = true
 			skeleton = !skeleton
-			
 			action = ACTIONS.NONE
 
 func _physics_process(delta):
+	process_walking()
+	process_crouching()
+	process_jumping()
+	process_attack()
+	if !Com.is_server: process_animations()
+	
+	motion = move_and_slide_with_snap(motion, Vector2.DOWN * 32 if !jump else Vector2(), Vector2.UP, true)
+	
+	if interactable and Controls.UP in key_press:
+		interactable.interact(self)
+	
+	if !controls.empty():
+		last_controls = last_tick
+	key_press.clear()
+	key_release.clear()
+
+func process_walking():
 	var flip = sprite.flip_h
 	
 	motion += Vector2(0, GRAVITY)
-	if controls.has(Controls.RIGHT):
-		motion.x = SPEED
+	if Controls.RIGHT in controls:
+		if !crouch: motion.x = SPEED
 		sprite.flip_h = false
-	elif controls.has(Controls.LEFT):
-		motion.x = -SPEED
+	elif Controls.LEFT in controls:
+		if !crouch: motion.x = -SPEED
 		sprite.flip_h = true
 	else:
 		motion.x = 0
 	
 	if flip != sprite.flip_h: flip()
-		
-	if key_press.has(Controls.JUMP) and is_on_floor():
+
+func process_crouching():
+	if is_on_floor() and Controls.DOWN in key_press:
+		crouch = true
+		hitbox.get_child(0).disabled = true
+		hitbox.get_child(1).disabled = false
+	elif crouch and Controls.DOWN in key_release:
+		crouch = false
+		hitbox.get_child(0).disabled = false
+		hitbox.get_child(1).disabled = true
+
+func process_jumping():
+	if is_on_floor() and Controls.JUMP in key_press:
 		jump = true
 		motion.y = -JUMP
 	
+	if !is_on_floor() and motion.y >= 0:
+		jump = false
+
+func process_animations():
+	var prev_anim = animation
+	
 	if attack:
 		pass
-	elif motion.y < 0:
-		if anim.assigned_animation != "Jump":
-			anim.play("Jump")
-	elif !is_on_floor() and motion.y >= 0:
-		jump = false
-		
-		if anim.assigned_animation != "Fall":
-			anim.play("Fall")
+	elif !is_on_floor() and jump:
+		animation = "Jump"
+	elif !is_on_floor() and !jump:
+		animation = "Fall"
+	elif crouch:
+		animation = "Crouch"
 	elif motion.x != 0:
-		anim.current_animation = "Walk"
+		animation = "Walk"
 	else:
-		anim.play("Idle")
+		animation = "Idle"
 	
-	motion = move_and_slide_with_snap(motion, Vector2.DOWN * 32 if !jump else Vector2(), Vector2.UP, true)
-	
-	if key_press.has(Controls.ATTACK) and !attack:
+	if animation != prev_anim:
+		anim.play(animation)
+		if animation == "Crouch" and prev_anim != "Idle":
+			anim.advance(2)
+
+func process_attack():
+	if Controls.ATTACK in key_press and !attack:
 		if skeleton:
 			pass
 		else:
-			if controls.has(Controls.UP):
+			if Controls.UP in controls:
 				trigger_soul()
 			else:
 				if get_weapon():
@@ -152,17 +191,10 @@ func _physics_process(delta):
 					attack = true
 					weapon_point.visible = true
 #					anim.playback_speed = 4
-					anim.play(str(get_weapon().attack_type, "Attack", direction()))
-			
-	elif key_press.has(Controls.SOUL) and !attack:
+					animation = str(get_weapon().attack_type, "Attack", "Crouch" if crouch else "", direction())
+					anim.play(animation)
+	elif Controls.SOUL in key_press and !attack:
 		active_soul()
-	
-	if interactable and key_press.has(Controls.UP):
-		interactable.interact(self)
-	
-	if !controls.empty():
-		last_controls = last_tick
-	key_press.clear()
 
 func trigger_soul():
 	if !Com.is_server: return ##TODO: klient może dostawać info
@@ -213,6 +245,7 @@ func on_key_press(p_id, key, state):
 func on_key_release(p_id, key, state):
 	if (!main or state == Controls.State.ACTION) and p_id == get_meta("id"):
 		controls.erase(key)
+		key_release[key] = true
 
 func flip(f = sprite.flip_h):
 	sprite.flip_h = f
@@ -374,7 +407,7 @@ func get_state_vector():
 func apply_state_vector(timestamp, diff_vector, vector):
 	if vector[0] != uname:
 		self.uname = vector[0]
-	sprite.self_modulate.h = vector[1] / 360.0
+	sprite2.self_modulate.h = vector[1] / 360.0
 	hue = vector[1]
 	
 	var target_position = Vector2(vector[2], vector[3])
@@ -406,5 +439,5 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	action = vector[4]
 
 func set_frame():
-	return
-	sprite2.frame = sprite.frame
+	if sprite:
+		sprite2.frame = sprite.frame

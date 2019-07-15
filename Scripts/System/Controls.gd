@@ -41,9 +41,10 @@ func _process(delta):
 			process_key_local(CHAT)
 			process_key_local(COMMAND)
 			
-			process_key(UP)
 			process_key(RIGHT)
 			process_key(LEFT)
+			process_key(UP)
+			process_key(DOWN)
 			process_key(JUMP)
 			process_key(ATTACK)
 			process_key(SOUL)

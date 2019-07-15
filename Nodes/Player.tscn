@@ -1,16 +1,16 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
 [ext_resource path="res://Graphics/Characters/Player.png" type="Texture" id=3]
-[ext_resource path="res://Graphics/Characters/PlayerValue.png" type="Texture" id=4]
+[ext_resource path="res://Graphics/Characters/PlayerColor.png" type="Texture" id=4]
 [ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=5]
 [ext_resource path="res://Graphics/UI/PressUp.png" type="Texture" id=6]
 
 [sub_resource type="Animation" id=15]
 resource_name = "Crouch"
-length = 3.0
-step = 1.0
+length = 1.5
+step = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -18,7 +18,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 2 ),
+"times": PoolRealArray( 0, 0.5, 1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 7, 8, 9 ]
@@ -72,6 +72,88 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 8, 17 ]
+}
+
+[sub_resource type="Animation" id=24]
+resource_name = "SlashAttackCrouchL"
+length = 3.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 34, 35, 36 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/WeaponHinge:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( -5.2127, 9.76521 ), Vector2( -26.3944, 19.5825 ), Vector2( 28.6404, 22.2067 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/WeaponHinge:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 76.3, -90.0, -243.0 ]
+}
+
+[sub_resource type="Animation" id=23]
+resource_name = "SlashAttackCrouchR"
+length = 3.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 34, 35, 36 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/WeaponHinge:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 5.21676, 10.2327 ), Vector2( 26.4114, 19.7763 ), Vector2( -28.2825, 22.1731 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/WeaponHinge:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ -76.2865, 90.0, 243.016 ]
 }
 
 [sub_resource type="Animation" id=19]
@@ -156,6 +238,88 @@ tracks/2/keys = {
 "values": [ -76.2865, 90.0, 243.016 ]
 }
 
+[sub_resource type="Animation" id=21]
+resource_name = "StabAttackCrouchL"
+length = 2.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 37, 38 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/WeaponHinge:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 3.24861, 19.5877 ), Vector2( -26.007, 19.3088 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/WeaponHinge:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ -90.0 ]
+}
+
+[sub_resource type="Animation" id=20]
+resource_name = "StabAttackCrouchR"
+length = 2.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 37, 38 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/WeaponHinge:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( -3.91871, 19.7814 ), Vector2( 25.2027, 19.2752 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/WeaponHinge:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 90.0 ]
+}
+
 [sub_resource type="Animation" id=18]
 resource_name = "StabAttackL"
 length = 2.0
@@ -236,6 +400,88 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ 90.0 ]
+}
+
+[sub_resource type="Animation" id=25]
+resource_name = "SwingAttackCrouchL"
+length = 4.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 30, 31, 32, 33 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/WeaponHinge:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 13.7323, -5.32882 ), Vector2( -14.1183, -6.10367 ), Vector2( -27.9906, 4.14758 ), Vector2( -26.0871, 37.6365 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/WeaponHinge:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 122.928, 91.8277, 408.898, -433.5 ]
+}
+
+[sub_resource type="Animation" id=22]
+resource_name = "SwingAttackCrouchR"
+length = 4.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 30, 31, 32, 33 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/WeaponHinge:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( -14.1493, -5.70335 ), Vector2( 14.329, -5.6026 ), Vector2( 27.5401, 4.76229 ), Vector2( 26.3649, 37.9438 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/WeaponHinge:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 236.437, 268.673, 312.326, 433.489 ]
 }
 
 [sub_resource type="Animation" id=17]
@@ -346,9 +592,6 @@ func _on_Animation_animation_finished(anim_name):
 	elif anim_name.find(\"Attack\"):
 		$\"..\".attack_end()"
 
-[sub_resource type="CanvasItemMaterial" id=10]
-blend_mode = 1
-
 [sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 24, 32 )
 
@@ -357,6 +600,9 @@ length = 32.0
 
 [sub_resource type="RectangleShape2D" id=13]
 extents = Vector2( 24, 48 )
+
+[sub_resource type="RectangleShape2D" id=26]
+extents = Vector2( 24, 32 )
 
 [sub_resource type="Animation" id=14]
 loop = true
@@ -389,10 +635,16 @@ anims/Crouch = SubResource( 15 )
 anims/Fall = SubResource( 1 )
 anims/Idle = SubResource( 2 )
 anims/Jump = SubResource( 3 )
+anims/SlashAttackCrouchL = SubResource( 24 )
+anims/SlashAttackCrouchR = SubResource( 23 )
 anims/SlashAttackL = SubResource( 19 )
 anims/SlashAttackR = SubResource( 16 )
+anims/StabAttackCrouchL = SubResource( 21 )
+anims/StabAttackCrouchR = SubResource( 20 )
 anims/StabAttackL = SubResource( 18 )
 anims/StabAttackR = SubResource( 5 )
+anims/SwingAttackCrouchL = SubResource( 25 )
+anims/SwingAttackCrouchR = SubResource( 22 )
 anims/SwingAttackL = SubResource( 17 )
 anims/SwingAttackR = SubResource( 7 )
 anims/Walk = SubResource( 8 )
@@ -403,18 +655,19 @@ script = SubResource( 9 )
 texture = ExtResource( 3 )
 vframes = 5
 hframes = 10
-frame = 24
+frame = 9
 region_rect = Rect2( 43, 10, 0.5, 0 )
 
 [node name="WeaponHinge" type="Position2D" parent="Sprite"]
-position = Vector2( 4.44192, -9.13845 )
-rotation = -1.33145
+position = Vector2( -26.0871, 37.6365 )
+rotation = -7.566
 
 [node name="Sprite" type="Sprite" parent="Sprite"]
 visible = false
-material = SubResource( 10 )
+self_modulate = Color( 1, 0, 0, 1 )
 texture = ExtResource( 4 )
-hframes = 14
+vframes = 5
+hframes = 10
 
 [node name="Skeleton" type="Sprite" parent="."]
 visible = false
@@ -442,14 +695,17 @@ size_flags_vertical = 0
 valign = 1
 
 [node name="Hitbox" type="Area2D" parent="."]
-editor/display_folded = true
-visible = false
 collision_layer = 0
 collision_mask = 2
 
-[node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
+[node name="Collider" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( 0, 16 )
 shape = SubResource( 13 )
+
+[node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( 0, 32 )
+shape = SubResource( 26 )
+disabled = true
 
 [node name="ManaTimer" type="Timer" parent="."]
 autostart = true

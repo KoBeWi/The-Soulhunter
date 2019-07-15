@@ -1,11 +1,11 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Graphics/UI/Title.png" type="Texture" id=1]
 [ext_resource path="res://Graphics/UI/TitleText.png" type="Texture" id=2]
 [ext_resource path="res://Resources/UI/DefaultFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Resources/UI/BiggerFont.tres" type="DynamicFont" id=4]
-[ext_resource path="res://Graphics/Characters/PlayerClear.png" type="Texture" id=5]
-[ext_resource path="res://Graphics/Characters/PlayerValue.png" type="Texture" id=6]
+[ext_resource path="res://Graphics/Characters/Player.png" type="Texture" id=5]
+[ext_resource path="res://Graphics/Characters/PlayerColor.png" type="Texture" id=6]
 [ext_resource path="res://Graphics/UI/Keys/Enter.png" type="Texture" id=7]
 
 [sub_resource type="GDScript" id=1]
@@ -184,7 +184,7 @@ func on_game_over(time):
 	queue_free()
 
 func on_hue(value):
-	$Menu/Preview.self_modulate.h = value / 360.0"
+	$Menu/Preview/Value.self_modulate.h = value / 360.0"
 
 [sub_resource type="Animation" id=2]
 resource_name = "Connecting"
@@ -228,17 +228,13 @@ border_width_bottom = 2
 border_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="AtlasTexture" id=6]
-flags = 4
 atlas = ExtResource( 5 )
-region = Rect2( 0, 0, 98, 98 )
-
-[sub_resource type="CanvasItemMaterial" id=7]
-blend_mode = 1
+region = Rect2( 0, 0, 64, 128 )
 
 [sub_resource type="AtlasTexture" id=8]
 flags = 4
 atlas = ExtResource( 6 )
-region = Rect2( 0, 0, 98, 98 )
+region = Rect2( 0, 0, 64, 128 )
 
 [node name="LoginScreen" type="Control"]
 anchor_right = 1.0
@@ -388,7 +384,6 @@ caret_blink = true
 
 [node name="Preview" type="TextureRect" parent="Menu"]
 visible = false
-self_modulate = Color( 1, 0, 0, 1 )
 margin_left = 358.944
 margin_top = 36.9641
 margin_right = 1730.94
@@ -396,7 +391,7 @@ margin_bottom = 134.964
 texture = SubResource( 6 )
 
 [node name="Value" type="TextureRect" parent="Menu/Preview"]
-material = SubResource( 7 )
+self_modulate = Color( 1, 0, 0, 1 )
 margin_right = 1372.0
 margin_bottom = 98.0
 texture = SubResource( 8 )
