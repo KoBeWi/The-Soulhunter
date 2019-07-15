@@ -9,6 +9,7 @@
 +unicode w czacie
 -potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation
 
+>niedawanie do ticka objektów, które wcale się nie zmieniły
 -zwalone tło jak większe okno
 +sterowanie
 >zablokować puste nazwy i hasła

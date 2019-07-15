@@ -36,8 +36,7 @@ var interactable
 
 onready var sprite = $Sprite
 onready var sprite2 = $Sprite/Sprite
-onready var arm = $Sprite/ArmPosition
-onready var weapon_point = $Sprite/ArmPosition/Arm/WeaponHinge
+onready var weapon_point = $Sprite/WeaponHinge
 onready var chr = $Character
 onready var anim = $Animation
 
@@ -53,7 +52,7 @@ func _ready():
 	
 	Com.controls.connect("key_press", self, "on_key_press")
 	Com.controls.connect("key_release", self, "on_key_release")
-	arm.visible = false
+	weapon_point.visible = false
 	
 	set_weapon(0)
 
@@ -151,9 +150,9 @@ func _physics_process(delta):
 				if get_weapon():
 					get_weapon().set_disabled(false)
 					attack = true
-					arm.visible = true
-					anim.playback_speed = 4
-					anim.play(get_weapon().attack_type + direction())
+					weapon_point.visible = true
+#					anim.playback_speed = 4
+					anim.play(str(get_weapon().attack_type, "Attack", direction()))
 			
 	elif key_press.has(Controls.SOUL) and !attack:
 		active_soul()
@@ -218,7 +217,6 @@ func on_key_release(p_id, key, state):
 func flip(f = sprite.flip_h):
 	sprite.flip_h = f
 	sprite2.flip_h = f
-	arm.position.x *= -1
 
 func direction():
 	if sprite.flip_h:
@@ -243,7 +241,7 @@ func damage(enemy):
 
 func attack_end():
 	attack = false
-	arm.visible = false
+	weapon_point.visible = false
 	anim.playback_speed = 8
 	get_weapon().set_disabled(true)
 
@@ -408,4 +406,5 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	action = vector[4]
 
 func set_frame():
+	return
 	sprite2.frame = sprite.frame

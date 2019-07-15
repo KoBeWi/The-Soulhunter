@@ -27,7 +27,7 @@ func update_equipment(items):
 	
 	select()
 
-func update_equipment_inventory(items = null):
+func update_equipment_inventory(items = []):
 	var available = []
 	var filter = get_filter()
 	

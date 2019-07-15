@@ -28,17 +28,24 @@ func select():
 		description.get_node("Panel2/Text").text = Res.items[item].description
 		description.get_node("Panel1/Icon").texture = Res.item_icon(item)
 
-func update_inventory(items = null):
-	main.stacks = {}
-	
-	for i in items.size():
-		var item = items[i]
+func update_inventory(items = []):
+	if items is Array:
+		main.stacks = {}
 		
+		for i in items.size():
+			var item = items[i]
+			
+			if item in main.stacks:
+				main.stacks[item].amount += 1
+			else:
+				main.stacks[item] = {item = Res.get_res(Res.items, item).name, amount = 1, origin = i}
+	else:
+		var item = items
 		if item in main.stacks:
 			main.stacks[item].amount += 1
 		else:
-			main.stacks[item] = {item = Res.get_res(Res.items, item).name, amount = 1, origin = i}
-	
+			main.stacks[item] = {item = Res.get_res(Res.items, item).name, amount = 1, origin = main.stacks.size()}
+		
 	for i in slots.get_child_count():
 		if i < main.stacks.size():
 			slots.get_child(i).set_item(main.stacks[main.stacks.keys()[i]])
