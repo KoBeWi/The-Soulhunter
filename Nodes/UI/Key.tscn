@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Graphics/UI/Keys/Normal.png" type="Texture" id=1]
+[ext_resource path="res://Resources/UI/BoldFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Resources/UI/BiggerFont.tres" type="DynamicFont" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends TextureRect
+
+const TEXTURES = [preload(\"res://Graphics/UI/Keys/Normal.png\"), preload(\"res://Graphics/UI/Keys/Wide.png\"), preload(\"res://Graphics/UI/Keys/Tall.png\"), preload(\"res://Graphics/UI/Keys/Enter.png\")]
+
+export var action = \"\"
+export var function = \"\"
+
+func _ready():
+	var key = KEY_SPACE
+	texture = TEXTURES[KeyList.keys[key].type]
+	get_child(0).text = KeyList.keys[key].name
+	get_child(1).text = function"
+
+[node name="Key" type="TextureRect"]
+margin_right = 100.0
+margin_bottom = 100.0
+texture = ExtResource( 1 )
+script = SubResource( 1 )
+
+[node name="Name" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "ESC"
+align = 1
+valign = 1
+
+[node name="Function" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 3 )
+text = "What to do"
+valign = 1

@@ -6,7 +6,7 @@
 [ext_resource path="res://Resources/UI/BiggerFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Graphics/Characters/PlayerClear.png" type="Texture" id=5]
 [ext_resource path="res://Graphics/Characters/PlayerValue.png" type="Texture" id=6]
-[ext_resource path="res://Graphics/UI/Enter.png" type="Texture" id=7]
+[ext_resource path="res://Graphics/UI/Keys/Enter.png" type="Texture" id=7]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "LoginScreen"
@@ -228,10 +228,10 @@ flags = 4
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 98, 98 )
 
-[sub_resource type="CanvasItemMaterial" id=8]
+[sub_resource type="CanvasItemMaterial" id=7]
 blend_mode = 1
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=8]
 flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 0, 0, 98, 98 )
@@ -392,10 +392,10 @@ margin_bottom = 134.964
 texture = SubResource( 6 )
 
 [node name="Value" type="TextureRect" parent="Menu/Preview"]
-material = SubResource( 8 )
+material = SubResource( 7 )
 margin_right = 1372.0
 margin_bottom = 98.0
-texture = SubResource( 7 )
+texture = SubResource( 8 )
 
 [node name="Register" type="VBoxContainer" parent="Menu"]
 visible = false

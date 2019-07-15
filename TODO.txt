@@ -8,11 +8,11 @@
 -wychodzący gracz się nie wylogowyje?
 -można przeżyć z 0 hp? (albo buguje się wartość)
 +unicode w czacie
+-potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation
 
 -zwalone tło jak większe okno
 +sterowanie
 >zablokować puste nazwy i hasła
->przerobić title na Controls
 +więcej postaci że można
 -jak gracz wychodzi z gameovera to się nie wylogowuje
 -a potem wgl łączy się znowu z serwerem wtf

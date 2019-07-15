@@ -250,6 +250,7 @@ margin_bottom = 131.0
 rect_min_size = Vector2( 0, 16 )
 
 [node name="Tabs" type="Control" parent="Container"]
+editor/display_folded = true
 margin_top = 131.0
 margin_right = 736.0
 margin_bottom = 131.0
@@ -893,6 +894,8 @@ editor/display_folded = true
 margin_right = 364.0
 margin_bottom = 32.0
 type = "Trigger"
+color = Color( 1, 0, 0, 1 )
+no_select = false
 
 [node name="Active" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
@@ -902,6 +905,7 @@ margin_bottom = 32.0
 type = "Active"
 soul = "Skeleton Disguise"
 color = Color( 0, 0, 1, 1 )
+no_select = false
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Active" index="0"]
 self_modulate = Color( 0, 0, 1, 1 )
@@ -935,6 +939,7 @@ margin_bottom = 72.0
 type = "Augment"
 soul = "STR+"
 color = Color( 1, 1, 0, 1 )
+no_select = false
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Augment" index="0"]
 self_modulate = Color( 1, 1, 0, 1 )
@@ -969,6 +974,7 @@ margin_bottom = 72.0
 type = "Enchant"
 soul = "Razor Blade"
 color = Color( 1, 0, 1, 1 )
+no_select = false
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Enchant" index="0"]
 self_modulate = Color( 1, 0, 1, 1 )
@@ -1001,6 +1007,7 @@ margin_bottom = 112.0
 type = "Extension"
 soul = "Enchanced Bone Throw"
 color = Color( 1, 1, 1, 0.501961 )
+no_select = false
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Extension" index="0"]
 self_modulate = Color( 1, 1, 1, 0.501961 )
@@ -1226,16 +1233,6 @@ margin_bottom = -4.0
 custom_fonts/font = ExtResource( 8 )
 text = "hello this is description"
 
-[node name="Tab" type="Label" parent="."]
-margin_left = 304.141
-margin_top = 81.979
-margin_right = 432.141
-margin_bottom = 98.979
-rect_min_size = Vector2( 128, 0 )
-text = "[TAB]"
-align = 1
-valign = 1
-
 [node name="SoulSelect" type="NinePatchRect" parent="."]
 visible = false
 margin_right = 40.0
@@ -1245,6 +1242,10 @@ patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
 patch_margin_bottom = 4
+
+[node name="Help" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
 
 [editable path="Container/Tabs/Souls/Slots/Active"]
 

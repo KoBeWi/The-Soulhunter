@@ -56,5 +56,4 @@ focus_mode = 1
 context_menu_enabled = false
 placeholder_text = "Press T to chat"
 caret_blink = true
-
 [connection signal="text_changed" from="Container/Input/Text" to="." method="on_text"]

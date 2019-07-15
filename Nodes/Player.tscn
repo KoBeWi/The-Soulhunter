@@ -215,19 +215,19 @@ func _on_Animation_animation_finished(anim_name):
 	elif anim_name.find(\"Attack\"):
 		$\"..\".attack_end()"
 
-[sub_resource type="CanvasItemMaterial" id=14]
+[sub_resource type="CanvasItemMaterial" id=10]
 blend_mode = 1
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 24, 32 )
 
-[sub_resource type="RayShape2D" id=11]
+[sub_resource type="RayShape2D" id=12]
 length = 32.0
 
-[sub_resource type="RectangleShape2D" id=12]
+[sub_resource type="RectangleShape2D" id=13]
 extents = Vector2( 24, 48 )
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=14]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:position")
@@ -283,7 +283,7 @@ texture = ExtResource( 4 )
 position = Vector2( 3, -11 )
 
 [node name="Sprite" type="Sprite" parent="Sprite"]
-material = SubResource( 14 )
+material = SubResource( 10 )
 texture = ExtResource( 5 )
 hframes = 14
 
@@ -297,12 +297,12 @@ hframes = 10
 [node name="Collider" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( 0, -16 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="ColliderRay" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( 0, 16 )
-shape = SubResource( 11 )
+shape = SubResource( 12 )
 
 [node name="Name" type="Label" parent="."]
 margin_left = -19.0
@@ -320,7 +320,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
-shape = SubResource( 12 )
+shape = SubResource( 13 )
 
 [node name="ManaTimer" type="Timer" parent="."]
 autostart = true
@@ -334,7 +334,7 @@ position = Vector2( 0, -96 )
 texture = ExtResource( 7 )
 
 [node name="Animation" type="AnimationPlayer" parent="PressUp"]
-anims/Idle = SubResource( 13 )
+anims/Idle = SubResource( 14 )
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="frame_changed" from="Sprite" to="." method="set_frame"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]

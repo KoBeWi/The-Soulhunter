@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://Scripts/Enemy.gd"
 }, {
 "base": "Reference",
+"class": "KeyList",
+"language": "GDScript",
+"path": "res://Scripts/KeySuperlist.gd"
+}, {
+"base": "Reference",
 "class": "Packet",
 "language": "GDScript",
 "path": "res://Scripts/Networking/Packet.gd"
@@ -48,6 +53,7 @@ _global_script_class_icons={
 "Controls": "",
 "Data": "",
 "Enemy": "",
+"KeyList": "",
 "Packet": "",
 "Soul": "",
 "Unpacker": "",

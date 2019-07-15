@@ -83,7 +83,7 @@ func on_key_press(p_id, key, state):
 				packet.send()
 			
 			reset()
-		elif key == Controls.CANCEL:
+		elif key == Controls.CLOSE_CHAT:
 			reset()
 
 func activate():
