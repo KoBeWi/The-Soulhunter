@@ -2,6 +2,8 @@ extends CanvasLayer
 
 func _ready():
 	Network.connect("stats", self, "update_HUD")
+	$PlayerMenu.connect("visibility_changed", self, "toggle_help", [$PlayerMenu])
+	$Map.connect("visibility_changed", self, "toggle_help", [$Map])
 
 func update_bar(bar):
 	var bar_node = get_node("HUD/" + bar + "Bar")
@@ -45,3 +47,14 @@ func reg_mp():
 
 func player_damaged(amount):
 	update_HUD({hp = $HUD/HPBar.value - amount})
+
+func toggle_help(menu):
+	if menu == $Map:
+		if menu.visible:
+			$Help/Key.visible = false
+			$Help/Key2.set_text("Close")
+		else:
+			$Help/Key.visible = true
+			$Help/Key2.set_text("Map")
+	else:
+		$Help.visible = !menu.visible

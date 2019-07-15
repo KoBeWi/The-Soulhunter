@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/UI/UI.gd" type="Script" id=1]
 [ext_resource path="res://Nodes/UI/HUD.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Nodes/Map.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Nodes/UI/Chat.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Nodes/UI/Labels.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Nodes/UI/Key.tscn" type="PackedScene" id=7]
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -23,10 +24,6 @@ margin_right = 368.0
 margin_bottom = -155.791
 
 [node name="Map" parent="." instance=ExtResource( 4 )]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 margin_left = -20.0
 margin_top = -20.0
 margin_right = 20.0
@@ -39,3 +36,28 @@ margin_top = -130.0
 margin_bottom = 0.0
 
 [node name="Labels" parent="." instance=ExtResource( 6 )]
+
+[node name="Help" type="Control" parent="."]
+editor/display_folded = true
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.0
+margin_top = -40.0
+
+[node name="Key" parent="Help" instance=ExtResource( 7 )]
+margin_left = -336.272
+margin_top = -32.8839
+margin_right = -256.272
+margin_bottom = 47.1161
+action = "MENU"
+function = "Menu"
+
+[node name="Key2" parent="Help" instance=ExtResource( 7 )]
+margin_left = -148.247
+margin_top = -33.5715
+margin_right = -68.2469
+margin_bottom = 46.4285
+action = "MAP"
+function = "Map"

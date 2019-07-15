@@ -4,7 +4,7 @@
 [ext_resource path="res://Resources/UI/DejaVuSerif.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Resources/UI/BiggerFont.tres" type="DynamicFont" id=3]
 
-[sub_resource type="GDScript" id=1]
+[sub_resource type="GDScript" id=2]
 script/source = "extends TextureRect
 
 const TEXTURES = [preload(\"res://Graphics/UI/Keys/Normal.png\"), preload(\"res://Graphics/UI/Keys/Wide.png\"), preload(\"res://Graphics/UI/Keys/Tall.png\"), preload(\"res://Graphics/UI/Keys/Enter.png\")]
@@ -21,7 +21,7 @@ func _ready():
 func set_text(text):
 	get_child(1).text = text"
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=3]
 size = 10
 font_data = ExtResource( 2 )
 
@@ -30,12 +30,12 @@ margin_right = 80.0
 margin_bottom = 80.0
 texture = ExtResource( 1 )
 expand = true
-script = SubResource( 1 )
+script = SubResource( 2 )
 
 [node name="Name" type="Label" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "ESC"
 align = 1
