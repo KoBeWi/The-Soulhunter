@@ -62,6 +62,7 @@ func _process(delta):
 			
 			process_key_local(CHAT)
 			process_key_local(COMMAND)
+			process_key_local(CLOSE_CHAT)
 			
 			process_key_local(UP)
 			process_key_local(DOWN)

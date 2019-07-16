@@ -75,7 +75,7 @@ func on_key_press(p_id, key, _state):
 					2:
 						Packet.new(Packet.TYPE.REGISTER).add_string($Menu/Register/LoginInput.text).add_string($Menu/Register/PasswordInput.text).add_u16($Menu/Register/Hue.value).send()
 						$Menu/Preview.visible = false
-	elif key == Controls.CANCEL:
+	elif key == Controls.CLOSE_CHAT:
 		match state:
 			LOGIN:
 				match select:

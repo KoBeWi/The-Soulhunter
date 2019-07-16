@@ -61,4 +61,5 @@ func add_u16(i : int) -> Packet:
 	return self
 
 func send() -> void:
+#	print("Sending: ", TYPE.keys()[data[1]])
 	Network.send_data(self)

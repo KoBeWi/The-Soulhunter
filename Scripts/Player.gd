@@ -244,7 +244,7 @@ func on_key_press(p_id, key, state):
 
 func on_key_release(p_id, key, state):
 	if p_id == get_meta("id"):
-		if main and key in controls:
+		if main and state != Controls.State.ACTION and key in controls:
 			Packet.new(Packet.TYPE.KEY_RELEASE).add_u8(key).send()
 		
 		controls.erase(key)

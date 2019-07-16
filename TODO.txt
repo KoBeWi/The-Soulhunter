@@ -3,12 +3,12 @@
 +info o klawiszach, gdy gracz wchodzi
 -wychodzący gracz się nie wylogowyje?
 -można przeżyć z 0 hp? (albo buguje się wartość)
--potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation
--jakieś dziwne niezydentyfikowane errory się spamują
 
+-potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation (chyba trzeba też inne kolekcje zabezpieczyć)
 >niedawanie do ticka objektów, które wcale się nie zmieniły
 -zwalone tło jak większe okno
 +sterowanie
+-jakieś dziwne niezydentyfikowane errory się spamują
 >zablokować puste nazwy i hasła
 +więcej postaci że można
 -jak gracz wychodzi z gameovera to się nie wylogowuje

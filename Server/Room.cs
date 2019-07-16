@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
 
 public class Room : Viewport {
     private static readonly PackedScene playerFactory = ResourceLoader.Load("res://Nodes/Player.tscn") as PackedScene;
@@ -14,6 +15,7 @@ public class Room : Viewport {
     private Dictionary<ushort, Node> entityBindings;
     private Dictionary<ushort, Godot.Collections.Array> stateHistory;
     private List<Node> specialNodes;
+    private System.Threading.Mutex playerOperation;
 
     private List<Character> players;
     private Dictionary<Character, Node> playerNodes;
@@ -27,6 +29,7 @@ public class Room : Viewport {
         playerNodes = new Dictionary<Character, Node>();
         stateHistory = new Dictionary<ushort, Godot.Collections.Array>();
         specialNodes = new List<Node>();
+        playerOperation = new System.Threading.Mutex();
         lastEntityId = 0;
         ticks = 0;
         timeout = 0;
@@ -36,7 +39,7 @@ public class Room : Viewport {
 
         entityRoot = GetNode("InGame/Entities");
 
-        GetNode<Timer>("Timer").Connect("timeout", this, "Tick");
+        GetNode<Godot.Timer>("Timer").Connect("timeout", this, "Tick");
 
         GD.Print("Created new room of map ", mapId);
     }
@@ -162,7 +165,10 @@ public class Room : Viewport {
     public void RemovePlayer(Character character, bool free = true, ushort idOverride = 0) {
         if (!players.Contains(character)) return;
 
+        playerOperation.WaitOne();
         players.Remove(character);
+        playerOperation.ReleaseMutex();
+        
         if (free) {
             playerNodes[character].QueueFree();
         } else {
@@ -207,21 +213,27 @@ public class Room : Viewport {
             character.GetPlayer().SendPacket(GetSpecialNodeData(packet, node, character));
         }
 
+        playerOperation.WaitOne();
         players.Add(character);
+        playerOperation.ReleaseMutex();
 
         character.GetPlayer().SendPacket(CreateStatePacket(true));
     }
 
     public void BroadcastPacket(Packet packet) { //wywala gdy usunie się gracza podczas wysyłania
+        playerOperation.WaitOne();
         foreach (var player in players) {
             player.GetPlayer().SendPacket(packet);
         }
+        playerOperation.ReleaseMutex();
     }
 
     public void BroadcastPacketExcept(Packet packet, Character except) {
+        playerOperation.WaitOne();
         foreach (var player in players) {
             if (player != except) player.GetPlayer().SendPacket(packet);
         }
+        playerOperation.ReleaseMutex();
     }
 
     public void RegisterNode(Node node, ushort type, bool clientOnly) {
@@ -280,10 +292,14 @@ public class Room : Viewport {
     }
 
     public Character GetPlayerById(ushort id) {
+        playerOperation.WaitOne();
         foreach (Character player in players)
-            if (player.GetPlayerId() == id)
+            if (player.GetPlayerId() == id) {
+                playerOperation.ReleaseMutex();
                 return player;
+            }
         
+        playerOperation.ReleaseMutex();
         return null;
     }
 
@@ -316,11 +332,14 @@ public class Room : Viewport {
     }
 
     public void DiscoverRoom(ushort playerId, Vector2 room) {
+        playerOperation.WaitOne();
         foreach (Character player in players)
             if (player.GetPlayerId() == playerId) {
+                playerOperation.ReleaseMutex();
                 player.Discover((int)room.x + " " + (int)room.y);
                 return;
             }
+        playerOperation.ReleaseMutex();
     }
 
     public void GameOver(ushort playerId) {
