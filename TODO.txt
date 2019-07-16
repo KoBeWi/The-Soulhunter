@@ -1,7 +1,5 @@
 -błąd +dodatek >zmiana
 
-+info o klawiszach, gdy gracz wchodzi
--wychodzący gracz się nie wylogowyje?
 -można przeżyć z 0 hp? (albo buguje się wartość)
 
 -potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation (chyba trzeba też inne kolekcje zabezpieczyć)
@@ -14,6 +12,7 @@
 -jak gracz wychodzi z gameovera to się nie wylogowuje
 -a potem wgl łączy się znowu z serwerem wtf
 +informacje jak ktoś wchodzi albo umiera
+-wychodzący gracz się nie wylogowyje?
 
 +potwierdzenie save
 +usuwanie gracza z controls, gdy wychodzi z servera

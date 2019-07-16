@@ -393,6 +393,7 @@ func state_vector_types():
 			Data.TYPE.U16,
 			Data.TYPE.U16,
 			Data.TYPE.U16,
+			Data.TYPE.U8,
 			Data.TYPE.U8
 		]
 
@@ -404,7 +405,8 @@ func get_state_vector():
 			int(hue),
 			round(position.x),
 			round(position.y),
-			int(cached_action)
+			int(cached_action),
+			int(Controls.LEFT in controls) | 2*int(Controls.RIGHT in controls)
 		]
 
 func apply_state_vector(timestamp, diff_vector, vector):
@@ -442,6 +444,12 @@ func apply_state_vector(timestamp, diff_vector, vector):
 		last_server_position.y = vector[3]
 	
 	action = vector[4]
+	
+	if !main:
+		if vector[5] & 1:
+			controls[Controls.LEFT] = true
+		if vector[5] & 2:
+			controls[Controls.RIGHT] = true
 
 func set_frame():
 	if sprite:

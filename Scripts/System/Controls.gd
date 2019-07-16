@@ -114,6 +114,8 @@ func process_key_local(key_id):
 		else:
 			release_key(-1, key_id)
 
+var pressed_keys = {}
+
 func press_key(player_id, key, state_override = state):
 	emit_signal("key_press", player_id, key, state_override)
 
