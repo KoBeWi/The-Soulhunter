@@ -49,6 +49,15 @@ public class Packet {
         return this;
     }
 
+    public Packet AddStringUnicode(string s) {
+        var bytes = System.Text.Encoding.UTF8.GetBytes(s);
+        data.Add(bytes);
+        data.Add(zero);
+        length += bytes.Length + 1;
+
+        return this;
+    }
+
     public Packet AddU8(byte i) {
         data.Add(new byte[] {i});
         length += 1;

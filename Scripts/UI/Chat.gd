@@ -75,7 +75,7 @@ func on_key_press(p_id, key, state):
 				parse_command(input.text)
 			else:
 				add_message(Com.player.uname, input.text, mode, mode == Data.CHATS.WHISPER)
-				var packet = Packet.new(Packet.TYPE.CHAT).add_u8(mode).add_string(input.text)
+				var packet = Packet.new(Packet.TYPE.CHAT).add_u8(mode).add_string_unicode(input.text)
 				
 				if mode == Data.CHATS.WHISPER:
 					packet.add_string(whisper)

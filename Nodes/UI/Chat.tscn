@@ -29,6 +29,7 @@ margin_right = 410.0
 margin_bottom = 109.0
 size_flags_vertical = 3
 custom_fonts/bold_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 3 )
 scroll_active = false
 scroll_following = true
 

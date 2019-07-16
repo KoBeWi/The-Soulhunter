@@ -43,6 +43,12 @@ func add_string(string : String) -> Packet:
 	data[0] += string.length() + 1
 	return self
 
+func add_string_unicode(string : String) -> Packet:
+	data.append_array(string.to_utf8())
+	data.append(0)
+	data[0] += string.length() + 1
+	return self
+
 func add_u8(i : int) -> Packet:
 	data.append(i % 256)
 	data[0] += 1

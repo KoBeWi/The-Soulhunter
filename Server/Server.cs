@@ -165,6 +165,7 @@ public class Server : Node {
 
     public static void SetupPlayer(Character character) {
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.LOGIN).AddU8(0));
+        character.GameOver(0);
         // character.GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(character, "level", "exp", "hp", "max_hp", "mp", "max_mp"));
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(character, "level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"));
         character.GetPlayer().SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(character.GetInventory()));

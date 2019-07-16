@@ -23,6 +23,18 @@ func get_string() -> String:
 #	print("string ", string.get_string_from_ascii())
 	return string.get_string_from_ascii()
 
+func get_string_unicode() -> String:
+	var string = PoolByteArray()
+	
+	while data[offset] != 0:
+		string.append(data[offset])
+		offset += 1
+	
+	offset += 1
+	
+#	print("string ", string.get_string_from_utf8())
+	return string.get_string_from_utf8()
+
 func get_u8() -> int:
 #	print("u8 ", data[offset])
 	offset += 1

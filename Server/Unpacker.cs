@@ -26,6 +26,19 @@ public class Unpacker {
         return result;
     }
 
+    public string GetStringUnicode() {
+        int i = offset;
+        while (data[i] != 0) i++;
+
+        var initializer = new byte[i - offset];
+        Buffer.BlockCopy(data, offset, initializer, 0, i - offset);
+        var result = System.Text.Encoding.UTF8.GetString(initializer);
+
+        offset = i+1;
+
+        return result;
+    }
+
     public ushort GetU16() {
         offset += 2;
         return (ushort)(data[offset-2] * 256 + data[offset-1]);
@@ -82,8 +95,8 @@ public class Unpacker {
             break;
             case Packet.TYPE.CHAT:
             var mode = GetU8();
-            var message = GetString(); //debug
-            var packet = new Packet(command).AddU8(mode).AddString(player.GetCharacter().GetName()).AddString(message);
+            var message = GetStringUnicode(); //debug
+            var packet = new Packet(command).AddU8(mode).AddString(player.GetCharacter().GetName()).AddStringUnicode(message);
             GD.Print(player.GetCharacter().GetName(), ": ", message);
             
             if (mode == (byte)Data.CHATS.GLOBAL) {

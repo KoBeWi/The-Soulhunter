@@ -82,7 +82,7 @@ func process_packet(unpacker : Unpacker):
 			emit_signal("error", unpacker.get_u8())
 		
 		Packet.TYPE.CHAT:
-			emit_signal("chat_message", unpacker.get_u8(), unpacker.get_string(), unpacker.get_string())
+			emit_signal("chat_message", unpacker.get_u8(), unpacker.get_string(), unpacker.get_string_unicode())
 		
 		Packet.TYPE.DAMAGE:
 			var entity = Com.game.get_entity(unpacker.get_u16())

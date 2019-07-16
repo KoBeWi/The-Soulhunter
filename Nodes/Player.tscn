@@ -663,7 +663,6 @@ position = Vector2( -26.0871, 37.6365 )
 rotation = -7.566
 
 [node name="Sprite" type="Sprite" parent="Sprite"]
-visible = false
 self_modulate = Color( 1, 0, 0, 1 )
 texture = ExtResource( 4 )
 vframes = 5
