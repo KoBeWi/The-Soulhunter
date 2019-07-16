@@ -231,7 +231,7 @@ border_color = Color( 1, 1, 1, 1 )
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 64, 128 )
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=7]
 flags = 4
 atlas = ExtResource( 6 )
 region = Rect2( 0, 0, 64, 128 )
@@ -394,7 +394,7 @@ texture = SubResource( 6 )
 self_modulate = Color( 1, 0, 0, 1 )
 margin_right = 1372.0
 margin_bottom = 98.0
-texture = SubResource( 8 )
+texture = SubResource( 7 )
 
 [node name="Register" type="VBoxContainer" parent="Menu"]
 visible = false
@@ -457,6 +457,7 @@ margin_bottom = 188.0
 custom_styles/focus = SubResource( 4 )
 max_value = 360.0
 step = 10.0
+ticks_on_borders = true
 
 [node name="Password" type="LineEdit" parent="Menu"]
 visible = false

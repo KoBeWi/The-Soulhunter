@@ -7,7 +7,7 @@
 [ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=5]
 [ext_resource path="res://Graphics/UI/PressUp.png" type="Texture" id=6]
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=1]
 resource_name = "Crouch"
 length = 1.5
 step = 0.5
@@ -24,8 +24,7 @@ tracks/0/keys = {
 "values": [ 7, 8, 9 ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "Fall"
+[sub_resource type="Animation" id=2]
 length = 2.0
 step = 1.0
 tracks/0/type = "value"
@@ -41,7 +40,7 @@ tracks/0/keys = {
 "values": [ 18, 19 ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=3]
 loop = true
 step = 1.0
 tracks/0/type = "value"
@@ -57,8 +56,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "Jump"
+[sub_resource type="Animation" id=4]
 length = 2.0
 step = 1.0
 tracks/0/type = "value"
@@ -74,7 +72,7 @@ tracks/0/keys = {
 "values": [ 8, 17 ]
 }
 
-[sub_resource type="Animation" id=24]
+[sub_resource type="Animation" id=5]
 resource_name = "SlashAttackCrouchL"
 length = 3.0
 step = 1.0
@@ -115,7 +113,7 @@ tracks/2/keys = {
 "values": [ 76.3, -90.0, -243.0 ]
 }
 
-[sub_resource type="Animation" id=23]
+[sub_resource type="Animation" id=6]
 resource_name = "SlashAttackCrouchR"
 length = 3.0
 step = 1.0
@@ -156,7 +154,7 @@ tracks/2/keys = {
 "values": [ -76.2865, 90.0, 243.016 ]
 }
 
-[sub_resource type="Animation" id=19]
+[sub_resource type="Animation" id=7]
 resource_name = "SlashAttackL"
 length = 3.0
 step = 1.0
@@ -197,7 +195,7 @@ tracks/2/keys = {
 "values": [ 76.3, -90.0, -243.0 ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=8]
 resource_name = "SlashAttackR"
 length = 3.0
 step = 1.0
@@ -238,7 +236,7 @@ tracks/2/keys = {
 "values": [ -76.2865, 90.0, 243.016 ]
 }
 
-[sub_resource type="Animation" id=21]
+[sub_resource type="Animation" id=9]
 resource_name = "StabAttackCrouchL"
 length = 2.0
 step = 1.0
@@ -279,7 +277,7 @@ tracks/2/keys = {
 "values": [ -90.0 ]
 }
 
-[sub_resource type="Animation" id=20]
+[sub_resource type="Animation" id=10]
 resource_name = "StabAttackCrouchR"
 length = 2.0
 step = 1.0
@@ -320,7 +318,7 @@ tracks/2/keys = {
 "values": [ 90.0 ]
 }
 
-[sub_resource type="Animation" id=18]
+[sub_resource type="Animation" id=11]
 resource_name = "StabAttackL"
 length = 2.0
 step = 1.0
@@ -361,8 +359,7 @@ tracks/2/keys = {
 "values": [ -90.0 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "StabAttackR"
+[sub_resource type="Animation" id=12]
 length = 2.0
 step = 1.0
 tracks/0/type = "value"
@@ -402,7 +399,7 @@ tracks/2/keys = {
 "values": [ 90.0 ]
 }
 
-[sub_resource type="Animation" id=25]
+[sub_resource type="Animation" id=13]
 resource_name = "SwingAttackCrouchL"
 length = 4.0
 step = 1.0
@@ -443,7 +440,7 @@ tracks/2/keys = {
 "values": [ 122.928, 91.8277, 408.898, -433.5 ]
 }
 
-[sub_resource type="Animation" id=22]
+[sub_resource type="Animation" id=14]
 resource_name = "SwingAttackCrouchR"
 length = 4.0
 step = 1.0
@@ -484,7 +481,7 @@ tracks/2/keys = {
 "values": [ 236.437, 268.673, 312.326, 433.489 ]
 }
 
-[sub_resource type="Animation" id=17]
+[sub_resource type="Animation" id=15]
 resource_name = "SwingAttackL"
 length = 4.0
 step = 1.0
@@ -525,8 +522,7 @@ tracks/2/keys = {
 "values": [ 122.928, 91.8277, 408.898, -433.5 ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "SwingAttackR"
+[sub_resource type="Animation" id=16]
 length = 4.0
 step = 1.0
 tracks/0/type = "value"
@@ -566,7 +562,7 @@ tracks/2/keys = {
 "values": [ 236.437, 268.673, 312.326, 433.489 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=17]
 length = 6.0
 loop = true
 step = 1.0
@@ -583,7 +579,7 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6 ]
 }
 
-[sub_resource type="GDScript" id=9]
+[sub_resource type="GDScript" id=18]
 script/source = "extends AnimationPlayer
 
 func _on_Animation_animation_finished(anim_name):
@@ -592,19 +588,19 @@ func _on_Animation_animation_finished(anim_name):
 	elif anim_name.find(\"Attack\"):
 		$\"..\".attack_end()"
 
-[sub_resource type="RectangleShape2D" id=11]
+[sub_resource type="RectangleShape2D" id=19]
 extents = Vector2( 24, 32 )
 
-[sub_resource type="RayShape2D" id=12]
+[sub_resource type="RayShape2D" id=20]
 length = 32.0
 
-[sub_resource type="RectangleShape2D" id=13]
+[sub_resource type="RectangleShape2D" id=21]
 extents = Vector2( 24, 48 )
 
-[sub_resource type="RectangleShape2D" id=26]
+[sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 24, 32 )
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=23]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:position")
@@ -631,25 +627,25 @@ script = ExtResource( 2 )
 [node name="Animation" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
 playback_speed = 8.0
-anims/Crouch = SubResource( 15 )
-anims/Fall = SubResource( 1 )
-anims/Idle = SubResource( 2 )
-anims/Jump = SubResource( 3 )
-anims/SlashAttackCrouchL = SubResource( 24 )
-anims/SlashAttackCrouchR = SubResource( 23 )
-anims/SlashAttackL = SubResource( 19 )
-anims/SlashAttackR = SubResource( 16 )
-anims/StabAttackCrouchL = SubResource( 21 )
-anims/StabAttackCrouchR = SubResource( 20 )
-anims/StabAttackL = SubResource( 18 )
-anims/StabAttackR = SubResource( 5 )
-anims/SwingAttackCrouchL = SubResource( 25 )
-anims/SwingAttackCrouchR = SubResource( 22 )
-anims/SwingAttackL = SubResource( 17 )
-anims/SwingAttackR = SubResource( 7 )
-anims/Walk = SubResource( 8 )
+anims/Crouch = SubResource( 1 )
+anims/Fall = SubResource( 2 )
+anims/Idle = SubResource( 3 )
+anims/Jump = SubResource( 4 )
+anims/SlashAttackCrouchL = SubResource( 5 )
+anims/SlashAttackCrouchR = SubResource( 6 )
+anims/SlashAttackL = SubResource( 7 )
+anims/SlashAttackR = SubResource( 8 )
+anims/StabAttackCrouchL = SubResource( 9 )
+anims/StabAttackCrouchR = SubResource( 10 )
+anims/StabAttackL = SubResource( 11 )
+anims/StabAttackR = SubResource( 12 )
+anims/SwingAttackCrouchL = SubResource( 13 )
+anims/SwingAttackCrouchR = SubResource( 14 )
+anims/SwingAttackL = SubResource( 15 )
+anims/SwingAttackR = SubResource( 16 )
+anims/Walk = SubResource( 17 )
 next/Fall = "Fall"
-script = SubResource( 9 )
+script = SubResource( 18 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
@@ -677,12 +673,12 @@ hframes = 10
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 visible = false
-shape = SubResource( 11 )
+shape = SubResource( 19 )
 
 [node name="ColliderRay" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( 0, 32 )
-shape = SubResource( 12 )
+shape = SubResource( 20 )
 
 [node name="Name" type="Label" parent="."]
 margin_left = -19.0
@@ -699,11 +695,11 @@ collision_mask = 2
 
 [node name="Collider" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( 0, 16 )
-shape = SubResource( 13 )
+shape = SubResource( 21 )
 
 [node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( 0, 32 )
-shape = SubResource( 26 )
+shape = SubResource( 22 )
 disabled = true
 
 [node name="ManaTimer" type="Timer" parent="."]
@@ -718,7 +714,7 @@ position = Vector2( 0, -96 )
 texture = ExtResource( 6 )
 
 [node name="Animation" type="AnimationPlayer" parent="PressUp"]
-anims/Idle = SubResource( 14 )
+anims/Idle = SubResource( 23 )
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="frame_changed" from="Sprite" to="." method="set_frame"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]

@@ -243,7 +243,10 @@ func on_key_press(p_id, key, state):
 		key_press[key] = true
 
 func on_key_release(p_id, key, state):
-	if (!main or state == Controls.State.ACTION) and p_id == get_meta("id"):
+	if p_id == get_meta("id"):
+		if main and key in controls:
+			Packet.new(Packet.TYPE.KEY_RELEASE).add_u8(key).send()
+		
 		controls.erase(key)
 		key_release[key] = true
 
@@ -424,12 +427,14 @@ func apply_state_vector(timestamp, diff_vector, vector):
 		
 		if has_meta("initialized"): sprite.position += (old_position - position)
 	else:
-		if (last_server_position - position).length_squared() > 10000:
+		if (last_server_position - position).length_squared() > 22500:
 			desync += 1
 			
 			if desync == 10:
-				position = target_position
+				position = last_server_position
 				desync = 0
+		else:
+			desync = 0
 	
 	if (diff_vector & 4) > 0:
 		last_server_position.x = vector[2]
