@@ -377,14 +377,14 @@ func _on_damage(amount):
 
 func set_interactable(node):
 	interactable = node
-	if !Com.is_server:
+	if !Com.is_server and main:
 		$PressUp.visible = true
 		$PressUp/Animation.play("Idle")
 
 func reset_interactable(node):
 	if interactable == node:
 		interactable = null
-		if !Com.is_server:
+		if !Com.is_server and main:
 			$PressUp.visible = false
 
 func state_vector_types():
@@ -418,7 +418,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	var target_position = Vector2(vector[2], vector[3])
 	last_tick = timestamp
 	
-	if !main or Com.time_greater(timestamp, last_controls + 5):
+	if (!main and controls.empty()) or Com.time_greater(timestamp, last_controls + 5):
 		desync = 0
 		var old_position = position
 		
