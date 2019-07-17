@@ -17,6 +17,7 @@ var last_server_position = Vector2()
 var main = false
 var action = ACTIONS.NONE
 var cached_action = ACTIONS.NONE
+var weapon_id = 0
 var animation = "Idle"
 var last_room
 
@@ -58,7 +59,7 @@ func _ready():
 	Com.controls.connect("key_release", self, "on_key_release")
 	weapon_point.visible = false
 	
-	set_weapon(0)
+	set_weapon(weapon_id)
 
 func set_username(n):
 	uname = n
@@ -316,6 +317,7 @@ func update_camera():
 	camera.limit_bottom = Com.game.map.height * 1080
 
 func set_weapon(weapon):
+	weapon_id = weapon
 	if weapon_point.get_child_count() > 0:
 		weapon_point.get_child(0).queue_free()
 	
@@ -394,7 +396,8 @@ func state_vector_types():
 			Data.TYPE.U16,
 			Data.TYPE.U16,
 			Data.TYPE.U8,
-			Data.TYPE.U8
+			Data.TYPE.U8,
+			Data.TYPE.U16
 		]
 
 func get_state_vector():
@@ -406,7 +409,8 @@ func get_state_vector():
 			round(position.x),
 			round(position.y),
 			int(cached_action),
-			int(Controls.LEFT in controls) | 2*int(Controls.RIGHT in controls)
+			int(Controls.LEFT in controls) | 2*int(Controls.RIGHT in controls),
+			weapon_id
 		]
 
 func apply_state_vector(timestamp, diff_vector, vector):
@@ -450,6 +454,10 @@ func apply_state_vector(timestamp, diff_vector, vector):
 			controls[Controls.LEFT] = true
 		if vector[5] & 2:
 			controls[Controls.RIGHT] = true
+	
+	if vector[6] != weapon_id:
+		weapon_id = vector[6]
+		set_weapon(weapon_id)
 
 func set_frame():
 	if sprite:
