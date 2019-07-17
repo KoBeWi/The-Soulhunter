@@ -2,6 +2,7 @@
 
 -można przeżyć z 0 hp? (albo buguje się wartość)
 
+>zamienić ID map na ich nazwy
 -potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation (chyba trzeba też inne kolekcje zabezpieczyć)
 >niedawanie do ticka objektów, które wcale się nie zmieniły
 -zwalone tło jak większe okno
