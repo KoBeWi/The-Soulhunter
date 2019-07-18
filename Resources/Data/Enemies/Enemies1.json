@@ -3,21 +3,24 @@
         "name": "Bat",
         "description": "A nocturnal creature lurking on ceilings ready to swoop down on its prey.",
         "max_hp":1,
-        "exp":1
+        "exp":1,
+        "souls": [{"name": "Summon Bat", "chance": 100}, {"name": "Echo of Bat", "chance": 200}]
     },
 
     {
         "name": "Huge Frog",
         "description": "It's big.",
         "max_hp":5,
-        "exp":2
+        "exp":2,
+        "souls": [{"name": "Auto-Jump", "chance": 300}]
     },
 
     {
         "name": "Monstrous Ladybug",
         "description": "Too big to be called a bug. Too dangerous to be called a lady.",
         "max_hp":10,
-        "exp":2
+        "exp":2,
+        "souls": [{"name": "Short Hover", "chance": 400}]
     },
 
     {
@@ -33,7 +36,8 @@
         "name": "Undead Knight",
         "description": "Throws daggers relentlessly, unable to find peace.",
         "max_hp":13,
-        "exp":3
+        "exp":3,
+        "souls": [{"name": "Dagger Throw", "chance": 300}, {"name": "Sharpness", "chance": 200}]
     },
 
     {
@@ -41,6 +45,6 @@
         "description": "A reanimated human skeleton, soaked in blood.",
         "max_hp": 15,
         "exp": 3,
-        "souls": [{"name": "Enchanced Bone Throw", "chance": 200}]
+        "souls": [{"name": "Enchanced Bone Throw", "chance": 200}, {"name": "Strong Blood", "chance": 100}, {"name": "Summon Skeleton", "chance": 150}]
     }
 ]

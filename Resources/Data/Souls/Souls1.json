@@ -4,6 +4,34 @@
     },
 
     {
+        "name": "Summon Bat",
+        "description": "Summons a weak bat to chase enemies.",
+        "type": "trigger",
+        "mp": 8
+    },
+
+    {
+        "name": "Echo of Bat",
+        "description": "Attack with a sonic wave around you.",
+        "type": "trigger",
+        "mp": 8
+    },
+
+    {
+        "name": "Auto-Jump",
+        "description": "Jump by holding jump key.",
+        "type": "ability",
+        "mp": 8
+    },
+
+    {
+        "name": "Short Hover",
+        "description": "Hover briefly in air.",
+        "type": "active",
+        "mp": 8
+    },
+
+    {
         "name": "Bone Throw",
         "description": "Throw bones at foes.",
         "type": "trigger",
@@ -15,10 +43,34 @@
         "description": "You look like skeleton!",
         "type": "active"
     },
+
+    {
+        "name": "Dagger Throw",
+        "description": "Throw a dagger.",
+        "type": "trigger"
+    },
+
+    {
+        "name": "Sharpness",
+        "description": "Sharp-type weapons attack increases.",
+        "type": "enchant"
+    },
     
     {
         "name": "Enchanced Bone Throw",
         "description": "Increases speed of thrown bones.",
         "type": "extension"
+    },
+    
+    {
+        "name": "Strong Blood",
+        "description": "Increases maximum health.",
+        "type": "augment"
+    },
+    
+    {
+        "name": "Summon Skeleton",
+        "description": "Summons a skeleton that will walk forward.",
+        "type": "trigger"
     }
 ]

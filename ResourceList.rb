@@ -10,6 +10,26 @@ end
 
 puts items.collect.with_index{|item, i| "%d: %s" % [i, item["name"]]}
 
+puts "ENEMIES"
+
+enemies = []
+
+for entry in Dir.entries("Resources/Data/Enemies") - [".", ".."]
+    enemies.concat JSON.parse(File.readlines("Resources/Data/Enemies/" + entry).join("\n"))
+end
+
+puts enemies.collect.with_index{|item, i| "%d: %s" % [i, item["name"]]}
+
+puts "SOULS"
+
+souls = []
+
+for entry in Dir.entries("Resources/Data/Souls") - [".", ".."]
+    souls.concat JSON.parse(File.readlines("Resources/Data/Souls/" + entry).join("\n"))
+end
+
+puts souls.collect.with_index{|item, i| "%d: %s" % [i, item["name"]]}
+
 puts "\nMAPS"
 
 maps = []
