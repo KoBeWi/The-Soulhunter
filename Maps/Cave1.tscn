@@ -7,6 +7,8 @@
 [ext_resource path="res://Nodes/Enemies/Bat.tscn" type="PackedScene" id=5]
 
 [node name="Map" type="Area2D"]
+collision_layer = 1048575
+collision_mask = 1048575
 script = ExtResource( 1 )
 location = "Cave"
 mapid = 1

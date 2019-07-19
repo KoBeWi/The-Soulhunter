@@ -4,9 +4,7 @@
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Bone"
-script/source = "extends KinematicBody2D
-
-var player
+script/source = "extends PlayerProjectile
 
 onready var sprite = $Sprite
 
@@ -118,7 +116,7 @@ shape = SubResource( 2 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 hframes = 4
-frame = 3
+frame = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Flying"

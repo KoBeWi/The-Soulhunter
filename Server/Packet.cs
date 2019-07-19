@@ -172,7 +172,10 @@ public class Packet {
 
     public byte[] Bytes() {
         if (length > 256) {
-            throw new Exception("Too many bytes: " + length);
+            Console.WriteLine("Byte limit exceeded: " + length + "\n" + new System.Diagnostics.StackTrace());
+            length = 0;
+            return new byte[0];
+            // throw new Exception("Too many bytes: " + length);
         }
 
         var bytes = new byte[length];

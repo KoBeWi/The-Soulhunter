@@ -16,6 +16,7 @@ func _ready():
 		var shape = RectangleShape2D.new()
 		shape.extents = Vector2(width * 1920, height * 1080)
 		shape_node.shape = shape
+		connect("body_exited", self, "on_exit")
 		add_child(shape_node)
 
 func _draw():

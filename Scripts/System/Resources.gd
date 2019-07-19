@@ -13,7 +13,7 @@ func _ready():
 		var file_name = dir.get_next()
 		while file_name != "":
 			var map  = load("res://Maps/" + file_name)
-			var map_id = map.get_state().get_node_property_value(0, 2)
+			var map_id = map.get_state().get_node_property_value(0, 4)
 			
 			maps.resize(max(maps.size(), map_id + 1))
 			maps[map_id] = map

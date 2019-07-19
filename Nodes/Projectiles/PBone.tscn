@@ -4,12 +4,11 @@
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Bone"
-script/source = "extends KinematicBody2D
-
-var velocity = Vector2(250, -800)
-var player
+script/source = "extends PlayerProjectile
 
 onready var sprite = $Sprite
+
+var velocity = Vector2(250, -800)
 
 func _ready():
 	if Com.register_node(self, \"Projectiles/PBone\"): return

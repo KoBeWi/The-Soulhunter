@@ -13,7 +13,6 @@
 -a potem wgl łączy się znowu z serwerem wtf
 +informacje jak ktoś wchodzi albo umiera
 -wychodzący gracz się nie wylogowyje?
--nie działa mp save odnowa
 
 >zamienić ID map na ich nazwy
 +potwierdzenie save
