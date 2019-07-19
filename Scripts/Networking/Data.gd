@@ -30,6 +30,7 @@ const NODES = [
 	"Enemies/Dagger",
 	"Projectiles/PBone",
 	"Projectiles/PDagger",
+	"Projectiles/PBat",
 	"Effects/Soul",
 	"Objects/Item"
 ]

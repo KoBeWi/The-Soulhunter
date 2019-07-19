@@ -1,0 +1,126 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Graphics/Enemies/Bat.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+resource_name = "Bone"
+script/source = "extends KinematicBody2D
+
+var player
+
+onready var sprite = $Sprite
+
+var enemy
+var velocity = Vector2()
+
+func _ready():
+	if Com.register_node(self, \"Projectiles/PBat\"): return
+
+func home(dir):
+	var enemies = get_tree().get_nodes_in_group(\"enemies\")
+	var closest = enemies.front()
+	if closest:
+		var closest_dist = global_position.distance_squared_to(closest.global_position)
+		
+		for enemy in enemies:
+			var dist = global_position.distance_squared_to(enemy.global_position)
+			
+			if dist < closest_dist:
+				closest = enemy
+				closest_dist = dist
+		
+		if global_position.distance_squared_to(closest.global_position) < 90000:
+			enemy = closest
+	
+	if not enemy:
+		velocity = Vector2.RIGHT * 400 * dir
+
+func attack():
+	return {damage = player.stats.magic_attack + 3}
+
+func _physics_process(delta):
+	if sprite.position.length_squared() > 1:
+		sprite.position *= 0.7
+	else:
+		sprite.position = Vector2()
+	
+	if Com.is_server:
+		if enemy and is_instance_valid(enemy):
+			velocity = (enemy.global_position - global_position).normalized() * 400
+		elif enemy:
+			enemy = null
+	else:
+		sprite.flip_h = velocity.x < 0
+	
+	position += velocity * delta
+
+func state_vector_types():
+	return [
+			Data.TYPE.U16,
+			Data.TYPE.U16,
+			Data.TYPE.U16,
+			Data.TYPE.U16
+		]
+
+func get_state_vector():
+	return [
+			round(position.x),
+			round(position.y),
+			round(velocity.x) + 10000,
+			round(velocity.y) + 10000
+		]
+
+func apply_state_vector(timestamp, diff_vector, vector):
+	var old_position = position
+	position.x = vector[0]
+	position.y = vector[1]
+	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
+	
+	velocity.x = vector[2] - 10000
+	velocity.y = vector[3] - 10000
+
+func on_hit():
+	Com.dispose_node(self)"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 8 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "Flying"
+length = 4.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 2 ]
+}
+
+[node name="Bat" type="KinematicBody2D" groups=[
+"player_attack",
+]]
+z_index = 2
+collision_layer = 0
+collision_mask = 5
+script = SubResource( 1 )
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+hframes = 4
+frame = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Flying"
+playback_speed = 16.0
+anims/Flying = SubResource( 3 )

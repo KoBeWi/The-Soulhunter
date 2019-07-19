@@ -212,6 +212,14 @@ func trigger_soul():
 		get_meta("character").call("SyncStat", "mp", stats.mp)
 		
 		match Res.get_res(Res.souls, int(souls[0])).name:
+			"Summon Bat":
+				var bat = preload("res://Nodes/Projectiles/PBat.tscn").instance()
+				get_parent().add_child(bat)
+				bat.position = position
+				if Com.is_server:
+					bat.home(direction_i())
+				bat.player = self
+			
 			"Bone Throw":
 				var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
 				get_parent().add_child(bone)
