@@ -7,28 +7,27 @@
         "name": "Summon Bat",
         "description": "Summons a weak bat to chase enemies.",
         "type": "trigger",
-        "mp": 8
+        "mp": 6
     },
 
     {
         "name": "Echo of Bat",
         "description": "Attack with a sonic wave around you.",
         "type": "trigger",
-        "mp": 8
+        "mp": 5
     },
 
     {
         "name": "Auto-Jump",
         "description": "Jump by holding jump key.",
-        "type": "ability",
-        "mp": 8
+        "type": "ability"
     },
 
     {
         "name": "Short Hover",
         "description": "Hover briefly in air.",
         "type": "active",
-        "mp": 8
+        "mp": 3
     },
 
     {
@@ -41,13 +40,15 @@
     {
         "name": "Skeleton Disguise",
         "description": "You look like skeleton!",
-        "type": "active"
+        "type": "active",
+        "mp": 2
     },
 
     {
         "name": "Dagger Throw",
         "description": "Throw a dagger.",
-        "type": "trigger"
+        "type": "trigger",
+        "mp": 12
     },
 
     {

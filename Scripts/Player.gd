@@ -211,13 +211,20 @@ func trigger_soul():
 		
 		get_meta("character").call("SyncStat", "mp", stats.mp)
 		
-		match int(souls[0]):
-			1:
+		match Res.get_res(Res.souls, int(souls[0])).name:
+			"Bone Throw":
 				var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
 				get_parent().add_child(bone)
 				bone.position = position + Vector2(0, -80)
 				bone.velocity.x = abs(bone.velocity.x) * direction_i()
 				bone.player = self
+			
+			"Dagger Throw":
+				var dagger = preload("res://Nodes/Projectiles/PDagger.tscn").instance()
+				get_parent().add_child(dagger)
+				dagger.position = position
+				dagger.velocity.x = abs(dagger.velocity.x) * direction_i()
+				dagger.player = self
 
 func active_soul():
 	if !Com.is_server: return ##TODO: klient może dostawać info

@@ -1,26 +1,23 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Graphics/Projectiles/Bone.png" type="Texture" id=1]
+[ext_resource path="res://Graphics/Projectiles/Dagger.png" type="Texture" id=1]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Bone"
-script/source = "extends KinematicBody2D
+script/source = "extends Enemy
 
-var velocity = Vector2(250, -800)
+var velocity = Vector2(600, 0)
 var player
 
 onready var sprite = $Sprite
 
 func _ready():
-	if Com.register_node(self, \"Projectiles/PBone\"): return
+	if Com.register_node(self, \"Projectiles/PDagger\"): return
 
 func attack():
-	return {damage = player.stats.magic_attack + 5}
+	return {damage = player.stats.magic_attack + 10}
 
 func _physics_process(delta):
-	velocity.y += 50
-	rotation -= velocity.x * 0.01
-	
 	if sprite.position.length_squared() > 1:
 		sprite.position *= 0.7
 	else:
@@ -34,7 +31,6 @@ func state_vector_types():
 	return [
 			Data.TYPE.U16,
 			Data.TYPE.U16,
-			Data.TYPE.U16,
 			Data.TYPE.U16
 		]
 
@@ -42,8 +38,7 @@ func get_state_vector():
 	return [
 			round(position.x),
 			round(position.y),
-			round(velocity.x) + 10000,
-			round(velocity.y) + 10000
+			round(velocity.x) + 10000
 		]
 
 func apply_state_vector(timestamp, diff_vector, vector):
@@ -53,20 +48,21 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
 	
 	velocity.x = vector[2] - 10000
-	velocity.y = vector[3] - 10000
+	sprite.flip_h = velocity.x < 0
 
 func on_hit():
 	Com.dispose_node(self)"
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 8, 21 )
+extents = Vector2( 30, 12 )
 
-[node name="Bone" type="KinematicBody2D" groups=[
+[node name="Dagger" type="KinematicBody2D" groups=[
 "player_attack",
 ]]
 collision_layer = 0
 collision_mask = 5
 script = SubResource( 1 )
+attack = 20
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
