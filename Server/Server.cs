@@ -97,13 +97,13 @@ public class Server : Node {
 
     public static Room GetAdjacentMap(int x, int y) {
         foreach (var map in instance.mapList) {
-            var m_x = (int)map.GetState().GetNodePropertyValue(0, 3); //niebezpieczny szajs; może dać resource?
-            var m_y = (int)map.GetState().GetNodePropertyValue(0, 4);
-            var m_w = (int)map.GetState().GetNodePropertyValue(0, 5);
-            var m_h = (int)map.GetState().GetNodePropertyValue(0, 6);
+            var m_x = (int)map.GetState().GetNodePropertyValue(0, 5); //niebezpieczny szajs; może dać resource?
+            var m_y = (int)map.GetState().GetNodePropertyValue(0, 6);
+            var m_w = (int)map.GetState().GetNodePropertyValue(0, 7);
+            var m_h = (int)map.GetState().GetNodePropertyValue(0, 8);
 
             if (x >= m_x && y >= m_y && x < m_x + m_w && y < m_y + m_h) {
-                return instance.GetRoom((ushort)(int)GD.Convert(map.GetState().GetNodePropertyValue(0, 2), Variant.Type.Int));
+                return instance.GetRoom((ushort)(int)GD.Convert(map.GetState().GetNodePropertyValue(0, 4), Variant.Type.Int));
             }
         }
 
