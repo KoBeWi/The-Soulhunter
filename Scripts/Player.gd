@@ -220,6 +220,12 @@ func trigger_soul():
 					bat.home(direction_i())
 				bat.player = self
 			
+			"Echo of Bat":
+				var echo = preload("res://Nodes/Projectiles/PEcho.tscn").instance()
+				get_parent().add_child(echo)
+				echo.position = position
+				echo.player = self
+			
 			"Bone Throw":
 				var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
 				get_parent().add_child(bone)
