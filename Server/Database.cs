@@ -51,24 +51,8 @@ public class Database {
 
         return Error.Ok;
     }
-
-    // public void SetStat(string login, string stat, ushort value) {
-    //     var collection = database.GetCollection<BsonDocument>("players");
-    //     var found = collection.Find(new BsonDocument {{"login", login}} ).FirstOrDefault();
-
-    //     if (found != null) {
-    //         var filter = Builders<BsonDocument>.Filter.Empty;
-    //         var update = Builders<BsonDocument>.Update.Set(stat, value);
-    //         collection.UpdateOne(filter, update);
-    //     }
-    // }
-
-    public BsonDocument CreateCharacter(string name) {
-        var collection = database.GetCollection<BsonDocument>("characters");
-        //hack
-        var collection2 = database.GetCollection<BsonDocument>("players");
-        var found = collection2.Find(new BsonDocument {{"login", name}} ).FirstOrDefault();
-
+    
+    private BsonDocument getDefaultData(string name = "", BsonDocument player = null) {
         var data = new BsonDocument {
             {"name", name},
             {"location", 6},
@@ -87,12 +71,25 @@ public class Database {
             {"equipment", new BsonArray {0, 0, 0, 0, 0, 0, 0, 0}},
             {"souls", new BsonArray()},
             {"soul_equipment", new BsonArray {0, 0, 0, 0, 0, 0, 0}},
+            {"abilities", 0},
             {"chests", new BsonArray()},
             {"discovered", new BsonArray()},
-            {"game_over", 0},
-            {"hue", found.GetValue("hue").AsInt32}
+            {"game_over", 0}
         };
 
+        if (player != null) data.SetElement(new BsonElement("hue", player.GetValue("hue").AsInt32));
+        else data.SetElement(new BsonElement("hue", 0));
+
+        return data;
+    }
+
+    public BsonDocument CreateCharacter(string name) {
+        var collection = database.GetCollection<BsonDocument>("characters");
+        //hack
+        var collection2 = database.GetCollection<BsonDocument>("players");
+        var found = collection2.Find(new BsonDocument {{"login", name}} ).FirstOrDefault();
+
+        var data = getDefaultData(name, found);
         collection.InsertOne(data);
         return data;
     }
@@ -103,6 +100,14 @@ public class Database {
 
         if (found == null) {
             found = CreateCharacter(name);
+        } else {
+            var def = getDefaultData();
+
+            foreach (var element in def) {
+                if (found.GetValue(element.Name, false) == false) {
+                    found.SetElement(element);
+                }
+            }
         }
 
         return new Character(found, this); //może powinno trzymać gdzieś instancje

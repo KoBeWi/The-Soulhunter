@@ -14,6 +14,12 @@ public class Data {
         WHISPER
     }
 
+    public enum ABILITIES {
+        AUTO_JUMP,
+        DOUBLE_JUMP,
+        MAX
+    }
+
     public static bool[] CompareStateVectors(Godot.Collections.Array oldVec, Godot.Collections.Array newVec) {
         bool[] isChanged = new bool[oldVec.Count];
 

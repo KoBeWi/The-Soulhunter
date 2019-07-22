@@ -45,6 +45,8 @@ public class Character : Godot.Object {
         playerNode.Call("set_stats", JsonConvert.SerializeObject(finalStats));
         playerNode.Call("set_equipment", JsonConvert.SerializeObject(getArray("equipment")));
         playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
+        playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
+        playerNode.Call("set_abilities", JsonConvert.SerializeObject(GetAbilities()));
     }
 
     public void RemoveFromRoom() {
@@ -206,6 +208,18 @@ public class Character : Godot.Object {
         playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
     }
 
+    public bool[] GetAbilities() {
+        var abilities = data.GetValue("abilities").AsInt32;
+        bool[] result = new bool[(int)Data.ABILITIES.MAX];
+
+        for (int i = 0; i < (int)Data.ABILITIES.MAX; i++) {
+            if ((abilities & Packet.boolHelper[i]) > 0)
+                result[i] = true;
+        }
+
+        return result;
+    }
+
     public void Save() {
         SetStat("hp", GetStat("max_hp"));
         SetStat("mp", GetStat("max_mp"));
@@ -293,11 +307,15 @@ public class Character : Godot.Object {
         GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, new string[] {stat}));
     }
 
-    public void GameOver(ushort time) {
-        data = database.GetCharacterData(this);
+    public void GameOver(ushort time, bool init = false) {
+        if (!init) data = database.GetCharacterData(this);
+
         SetStat("game_over", time);
-        currentMap = (ushort)data.GetValue("location").AsInt32;
-        database.SaveCharacter(data);
+
+        if (!init) {
+            currentMap = (ushort)data.GetValue("location").AsInt32;
+            database.SaveCharacter(data);
+        }
     }
 
     public ushort GetGameOverTime() {

@@ -21,6 +21,7 @@ public class Packet {
         EQUIPMENT,
         SOULS,
         SOUL_EQUIPMENT,
+        ABILITIES,
         MAP,
         EQUIP,
         EQUIP_SOUL,
@@ -86,7 +87,7 @@ public class Packet {
         return this;
     }
 
-    static readonly byte[] boolHelper = {1, 2, 4, 8, 16, 32, 64, 128};
+    public static readonly byte[] boolHelper = {1, 2, 4, 8, 16, 32, 64, 128};
 
     public Packet AddBoolArray(bool[] bools) {
         byte boolVector = 0;

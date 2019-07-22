@@ -1,10 +1,15 @@
+class_name Player
 extends KinematicBody2D
 
 const GRAVITY = 100
 const SPEED = 500
 const JUMP = 1500
 
-enum ACTIONS{NONE, SKELETON}
+enum ACTIONS {NONE, SKELETON}
+enum ABILITIES {
+	AUTO_JUMP,
+	DOUBLE_JUMP
+}
 
 var controls = {}
 var key_press = {}
@@ -31,6 +36,7 @@ var last_exp = -1
 var last_level = -1
 var equipment
 var souls
+var abilities = []
 
 var last_tick = 0
 var last_controls = 0
@@ -151,7 +157,7 @@ func process_crouching():
 		hitbox.get_child(1).disabled = true
 
 func process_jumping():
-	if is_on_floor() and Controls.JUMP in key_press:
+	if is_on_floor() and ((abilities[ABILITIES.AUTO_JUMP] and Controls.JUMP in controls) or Controls.JUMP in key_press):
 		jump = true
 		motion.y = -JUMP
 	
@@ -314,6 +320,7 @@ func set_main():
 	
 	Network.connect("stats", self, "on_stats")
 	Network.connect("equipment", self, "on_eq")
+	Network.connect("abilities", self, "set_abilities")
 
 func on_hit(body):
 	if body.is_in_group("enemies"):
@@ -483,3 +490,9 @@ func apply_state_vector(timestamp, diff_vector, vector):
 func set_frame():
 	if sprite:
 		sprite2.frame = sprite.frame
+
+func set_abilities(abis):
+	if abis is String:
+		abilities = parse_json(abis)
+	else:
+		abilities = abis

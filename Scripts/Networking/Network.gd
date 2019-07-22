@@ -17,6 +17,7 @@ signal inventory(items)
 signal equipment(items)
 signal souls(souls)
 signal soul_equipment(souls)
+signal abilities(abilities)
 signal map(map)
 signal item_get(item)
 signal soul_get(soul)
@@ -197,6 +198,16 @@ func process_packet(unpacker : Unpacker):
 					equipment.append(0)
 			
 			emit_signal("soul_equipment", equipment)
+		
+		Packet.TYPE.ABILITIES:
+			var abilities = []
+			abilities.resize(Player.ABILITIES.size())
+			
+			var ability_list = unpacker.get_u8()
+			for i in Player.ABILITIES.size():
+				abilities[i] = (ability_list & Data.binary[i] > 0)
+			
+			emit_signal("abilities", abilities)
 		
 		Packet.TYPE.MAP:
 			var map = {}
