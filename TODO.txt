@@ -1,6 +1,7 @@
 -błąd +dodatek >zmiana
 
 -można przeżyć z 0 hp? (albo buguje się wartość)
+-szkielety nie umieją w grawitację
 
 -potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation (chyba trzeba też inne kolekcje zabezpieczyć)
 >niedawanie do ticka objektów, które wcale się nie zmieniły
