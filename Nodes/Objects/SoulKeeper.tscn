@@ -16,8 +16,21 @@ func _ready():
 		var soul_data = Res.get_res(Res.souls, soul)
 		$Soul.modulate = Soul.TYPE_COLOR[soul_data.type]
 
-func on_attack(body):
-	print(\"aaa\")
+func on_enter(body):
+	if body.is_in_group(\"players\"):
+		body.set_interactable(self)
+
+func on_exit(body):
+	if body.is_in_group(\"players\"):
+		body.reset_interactable(self)
+
+func interact(player):
+	player.reset_interactable(self)
+	
+	if Com.is_server:
+		get_meta(\"room\").call(\"Interact\", get_data(), self, player.get_meta(\"id\"))
+	else:
+		Com.dispose_node(self)
 
 func get_data():
 	return Data.ROOM_UTILITY.SOUL_KEEPER
@@ -46,8 +59,8 @@ tracks/0/keys = {
 }
 
 [node name="SoulKeeper" type="Area2D"]
-collision_layer = 4
-collision_mask = 0
+collision_layer = 0
+collision_mask = 2
 script = SubResource( 1 )
 
 [node name="Collider" type="CollisionShape2D" parent="."]
@@ -69,4 +82,5 @@ texture = ExtResource( 3 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Fx"
 anims/Fx = SubResource( 3 )
-[connection signal="body_entered" from="." to="." method="on_attack"]
+[connection signal="body_entered" from="." to="." method="on_enter"]
+[connection signal="body_exited" from="." to="." method="on_exit"]

@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Tilesets/Keep.tres" type="TileSet" id=2]
 [ext_resource path="res://Nodes/Objects/SavePoint.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Graphics/Backgrounds/Castle.png" type="Texture" id=4]
-[ext_resource path="res://Nodes/Objects/SoulKeeper.tscn" type="PackedScene" id=5]
 
 [node name="Map" type="Area2D"]
 collision_layer = 1048575
@@ -35,7 +34,3 @@ texture = ExtResource( 4 )
 centered = false
 region_enabled = true
 region_rect = Rect2( 0, 0, 1920, 1080 )
-
-[node name="SoulKeeper" parent="." instance=ExtResource( 5 )]
-position = Vector2( 1568, 640 )
-soul = 12

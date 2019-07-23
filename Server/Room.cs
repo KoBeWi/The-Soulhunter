@@ -329,6 +329,9 @@ public class Room : Viewport {
             case RoomUtility.DATA.CHEST:
             RoomUtility.OpenChest(node.GetMeta("id") as string + mapId, (ushort)(int)node.Get("item"), GetPlayerById(playerId));
             break;
+            case RoomUtility.DATA.SOUL_KEEPER:
+            RoomUtility.BreakSoulKeeper(node.GetMeta("id") as string + mapId, (ushort)(int)node.Get("soul"), GetPlayerById(playerId));
+            break;
         }
     }
 

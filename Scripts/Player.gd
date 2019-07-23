@@ -28,6 +28,7 @@ var last_room
 
 var crouch = false
 var jump = false
+var double_jump = false
 var attack = false
 var skeleton = false
 
@@ -157,8 +158,11 @@ func process_crouching():
 		hitbox.get_child(1).disabled = true
 
 func process_jumping():
-	if is_on_floor() and ((abilities[ABILITIES.AUTO_JUMP] and Controls.JUMP in controls) or Controls.JUMP in key_press):
-		jump = true
+	if (is_on_floor() or (abilities[ABILITIES.DOUBLE_JUMP] and not double_jump)) and ((abilities[ABILITIES.AUTO_JUMP] and !jump and Controls.JUMP in controls) or Controls.JUMP in key_press):
+		if !jump:
+			jump = true
+		else:
+			double_jump = true
 		motion.y = -JUMP
 	
 	if !is_on_floor() and motion.y >= 0:
