@@ -50,6 +50,9 @@ collision_layer = 4
 collision_mask = 0
 script = SubResource( 1 )
 
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 
@@ -62,9 +65,6 @@ texture = ExtResource( 2 )
 self_modulate = Color( 1, 1, 1, 0.752941 )
 z_index = -1
 texture = ExtResource( 3 )
-
-[node name="Collider" type="CollisionShape2D" parent="."]
-shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Fx"
