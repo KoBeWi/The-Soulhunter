@@ -257,10 +257,11 @@ public class Room : Viewport {
 
         switch (dataType) {
             case RoomUtility.DATA.CHEST:
-            return packet.AddU8(RoomUtility.IsChestOpened(player, (string)node.GetMeta("id")) ? (byte)1 : (byte)0);
+            case RoomUtility.DATA.SOUL_KEEPER:
+            return packet.AddU8(RoomUtility.IsChestOpened(player, node.GetMeta("id") as string + mapId) ? (byte)1 : (byte)0);
         }
 
-        return null;
+        return new Packet(Packet.TYPE.EMPTY);
     }
 
     public void DisposeNode(ushort id) {
@@ -326,7 +327,7 @@ public class Room : Viewport {
     public void Interact(RoomUtility.DATA type, Node node, ushort playerId) {
         switch (type) {
             case RoomUtility.DATA.CHEST:
-            RoomUtility.OpenChest(node.GetMeta("id") as string, (ushort)(int)node.Get("item"), GetPlayerById(playerId));
+            RoomUtility.OpenChest(node.GetMeta("id") as string + mapId, (ushort)(int)node.Get("item"), GetPlayerById(playerId));
             break;
         }
     }

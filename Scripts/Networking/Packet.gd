@@ -2,6 +2,7 @@ class_name Packet
 extends Reference
 
 enum TYPE {
+    EMPTY,
 	HELLO,
 	LOGIN,
 	REGISTER,

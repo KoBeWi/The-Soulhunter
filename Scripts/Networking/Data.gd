@@ -15,7 +15,8 @@ enum CHATS {
 }
 
 enum ROOM_UTILITY {
-	CHEST
+	CHEST,
+	SOUL_KEEPER
 }
 
 const NODES = [

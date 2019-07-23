@@ -73,5 +73,11 @@
         "name": "Summon Skeleton",
         "description": "Summons a skeleton that will walk forward.",
         "type": "trigger"
+    },
+
+    {
+        "name": "Double Jump",
+        "description": "Jump again in mid-air.",
+        "type": "ability"
     }
 ]

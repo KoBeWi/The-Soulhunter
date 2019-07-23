@@ -65,4 +65,3 @@ position = Vector2( 4800, 608 )
 
 [node name="Background" parent="." instance=ExtResource( 6 )]
 editor/display_folded = true
-[connection signal="body_exited" from="." to="." method="on_exit"]

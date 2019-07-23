@@ -3,7 +3,8 @@ using System;
 
 public class RoomUtility {
     public enum DATA {
-        CHEST
+        CHEST,
+        SOUL_KEEPER
     }
 
     public static bool IsChestOpened(Character player, string chestId) {

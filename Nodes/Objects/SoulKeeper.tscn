@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Graphics/Objects/SoulHolder.png" type="Texture" id=1]
+[ext_resource path="res://Graphics/Objects/Soul.png" type="Texture" id=2]
+[ext_resource path="res://Graphics/Objects/SoulHolderFx.png" type="Texture" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Area2D
+
+export var soul = 0
+
+func _ready():
+	Com.register_special_node(self)
+	
+	if !Com.is_server:
+		var soul_data = Res.get_res(Res.souls, soul)
+		$Soul.modulate = Soul.TYPE_COLOR[soul_data.type]
+
+func on_attack(body):
+	print(\"aaa\")
+
+func get_data():
+	return Data.ROOM_UTILITY.SOUL_KEEPER
+
+func apply_data(unpacker):
+	if unpacker.get_u8() == 1:
+		Com.dispose_node(self)"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 40 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "Fx"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Soul/SoulHolderFx:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.5, 0.5 ) ]
+}
+
+[node name="SoulKeeper" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+script = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+
+[node name="Soul" type="Sprite" parent="."]
+editor/display_folded = true
+position = Vector2( 0, -23 )
+texture = ExtResource( 2 )
+
+[node name="SoulHolderFx" type="Sprite" parent="Soul"]
+self_modulate = Color( 1, 1, 1, 0.752941 )
+z_index = -1
+texture = ExtResource( 3 )
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Fx"
+anims/Fx = SubResource( 3 )
+[connection signal="body_entered" from="." to="." method="on_attack"]

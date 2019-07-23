@@ -5,7 +5,7 @@ const GRAVITY = 100
 const SPEED = 500
 const JUMP = 1500
 
-enum ACTIONS {NONE, SKELETON}
+enum ACTIONS {NONE, SKELETON, HOVER}
 enum ABILITIES {
 	AUTO_JUMP,
 	DOUBLE_JUMP
@@ -36,7 +36,7 @@ var last_exp = -1
 var last_level = -1
 var equipment
 var souls
-var abilities = []
+var abilities = [false, false]
 
 var last_tick = 0
 var last_controls = 0
