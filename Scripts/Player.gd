@@ -22,6 +22,7 @@ var last_server_position = Vector2()
 var main = false
 var action = ACTIONS.NONE
 var cached_action = ACTIONS.NONE
+var prev_action = ACTIONS.NONE
 var weapon_id = 0
 var animation = "Idle"
 var last_room
@@ -51,6 +52,8 @@ onready var weapon_point = $Sprite/WeaponHinge
 onready var chr = $Character
 onready var anim = $Animation
 onready var hitbox = $Hitbox
+onready var active_timer = $ActiveTimer
+onready var invincibility = $Invincibility
 
 var camera
 
@@ -81,7 +84,6 @@ func on_initialized():
 func _process(delta):
 	if !Com.is_server: process_sprite()
 	process_rooms()
-	process_actions()
 
 func process_sprite():
 	if sprite.position.length_squared() > 1:
@@ -108,10 +110,7 @@ func process_rooms():
 			emit_signal("room_changed", room)
 	
 func process_actions():
-	var prev_action = action
 	if action != ACTIONS.NONE:
-		if cached_action != action:
-			prev_action = ACTIONS.NONE
 		cached_action = action
 	
 	match action:
@@ -127,9 +126,12 @@ func process_actions():
 		
 		ACTIONS.HOVER:
 			if prev_action == ACTIONS.NONE:
+				active_timer.start(2)
 				motion.y = 0
 				jump = true
 				double_jump = true
+	
+	prev_action = action
 
 func _physics_process(delta):
 	if action != ACTIONS.HOVER:
@@ -143,13 +145,8 @@ func _physics_process(delta):
 	
 	motion = move_and_slide_with_snap(motion, Vector2.DOWN * 32 if !jump else Vector2(), Vector2.UP, true)
 	
-	if interactable and Controls.UP in key_press:
-		interactable.interact(self)
-	
-	if !controls.empty():
-		last_controls = last_tick
-	key_press.clear()
-	key_release.clear()
+	process_controls()
+	process_actions()
 
 func process_walking():
 	var flip = sprite.flip_h
@@ -213,7 +210,9 @@ func process_animations():
 			anim.advance(2)
 
 func process_attack():
-	if Controls.ATTACK in key_press and !attack:
+	if attack: return
+	
+	if Controls.ATTACK in key_press:
 		if skeleton:
 			pass
 		else:
@@ -227,10 +226,19 @@ func process_attack():
 					anim.playback_speed = 16
 					animation = str(get_weapon().attack_type, "Attack", "Crouch" if crouch else "", direction())
 					anim.play(animation)
-	elif Controls.SOUL in key_press and !attack:
+	elif Controls.SOUL in key_press:
 		active_soul(true)
-	elif Controls.SOUL in key_release and !attack:
+	elif Controls.SOUL in key_release:
 		active_soul(false)
+
+func process_controls():
+	if interactable and Controls.UP in key_press:
+		interactable.interact(self)
+	
+	if !controls.empty():
+		last_controls = last_tick
+	key_press.clear()
+	key_release.clear()
 
 func trigger_soul():
 	if !Com.is_server: return ##TODO: klient może dostawać info
@@ -292,7 +300,8 @@ func active_soul(pressed):
 		match int(souls[1]):
 			4:
 				if pressed:
-					action = ACTIONS.HOVER
+					if !is_on_floor() and !double_jump:
+						action = ACTIONS.HOVER
 				else:
 					action = ACTIONS.NONE
 			6:
@@ -360,7 +369,7 @@ func on_hit(body):
 	if body.is_in_group("enemies"):
 		newest_enemy = body
 		damage(newest_enemy)
-		$Invincibility.start()
+		invincibility.start()
 
 func on_unhit(body):
 	if body == newest_enemy:
@@ -530,3 +539,7 @@ func set_abilities(abis):
 		abilities = parse_json(abis)
 	else:
 		abilities = abis
+
+func on_active_timeout():
+	if action == ACTIONS.HOVER:
+		action = ACTIONS.NONE

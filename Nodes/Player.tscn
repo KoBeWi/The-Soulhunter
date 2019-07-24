@@ -648,6 +648,7 @@ next/Fall = "Fall"
 script = SubResource( 18 )
 
 [node name="Sprite" type="Sprite" parent="."]
+editor/display_folded = true
 texture = ExtResource( 3 )
 vframes = 5
 hframes = 10
@@ -690,6 +691,7 @@ size_flags_vertical = 0
 valign = 1
 
 [node name="Hitbox" type="Area2D" parent="."]
+editor/display_folded = true
 collision_layer = 0
 collision_mask = 2
 
@@ -707,6 +709,9 @@ autostart = true
 
 [node name="Invincibility" type="Timer" parent="."]
 
+[node name="ActiveTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="PressUp" type="Sprite" parent="."]
 editor/display_folded = true
 visible = false
@@ -721,3 +726,4 @@ anims/Idle = SubResource( 23 )
 [connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]
 [connection signal="timeout" from="ManaTimer" to="." method="reg_mp"]
 [connection signal="timeout" from="Invincibility" to="." method="on_not_invincible"]
+[connection signal="timeout" from="ActiveTimer" to="." method="on_active_timeout"]
