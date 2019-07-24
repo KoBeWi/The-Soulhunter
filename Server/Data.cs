@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class Data {
     public const ushort MAX_GAME_OVER_TIME = 30;
 
@@ -28,5 +30,20 @@ public class Data {
         }
 
         return isChanged;
+    }
+
+    public static void ApplyEnchantmentSoul(Dictionary<string, object> item, Dictionary<string, object> soul) {
+        if (soul == null) return;
+
+    }
+
+    public static void ApplyExtensionSoul(Dictionary<string, object> soul, Dictionary<string, object> extension) {
+        if (extension == null) return;
+
+    }
+
+    public static void ApplyAugmentSoul(Dictionary<string, ushort> stats, Dictionary<string, object> soul) {
+        if (soul == null) return;
+
     }
 }

@@ -126,9 +126,21 @@ public class Character : Godot.Object {
             finalStats[stat] = getStat(stat);
         }
 
+        var souls = GetSoulEquipment();
+        Dictionary<string, object> enchantmentSoul = null;
+        if (souls[3] > 0) enchantmentSoul = Server.GetSoul(souls[3]);
+        Dictionary<string, object> augmentSoul = null;
+        if (souls[4] > 0) augmentSoul = Server.GetSoul(souls[4]);
+        Dictionary<string, object> extensionSoul = null;
+        if (souls[5] > 0) extensionSoul = Server.GetSoul(souls[5]);
+
+        Data.ApplyExtensionSoul(augmentSoul, extensionSoul);
+        Data.ApplyAugmentSoul(finalStats, augmentSoul);
+
         foreach (ushort i in GetEquipment()) {
             if (i > 0) {
-                var item = Server.GetItem(i);
+                var item = dupData(Server.GetItem(i));
+                Data.ApplyEnchantmentSoul(item, enchantmentSoul);
 
                 foreach (var stat in statList) {
                     if (item.ContainsKey(stat)) {
@@ -140,6 +152,16 @@ public class Character : Godot.Object {
 
         if (playerNode != null)
             playerNode.Call("set_stats", JsonConvert.SerializeObject(finalStats));
+    }
+
+    private Dictionary<string, object> dupData(Dictionary<string, object> source) {
+        var dup = new Dictionary<string, object>();
+
+        foreach (var key in source.Keys) {
+            dup[key] = source[key];
+        }
+
+        return dup;
     }
 
     public void SetStat(string stat, ushort value) {
