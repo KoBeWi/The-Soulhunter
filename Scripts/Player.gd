@@ -79,17 +79,20 @@ func on_initialized():
 	emit_signal("initiated")
 
 func _process(delta):
+	if !Com.is_server: process_sprite()
+	process_rooms()
+	process_actions()
+
+func process_sprite():
 	if sprite.position.length_squared() > 1:
 		sprite.position *= 0.8
 	else:
 		sprite.position = Vector2()
-	
+
 	if camera:
 		camera.position = sprite.position
-	
-	if action != ACTIONS.NONE:
-		cached_action = action
-	
+
+func process_rooms():
 	var room
 	if Com.is_server:
 	 	room = Vector2(get_meta("map").map_x + int(position.x)/1920, get_meta("map").map_y + int(position.y)/1080)
@@ -104,6 +107,13 @@ func _process(delta):
 		else:
 			emit_signal("room_changed", room)
 	
+func process_actions():
+	var prev_action = action
+	if action != ACTIONS.NONE:
+		if cached_action != action:
+			prev_action = ACTIONS.NONE
+		cached_action = action
+	
 	match action:
 		ACTIONS.SKELETON:
 			if skeleton:
@@ -114,8 +124,17 @@ func _process(delta):
 				$Skeleton.visible = true
 			skeleton = !skeleton
 			action = ACTIONS.NONE
+		
+		ACTIONS.HOVER:
+			if prev_action == ACTIONS.NONE:
+				motion.y = 0
+				jump = true
+				double_jump = true
 
 func _physics_process(delta):
+	if action != ACTIONS.HOVER:
+		motion += Vector2(0, GRAVITY)
+	
 	process_walking()
 	process_crouching()
 	process_jumping()
@@ -134,15 +153,18 @@ func _physics_process(delta):
 
 func process_walking():
 	var flip = sprite.flip_h
+	var not_move = crouch or action == ACTIONS.HOVER
 	
-	motion += Vector2(0, GRAVITY)
 	if Controls.RIGHT in controls:
-		if !crouch: motion.x = SPEED
+		if !not_move: motion.x = SPEED
 		sprite.flip_h = false
 	elif Controls.LEFT in controls:
-		if !crouch: motion.x = -SPEED
+		if !not_move: motion.x = -SPEED
 		sprite.flip_h = true
 	else:
+		not_move = true
+	
+	if not_move:
 		motion.x = 0
 	
 	if flip != sprite.flip_h: flip()
@@ -206,7 +228,9 @@ func process_attack():
 					animation = str(get_weapon().attack_type, "Attack", "Crouch" if crouch else "", direction())
 					anim.play(animation)
 	elif Controls.SOUL in key_press and !attack:
-		active_soul()
+		active_soul(true)
+	elif Controls.SOUL in key_release and !attack:
+		active_soul(false)
 
 func trigger_soul():
 	if !Com.is_server: return ##TODO: klient może dostawać info
@@ -251,7 +275,7 @@ func trigger_soul():
 				dagger.velocity.x = abs(dagger.velocity.x) * direction_i()
 				dagger.player = self
 
-func active_soul():
+func active_soul(pressed):
 	if !Com.is_server: return ##TODO: klient może dostawać info
 	
 	var soul
@@ -266,7 +290,12 @@ func active_soul():
 		get_meta("character").call("SyncStat", "mp", stats.mp)
 		
 		match int(souls[1]):
-			2:
+			4:
+				if pressed:
+					action = ACTIONS.HOVER
+				else:
+					action = ACTIONS.NONE
+			6:
 				action = ACTIONS.SKELETON
 	
 

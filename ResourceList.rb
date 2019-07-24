@@ -10,7 +10,7 @@ end
 
 puts items.collect.with_index{|item, i| "%d: %s" % [i, item["name"]]}
 
-puts "ENEMIES"
+puts "\nENEMIES"
 
 enemies = []
 
@@ -20,7 +20,7 @@ end
 
 puts enemies.collect.with_index{|item, i| "%d: %s" % [i, item["name"]]}
 
-puts "SOULS"
+puts "\nSOULS"
 
 souls = []
 
