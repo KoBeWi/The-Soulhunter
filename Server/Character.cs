@@ -182,34 +182,38 @@ public class Character : Godot.Object {
     }
 
     public void EquipSoul(byte slot, byte from) {
-        var equipment = data.GetValue("soul_equipment").AsBsonArray;
         var inventory = data.GetValue("souls").AsBsonArray;
+        if (slot != 6) {
+            var equipment = data.GetValue("soul_equipment").AsBsonArray;
 
-        var oldEquip = equipment[slot];
+            var oldEquip = equipment[slot];
 
-        if (from < 255) {
-            equipment.AsBsonArray[slot] = inventory[from];
-            inventory.RemoveAt(from);
+            if (from < 255) {
+                equipment.AsBsonArray[slot] = inventory[from];
+                inventory.RemoveAt(from);
+            } else {
+                equipment.AsBsonArray[slot] = 0;
+            }
+
+            if (oldEquip > 0) inventory.Add(oldEquip);
+
+            owner.SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(owner.GetCharacter().GetSouls()));
+            owner.SendPacket(new Packet(Packet.TYPE.SOUL_EQUIPMENT).AddEquipment(owner.GetCharacter().GetSoulEquipment()));
+
+            // syncStats();
+            // var stats = new List<string>();
+            // var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
+            // foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
+            // GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, stats.ToArray()));
+            
+            playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
         } else {
-            equipment.AsBsonArray[slot] = 0;
+            ToggleAbility(inventory[from].AsInt32);
         }
-
-        if (oldEquip > 0) inventory.Add(oldEquip);
-
-        owner.SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(owner.GetCharacter().GetSouls()));
-        owner.SendPacket(new Packet(Packet.TYPE.SOUL_EQUIPMENT).AddEquipment(owner.GetCharacter().GetSoulEquipment()));
-
-        // syncStats();
-        // var stats = new List<string>();
-        // var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
-        // foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
-        // GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, stats.ToArray()));
-        
-        playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
     }
 
     public bool[] GetAbilities() {
-        var abilities = data.GetValue("abilities").AsInt32;
+        var abilities = getStat("abilities");
         bool[] result = new bool[(int)Data.ABILITIES.MAX];
 
         for (int i = 0; i < (int)Data.ABILITIES.MAX; i++) {
@@ -297,8 +301,37 @@ public class Character : Godot.Object {
 
     public void AddSoul(ushort id) {
         var souls = data.GetValue("souls").AsBsonArray;
+
+        var soul = Server.GetSoul(id);
+        if (soul["type"] as string == "ability") {
+            foreach (var _soul in souls) if (_soul.AsInt32 == id) return;
+            ToggleAbility(id);
+        }
+
         souls.Add(id);
         //tu pewnie też
+    }
+
+    public void ToggleAbility(int soulId) {
+        var soul = Server.GetSoul(soulId);
+        
+        if (soul["type"] as string != "ability") {
+            Console.WriteLine("Impossible");
+            return;
+        }
+        
+        var ability = (int)Mathf.Pow(2, (int)Godot.GD.Convert(soul["ability"], Godot.Variant.Type.Int));
+        var stat = (int)getStat("abilities");
+        var currentState = stat & ability;
+        var reverseState = ~currentState & 0xf;
+
+        if (currentState > 0) {
+            SetStat("abilities", (ushort)(stat & reverseState));
+        } else {
+            SetStat("abilities", (ushort)(stat | ability));
+        }
+
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.ABILITIES).AddBoolArray(GetAbilities()));
     }
 
     public void SyncStat(string stat, ushort value) {

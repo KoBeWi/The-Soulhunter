@@ -37,7 +37,7 @@ var last_exp = -1
 var last_level = -1
 var equipment
 var souls
-var abilities = [false, false]
+var abilities = [false, false] #zdehardkodować
 
 var last_tick = 0
 var last_controls = 0

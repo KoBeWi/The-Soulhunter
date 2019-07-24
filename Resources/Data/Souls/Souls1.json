@@ -20,7 +20,8 @@
     {
         "name": "Auto-Jump",
         "description": "Jump by holding jump key.",
-        "type": "ability"
+        "type": "ability",
+        "ability": 0
     },
 
     {
@@ -78,6 +79,7 @@
     {
         "name": "Double Jump",
         "description": "Jump again in mid-air.",
-        "type": "ability"
+        "type": "ability",
+        "ability": 1
     }
 ]

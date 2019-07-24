@@ -23,6 +23,7 @@ public class Server : Node {
     private bool available = true;
 
     private List<Dictionary<string, object>> items = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> souls = new List<Dictionary<string, object>>();
 
     public override void _Ready() {
         instance = this;
@@ -32,7 +33,8 @@ public class Server : Node {
         rooms = new Dictionary<int, List<Room>>();
         playersOnline = new List<Player>();
 
-        items.AddRange(JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(System.IO.File.ReadAllText("Resources/Data/Items/Items1.json")));
+        items.AddRange(JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(System.IO.File.ReadAllText("Resources/Data/Items/Items1.json"))); //przerobić na bardziej uniwersalne
+        souls.AddRange(JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(System.IO.File.ReadAllText("Resources/Data/Souls/Souls1.json")));
 
         mapList = new List<PackedScene>();
         foreach (var map in System.IO.Directory.GetFiles("Maps"))
@@ -157,6 +159,10 @@ public class Server : Node {
 
     public static Dictionary<string, object> GetItem(int id) {
         return instance.items[id];
+    }
+
+    public static Dictionary<string, object> GetSoul(int id) {
+        return instance.souls[id];
     }
 
     public static ushort GetSeconds() {

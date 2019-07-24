@@ -26,6 +26,8 @@ var soul_stacks = {}
 var select = 0
 var inventory_select = 0
 
+var enabled_abilities = [false, false] #zdehardkodować
+
 func _ready():
 	main = get_node(main)
 	select_rect = get_node(select_rect)
@@ -67,7 +69,6 @@ func on_press_key(key):
 		
 		if key == Controls.ACCEPT:
 			equip_soul()
-			slot_mode()
 		
 		if key == Controls.CANCEL:
 			slot_mode()
@@ -121,15 +122,18 @@ func inventory_mode():
 	call_deferred("update_inventory")
 
 func slot_mode():
-	slot_help()
 	$Slots.visible = true
 	$Inventory.visible = false
 	inventory_mode = false
 	select()
+	slot_help()
 
 func inventory_help():
+	if select == 6:
+		main.get_help("Select").set_text("Toggle")
+	else:
+		main.get_help("Select").set_text("Equip")
 	main.get_help("Select").visible = true
-	main.get_help("Select").set_text("Equip")
 	main.get_help("Unequip").visible = false
 	main.get_help("Cancel").visible = true
 
@@ -158,7 +162,7 @@ func update_inventory():
 	
 	for i in inventory.get_child_count():
 		if i < soul_stacks.size():
-			inventory.get_child(i).set_soul(soul_stacks[soul_stacks.keys()[i]])
+			inventory.get_child(i).set_soul(soul_stacks[soul_stacks.keys()[i]], enabled_abilities if select == 6 else null)
 		else:
 			inventory.get_child(i).clear_soul()
 	
@@ -178,8 +182,11 @@ func equip_soul():
 	
 	if !selected.empty():
 		Packet.new(Packet.TYPE.EQUIP_SOUL).add_u8(select).add_u8(selected.stack.origin).send()
-		inventory_select = -1
-		select()
+		
+		if select != 6:
+			inventory_select = -1
+			select()
+			slot_mode()
 
 func unequip_soul():
 	var selected = slots.get_child(select)
@@ -188,3 +195,9 @@ func unequip_soul():
 		Packet.new(Packet.TYPE.EQUIP_SOUL).add_u8(select).add_u8(255).send()
 		inventory_select = -1
 		select()
+
+func update_abilities(abilities):
+	enabled_abilities = abilities
+	
+	if inventory_mode and select == 6:
+		update_inventory()
