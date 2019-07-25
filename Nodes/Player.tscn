@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
@@ -72,8 +72,57 @@ tracks/0/keys = {
 "values": [ 8, 17 ]
 }
 
+[sub_resource type="Animation" id=6]
+resource_name = "SkeletonAttack"
+length = 3.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Skeleton:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 5, 6, 7 ]
+}
+
 [sub_resource type="Animation" id=5]
-resource_name = "SlashAttackCrouchL"
+resource_name = "SkeletonStand"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Skeleton:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "SkeletonWalk"
+length = 4.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Skeleton:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 0, 2 ]
+}
+
+[sub_resource type="Animation" id=8]
 length = 3.0
 step = 1.0
 tracks/0/type = "value"
@@ -113,8 +162,7 @@ tracks/2/keys = {
 "values": [ 76.3, -90.0, -243.0 ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "SlashAttackCrouchR"
+[sub_resource type="Animation" id=9]
 length = 3.0
 step = 1.0
 tracks/0/type = "value"
@@ -154,8 +202,7 @@ tracks/2/keys = {
 "values": [ -76.2865, 90.0, 243.016 ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "SlashAttackL"
+[sub_resource type="Animation" id=10]
 length = 3.0
 step = 1.0
 tracks/0/type = "value"
@@ -195,8 +242,7 @@ tracks/2/keys = {
 "values": [ 76.3, -90.0, -243.0 ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "SlashAttackR"
+[sub_resource type="Animation" id=11]
 length = 3.0
 step = 1.0
 tracks/0/type = "value"
@@ -236,8 +282,7 @@ tracks/2/keys = {
 "values": [ -76.2865, 90.0, 243.016 ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "StabAttackCrouchL"
+[sub_resource type="Animation" id=12]
 length = 2.0
 step = 1.0
 tracks/0/type = "value"
@@ -277,8 +322,7 @@ tracks/2/keys = {
 "values": [ -90.0 ]
 }
 
-[sub_resource type="Animation" id=10]
-resource_name = "StabAttackCrouchR"
+[sub_resource type="Animation" id=13]
 length = 2.0
 step = 1.0
 tracks/0/type = "value"
@@ -318,8 +362,7 @@ tracks/2/keys = {
 "values": [ 90.0 ]
 }
 
-[sub_resource type="Animation" id=11]
-resource_name = "StabAttackL"
+[sub_resource type="Animation" id=14]
 length = 2.0
 step = 1.0
 tracks/0/type = "value"
@@ -359,7 +402,7 @@ tracks/2/keys = {
 "values": [ -90.0 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=15]
 length = 2.0
 step = 1.0
 tracks/0/type = "value"
@@ -399,8 +442,7 @@ tracks/2/keys = {
 "values": [ 90.0 ]
 }
 
-[sub_resource type="Animation" id=13]
-resource_name = "SwingAttackCrouchL"
+[sub_resource type="Animation" id=16]
 length = 4.0
 step = 1.0
 tracks/0/type = "value"
@@ -440,8 +482,7 @@ tracks/2/keys = {
 "values": [ 122.928, 91.8277, 408.898, -433.5 ]
 }
 
-[sub_resource type="Animation" id=14]
-resource_name = "SwingAttackCrouchR"
+[sub_resource type="Animation" id=17]
 length = 4.0
 step = 1.0
 tracks/0/type = "value"
@@ -481,8 +522,7 @@ tracks/2/keys = {
 "values": [ 236.437, 268.673, 312.326, 433.489 ]
 }
 
-[sub_resource type="Animation" id=15]
-resource_name = "SwingAttackL"
+[sub_resource type="Animation" id=18]
 length = 4.0
 step = 1.0
 tracks/0/type = "value"
@@ -522,7 +562,7 @@ tracks/2/keys = {
 "values": [ 122.928, 91.8277, 408.898, -433.5 ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=19]
 length = 4.0
 step = 1.0
 tracks/0/type = "value"
@@ -562,7 +602,7 @@ tracks/2/keys = {
 "values": [ 236.437, 268.673, 312.326, 433.489 ]
 }
 
-[sub_resource type="Animation" id=17]
+[sub_resource type="Animation" id=20]
 length = 6.0
 loop = true
 step = 1.0
@@ -579,7 +619,7 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6 ]
 }
 
-[sub_resource type="GDScript" id=18]
+[sub_resource type="GDScript" id=21]
 script/source = "extends AnimationPlayer
 
 func _on_Animation_animation_finished(anim_name):
@@ -588,19 +628,19 @@ func _on_Animation_animation_finished(anim_name):
 	elif anim_name.find(\"Attack\"):
 		$\"..\".attack_end()"
 
-[sub_resource type="RectangleShape2D" id=19]
-extents = Vector2( 24, 32 )
-
-[sub_resource type="RayShape2D" id=20]
-length = 32.0
-
-[sub_resource type="RectangleShape2D" id=21]
-extents = Vector2( 24, 48 )
-
 [sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 24, 32 )
 
-[sub_resource type="Animation" id=23]
+[sub_resource type="RayShape2D" id=23]
+length = 32.0
+
+[sub_resource type="RectangleShape2D" id=24]
+extents = Vector2( 24, 48 )
+
+[sub_resource type="RectangleShape2D" id=25]
+extents = Vector2( 24, 32 )
+
+[sub_resource type="Animation" id=26]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:position")
@@ -631,21 +671,24 @@ anims/Crouch = SubResource( 1 )
 anims/Fall = SubResource( 2 )
 anims/Idle = SubResource( 3 )
 anims/Jump = SubResource( 4 )
-anims/SlashAttackCrouchL = SubResource( 5 )
-anims/SlashAttackCrouchR = SubResource( 6 )
-anims/SlashAttackL = SubResource( 7 )
-anims/SlashAttackR = SubResource( 8 )
-anims/StabAttackCrouchL = SubResource( 9 )
-anims/StabAttackCrouchR = SubResource( 10 )
-anims/StabAttackL = SubResource( 11 )
-anims/StabAttackR = SubResource( 12 )
-anims/SwingAttackCrouchL = SubResource( 13 )
-anims/SwingAttackCrouchR = SubResource( 14 )
-anims/SwingAttackL = SubResource( 15 )
-anims/SwingAttackR = SubResource( 16 )
-anims/Walk = SubResource( 17 )
+anims/SkeletonAttack = SubResource( 6 )
+anims/SkeletonStand = SubResource( 5 )
+anims/SkeletonWalk = SubResource( 7 )
+anims/SlashAttackCrouchL = SubResource( 8 )
+anims/SlashAttackCrouchR = SubResource( 9 )
+anims/SlashAttackL = SubResource( 10 )
+anims/SlashAttackR = SubResource( 11 )
+anims/StabAttackCrouchL = SubResource( 12 )
+anims/StabAttackCrouchR = SubResource( 13 )
+anims/StabAttackL = SubResource( 14 )
+anims/StabAttackR = SubResource( 15 )
+anims/SwingAttackCrouchL = SubResource( 16 )
+anims/SwingAttackCrouchR = SubResource( 17 )
+anims/SwingAttackL = SubResource( 18 )
+anims/SwingAttackR = SubResource( 19 )
+anims/Walk = SubResource( 20 )
 next/Fall = "Fall"
-script = SubResource( 18 )
+script = SubResource( 21 )
 
 [node name="Sprite" type="Sprite" parent="."]
 editor/display_folded = true
@@ -667,19 +710,19 @@ hframes = 10
 
 [node name="Skeleton" type="Sprite" parent="."]
 visible = false
-position = Vector2( 29, -11 )
+position = Vector2( 0, 4 )
 texture = ExtResource( 5 )
 flip_h = true
-hframes = 10
+hframes = 8
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 visible = false
-shape = SubResource( 19 )
+shape = SubResource( 22 )
 
 [node name="ColliderRay" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( 0, 32 )
-shape = SubResource( 20 )
+shape = SubResource( 23 )
 
 [node name="Name" type="Label" parent="."]
 margin_left = -19.0
@@ -697,11 +740,11 @@ collision_mask = 2
 
 [node name="Collider" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( 0, 16 )
-shape = SubResource( 21 )
+shape = SubResource( 24 )
 
 [node name="Collider2" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( 0, 32 )
-shape = SubResource( 22 )
+shape = SubResource( 25 )
 disabled = true
 
 [node name="ManaTimer" type="Timer" parent="."]
@@ -722,7 +765,7 @@ position = Vector2( 0, -96 )
 texture = ExtResource( 6 )
 
 [node name="Animation" type="AnimationPlayer" parent="PressUp"]
-anims/Idle = SubResource( 23 )
+anims/Idle = SubResource( 26 )
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="frame_changed" from="Sprite" to="." method="set_frame"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]

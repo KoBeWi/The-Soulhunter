@@ -34,7 +34,6 @@ var crouch = false
 var jump = false
 var double_jump = false
 var attack = false
-var skeleton = false
 
 var stats
 var last_exp = -1
@@ -51,6 +50,7 @@ var interactable
 
 onready var sprite = $Sprite
 onready var sprite2 = $Sprite/Sprite
+onready var sprite3 = $Skeleton
 onready var weapon_point = $Sprite/WeaponHinge
 onready var chr = $Character
 onready var anim = $Animation
@@ -118,15 +118,14 @@ func process_actions():
 		cached_action = action
 	
 	match action:
-		ACTIONS.SKELETON:
-			if skeleton:
+		ACTIONS.NONE:
+			if prev_action == ACTIONS.SKELETON:
 				sprite.visible = true
-				$Skeleton.visible = false
-			else:
+				sprite3.visible = false
+		ACTIONS.SKELETON:
+			if prev_action == ACTIONS.NONE:
 				sprite.visible = false
-				$Skeleton.visible = true
-			skeleton = !skeleton
-			action = ACTIONS.NONE
+				sprite3.visible = true
 		
 		ACTIONS.HOVER:
 			if prev_action == ACTIONS.NONE:
@@ -195,18 +194,26 @@ func process_jumping():
 func process_animations():
 	var prev_anim = animation
 	
-	if attack:
-		pass
-	elif !is_on_floor() and jump:
-		animation = "Jump"
-	elif !is_on_floor() and !jump:
-		animation = "Fall"
-	elif crouch:
-		animation = "Crouch"
-	elif motion.x != 0:
-		animation = "Walk"
+	if action != ACTIONS.SKELETON:
+		if attack:
+			pass
+		elif !is_on_floor() and jump:
+			animation = "Jump"
+		elif !is_on_floor() and !jump:
+			animation = "Fall"
+		elif crouch:
+			animation = "Crouch"
+		elif motion.x != 0:
+			animation = "Walk"
+		else:
+			animation = "Idle"
 	else:
-		animation = "Idle"
+		if attack:
+			pass
+		elif motion.x != 0:
+			animation = "SkeletonWalk"
+		else:
+			animation = "SkeletonStand"
 	
 	if animation != prev_anim:
 		anim.play(animation)
@@ -217,8 +224,10 @@ func process_attack():
 	if attack: return
 	
 	if Controls.ATTACK in key_press:
-		if skeleton:
-			pass
+		if action == ACTIONS.SKELETON:
+			anim.play("SkeletonAttack")
+			if Com.is_server and souls[0] == 5:
+				trigger_soul({free = true})
 		else:
 			if Controls.UP in controls:
 				trigger_soul()
@@ -244,7 +253,7 @@ func process_controls():
 	key_press.clear()
 	key_release.clear()
 
-func trigger_soul():
+func trigger_soul(ops = {}):
 	if !Com.is_server: return ##TODO: klient może dostawać info
 	
 	var soul
@@ -252,10 +261,9 @@ func trigger_soul():
 		soul = Res.get_res(Res.souls, souls[0])
 	
 		if use_soul(soul):
-			if "mp" in soul:
+			if "mp" in soul and not ops.free:
 				stats.mp -= soul.mp
-			
-			get_meta("character").call("SyncStat", "mp", stats.mp)
+				get_meta("character").call("SyncStat", "mp", stats.mp)
 
 func use_soul(soul):
 	if "mp" in soul:
@@ -327,7 +335,8 @@ func active_soul(pressed):
 				else:
 					action = ACTIONS.NONE
 			6:
-				action = ACTIONS.SKELETON
+				if pressed:
+					action = ACTIONS.SKELETON if action == ACTIONS.NONE else ACTIONS.NONE
 	
 
 func on_key_press(p_id, key, state):
@@ -346,6 +355,7 @@ func on_key_release(p_id, key, state):
 func flip(f = sprite.flip_h):
 	sprite.flip_h = f
 	sprite2.flip_h = f
+	sprite3.flip_h = !f
 
 func direction():
 	if sprite.flip_h:
@@ -370,9 +380,12 @@ func damage(enemy):
 
 func attack_end():
 	attack = false
-	weapon_point.visible = false
-	anim.playback_speed = 8
-	get_weapon().set_disabled(true)
+	if action == ACTIONS.SKELETON:
+		anim.play("SkeletonStand")
+	else:
+		weapon_point.visible = false
+		anim.playback_speed = 8
+		get_weapon().set_disabled(true)
 
 func set_main():
 	Com.player = self
