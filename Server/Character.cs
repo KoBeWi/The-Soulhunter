@@ -1,6 +1,6 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
-using MongoDB.Driver;
 using MongoDB.Bson;
 using Godot;
 using Newtonsoft.Json;
@@ -107,7 +107,6 @@ public class Character : Godot.Object {
         }
 
         syncStats();
-        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, stats.ToArray()));
     }
 
     public ushort GetStat(string stat) {
@@ -120,7 +119,10 @@ public class Character : Godot.Object {
 
     static readonly string[] statList = {"level", "exp", "hp", "max_hp", "mp", "max_mp", "attack", "defense", "magic_attack", "magic_defense", "luck"};
 
-    private void syncStats() {
+    private void syncStats(params string[] forcedDiff) {
+        Dictionary<string, ushort> oldStats = null;
+        if (finalStats != null) oldStats = dupStats(finalStats);
+
         finalStats = new Dictionary<string, ushort>();
         foreach (string stat in statList) {
             finalStats[stat] = getStat(stat);
@@ -152,10 +154,30 @@ public class Character : Godot.Object {
 
         if (playerNode != null)
             playerNode.Call("set_stats", JsonConvert.SerializeObject(finalStats));
+        
+        if (oldStats != null) {
+            var diff = new List<string>();
+            foreach (var stat in statList) {
+                if (oldStats[stat] != finalStats[stat] || forcedDiff.Contains(stat))
+                    diff.Add(stat);
+            }
+
+            if (diff.Count > 0) GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, diff.ToArray()));
+        }
     }
 
     private Dictionary<string, object> dupData(Dictionary<string, object> source) {
         var dup = new Dictionary<string, object>();
+
+        foreach (var key in source.Keys) {
+            dup[key] = source[key];
+        }
+
+        return dup;
+    }
+
+    private Dictionary<string, ushort> dupStats(Dictionary<string, ushort> source) {
+        var dup = new Dictionary<string, ushort>();
 
         foreach (var key in source.Keys) {
             dup[key] = source[key];
@@ -195,10 +217,6 @@ public class Character : Godot.Object {
         owner.SendPacket(new Packet(Packet.TYPE.EQUIPMENT).AddEquipment(GetEquipment()));
 
         syncStats();
-        var stats = new List<string>();
-        var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
-        foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
-        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, stats.ToArray()));
         
         playerNode.Call("set_equipment", JsonConvert.SerializeObject(getArray("equipment")));
     }
@@ -245,8 +263,7 @@ public class Character : Godot.Object {
     public void Save() {
         SetStat("hp", GetStat("max_hp"));
         SetStat("mp", GetStat("max_mp"));
-        syncStats();
-        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, new String[] {"hp", "mp"}));
+        syncStats("hp", "mp");
         database.SaveCharacter(data);
     }
 
@@ -350,12 +367,6 @@ public class Character : Godot.Object {
         }
 
         GetPlayer().SendPacket(new Packet(Packet.TYPE.ABILITIES).AddBoolArray(GetAbilities()));
-    }
-
-    public void SyncStat(string stat, ushort value) {
-        SetStat(stat, value);
-        finalStats[stat] = value;//TODO: wygląda na hack
-        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, new string[] {stat}));
     }
 
     public void GameOver(ushort time, bool init = false) {

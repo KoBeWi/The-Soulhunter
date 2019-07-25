@@ -69,7 +69,7 @@ public class Database {
             {"luck", 1},
             {"inventory", new BsonArray()},
             {"equipment", new BsonArray {0, 0, 0, 0, 0, 0, 0, 0}},
-            {"souls", new BsonArray()},
+            {"souls", new BsonArray {0}},
             {"soul_equipment", new BsonArray {0, 0, 0, 0, 0, 0, 0}},
             {"abilities", 0},
             {"chests", new BsonArray()},

@@ -1,6 +1,8 @@
 [
     {
-        "name": "Dummy"
+        "name": "Soul Hunt",
+        "description": "Acquire souls from defeated foes.",
+        "type": "mastery"
     },
 
     {
