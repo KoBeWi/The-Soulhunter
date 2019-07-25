@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public class Data {
@@ -35,6 +36,12 @@ public class Data {
     public static void ApplyEnchantmentSoul(Dictionary<string, object> item, Dictionary<string, object> soul) {
         if (soul == null) return;
 
+        switch (soul["name"] as string) {
+            case "Sharpness":
+            if (item["type"] as string == "weapon" && item.ContainsKey("attribute") && item["attribute"] as string == "sharp")
+                item["attack"] = Data.Int(item["attack"]) + 2;
+            break;
+        }
     }
 
     public static void ApplyExtensionSoul(Dictionary<string, object> soul, Dictionary<string, object> extension) {
@@ -45,5 +52,15 @@ public class Data {
     public static void ApplyAugmentSoul(Dictionary<string, ushort> stats, Dictionary<string, object> soul) {
         if (soul == null) return;
 
+        switch (soul["name"] as string) {
+            case "Strong Blood":
+            stats["max_hp"] += 20;
+            break;
+        }
+
+    }
+
+    public static int Int(object whatever) {
+        return (int)Godot.GD.Convert(whatever, Godot.Variant.Type.Int);
     }
 }

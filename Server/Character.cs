@@ -127,12 +127,12 @@ public class Character : Godot.Object {
         }
 
         var souls = GetSoulEquipment();
+        Dictionary<string, object> augmentSoul = null;
+        if (souls[2] > 0) augmentSoul = Server.GetSoul(souls[2]);
         Dictionary<string, object> enchantmentSoul = null;
         if (souls[3] > 0) enchantmentSoul = Server.GetSoul(souls[3]);
-        Dictionary<string, object> augmentSoul = null;
-        if (souls[4] > 0) augmentSoul = Server.GetSoul(souls[4]);
         Dictionary<string, object> extensionSoul = null;
-        if (souls[5] > 0) extensionSoul = Server.GetSoul(souls[5]);
+        if (souls[4] > 0) extensionSoul = Server.GetSoul(souls[4]);
 
         Data.ApplyExtensionSoul(augmentSoul, extensionSoul);
         Data.ApplyAugmentSoul(finalStats, augmentSoul);
@@ -144,7 +144,7 @@ public class Character : Godot.Object {
 
                 foreach (var stat in statList) {
                     if (item.ContainsKey(stat)) {
-                        finalStats[stat] += (ushort)(int)Godot.GD.Convert(item[stat], Godot.Variant.Type.Int);
+                        finalStats[stat] += (ushort)Data.Int(item[stat]);
                     }
                 }
             }
@@ -222,11 +222,7 @@ public class Character : Godot.Object {
             owner.SendPacket(new Packet(Packet.TYPE.SOULS).AddU16Array(owner.GetCharacter().GetSouls()));
             owner.SendPacket(new Packet(Packet.TYPE.SOUL_EQUIPMENT).AddEquipment(owner.GetCharacter().GetSoulEquipment()));
 
-            // syncStats();
-            // var stats = new List<string>();
-            // var item = Server.GetItem(equipment.AsBsonArray[slot].AsInt32);
-            // foreach (var stat in statList) if (item.ContainsKey(stat)) stats.Add(stat);
-            // GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, stats.ToArray()));
+            syncStats();
             
             playerNode.Call("set_souls", JsonConvert.SerializeObject(getArray("soul_equipment")));
         } else {
@@ -342,7 +338,7 @@ public class Character : Godot.Object {
             return;
         }
         
-        var ability = (int)Mathf.Pow(2, (int)Godot.GD.Convert(soul["ability"], Godot.Variant.Type.Int));
+        var ability = (int)Mathf.Pow(2, Data.Int(soul["ability"]));
         var stat = (int)getStat("abilities");
         var currentState = stat & ability;
         var reverseState = ~currentState & 0xf;

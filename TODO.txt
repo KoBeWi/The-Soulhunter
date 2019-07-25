@@ -3,6 +3,8 @@
 -można przeżyć z 0 hp? (albo buguje się wartość)
 -szkielety nie umieją w grawitację
 
+-nie ma podglądu statów biorących pod uwagę dusze
+-poprawić lagi przy chodzeniu :/ (niby działało, ale jednak nie)
 -potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation (chyba trzeba też inne kolekcje zabezpieczyć)
 >niedawanie do ticka objektów, które wcale się nie zmieniły
 -zwalone tło jak większe okno

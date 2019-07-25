@@ -9,6 +9,7 @@
         "name": "Rusty Sword",
         "description": "A very old and rusty sword. Looks like it might break at any moment.",
         "type": "weapon",
+        "attribute": "sharp",
         "attack": 1
     },
 
@@ -29,6 +30,7 @@
         "name": "Blunt Sword",
         "description": "It was probably used too much.",
         "type": "weapon",
+        "attribute": "blunt",
         "attack": 2
     },
 
@@ -51,6 +53,7 @@
         "name": "Hammer",
         "description": "A standard hammer.",
         "type": "weapon",
+        "attribute": "blunt",
         "attack": 3
     }
 ]
