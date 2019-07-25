@@ -239,7 +239,7 @@ func process_controls():
 	if interactable and Controls.UP in key_press:
 		interactable.interact(self)
 	
-	if !controls.empty():
+	if Controls.LEFT in controls or Controls.RIGHT in controls:
 		last_controls = last_tick
 	key_press.clear()
 	key_release.clear()
@@ -515,7 +515,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	var target_position = Vector2(vector[2], vector[3])
 	last_tick = timestamp
 	
-	if (!main and controls.empty()) or Com.time_greater(timestamp, last_controls + 5):
+	if (!main and controls.empty()) or Com.time_greater(timestamp, last_controls + 1):
 		desync = 0
 		var old_position = position
 		
@@ -526,7 +526,7 @@ func apply_state_vector(timestamp, diff_vector, vector):
 		
 		if has_meta("initialized"): sprite.position += (old_position - position)
 	else:
-		if (last_server_position - position).length_squared() > 22500:
+		if (last_server_position - position).length_squared() > 4096:
 			desync += 1
 			
 			if desync == 10:
