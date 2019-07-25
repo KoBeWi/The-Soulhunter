@@ -22,6 +22,7 @@ signal map(map)
 signal item_get(item)
 signal soul_get(soul)
 signal game_over(time)
+signal saved
 
 func _ready():
 	set_process(false)
@@ -223,6 +224,9 @@ func process_packet(unpacker : Unpacker):
 		
 		Packet.TYPE.SOUL_GET:
 			emit_signal("soul_get", unpacker.get_u16())
+		
+		Packet.TYPE.SAVE:
+			emit_signal("saved")
 		
 		Packet.TYPE.GAME_OVER:
 			emit_signal("game_over", unpacker.get_u16())

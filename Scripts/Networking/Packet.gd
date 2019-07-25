@@ -27,6 +27,7 @@ enum TYPE {
 	EQUIP_SOUL,
 	ITEM_GET,
 	SOUL_GET,
+	SAVE,
 	GAME_OVER
 }
 

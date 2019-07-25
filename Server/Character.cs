@@ -265,6 +265,8 @@ public class Character : Godot.Object {
         SetStat("mp", GetStat("max_mp"));
         syncStats("hp", "mp");
         database.SaveCharacter(data);
+
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.SAVE));
     }
 
     public ushort[] GetInventory() {

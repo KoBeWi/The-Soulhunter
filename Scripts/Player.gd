@@ -386,6 +386,7 @@ func set_main():
 	Network.connect("stats", self, "on_stats")
 	Network.connect("equipment", self, "on_eq")
 	Network.connect("abilities", self, "set_abilities")
+	Network.connect("saved", self, "on_save")
 
 func on_hit(body):
 	if body.is_in_group("enemies"):
@@ -568,3 +569,6 @@ func on_active_timeout():
 
 func on_trigger_timeout():
 	cooldown = false
+
+func on_save():
+	preload("res://Nodes/Effects/PopupText.tscn").instance().start(self, "Saved!", Color.cyan)

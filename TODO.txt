@@ -1,7 +1,6 @@
 -błąd +dodatek >zmiana
 
 -można przeżyć z 0 hp? (albo buguje się wartość)
--szkielety nie umieją w grawitację
 
 -nie ma podglądu statów biorących pod uwagę dusze
 -poprawić lagi przy chodzeniu :/ (niby działało, ale jednak nie)
@@ -18,7 +17,6 @@
 -wychodzący gracz się nie wylogowyje?
 
 >zamienić ID map na ich nazwy
-+potwierdzenie save
 +usuwanie gracza z controls, gdy wychodzi z servera
 -zabezpieczyć stream.write w każdym miejscu
 >zamienić rozmiar pakietu u16, żeby mogły być dłuższe

@@ -8,6 +8,7 @@ script/source = "extends Enemy
 
 onready var animation = $Animation
 onready var sprite = $Sprite
+onready var raycast = $RayCast2D
 
 enum {IDLE, WALK, ATTACK}
 var state = IDLE
@@ -84,7 +85,10 @@ func general_ai(delta):
 			ATTACK:
 				animation.play(\"Throw\")
 	
-	move_and_collide(Vector2(walk * 6, 1))
+	if raycast.is_colliding():
+		move_and_collide(Vector2(walk * 6, 0))
+	else:
+		move_and_slide(Vector2(walk * 60, 500))
 
 func _on_animation_finished(anim_name):
 	if anim_name == \"Throw\":
@@ -220,6 +224,11 @@ playback_speed = 8.0
 anims/Idle = SubResource( 4 )
 anims/Throw = SubResource( 5 )
 anims/Walk = SubResource( 6 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( 0, 60 )
+enabled = true
+cast_to = Vector2( 0, 10 )
 [connection signal="body_entered" from="Hitbox" to="." method="hit"]
 [connection signal="body_exited" from="Hitbox" to="." method="unhit"]
 [connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]
