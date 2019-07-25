@@ -62,7 +62,7 @@
     
     {
         "name": "Enchanced Bone Throw",
-        "description": "Increases speed of thrown bones.",
+        "description": "Increases rate and speed of thrown bones.",
         "type": "extension"
     },
     

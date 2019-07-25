@@ -15,17 +15,20 @@ var controls = {}
 var key_press = {}
 var key_release = {}
 
+var main = false
 var uname = "" setget set_username
 var hue = 0
 var motion = Vector2()
 var last_server_position = Vector2()
-var main = false
+var last_room
+
 var action = ACTIONS.NONE
 var cached_action = ACTIONS.NONE
 var prev_action = ACTIONS.NONE
+
 var weapon_id = 0
 var animation = "Idle"
-var last_room
+var cooldown = false
 
 var crouch = false
 var jump = false
@@ -52,6 +55,7 @@ onready var weapon_point = $Sprite/WeaponHinge
 onready var chr = $Character
 onready var anim = $Animation
 onready var hitbox = $Hitbox
+onready var trigger_timer = $TriggerTimer
 onready var active_timer = $ActiveTimer
 onready var invincibility = $Invincibility
 
@@ -247,41 +251,59 @@ func trigger_soul():
 	if souls[0] > 0:
 		soul = Res.get_res(Res.souls, souls[0])
 	
-	if soul:
-		if "mp" in soul:
-			if stats.mp < soul.mp: return
-			stats.mp -= soul.mp
-		
-		get_meta("character").call("SyncStat", "mp", stats.mp)
-		
-		match Res.get_res(Res.souls, int(souls[0])).name:
-			"Summon Bat":
-				var bat = preload("res://Nodes/Projectiles/PBat.tscn").instance()
-				get_parent().add_child(bat)
-				bat.position = position
-				if Com.is_server:
-					bat.home(direction_i())
-				bat.player = self
+		if use_soul(soul):
+			if "mp" in soul:
+				stats.mp -= soul.mp
 			
-			"Echo of Bat":
-				var echo = preload("res://Nodes/Projectiles/PEcho.tscn").instance()
-				get_parent().add_child(echo)
-				echo.position = position
-				echo.player = self
+			get_meta("character").call("SyncStat", "mp", stats.mp)
+
+func use_soul(soul):
+	if "mp" in soul:
+		if stats.mp < soul.mp: return
+	
+	match soul.name:
+		"Summon Bat":
+			var bat = preload("res://Nodes/Projectiles/PBat.tscn").instance()
+			get_parent().add_child(bat)
+			bat.position = position
+			if Com.is_server:
+				bat.home(direction_i())
+			bat.player = self
+		
+		"Echo of Bat":
+			var echo = preload("res://Nodes/Projectiles/PEcho.tscn").instance()
+			get_parent().add_child(echo)
+			echo.position = position
+			echo.player = self
+		
+		"Bone Throw":
+			if cooldown: return
 			
-			"Bone Throw":
-				var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
-				get_parent().add_child(bone)
-				bone.position = position + Vector2(0, -80)
+			var bone = preload("res://Nodes/Projectiles/PBone.tscn").instance()
+			get_parent().add_child(bone)
+			bone.position = position + Vector2(0, -60)
+			if souls[4] == 9:
+				cooldown(0.25)
+				bone.velocity.x = abs(bone.velocity.x) * direction_i() * (1 + randf())
+				bone.velocity.y *= 1.5
+				bone.powered = true
+			else:
+				cooldown(0.75)
 				bone.velocity.x = abs(bone.velocity.x) * direction_i()
-				bone.player = self
-			
-			"Dagger Throw":
-				var dagger = preload("res://Nodes/Projectiles/PDagger.tscn").instance()
-				get_parent().add_child(dagger)
-				dagger.position = position
-				dagger.velocity.x = abs(dagger.velocity.x) * direction_i()
-				dagger.player = self
+			bone.player = self
+		
+		"Dagger Throw":
+			var dagger = preload("res://Nodes/Projectiles/PDagger.tscn").instance()
+			get_parent().add_child(dagger)
+			dagger.position = position
+			dagger.velocity.x = abs(dagger.velocity.x) * direction_i()
+			dagger.player = self
+		
+	return true
+
+func cooldown(s):
+	cooldown = true
+	trigger_timer.start(s)
 
 func active_soul(pressed):
 	if !Com.is_server: return ##TODO: klient może dostawać info
@@ -543,3 +565,6 @@ func set_abilities(abis):
 func on_active_timeout():
 	if action == ACTIONS.HOVER:
 		action = ACTIONS.NONE
+
+func on_trigger_timeout():
+	cooldown = false

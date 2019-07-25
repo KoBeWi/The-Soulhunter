@@ -709,6 +709,9 @@ autostart = true
 
 [node name="Invincibility" type="Timer" parent="."]
 
+[node name="TriggerTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="ActiveTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -726,4 +729,5 @@ anims/Idle = SubResource( 23 )
 [connection signal="body_exited" from="Hitbox" to="." method="on_unhit"]
 [connection signal="timeout" from="ManaTimer" to="." method="reg_mp"]
 [connection signal="timeout" from="Invincibility" to="." method="on_not_invincible"]
+[connection signal="timeout" from="TriggerTimer" to="." method="on_trigger_timeout"]
 [connection signal="timeout" from="ActiveTimer" to="." method="on_active_timeout"]

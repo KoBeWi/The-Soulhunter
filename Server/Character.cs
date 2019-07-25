@@ -369,6 +369,12 @@ public class Character : Godot.Object {
         GetPlayer().SendPacket(new Packet(Packet.TYPE.ABILITIES).AddBoolArray(GetAbilities()));
     }
 
+    public void SyncStat(string stat, ushort value) {
+        SetStat(stat, value);
+        finalStats[stat] = value;
+        GetPlayer().SendPacket(new Packet(Packet.TYPE.STATS).AddStats(this, new string[] {stat}));
+    }
+
     public void GameOver(ushort time, bool init = false) {
         if (!init) data = database.GetCharacterData(this);
 

@@ -9,6 +9,7 @@ script/source = "extends PlayerProjectile
 onready var sprite = $Sprite
 
 var velocity = Vector2(250, -800)
+var powered = false
 
 func _ready():
 	if Com.register_node(self, \"Projectiles/PBone\"): return
@@ -17,8 +18,12 @@ func attack():
 	return {damage = player.stats.magic_attack + 5}
 
 func _physics_process(delta):
-	velocity.y += 50
-	rotation -= velocity.x * 0.01
+	if powered:
+		rotation -= velocity.x * 0.02
+		velocity.y += 100
+	else:
+		rotation -= velocity.x * 0.01
+		velocity.y += 50
 	
 	if sprite.position.length_squared() > 1:
 		sprite.position *= 0.7
@@ -34,7 +39,8 @@ func state_vector_types():
 			Data.TYPE.U16,
 			Data.TYPE.U16,
 			Data.TYPE.U16,
-			Data.TYPE.U16
+			Data.TYPE.U16,
+			Data.TYPE.U8
 		]
 
 func get_state_vector():
@@ -42,7 +48,8 @@ func get_state_vector():
 			round(position.x),
 			round(position.y),
 			round(velocity.x) + 10000,
-			round(velocity.y) + 10000
+			round(velocity.y) + 10000,
+			int(powered)
 		]
 
 func apply_state_vector(timestamp, diff_vector, vector):
@@ -53,6 +60,8 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	
 	velocity.x = vector[2] - 10000
 	velocity.y = vector[3] - 10000
+	
+	powered = vector[4]
 
 func on_hit():
 	Com.dispose_node(self)"
