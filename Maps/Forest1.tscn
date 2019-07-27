@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Resources/MapSettings.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Tilesets/Ground.tres" type="TileSet" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Nodes/Enemies/Bat.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Nodes/Enemies/Ladybug.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Nodes/Backgrounds/Forest.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Nodes/Objects/Chest.tscn" type="PackedScene" id=7]
 
 [node name="Map" type="Area2D"]
 collision_layer = 1048575
@@ -65,3 +66,7 @@ position = Vector2( 4800, 608 )
 
 [node name="Background" parent="." instance=ExtResource( 6 )]
 editor/display_folded = true
+
+[node name="Chest" parent="." instance=ExtResource( 7 )]
+position = Vector2( 288, 1632 )
+item = 2

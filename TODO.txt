@@ -1,5 +1,6 @@
 -błąd +dodatek >zmiana
 
++consumable
 -można przeżyć z 0 hp? (albo buguje się wartość)
 
 -nie ma podglądu statów biorących pod uwagę dusze
