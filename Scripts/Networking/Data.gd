@@ -33,6 +33,7 @@ const NODES = [
 	"Projectiles/PEcho",
 	"Projectiles/PBone",
 	"Projectiles/PDagger",
+	"Projectiles/PSkeleton",
 	"Effects/Soul",
 	"Objects/Item"
 ]

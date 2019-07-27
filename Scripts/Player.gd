@@ -307,6 +307,14 @@ func use_soul(soul):
 			dagger.velocity.x = abs(dagger.velocity.x) * direction_i()
 			dagger.player = self
 		
+		"Summon Skeleton":
+			var skeleton = preload("res://Nodes/Projectiles/PSkeleton.tscn").instance()
+			get_parent().add_child(skeleton)
+			skeleton.position = position
+			skeleton.velocity.x = abs(skeleton.velocity.x) * direction_i()
+			skeleton.sprite.flip_h = direction_i() == 1
+			skeleton.player = self
+		
 	return true
 
 func cooldown(s):
