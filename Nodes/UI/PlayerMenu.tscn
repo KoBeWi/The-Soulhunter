@@ -344,7 +344,6 @@ margin_bottom = 17.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="Inventory" type="VBoxContainer" parent="Container/Tabs"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -357,7 +356,6 @@ __meta__ = {
 }
 
 [node name="Slots" type="GridContainer" parent="Container/Tabs/Inventory"]
-editor/display_folded = true
 margin_right = 728.0
 margin_bottom = 192.0
 columns = 4
@@ -895,8 +893,6 @@ editor/display_folded = true
 margin_right = 364.0
 margin_bottom = 32.0
 type = "Trigger"
-color = Color( 1, 0, 0, 1 )
-no_select = false
 
 [node name="Active" parent="Container/Tabs/Souls/Slots" instance=ExtResource( 13 )]
 editor/display_folded = true
@@ -906,7 +902,6 @@ margin_bottom = 32.0
 type = "Active"
 soul = "Skeleton Disguise"
 color = Color( 0, 0, 1, 1 )
-no_select = false
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Active" index="0"]
 self_modulate = Color( 0, 0, 1, 1 )
@@ -940,7 +935,6 @@ margin_bottom = 72.0
 type = "Augment"
 soul = "STR+"
 color = Color( 1, 1, 0, 1 )
-no_select = false
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Augment" index="0"]
 self_modulate = Color( 1, 1, 0, 1 )
@@ -975,7 +969,6 @@ margin_bottom = 72.0
 type = "Enchant"
 soul = "Razor Blade"
 color = Color( 1, 0, 1, 1 )
-no_select = false
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Enchant" index="0"]
 self_modulate = Color( 1, 0, 1, 1 )
@@ -1008,7 +1001,6 @@ margin_bottom = 112.0
 type = "Extension"
 soul = "Enchanced Bone Throw"
 color = Color( 1, 1, 1, 0.501961 )
-no_select = false
 
 [node name="Icon" parent="Container/Tabs/Souls/Slots/Extension" index="0"]
 self_modulate = Color( 1, 1, 1, 0.501961 )

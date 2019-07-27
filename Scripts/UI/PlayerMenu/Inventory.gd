@@ -67,6 +67,12 @@ func on_press_key(key):
 	
 	if select != old_select:
 		select()
+	
+	if key == Controls.ACCEPT:
+		var slot = slots.get_child(select)
+		
+		if !slot.empty() and Res.items[slot.stack].type == "consumable":
+			Packet.new(Packet.TYPE.CONSUME).add_u8(slot.stack.origin).send()
 
 func _notification(what):
 	if what == NOTIFICATION_VISIBILITY_CHANGED and visible:

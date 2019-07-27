@@ -115,6 +115,10 @@ public class Unpacker {
             player.GetCharacter().EquipItem(GetU8(), GetU8());
 
             break;
+            case Packet.TYPE.CONSUME:
+            player.GetCharacter().ConsumeItem(GetU8());
+
+            break;
             case Packet.TYPE.EQUIP_SOUL:
             player.GetCharacter().EquipSoul(GetU8(), GetU8());
 

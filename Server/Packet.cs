@@ -24,6 +24,7 @@ public class Packet {
         SOUL_EQUIPMENT,
         ABILITIES,
         MAP,
+        CONSUME,
         EQUIP,
         EQUIP_SOUL,
         ITEM_GET,

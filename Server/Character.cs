@@ -221,6 +221,21 @@ public class Character : Godot.Object {
         playerNode.Call("set_equipment", JsonConvert.SerializeObject(getArray("equipment")));
     }
 
+    public void ConsumeItem(byte stack) {
+        var inventory = data.GetValue("inventory").AsBsonArray;
+        var item = Server.GetItem(inventory[stack].AsInt32);
+        
+        if (item["type"] as string == "consumable") {
+            foreach (var stat in statList) {
+                if (item.ContainsKey(stat)) {
+                    SetStat(stat, (ushort)(GetStat(stat) + (int)item[stat]));
+                }
+            }
+        }
+
+        syncStats();
+    }
+
     public void EquipSoul(byte slot, byte from) {
         var inventory = data.GetValue("souls").AsBsonArray;
         if (slot != 6) {
