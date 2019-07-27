@@ -320,8 +320,11 @@ public class Room : Viewport {
 
     public void SoulGet(ushort playerId, ushort soulId) {
         var character = GetPlayerById(playerId);
-        character.AddSoul(soulId);
-        character.GetPlayer().SendPacket(new Packet(Packet.TYPE.SOUL_GET).AddU16(soulId));
+
+        if (character != null) { //może rozwiązać to inaczej
+            character.AddSoul(soulId);
+            character.GetPlayer().SendPacket(new Packet(Packet.TYPE.SOUL_GET).AddU16(soulId));
+        }
     }
 
     public void Interact(RoomUtility.DATA type, Node node, ushort playerId) {

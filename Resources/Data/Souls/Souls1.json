@@ -75,7 +75,8 @@
     {
         "name": "Summon Skeleton",
         "description": "Summons a skeleton that will walk forward.",
-        "type": "trigger"
+        "type": "trigger",
+        "mp": 10
     },
 
     {

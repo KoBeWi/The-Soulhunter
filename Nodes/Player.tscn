@@ -72,7 +72,7 @@ tracks/0/keys = {
 "values": [ 8, 17 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 resource_name = "SkeletonAttack"
 length = 3.0
 step = 1.0
@@ -89,8 +89,7 @@ tracks/0/keys = {
 "values": [ 5, 6, 7 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "SkeletonStand"
+[sub_resource type="Animation" id=6]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Skeleton:frame")
 tracks/0/interp = 1
@@ -671,8 +670,8 @@ anims/Crouch = SubResource( 1 )
 anims/Fall = SubResource( 2 )
 anims/Idle = SubResource( 3 )
 anims/Jump = SubResource( 4 )
-anims/SkeletonAttack = SubResource( 6 )
-anims/SkeletonStand = SubResource( 5 )
+anims/SkeletonAttack = SubResource( 5 )
+anims/SkeletonStand = SubResource( 6 )
 anims/SkeletonWalk = SubResource( 7 )
 anims/SlashAttackCrouchL = SubResource( 8 )
 anims/SlashAttackCrouchR = SubResource( 9 )

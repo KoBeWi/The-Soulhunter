@@ -261,7 +261,7 @@ func trigger_soul(ops = {}):
 		soul = Res.get_res(Res.souls, souls[0])
 	
 		if use_soul(soul):
-			if "mp" in soul and not ops.free:
+			if "mp" in soul and not "free" in ops:
 				stats.mp -= soul.mp
 				get_meta("character").call("SyncStat", "mp", stats.mp)
 
@@ -312,7 +312,6 @@ func use_soul(soul):
 			get_parent().add_child(skeleton)
 			skeleton.position = position
 			skeleton.velocity.x = abs(skeleton.velocity.x) * direction_i()
-			skeleton.sprite.flip_h = direction_i() == 1
 			skeleton.player = self
 		
 	return true
