@@ -144,7 +144,10 @@ func slot_help():
 	main.get_help("Cancel").visible = false
 
 func sync_souls(data):
-	souls = data
+	if data is Array:
+		souls = data
+	else:
+		souls.append(data)
 
 func update_inventory():
 	soul_stacks = {}

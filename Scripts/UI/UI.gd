@@ -2,6 +2,7 @@ extends CanvasLayer
 
 func _ready():
 	Network.connect("stats", self, "update_HUD")
+	Network.connect("game_over", self, "on_over")
 	$PlayerMenu.connect("visibility_changed", self, "toggle_help", [$PlayerMenu])
 	$Map.connect("visibility_changed", self, "toggle_help", [$Map])
 
@@ -58,3 +59,6 @@ func toggle_help(menu):
 			$Help/Key2.set_text("Map")
 	else:
 		$Help.visible = !menu.visible
+
+func on_over(whatever):
+	$Help.visible = false

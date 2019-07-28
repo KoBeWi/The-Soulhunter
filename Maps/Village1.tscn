@@ -24,7 +24,6 @@ position = Vector2( 1352, 880 )
 
 [node name="Chest" parent="." instance=ExtResource( 3 )]
 position = Vector2( 2656, 864 )
-z_index = -1
 item = 1
 
 [node name="VillageBackground" type="TileMap" parent="."]
