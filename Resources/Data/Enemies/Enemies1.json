@@ -30,7 +30,7 @@
         "description": "A reanimated human skeleton, which will throw a bone.",
         "max_hp": 4,
         "exp": 2,
-        "drops": [{"name": "Skull", "chance": 200}, {"name": "Cracked Helmet", "chance": 150}],
+        "drops": [{"name": "Skull", "chance": 200}, {"name": "Cracked Helmet", "chance": 150}, {"name": "Vitality Potion", "chance": 100}],
         "souls": [{"name": "Bone Throw", "chance": 400}, {"name": "Skeleton Disguise", "chance": 100}]
     },
 

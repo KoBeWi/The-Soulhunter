@@ -71,7 +71,7 @@ func on_press_key(key):
 	if key == Controls.ACCEPT:
 		var slot = slots.get_child(select)
 		
-		if !slot.empty() and Res.items[slot.stack].type == "consumable":
+		if !slot.empty() and Res.items[slot.stack_item].type == "consumable":
 			Packet.new(Packet.TYPE.CONSUME).add_u8(slot.stack.origin).send()
 
 func _notification(what):

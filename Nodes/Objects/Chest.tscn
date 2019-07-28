@@ -21,12 +21,12 @@ func on_exit(body):
 		body.reset_interactable(self)
 
 func interact(player):
-	opened = true
 	player.reset_interactable(self)
 	
 	if Com.is_server:
 		get_meta(\"room\").call(\"Interact\", get_data(), self, player.get_meta(\"id\"))
 	else:
+		opened = true
 		$AnimationPlayer.play(\"Open\")
 
 func get_data():
