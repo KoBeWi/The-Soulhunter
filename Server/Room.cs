@@ -100,7 +100,8 @@ public class Room : Viewport {
     private Packet CreateStatePacket(bool full) {
         // var state = new Packet(Packet.TYPE.TICK).AddU32((uint)OS.GetTicksMsec());
         var state = new Packet(Packet.TYPE.TICK).AddU8(ticks++);
-        state.AddU8((byte)entityBindings.Count);
+        state.AddU8(0);
+        byte entityCount = 0;
 
         foreach (var id in entityBindings.Keys) {
             var types = entityBindings[id].Call("state_vector_types") as Godot.Collections.Array;
@@ -118,9 +119,23 @@ public class Room : Viewport {
                 stateHistory[id] = data;
             }
 
-            state.AddU16(id);
-            state.AddStateVector(types, data, diffVector);
+            
+            var empty = true;
+            foreach (var b in diffVector) {
+                if (b) {
+                    empty = false;
+                    break;
+                }
+            }
+
+            if (!empty) {
+                entityCount++;
+                state.AddU16(id);
+                state.AddStateVector(types, data, diffVector);
+            }
         }
+
+        state.ReplaceBytes(2, new byte[] {entityCount});
 
         return state;
     }

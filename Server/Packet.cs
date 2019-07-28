@@ -45,6 +45,10 @@ public class Packet {
         AddU8((byte)command);
     }
 
+    public void ReplaceBytes(ushort idx, byte[] val) { //ultra hack!
+        data[idx] = val;
+    }
+
     public Packet AddString(string s) {
         data.Add(System.Text.Encoding.ASCII.GetBytes(s));
         data.Add(zero);
