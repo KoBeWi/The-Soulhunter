@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class Packet {
     public enum TYPE {
-        EMPTY,
         HELLO,
         LOGIN,
         REGISTER,

@@ -43,6 +43,6 @@ public class Player {
     public Character GetCharacter() {return character;}
 
     public void SendPacket(Packet packet) {
-        packet.Send(upstream);
+        if (packet != null) packet.Send(upstream);
     }
 }

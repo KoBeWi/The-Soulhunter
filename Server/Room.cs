@@ -276,7 +276,7 @@ public class Room : Viewport {
             return packet.AddU8(RoomUtility.IsChestOpened(player, node.GetMeta("id") as string + mapId) ? (byte)1 : (byte)0);
         }
 
-        return new Packet(Packet.TYPE.EMPTY);
+        return null;
     }
 
     public void DisposeNode(ushort id) {
