@@ -349,6 +349,11 @@ public class Room : Viewport {
         playerOperation.ReleaseMutex();
     }
 
+    public void PlayerDamaged(ushort playerId, ushort hp) {
+        var player = GetPlayerById(playerId);
+        player.SetStatAndSync("hp", hp);
+    }
+
     public void GameOver(ushort playerId) {
         var player = GetPlayerById(playerId);
         player.GameOver(Server.GetSeconds());

@@ -28,4 +28,4 @@ func _draw():
 
 func on_exit(body):
 	if body.has_method("_dispose"):
-		body.call("_dispose")
+		body._dispose()

@@ -24,7 +24,7 @@ func set_item(id):
 func _body_enter(body):
 	if body.is_in_group(\"players\"):
 		if Com.is_server:
-			get_meta(\"room\").call(\"ItemGet\", body.get_meta(\"id\"), item)
+			get_meta(\"room\").ItemGet(body.get_meta(\"id\"), item)
 		Com.dispose_node(self)
 
 func state_vector_types():

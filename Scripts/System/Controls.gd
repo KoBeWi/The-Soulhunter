@@ -102,14 +102,14 @@ func process_key_local(key_id):
 	if Input.is_key_pressed(key) and !controls.has(key_id):
 		controls[key_id] = true
 		Com.press_key(key_id)
-		if Com.player and is_instance_valid(Com.player):
+		if Com.player and is_instance_valid(Com.player) and Com.player.has_meta("id"):
 			press_key(Com.player.get_meta("id"), key_id)
 		else:
 			press_key(-1, key_id)
 	elif !Input.is_key_pressed(key) and controls.has(key_id):
 		controls.erase(key_id)
 		Com.release_key(key_id)
-		if Com.player and is_instance_valid(Com.player):
+		if Com.player and is_instance_valid(Com.player) and Com.player.has_meta("id"):
 			release_key(Com.player.get_meta("id"), key_id)
 		else:
 			release_key(-1, key_id)

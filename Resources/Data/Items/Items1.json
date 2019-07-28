@@ -2,8 +2,8 @@
     {
         "name": "Vitality Potion",
         "description": "A basic healing potion. Heals 10 HP.",
-        "hp": 10,
-        "type": "consumable"
+        "type": "consumable",
+        "hp": 10
     },
 
     {
@@ -43,8 +43,8 @@
     {
         "name": "Frog Leg",
         "description": "Looks gross, but it's edible. Restores 17 HP.",
-        "hp": 17,
-        "type": "consumable"
+        "type": "consumable",
+        "hp": 17
     },
 
     {
@@ -81,8 +81,8 @@
     {
         "name": "Mind Potion",
         "description": "A potion with weak magic properties. Restores 15 MP.",
-        "hp": 15,
-        "type": "consumable"
+        "type": "consumable",
+        "mp": 15
     },
 
     {

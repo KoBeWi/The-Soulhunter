@@ -46,9 +46,6 @@ func update_HUD(data):
 func reg_mp():
 	update_HUD({mp = min($HUD/MPBar.value+1, $HUD/MPBar.max_value)})
 
-func player_damaged(amount):
-	update_HUD({hp = $HUD/HPBar.value - amount})
-
 func toggle_help(menu):
 	if menu == $Map:
 		if menu.visible:
@@ -61,4 +58,6 @@ func toggle_help(menu):
 		$Help.visible = !menu.visible
 
 func on_over(whatever):
+	$HUD/HPBar.value = 0
+	update_bar("HP")
 	$Help.visible = false

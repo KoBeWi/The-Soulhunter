@@ -56,7 +56,7 @@ func pop_name(damage):
 func damage(attack):
 	var damage = attack.damage
 	stats.hp -= damage
-	get_meta("room").call("Damage", get_meta("id"), damage)
+	get_meta("room").Damage(get_meta("id"), damage)
 	
 	if stats.hp <= 0:
 		dead()
@@ -82,7 +82,7 @@ func create_soul():
 	var soul_drop = get_random(stats.get("souls", {}))
 	
 	if soul_drop > -1 and last_attacker:
-		get_meta("room").call("SoulGet", last_attacker, Res.souls[stats.souls[soul_drop].name].id)
+		get_meta("room").SoulGet(last_attacker, Res.souls[stats.souls[soul_drop].name].id)
 		
 		var soul = load("res://Nodes/Effects/Soul.tscn").instance()
 		soul.soul = stats.souls[soul_drop].name

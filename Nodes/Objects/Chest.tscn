@@ -24,7 +24,7 @@ func interact(player):
 	player.reset_interactable(self)
 	
 	if Com.is_server:
-		get_meta(\"room\").call(\"Interact\", get_data(), self, player.get_meta(\"id\"))
+		get_meta(\"room\").Interact(get_data(), self, player.get_meta(\"id\"))
 	else:
 		opened = true
 		$AnimationPlayer.play(\"Open\")

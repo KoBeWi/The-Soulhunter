@@ -8,7 +8,7 @@ script/source = "extends Node2D
 
 func interact(player):
 	if Com.is_server:
-		player.get_meta(\"room\").call(\"Save\", player.get_meta(\"id\"))
+		player.get_meta(\"room\").Save(player.get_meta(\"id\"))
 
 func _body_enter(body):
 	if body.is_in_group(\"players\"):

@@ -33,7 +33,7 @@ func key_hold(key):
 func register_node(node, type, client_only = false):
 	if is_server:
 		node.set_meta("room", node.find_parent("InGame").get_parent())
-		node.get_meta("room").call("RegisterNode", node, Data.NODES.find(type), client_only)
+		node.get_meta("room").RegisterNode(node, Data.NODES.find(type), client_only)
 		if client_only: node.queue_free()
 		return client_only
 	elif !node.has_meta("valid"):
@@ -43,7 +43,7 @@ func register_node(node, type, client_only = false):
 func register_special_node(node):
 	if is_server:
 		node.set_meta("room", node.find_parent("InGame").get_parent())
-		node.get_meta("room").call("RegisterSpecialNode", node)
+		node.get_meta("room").RegisterSpecialNode(node)
 		node.set_meta("id", str(node.get_meta("room").get("mapId"), "_", node.get_position_in_parent()))
 	else:
 		node.set_meta("id", str(Com.game.map.mapid, "_", node.get_position_in_parent()))
@@ -51,7 +51,7 @@ func register_special_node(node):
 
 func dispose_node(node):
 	if is_server:
-		node.get_meta("room").call("DisposeNode", node.get_meta("id"))
+		node.get_meta("room").DisposeNode(node.get_meta("id"))
 		node.queue_free()
 	elif !node.has_meta("valid"):
 		node.queue_free()

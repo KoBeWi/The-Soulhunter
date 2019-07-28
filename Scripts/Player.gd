@@ -63,7 +63,6 @@ var camera
 
 signal initiated
 signal reg_mp
-signal damaged
 signal room_changed(room)
 
 func _ready():
@@ -109,7 +108,7 @@ func process_rooms():
 		last_room = room
 		
 		if Com.is_server:
-			get_meta("room").call("DiscoverRoom", get_meta("id"), room)
+			get_meta("room").DiscoverRoom(get_meta("id"), room)
 		else:
 			emit_signal("room_changed", room)
 	
@@ -263,7 +262,7 @@ func trigger_soul(ops = {}):
 		if use_soul(soul):
 			if "mp" in soul and not "free" in ops:
 				stats.mp -= soul.mp
-				get_meta("character").call("SyncStat", "mp", stats.mp)
+				get_meta("character").SyncStat("mp", stats.mp)
 
 func use_soul(soul):
 	if "mp" in soul:
@@ -332,7 +331,7 @@ func active_soul(pressed):
 			if stats.mp < soul.mp: return
 			stats.mp -= soul.mp
 		
-		get_meta("character").call("SyncStat", "mp", stats.mp)
+		get_meta("character").SyncStat("mp", stats.mp)
 		
 		match int(souls[1]):
 			4:
@@ -380,10 +379,12 @@ func damage(enemy):
 	if Com.is_server:
 		var damage = enemy.attack
 		stats.hp = max(0, stats.hp - damage)
-		get_meta("room").call("Damage", get_meta("id"), damage)
+		get_meta("room").Damage(get_meta("id"), damage)
 		
 		if stats.hp <= 0:
-			get_meta("room").call("GameOver", get_meta("id"))
+			get_meta("room").GameOver(get_meta("id"))
+		else:
+			get_meta("room").PlayerDamaged(get_meta("id"), stats.hp)
 
 func attack_end():
 	attack = false
@@ -487,9 +488,6 @@ func reg_mp():
 func on_not_invincible():
 	if newest_enemy:
 		damage(newest_enemy)
-
-func _on_damage(amount):
-	emit_signal("damaged", amount)
 
 func set_interactable(node):
 	interactable = node

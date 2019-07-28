@@ -152,8 +152,13 @@ public class Character : Godot.Object {
             }
         }
 
+        finalStats["hp"] = (ushort)Mathf.Min(finalStats["hp"], finalStats["max_hp"]);
+        finalStats["mp"] = (ushort)Mathf.Min(finalStats["mp"], finalStats["max_mp"]);
+
         if (playerNode != null)
             playerNode.Call("set_stats", JsonConvert.SerializeObject(finalStats));
+        
+        if (forcedDiff.Length > 0 && forcedDiff[0] == "[NO_SEND]") return;
         
         if (oldStats != null) {
             var diff = new List<string>();
@@ -190,12 +195,36 @@ public class Character : Godot.Object {
         data.SetElement(new BsonElement(stat, value));
     }
 
+    public void SetStatAndSync(string stat, ushort value) {
+        data.SetElement(new BsonElement(stat, value));
+
+        syncStats();
+    }
+
     public ushort ExpForLevel(ushort level) {
         return (ushort)(level * 10);
     }
         
     public ushort TotalExpForLevel(ushort level) {
         return (ushort)(level * (level + 1) * 5);
+    }
+
+    public void ConsumeItem(byte idx) {
+        var inventory = data.GetValue("inventory").AsBsonArray;
+        var item = Server.GetItem(inventory[idx].AsInt32);
+        
+        if (item["type"] as string == "consumable") {
+            foreach (var stat in statList) {
+                if (item.ContainsKey(stat)) {
+                    Console.WriteLine(stat + ": " + item[stat] + "(" + GetStat(stat));
+                    SetStat(stat, (ushort)(GetStat(stat) + Data.Int(item[stat])));
+                }
+            }
+        }
+        inventory.RemoveAt(idx);
+
+        syncStats();
+        owner.SendPacket(new Packet(Packet.TYPE.INVENTORY).AddU16Array(GetInventory()));
     }
 
     public void EquipItem(byte slot, byte from) {
@@ -219,21 +248,6 @@ public class Character : Godot.Object {
         syncStats();
         
         playerNode.Call("set_equipment", JsonConvert.SerializeObject(getArray("equipment")));
-    }
-
-    public void ConsumeItem(byte stack) {
-        var inventory = data.GetValue("inventory").AsBsonArray;
-        var item = Server.GetItem(inventory[stack].AsInt32);
-        
-        if (item["type"] as string == "consumable") {
-            foreach (var stat in statList) {
-                if (item.ContainsKey(stat)) {
-                    SetStat(stat, (ushort)(GetStat(stat) + Data.Int(item[stat])));
-                }
-            }
-        }
-
-        syncStats();
     }
 
     public void EquipSoul(byte slot, byte from) {
@@ -396,6 +410,9 @@ public class Character : Godot.Object {
         if (!init) data = database.GetCharacterData(this);
 
         SetStat("game_over", time);
+        SetStat("hp", (ushort)data.GetValue("max_hp").AsInt32);
+        SetStat("mp", (ushort)data.GetValue("max_mp").AsInt32);
+        syncStats(new string[] {"[NO_SEND]"});
 
         if (!init) {
             currentMap = (ushort)data.GetValue("location").AsInt32;
