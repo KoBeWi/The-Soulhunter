@@ -68,7 +68,7 @@ public class Server : Node {
 
         var bytes = new byte[256];
 
-        GD.Print("Player connected");
+        GD.Print("Player connected (" + playersOnline.Count + ")");
 
         while (true) {
             try {

@@ -1,6 +1,5 @@
 -błąd +dodatek >zmiana
 
-+consumable
 +zabezpieczenia przed złymi pakietami, wywołaniami metod z niepoprawnymi danymi itp.
 
 -nie ma podglądu statów biorących pod uwagę dusze
