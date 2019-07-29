@@ -45,7 +45,7 @@ public class Data {
     }
 
     public static void ApplyExtensionSoul(Dictionary<string, object> soul, Dictionary<string, object> extension) {
-        if (extension == null) return;
+        if (extension == null || soul == null) return;
 
         switch (extension["name"] as string) {
             case "Lunar Blood":

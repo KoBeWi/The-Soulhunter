@@ -130,7 +130,7 @@ public class Character : Godot.Object {
 
         var souls = GetSoulEquipment();
         Dictionary<string, object> augmentSoul = null;
-        if (souls[2] > 0) augmentSoul = Server.GetSoul(souls[2]);
+        if (souls[2] > 0) augmentSoul = dupData(Server.GetSoul(souls[2]));
         Dictionary<string, object> enchantmentSoul = null;
         if (souls[3] > 0) enchantmentSoul = Server.GetSoul(souls[3]);
         Dictionary<string, object> extensionSoul = null;
