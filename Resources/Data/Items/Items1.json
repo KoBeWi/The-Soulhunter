@@ -91,5 +91,20 @@
         "type": "weapon",
         "attribute": "blunt",
         "attack": 3
+    },
+
+    {
+        "name": "Roof Armor",
+        "description": "An armor literally made of sturdy roof plates.",
+        "type": "armor",
+        "defense": 5
+    },
+
+    {
+        "name": "Meitsukimune",
+        "description": "A flame that spits cursed flames with each swing.",
+        "type": "weapon",
+        "attribute": "sharp",
+        "attack": 5
     }
 ]
