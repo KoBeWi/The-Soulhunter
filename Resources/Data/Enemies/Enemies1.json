@@ -50,5 +50,14 @@
         "exp": 3,
         "drops": [{"name": "Mind Potion", "chance": 200}, {"name": "Bloody Helmet", "chance": 150}],
         "souls": [{"name": "Enchanced Bone Throw", "chance": 200}, {"name": "Strong Blood", "chance": 100}, {"name": "Summon Skeleton", "chance": 150}]
+    },
+
+    {
+        "name": "Lunar Shade",
+        "description": "An armor possesed by dark exterrestial powers.",
+        "max_hp": 300,
+        "exp": 5,
+        "drops": [{"name": "Meitsukimune", "chance": 900}],
+        "souls": []
     }
 ]

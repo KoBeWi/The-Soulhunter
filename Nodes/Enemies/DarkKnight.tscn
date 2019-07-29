@@ -1,0 +1,206 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Graphics/Enemies/Knight.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+resource_name = "Skeleton"
+script/source = "extends Enemy
+
+onready var animation = $Animation
+onready var sprite = $Sprite
+
+enum {IDLE, WALK, ATTACK}
+var state = IDLE
+var previous_state = IDLE
+
+var attac = 0
+var direction = 1
+var closest_player
+
+func _ready():
+	if Com.register_node(self, \"Enemies/DarkKnight\"): return
+	init()
+	
+	direction = 1 - randi()%2*2
+	$Timer.start()
+
+func server_ai(delta):
+	var radar = 250000
+	closest_player = null
+	
+	for player in players:
+		var dist = player.global_position.distance_squared_to(global_position)
+		
+		if dist < radar:
+			direction = sign(player.global_position.x - global_position.x)
+			closest_player = player
+			radar = dist
+	
+	match state:
+		ATTACK:
+			attac += delta
+			
+			if attac >= 0.3:
+				attac = 0
+				state = IDLE
+				
+				var dagger = preload(\"res://Nodes/Enemies/Dagger.tscn\").instance()
+				dagger.position = position
+				dagger.velocity.x = abs(dagger.velocity.x) * direction
+				get_parent().add_child(dagger)
+
+func general_ai(delta):
+	if !Com.is_server:
+		if sprite.position.length_squared() > 1:
+			sprite.position *= 0.8
+		else:
+			sprite.position = Vector2()
+	
+	if state != previous_state:
+		previous_state = state
+		
+		match state:
+			IDLE:
+				animation.play(\"Idle\")
+			WALK:
+				animation.play(\"Walk\")
+			ATTACK:
+				animation.play(\"Throw\")
+	
+	move_and_collide(Vector2(direction * 6 if state == WALK else 0, 1))
+
+func _on_animation_finished(anim_name):
+	if anim_name == \"Throw\":
+		animation.play(\"Idle\")
+
+func state_vector_types():
+	return [
+			Data.TYPE.U16,
+			Data.TYPE.U16,
+			Data.TYPE.U8,
+			Data.TYPE.U8
+		]
+
+func get_state_vector():
+	return [
+			round(position.x),
+			round(position.y),
+			state,
+			direction+1
+		]
+
+func apply_state_vector(timestamp, diff_vector, vector):
+	var old_position = position
+	position.x = vector[0]
+	position.y = vector[1]
+	if has_meta(\"initialized\"): sprite.position = (old_position - position) + sprite.position
+	
+	state = vector[2]
+	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
+	sprite.flip_h = direction < 0
+
+func _on_Timer_timeout():
+	match state:
+		IDLE:
+			if closest_player:
+				if randi()%2 == 0:
+					state = WALK
+				else:
+					state = ATTACK
+	
+		WALK:
+			if closest_player and randi()%2 == 0:
+				state = ATTACK
+			else:
+				state = IDLE"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 120, 120 )
+
+[sub_resource type="Animation" id=3]
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Throw"
+length = 2.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 5, 6 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 4.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4 ]
+}
+
+[node name="DarkKnight" type="KinematicBody2D" groups=[
+"enemies",
+]]
+collision_layer = 2
+script = SubResource( 1 )
+enemy_name = "Lunar Shade"
+attack = 15
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 0.0352941, 0.0666667, 0.576471, 1 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 1 )
+hframes = 7
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+input_pickable = false
+collision_layer = 4
+collision_mask = 0
+
+[node name="TriggerCollider" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource( 2 )
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "Idle"
+playback_speed = 2.0
+anims/Idle = SubResource( 3 )
+anims/Throw = SubResource( 4 )
+anims/Walk = SubResource( 5 )
+
+[node name="Timer" type="Timer" parent="."]
+[connection signal="body_entered" from="Hitbox" to="." method="hit"]
+[connection signal="body_exited" from="Hitbox" to="." method="unhit"]
+[connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

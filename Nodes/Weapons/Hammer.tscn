@@ -14,6 +14,7 @@ collision_mask = 4
 script = ExtResource( 1 )
 weapon_name = "Rusty Sword"
 attack_type = "Swing"
+speed = 8
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -33 )

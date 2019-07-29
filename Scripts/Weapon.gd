@@ -2,7 +2,8 @@ extends StaticBody2D
 class_name Weapon
 
 export(String) var weapon_name
-export(String) var attack_type = "StabAttack1"
+export(String) var attack_type
+export var speed = 16
 
 var data
 var player
