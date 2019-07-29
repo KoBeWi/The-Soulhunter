@@ -29,6 +29,7 @@ func update_time():
 
 func on_key_press(p_id, key, state):
 	if key == Controls.CANCEL:
+		Packet.new(Packet.TYPE.LOGOUT).send()
 		get_tree().change_scene(\"res://Scenes/Title.tscn\")
 	elif key == Controls.ACCEPT and $Timer.time_left <= 0:
 		Packet.new(Packet.TYPE.GAME_OVER).send()

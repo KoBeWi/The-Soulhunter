@@ -16,6 +16,7 @@ func _ready():
 	if !Com.is_server:
 		Network.connect("game_over", self, "on_over")
 		Com.controls.state = Controls.State.ACTION
+		get_tree().set_auto_accept_quit(false)
 
 func load_map(id):
 	map = Res.maps[id].instance()

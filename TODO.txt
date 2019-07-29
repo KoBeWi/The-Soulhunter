@@ -1,6 +1,6 @@
 -błąd +dodatek >zmiana
 
-+potwierdzenie wyłączenia
++wersjse
 +zabezpieczenia przed złymi pakietami, wywołaniami metod z niepoprawnymi danymi itp.
 
 >zablokować puste nazwy i hasła

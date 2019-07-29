@@ -184,7 +184,11 @@ func on_game_over(time):
 	queue_free()
 
 func on_hue(value):
-	$Menu/Preview/Value.self_modulate.h = value / 360.0"
+	$Menu/Preview/Value.self_modulate.h = value / 360.0
+
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		get_tree().quit()"
 
 [sub_resource type="Animation" id=2]
 resource_name = "Connecting"

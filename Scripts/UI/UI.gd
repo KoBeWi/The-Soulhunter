@@ -1,10 +1,30 @@
 extends CanvasLayer
 
+var prev_state
+
 func _ready():
 	Network.connect("stats", self, "update_HUD")
 	Network.connect("game_over", self, "on_over")
 	$PlayerMenu.connect("visibility_changed", self, "toggle_help", [$PlayerMenu])
 	$Map.connect("visibility_changed", self, "toggle_help", [$Map])
+	Com.controls.connect("key_press", self, "on_key_press")
+
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		$Exit.visible = true
+		prev_state = Com.controls.state
+		Com.controls.state = Controls.State.QUIT
+
+func on_key_press(p_id, key, state):
+	if state == Controls.State.QUIT:
+		if key == Controls.ACCEPT:
+			get_tree().quit()
+		elif key == Controls.CANCEL:
+			$Exit.visible = false
+			Com.controls.state = prev_state
+		elif key == Controls.SOUL:
+			Packet.new(Packet.TYPE.LOGOUT).send()
+			get_tree().change_scene("res://Scenes/Title.tscn")
 
 func update_bar(bar):
 	var bar_node = get_node("HUD/" + bar + "Bar")

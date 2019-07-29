@@ -4,6 +4,7 @@ extends Reference
 enum TYPE {
 	HELLO,
 	LOGIN,
+    LOGOUT,
 	REGISTER,
 	ENTER_ROOM,
 	KEY_PRESS,

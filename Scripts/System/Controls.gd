@@ -4,7 +4,7 @@ extends Node
 enum{ATTACK, JUMP, UP, RIGHT, DOWN, LEFT, SOUL, ACCEPT, CANCEL, MAP, MENU, CHAT, COMMAND, CLOSE_CHAT}
 const NAMES = ["ATTACK", "JUMP", "UP", "RIGHT", "DOWN", "LEFT", "SOUL", "ACCEPT", "CANCEL", "MAP", "MENU", "CHAT", "COMMAND", "CLOSE_CHAT"]
 
-enum State{NONE, ACTION, CHAT, MENU, MAP, GAME_OVER}
+enum State{NONE, ACTION, CHAT, MENU, MAP, GAME_OVER, QUIT}
 var state = State.NONE
 
 var players = {}
@@ -85,6 +85,11 @@ func _process(delta):
 			
 			process_key_local(CHAT)
 			process_key_local(COMMAND)
+		
+		State.QUIT:
+			process_key_local(ACCEPT)
+			process_key_local(CANCEL)
+			process_key_local(SOUL)
 
 func process_key(key_id):
 	var key = mappping[key_id]

@@ -77,6 +77,10 @@ public class Unpacker {
             }
 
             break;
+            case Packet.TYPE.LOGOUT:
+            player.LogOut();
+
+            break;
             case Packet.TYPE.KEY_PRESS:
             var id = player.GetCharacter().GetPlayerId();
             var key = GetU8();
