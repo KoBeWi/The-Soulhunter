@@ -1,17 +1,18 @@
 -błąd +dodatek >zmiana
 
+-zepsuty ekwipunek jest
 +zabezpieczenia przed złymi pakietami, wywołaniami metod z niepoprawnymi danymi itp.
 
+>zablokować puste nazwy i hasła
++informacje jak ktoś wchodzi albo umiera
 -nie ma podglądu statów biorących pod uwagę dusze
 -poprawić lagi przy chodzeniu :/ (niby działało, ale jednak nie)
 -potrafi się wykrzaczyć podczas np. BroadcastPacket, bo cocnurrent modifiation (chyba trzeba też inne kolekcje zabezpieczyć)
 +sterowanie
 -jakieś dziwne niezydentyfikowane errory się spamują
->zablokować puste nazwy i hasła
 +więcej postaci że można
 -jak gracz wychodzi z gameovera to się nie wylogowuje
 -a potem wgl łączy się znowu z serwerem wtf
-+informacje jak ktoś wchodzi albo umiera
 -wychodzący gracz się nie wylogowyje?
 
 >zamienić ID map na ich nazwy

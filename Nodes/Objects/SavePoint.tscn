@@ -28,7 +28,7 @@ script = SubResource( 1 )
 texture = ExtResource( 1 )
 
 [node name="PlayerSpot" type="Position2D" parent="."]
-position = Vector2( 0, -14.3075 )
+position = Vector2( 0, -80 )
 
 [node name="EffectArea" type="Area2D" parent="."]
 

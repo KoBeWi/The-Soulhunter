@@ -43,7 +43,7 @@ var souls
 var abilities = [false, false] #zdehardkodować
 
 var last_tick = 0
-var last_controls = 0
+var last_controls = -100
 var desync = 0
 var newest_enemy = null
 var interactable
@@ -534,23 +534,22 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	var target_position = Vector2(vector[2], vector[3])
 	last_tick = timestamp
 	
-	if (!main and controls.empty()) or Com.time_greater(timestamp, last_controls + 1):
-		desync = 0
+	if (!main and controls.empty()) or Com.time_greater(timestamp, last_controls + 3):
 		var old_position = position
 		
 		if old_position.round() != target_position:
 			position = target_position
-		elif last_server_position != Vector2():
-			position = last_server_position
+#		elif last_server_position != Vector2():
+#			position = last_server_position
 		
 		if has_meta("initialized"): sprite.position += (old_position - position)
 	else:
-		if (last_server_position - position).length_squared() > 4096:
+		if (last_server_position - position).length_squared() > 65536:
 			desync += 1
 			
-			if desync == 10:
+			if desync == 5:
+				print("des")
 				position = last_server_position
-				desync = 0
 		else:
 			desync = 0
 	
