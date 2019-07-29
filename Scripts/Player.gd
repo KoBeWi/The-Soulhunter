@@ -19,7 +19,7 @@ var main = false
 var uname = "" setget set_username
 var hue = 0
 var motion = Vector2()
-var last_server_position = Vector2()
+#var last_server_position = Vector2()
 var last_room
 
 var action = ACTIONS.NONE
@@ -544,19 +544,18 @@ func apply_state_vector(timestamp, diff_vector, vector):
 		
 		if has_meta("initialized"): sprite.position += (old_position - position)
 	else:
-		if (last_server_position - position).length_squared() > 65536:
+		if (target_position - position).length_squared() > 65536:
 			desync += 1
 			
 			if desync == 5:
-				print("des")
-				position = last_server_position
+				position = target_position
 		else:
 			desync = 0
 	
-	if (diff_vector & 4) > 0:
-		last_server_position.x = vector[2]
-	if (diff_vector & 8) > 0:
-		last_server_position.y = vector[3]
+#	if (diff_vector & 4) > 0:
+#		last_server_position.x = vector[2]
+#	if (diff_vector & 8) > 0:
+#		last_server_position.y = vector[3]
 	
 	action = vector[4]
 	
