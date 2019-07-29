@@ -44,7 +44,10 @@ func update_inventory(items = []):
 		if item in main.stacks:
 			main.stacks[item].amount += 1
 		else:
-			main.stacks[item] = {item = Res.get_res(Res.items, item).name, amount = 1, origin = main.stacks.size()}
+			var all_items = 0
+			for stack in main.stacks.values(): all_items += stack.amount
+			
+			main.stacks[item] = {item = Res.get_res(Res.items, item).name, amount = 1, origin = all_items}
 		
 	for i in slots.get_child_count():
 		if i < main.stacks.size():
