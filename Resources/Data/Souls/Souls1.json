@@ -69,7 +69,8 @@
     {
         "name": "Strong Blood",
         "description": "Increases maximum health.",
-        "type": "augment"
+        "type": "augment",
+        "max_hp": 20
     },
     
     {
@@ -84,5 +85,23 @@
         "description": "Jump again in mid-air.",
         "type": "ability",
         "ability": 1
+    },
+
+    {
+        "name": "Shadow Veil",
+        "description": "Increases magic defense.",
+        "type": "augment"
+    },
+
+    {
+        "name": "Quick Draw",
+        "description": "Slightly increases weapon attack speed.",
+        "type": "enchant"
+    },
+
+    {
+        "name": "Lunar Blood",
+        "description": "Increases effectiveness of Strong Blood.",
+        "type": "extension"
     }
 ]

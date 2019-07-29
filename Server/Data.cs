@@ -47,6 +47,11 @@ public class Data {
     public static void ApplyExtensionSoul(Dictionary<string, object> soul, Dictionary<string, object> extension) {
         if (extension == null) return;
 
+        switch (extension["name"] as string) {
+            case "Lunar Blood":
+            if (soul["name"] as string == "Strong Blood") soul["max_hp"] = 40;
+            break;
+        }
     }
 
     public static void ApplyAugmentSoul(Dictionary<string, ushort> stats, Dictionary<string, object> soul) {
@@ -54,10 +59,13 @@ public class Data {
 
         switch (soul["name"] as string) {
             case "Strong Blood":
-            stats["max_hp"] += 20;
+            stats["max_hp"] += (ushort)Int(soul["max_hp"]);
+            break;
+
+            case "Shadow Veil":
+            stats["magic_defense"] += 5;
             break;
         }
-
     }
 
     public static int Int(object whatever) {

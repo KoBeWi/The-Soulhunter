@@ -56,8 +56,8 @@
         "name": "Lunar Shade",
         "description": "An armor possesed by dark exterrestial powers.",
         "max_hp": 300,
-        "exp": 5,
+        "exp": 10,
         "drops": [{"name": "Meitsukimune", "chance": 900}],
-        "souls": []
+        "souls": [{"name": "Shadow Veil", "chance": 300}, {"name": "Quick Draw", "chance": 250}, {"name": "Shade Daggers", "chance": 200}]
     }
 ]

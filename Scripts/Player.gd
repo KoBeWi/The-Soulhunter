@@ -235,7 +235,7 @@ func process_attack():
 					get_weapon().set_disabled(false)
 					attack = true
 					weapon_point.visible = true
-					anim.playback_speed = get_weapon().speed
+					anim.playback_speed = get_weapon().speed + (1 if souls[4] == 15 else 0)
 					animation = str(get_weapon().attack_type, "Attack", "Crouch" if crouch else "", direction())
 					anim.play(animation)
 	elif Controls.SOUL in key_press:
@@ -406,6 +406,7 @@ func set_main():
 	
 	Network.connect("stats", self, "on_stats")
 	Network.connect("equipment", self, "on_eq")
+	Network.connect("soul_equipment", self, "on_seq")
 	Network.connect("abilities", self, "set_abilities")
 	Network.connect("saved", self, "on_save")
 
@@ -465,6 +466,9 @@ func on_stats(stats):
 
 func on_eq(eq):
 	set_weapon(eq[0])
+
+func on_seq(suls):
+	souls = suls
 
 func set_stats(_stats):
 	stats = parse_json(_stats)
