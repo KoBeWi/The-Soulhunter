@@ -59,7 +59,7 @@ func process_packet(unpacker : Unpacker):
 	
 	match unpacker.command:
 		Packet.TYPE.HELLO:
-			emit_signal("connected")
+			emit_signal("connected", unpacker.get_u16())
 		
 		Packet.TYPE.LOGIN:
 			var result = unpacker.get_u8()

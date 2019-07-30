@@ -32,6 +32,8 @@ func _ready():
 	self.select = 0
 
 func on_key_press(p_id, key, _state):
+	if !$Menu.visible: return
+	
 	if state == MAIN:
 		if key == Controls.DOWN and select < max_select:
 			self.select += 1
@@ -163,10 +165,14 @@ func show_message(_message, color):
 	$Status.modulate = color
 	$Status/Timer.start()
 
-func on_connect():
+func on_connect(version):
+	$Connecting.hide()
+	if version > Com.version:
+		$WrongVersion.show()
+		return
+	
 	$Menu.show()
 	$Focus.show()
-	$Connecting.hide()
 	$Connecting.percent_visible = 1
 	$Connecting/AnimationPlayer.stop()
 
@@ -275,6 +281,18 @@ anims/LongConnecting = SubResource( 3 )
 [node name="Timer" type="Timer" parent="Connecting"]
 wait_time = 5.0
 autostart = true
+
+[node name="WrongVersion" type="Label" parent="."]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 32.0
+margin_top = -47.8656
+margin_right = 296.008
+margin_bottom = -32.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+text = "Client outdated. Update your client to continue"
 
 [node name="Status" type="Label" parent="."]
 editor/display_folded = true

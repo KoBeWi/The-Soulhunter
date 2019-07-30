@@ -1,7 +1,7 @@
 -błąd +dodatek >zmiana
 
-+wersjse
 +zabezpieczenia przed złymi pakietami, wywołaniami metod z niepoprawnymi danymi itp.
++liczniki pakietów i czasu (statystyki fajne)
 
 >zablokować puste nazwy i hasła
 +informacje jak ktoś wchodzi albo umiera

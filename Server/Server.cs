@@ -25,6 +25,8 @@ public class Server : Node {
     private List<Dictionary<string, object>> items = new List<Dictionary<string, object>>();
     private List<Dictionary<string, object>> souls = new List<Dictionary<string, object>>();
 
+    private ushort version;
+
     public override void _Ready() {
         instance = this;
         server = new TcpListener(IPAddress.Parse("0.0.0.0"), 2412);
@@ -42,6 +44,7 @@ public class Server : Node {
         
         controls = GetNode("/root/Com/Controls");
         GetNode("/root/Com").Set("is_server", true);
+        version = (ushort)Data.Int(GetNode("/root/Com").Get("version"));
 
         server.Start();
     }
@@ -64,7 +67,7 @@ public class Server : Node {
         NetworkStream stream = client.GetStream();
         Player player = new Player(stream, database);
         // new Packet(Packet.TYPE.HELLO).AddU32((uint)OS.GetTicksMsec()).Send(stream);
-        new Packet(Packet.TYPE.HELLO).Send(stream);
+        new Packet(Packet.TYPE.HELLO).AddU16(version).Send(stream);
 
         var bytes = new byte[256];
 

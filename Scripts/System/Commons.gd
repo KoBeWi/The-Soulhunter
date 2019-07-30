@@ -2,6 +2,8 @@ extends Node
 
 onready var controls : Controls = $Controls
 
+var version = 1
+
 var game
 var is_server = false
 var player
