@@ -71,13 +71,13 @@ public class Room : Viewport {
                 if (exit == 1) {
                     room = Server.GetAdjacentMap((int)map.Get("map_x") + (int)map.Get("width"), (int)map.Get("map_y") + (int)position.y / 1080);
                     if (room != null) {
-                        position.x -= (int)map.Get("width") * 1920;
+                        position.x = 0;
                         position.y += ((int)map.Get("map_y") - (int)room.GetMapValue("map_y")) * 1080;
                     }
                 } else if (exit == 3) {
                     room = Server.GetAdjacentMap((int)map.Get("map_x") - 1, (int)map.Get("map_y") + (int)position.y / 1080);
                     if (room != null) {
-                        position.x += (int)room.GetMapValue("width") * 1920;
+                        position.x = (int)room.GetMapValue("width") * 1920;
                         position.y += ((int)map.Get("map_y") - (int)room.GetMapValue("map_y")) * 1080;
                     }
                 }

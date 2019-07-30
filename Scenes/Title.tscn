@@ -29,6 +29,8 @@ func _ready():
 	Com.controls.connect(\"key_press\", self, \"on_key_press\")
 	Com.controls.state = Controls.State.MENU
 	
+	Com.game = null
+	
 	self.select = 0
 
 func on_key_press(p_id, key, _state):

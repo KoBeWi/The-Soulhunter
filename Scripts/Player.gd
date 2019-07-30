@@ -19,7 +19,7 @@ var main = false
 var uname = "" setget set_username
 var hue = 0
 var motion = Vector2()
-#var last_server_position = Vector2()
+var last_server_position = Vector2()
 var last_room
 
 var action = ACTIONS.NONE
@@ -377,7 +377,7 @@ func direction_i():
 
 func damage(enemy):
 	if Com.is_server:
-		var damage = enemy.attack
+		var damage = max(enemy.attack - stats.defense, 1)
 		stats.hp = max(0, stats.hp - damage)
 		get_meta("room").Damage(get_meta("id"), damage)
 		
@@ -409,6 +409,7 @@ func set_main():
 	Network.connect("soul_equipment", self, "on_seq")
 	Network.connect("abilities", self, "set_abilities")
 	Network.connect("saved", self, "on_save")
+	Network.connect("game_over", self, "on_over")
 
 func on_hit(body):
 	if body.is_in_group("enemies"):
@@ -538,28 +539,28 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	var target_position = Vector2(vector[2], vector[3])
 	last_tick = timestamp
 	
+	if (diff_vector & 4) > 0:
+		last_server_position.x = vector[2]
+	if (diff_vector & 8) > 0:
+		last_server_position.y = vector[3]
+	
 	if (!main and controls.empty()) or Com.time_greater(timestamp, last_controls + 3):
 		var old_position = position
 		
 		if old_position.round() != target_position:
 			position = target_position
-#		elif last_server_position != Vector2():
-#			position = last_server_position
+		elif last_server_position != Vector2():
+			position = last_server_position
 		
 		if has_meta("initialized"): sprite.position += (old_position - position)
 	else:
-		if (target_position - position).length_squared() > 65536:
+		if (target_position - position).length_squared() > 65536 or (last_server_position != Vector2() and (target_position - last_server_position).length_squared() > 65536):
 			desync += 1
 			
 			if desync == 5:
 				position = target_position
 		else:
 			desync = 0
-	
-#	if (diff_vector & 4) > 0:
-#		last_server_position.x = vector[2]
-#	if (diff_vector & 8) > 0:
-#		last_server_position.y = vector[3]
 	
 	action = vector[4]
 	
@@ -592,3 +593,6 @@ func on_trigger_timeout():
 
 func on_save():
 	preload("res://Nodes/Effects/PopupText.tscn").instance().start(self, "Saved!", Color.cyan)
+
+func on_over(chyba):
+	$ManaTimer.queue_free()

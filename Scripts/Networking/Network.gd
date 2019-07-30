@@ -40,6 +40,10 @@ func _process(delta):
 		return
 	
 	if client.get_status() != client.STATUS_CONNECTED:
+		if Com.game:
+			get_tree().change_scene("res://Scenes/ServerRip.tscn")
+			return
+		
 		client.connect_to_host(server_host, server_port)
 	
 	var packet_size = client.get_partial_data(1)
