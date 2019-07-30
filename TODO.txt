@@ -3,6 +3,9 @@
 +zabezpieczenia przed złymi pakietami, wywołaniami metod z niepoprawnymi danymi itp.
 -żaby mają dałna i skaczą do tyłu
 +informacje jak ktoś wchodzi albo umiera
+-chodzenie jest dalej zwalone
+-mp się regeneruje po śmierci
+-brak info o wywaleniu serwera
 
 >zablokować puste nazwy i hasła
 -nie ma podglądu statów biorących pod uwagę dusze
@@ -13,7 +16,6 @@
 +więcej postaci że można
 -jak gracz wychodzi z gameovera to się nie wylogowuje
 -a potem wgl łączy się znowu z serwerem wtf
--wychodzący gracz się nie wylogowyje?
 -nie ma maksymalnego HP przy wejściu
 
 >zamienić ID map na ich nazwy

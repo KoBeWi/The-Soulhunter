@@ -18,6 +18,7 @@ func _notification(what):
 func on_key_press(p_id, key, state):
 	if state == Controls.State.QUIT:
 		if key == Controls.ACCEPT:
+			Packet.new(Packet.TYPE.LOGOUT).send()
 			get_tree().quit()
 		elif key == Controls.CANCEL:
 			$Exit.visible = false

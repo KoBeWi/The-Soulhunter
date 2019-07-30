@@ -16,8 +16,8 @@ func _ready():
 
 func home(dir):
 	var enemies = get_tree().get_nodes_in_group(\"enemies\")
-	var closest = enemies.front()
-	if closest:
+	if !enemies.empty():
+		var closest = enemies.front()
 		var closest_dist = global_position.distance_squared_to(closest.global_position)
 		
 		for enemy in enemies:

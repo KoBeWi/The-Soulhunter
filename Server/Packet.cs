@@ -181,8 +181,8 @@ public class Packet {
     public byte[] Bytes() {
         if (length > 256) {
             Console.WriteLine("Byte limit exceeded: " + length + "\n" + new System.Diagnostics.StackTrace());
-            length = 0;
-            return new byte[0];
+            length = 1;
+            return new byte[1];
             // throw new Exception("Too many bytes: " + length);
         }
 
@@ -200,7 +200,10 @@ public class Packet {
 
     public void Send(System.Net.Sockets.NetworkStream stream) {
         try {
-            stream.Write(Bytes(), 0, length);
+            var bytes = Bytes();
+            if (length <= 1) return;
+
+            stream.Write(bytes, 0, length);
             Server.statsPacketsSent++;
             Server.statsBytesSent += length;
         } catch (System.IO.IOException) {

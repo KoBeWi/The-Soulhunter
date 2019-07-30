@@ -54,7 +54,6 @@ func _process(delta):
 		process_packet(Unpacker.new(data[1], packet_size[1][0]))
 
 func process_packet(unpacker : Unpacker):
-#	if data.size() <= 0: return ##inaczej zabezpieczyć
 	print("Received: ", Packet.TYPE.keys()[unpacker.command], " /", unpacker.size)
 	
 	match unpacker.command:
