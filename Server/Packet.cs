@@ -201,6 +201,8 @@ public class Packet {
     public void Send(System.Net.Sockets.NetworkStream stream) {
         try {
             stream.Write(Bytes(), 0, length);
+            Server.statsPacketsSent++;
+            Server.statsBytesSent += length;
         } catch (System.IO.IOException) {
             Godot.GD.Print("Sending disrupted");
         }

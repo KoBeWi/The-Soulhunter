@@ -27,6 +27,25 @@ public class Server : Node {
 
     private ushort version;
 
+    public static int statsPlayers = 0;
+    public static int statsPacketsReceived = 0;
+    public static int statsBytesReceived = 0;
+    public static int statsPacketsSent = 0;
+    public static int statsBytesSent = 0;
+
+    public override void _Notification(int what) {
+        if (what == SceneTree.NotificationWmQuitRequest) {
+            Console.WriteLine("-----------------------------------------------------");
+            Console.WriteLine("Total seconds running: " + OS.GetTicksMsec() / 1000);
+            Console.WriteLine("Total players joined: " + statsPlayers);
+            Console.WriteLine("Packets received: " + statsPacketsReceived);
+            Console.WriteLine("Bytes received: " + statsBytesReceived);
+            Console.WriteLine("Packets sent: " + statsPacketsSent);
+            Console.WriteLine("Bytes sent: " + statsBytesSent);
+            Console.WriteLine("-----------------------------------------------------");
+        }
+    }
+
     public override void _Ready() {
         instance = this;
         server = new TcpListener(IPAddress.Parse("0.0.0.0"), 2412);
@@ -72,6 +91,7 @@ public class Server : Node {
         var bytes = new byte[256];
 
         GD.Print("Player connected (" + playersOnline.Count + ")");
+        statsPlayers++;
 
         while (true) {
             try {
@@ -90,6 +110,9 @@ public class Server : Node {
                 return;
             }
 
+            
+            Server.statsPacketsReceived++;
+            Server.statsBytesReceived += bytes[0];
             var unpacker = new Unpacker(bytes);
 
             GD.Print("Received packet: " + unpacker.GetCommand().ToString());
