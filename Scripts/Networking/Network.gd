@@ -51,14 +51,11 @@ func _process(delta):
 	if packet_size[0] == FAILED: return
 	
 	if packet_size[1].size() > 0 and packet_size[1][0] > 0: #to drugie nie powinno się dziać ;_;
-#		print("Received data: ", packet_size[1][0]-1)
 		var data = client.get_data(packet_size[1][0]-1)
-#		print(client.get_status())
-#		print(data[0])
 		process_packet(Unpacker.new(data[1], packet_size[1][0]))
 
 func process_packet(unpacker : Unpacker):
-	print("Received: ", Packet.TYPE.keys()[unpacker.command], " /", unpacker.size)
+#	print("Received: ", Packet.TYPE.keys()[unpacker.command], " /", unpacker.size)
 	
 	match unpacker.command:
 		Packet.TYPE.HELLO:
@@ -236,8 +233,3 @@ func process_packet(unpacker : Unpacker):
 
 func send_data(packet):
 	client.put_data(packet.data)
-
-func print_raw(ary): ##DEBUG
-	var arr = []
-	for i in range(ary.size()): arr.append(ary[i])
-	print(str(arr))

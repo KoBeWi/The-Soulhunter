@@ -1,8 +1,18 @@
 -błąd +dodatek >zmiana
 
+-equip soul nie zawsze dobrze działa
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <52405d1838e24bc5b300f5ebeee9f7c4>:0
+  at MongoDB.Bson.BsonArray.get_Item (System.Int32 index) [0x00000] in <751ae1b3f1ce46e29ca107c13a2209ca>:0
+  at Character.EquipSoul (System.Byte slot, System.Byte from) [0x00053] in X:\Studia\Magister\the-soulhunter\Server\Character.cs:261
+  at Unpacker.HandlePacket (Database database, Player player) [0x00344] in X:\Studia\Magister\the-soulhunter\Server\Unpacker.cs:127
+  at Server.ClientLoop (System.Object _client) [0x0013a] in X:\Studia\Magister\the-soulhunter\Server\Server.cs:120
+-nie powinno być labelki wrogów od innyc graczy
 +zabezpieczenia przed złymi pakietami, wywołaniami metod z niepoprawnymi danymi itp.
 -żaby mają dałna i skaczą do tyłu
 +informacje jak ktoś wchodzi albo umiera
+>w sumie TICK można całkiem pomijać jak nie ma zmian (w UDP pewnie przestanie działać)
 
 >zablokować puste nazwy i hasła
 -nie ma podglądu statów biorących pod uwagę dusze

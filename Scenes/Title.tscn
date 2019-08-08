@@ -25,6 +25,8 @@ func _ready():
 	Network.connect(\"log_in\", self, \"on_log_in\")
 	Network.connect(\"game_over\", self, \"on_game_over\")
 	
+	get_viewport().connect(\"size_changed\", self, \"set_select\", [null])
+	
 	Com.controls.set_process(true)
 	Com.controls.connect(\"key_press\", self, \"on_key_press\")
 	Com.controls.state = Controls.State.MENU
@@ -117,8 +119,10 @@ func update_state():
 	self.select = 0
 
 func set_select(s):
-	select = s
-	$Focus.rect_position.y = $Menu.rect_position.y
+	if s != null:
+		select = s
+	
+	$Focus.rect_position = $Menu.rect_position
 	
 	match state:
 		MAIN:
@@ -258,6 +262,7 @@ editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 1 )
+expand = true
 
 [node name="TitleText" type="TextureRect" parent="Background"]
 anchor_right = 1.0

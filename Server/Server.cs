@@ -115,7 +115,7 @@ public class Server : Node {
             Server.statsBytesReceived += bytes[0];
             var unpacker = new Unpacker(bytes);
 
-            GD.Print("Received packet: " + unpacker.GetCommand().ToString());
+            // GD.Print("Received packet: " + unpacker.GetCommand().ToString());
 
             unpacker.HandlePacket(database, player);
         }

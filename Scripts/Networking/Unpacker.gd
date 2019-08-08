@@ -20,7 +20,6 @@ func get_string() -> String:
 	
 	offset += 1
 	
-#	print("string ", string.get_string_from_ascii())
 	return string.get_string_from_ascii()
 
 func get_string_unicode() -> String:
@@ -32,16 +31,13 @@ func get_string_unicode() -> String:
 	
 	offset += 1
 	
-#	print("string ", string.get_string_from_utf8())
 	return string.get_string_from_utf8()
 
 func get_u8() -> int:
-#	print("u8 ", data[offset])
 	offset += 1
 	return data[offset-1]
 
 func get_u16() -> int:
-#	print("u16 ", data[offset] * 256 + data[offset+1])
 	offset += 2
 	return data[offset-2] * 256 + data[offset-1]
 
