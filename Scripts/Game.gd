@@ -12,6 +12,8 @@ onready var effects = $Effects
 var entity_list = {}
 var special_entity_list = {}
 
+signal player_joined
+
 func _ready():
 	if !Com.is_server:
 		Network.connect("game_over", self, "on_over")

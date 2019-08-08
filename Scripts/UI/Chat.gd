@@ -19,6 +19,7 @@ const PLACEHOLDER = "T to chat, /g global, /l local, /w NAME whisper, /r reply"
 func _ready():
 	Com.controls.connect("key_press", self, "on_key_press")
 	Network.connect("chat_message", self, "on_message_get")
+	Com.game.connect("player_joined", self, "on_new_player")
 	input.placeholder_text = PLACEHOLDER
 
 func on_message_get(type, from, message):
@@ -27,13 +28,17 @@ func on_message_get(type, from, message):
 	if type == Data.CHATS.WHISPER:
 		last_whisper = from
 
+func on_new_player(uname):
+	return #spam
+	add_message(null, uname + " joined the room", Data.CHATS.SYSTEM)
+
 func add_message(author, message, type = mode, add_whisper = false):
 	history.push_color("#" + chat_colors[type].to_html())
-	history.add_text(mode_text(type, add_whisper))
+	if type != Data.CHATS.SYSTEM: history.add_text(mode_text(type, add_whisper))
 	history.pop()
 	
 	history.push_color("#" + chat_colors[type].lightened(0.5).to_html())
-	history.append_bbcode(str("[b]", author, ":[/b] "))
+	if author: history.append_bbcode(str("[b]", author, ":[/b] "))
 	history.pop()
 	
 	history.add_text(str(message, "\n"))

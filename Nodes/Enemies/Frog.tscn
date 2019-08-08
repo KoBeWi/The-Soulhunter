@@ -51,8 +51,8 @@ func general_ai(delta):
 			motion.y = 0
 			state = IDLE
 		elif state == JUMP:
-			direction *= -1
-			sprite.flip_h = direction < 0
+			if Com.is_server:
+				direction *= -1
 			
 			if col.normal.y != 0:
 				state = IDLE

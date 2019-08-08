@@ -533,6 +533,10 @@ func get_state_vector():
 func apply_state_vector(timestamp, diff_vector, vector):
 	if vector[0] != uname:
 		self.uname = vector[0]
+		
+		if self != Com.player:
+			Com.game.emit_signal("player_joined", uname)
+	
 	sprite2.self_modulate.h = vector[1] / 360.0
 	hue = vector[1]
 	
