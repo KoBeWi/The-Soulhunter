@@ -235,7 +235,7 @@ func process_attack():
 					get_weapon().set_disabled(false)
 					attack = true
 					weapon_point.visible = true
-					anim.playback_speed = get_weapon().speed + (1 if souls[4] == 15 else 0)
+					anim.playback_speed = get_weapon().speed + (1 if souls and souls[4] == 15 else 0)
 					animation = str(get_weapon().attack_type, "Attack", "Crouch" if crouch else "", direction())
 					anim.play(animation)
 	elif Controls.SOUL in key_press:

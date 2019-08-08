@@ -233,11 +233,16 @@ public class Character : Godot.Object {
 
         var oldEquip = equipment[slot];
 
-        if (from < 255) {
-            equipment.AsBsonArray[slot] = inventory[from];
-            inventory.RemoveAt(from);
-        } else {
-            equipment.AsBsonArray[slot] = 0;
+        try {
+            if (from < 255) {
+                equipment.AsBsonArray[slot] = inventory[from];
+                inventory.RemoveAt(from);
+            } else {
+                equipment.AsBsonArray[slot] = 0;
+            }
+        } catch (ArgumentOutOfRangeException) {
+            Console.WriteLine("Invalid item index: " + from);
+            return;
         }
 
         if (oldEquip > 0) inventory.Add(oldEquip);
@@ -257,11 +262,16 @@ public class Character : Godot.Object {
 
             var oldEquip = equipment[slot];
 
-            if (from < 255) {
-                equipment.AsBsonArray[slot] = inventory[from];
-                inventory.RemoveAt(from);
-            } else {
-                equipment.AsBsonArray[slot] = 0;
+            try {
+                if (from < 255) {
+                    equipment.AsBsonArray[slot] = inventory[from];
+                    inventory.RemoveAt(from);
+                } else {
+                    equipment.AsBsonArray[slot] = 0;
+                }
+            } catch (ArgumentOutOfRangeException) {
+                Console.WriteLine("Invalid soul index: " + from);
+                return;
             }
 
             if (oldEquip > 0) inventory.Add(oldEquip);

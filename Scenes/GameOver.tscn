@@ -51,6 +51,7 @@ one_shot = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 1 )
+expand = true
 
 [node name="Label" type="Label" parent="."]
 anchor_left = 0.5

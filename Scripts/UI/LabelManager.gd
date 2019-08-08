@@ -19,12 +19,13 @@ func on_enemy_attacked(enemy, damage):
 	else:
 		enemy.set_meta("hp", enemy.stats.max_hp - damage)
 	
-	if !enemy.has_meta("label") or !is_instance_valid(enemy.get_meta("label")):
-		var label = push_label(ENEMY, [enemy.enemy_name, enemy.get_meta("hp"), enemy.stats.max_hp])
-		enemy.set_meta("label", label)
-	elif enemy.has_meta("label"):
-		enemy.get_meta("label").set_bar(enemy.get_meta("hp"), enemy.stats.max_hp)
-		enemy.get_meta("label").restart()
+	if enemy.last_attacker == Com.player.get_meta("id"):
+		if !enemy.has_meta("label") or !is_instance_valid(enemy.get_meta("label")):
+			var label = push_label(ENEMY, [enemy.enemy_name, enemy.get_meta("hp"), enemy.stats.max_hp])
+			enemy.set_meta("label", label)
+		elif enemy.has_meta("label"):
+			enemy.get_meta("label").set_bar(enemy.get_meta("hp"), enemy.stats.max_hp)
+			enemy.get_meta("label").restart()
 
 func push_label(type, data):
 	var label = preload("res://Nodes/UI/InfoLabel.tscn").instance()

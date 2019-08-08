@@ -27,10 +27,11 @@ func server_ai(delta): pass
 func general_ai(delta): pass
 
 func hit(body):
-	if Com.is_server:
-		if body.is_in_group("player_attack"):
+	if body.is_in_group("player_attack"):
+		if body.player:
 			last_attacker = body.player.get_meta("id")
-			
+		
+		if Com.is_server:
 			if has_meta("attackers"):
 				var id = body.player.get_meta("id")
 				
