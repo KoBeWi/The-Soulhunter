@@ -8,9 +8,11 @@ func _ready():
 	Com.connect("enemy_attacked", self, "on_enemy_attacked")
 
 func on_item_get(item):
+	$Item.play()
 	push_label(ITEM, [item])
 
 func on_soul_get(soul):
+	$Soul.play()
 	push_label(SOUL, [soul])
 
 func on_enemy_attacked(enemy, damage):

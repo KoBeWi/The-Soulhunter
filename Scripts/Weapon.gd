@@ -15,7 +15,7 @@ func _ready():
 		data = {attack = 1}
 
 func attack():
-	return {damage = data.attack + player.stats.attack}
+	return {damage = player.stats.attack}
 
 func set_disabled(disabled):
 	$Shape.disabled = disabled

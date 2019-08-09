@@ -116,7 +116,10 @@ func apply_state_vector(timestamp, diff_vector, vector):
 	
 	state = vector[2]
 	direction = vector[3]-1 ##tutaj jakiś bit, bo marnowanie itp.
-	walk = vector[4]-1"
+	walk = vector[4]-1
+	
+func _on_damage(damage):
+	$AudioStreamPlayer2D.play()"
 
 [node name="Skeleton" instance=ExtResource( 1 )]
 modulate = Color( 1, 0, 0, 1 )

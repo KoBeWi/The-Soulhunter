@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Frog.wav-643a87c5cc36a84d78664f3243dc2d2e.sample"
+
+[deps]
+
+source_file="res://Audio/Frog.wav"
+dest_files=[ "res://.import/Frog.wav-643a87c5cc36a84d78664f3243dc2d2e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0
