@@ -216,7 +216,6 @@ public class Character : Godot.Object {
         if (item["type"] as string == "consumable") {
             foreach (var stat in statList) {
                 if (item.ContainsKey(stat)) {
-                    Console.WriteLine(stat + ": " + item[stat] + "(" + GetStat(stat));
                     SetStat(stat, (ushort)(GetStat(stat) + Data.Int(item[stat])));
                 }
             }

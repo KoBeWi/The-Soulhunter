@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/Weapon.gd" type="Script" id=1]
+[ext_resource path="res://Audio/Fist.wav" type="AudioStream" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -14,3 +15,6 @@ attack_type = "Stab"
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
+
+[node name="AttackSfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )

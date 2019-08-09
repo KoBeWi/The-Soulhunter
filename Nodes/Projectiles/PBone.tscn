@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Graphics/Projectiles/Bone.png" type="Texture" id=1]
+[ext_resource path="res://Audio/Throw.wav" type="AudioStream" id=2]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Bone"
@@ -13,6 +14,8 @@ var powered = false
 
 func _ready():
 	if Com.register_node(self, \"Projectiles/PBone\"): return
+	if !Com.is_server:
+		$AudioStreamPlayer2D.play()
 
 func attack():
 	return {damage = player.stats.magic_attack + 5}
@@ -81,3 +84,6 @@ shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )

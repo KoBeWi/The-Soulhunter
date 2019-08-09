@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Graphics/Projectiles/Bone.png" type="Texture" id=1]
+[ext_resource path="res://Audio/Throw.wav" type="AudioStream" id=2]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Bone"
@@ -12,6 +13,8 @@ onready var sprite = $Sprite
 
 func _ready():
 	if Com.register_node(self, \"Enemies/Bone\"): return
+	if !Com.is_server:
+		$AudioStreamPlayer2D.play()
 	velocity.x += randi()%25
 
 func general_ai(delta):
@@ -76,4 +79,8 @@ collision_mask = 0
 
 [node name="Shape" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource( 2 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+autoplay = true
 [connection signal="body_entered" from="Hitbox" to="." method="hit"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Graphics/Items/Weapons/Meitsukimune.png" type="Texture" id=1]
+[ext_resource path="res://Audio/LunarSlash.wav" type="AudioStream" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Weapon
@@ -79,3 +80,6 @@ shape = SubResource( 3 )
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( -9.93741, -115.936 )
+
+[node name="AttackSfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )

@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Weapon.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/Items/Weapons/Blunt Sword.png" type="Texture" id=2]
+[ext_resource path="res://Audio/Sword.wav" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6, 33 )
@@ -23,3 +24,6 @@ texture = ExtResource( 2 )
 [node name="Shape" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -42 )
 shape = SubResource( 1 )
+
+[node name="AttackSfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )

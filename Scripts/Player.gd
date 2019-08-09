@@ -180,14 +180,20 @@ func process_crouching():
 
 func process_jumping():
 	if is_on_floor():
+		if jump and !Com.is_server:
+			$LandSound.play()
 		jump = false
 		double_jump = false
 	
 	if (is_on_floor() or (abilities[ABILITIES.DOUBLE_JUMP] and not double_jump)) and ((abilities[ABILITIES.AUTO_JUMP] and !jump and Controls.JUMP in controls) or Controls.JUMP in key_press):
 		if !jump:
 			jump = true
+			if !Com.is_server:
+				$JumpSound.play()
 		else:
 			double_jump = true
+			if !Com.is_server:
+				$JumpSound2.play()
 		motion.y = -JUMP
 
 func process_animations():
@@ -232,6 +238,9 @@ func process_attack():
 				trigger_soul()
 			else:
 				if get_weapon():
+					if !Com.is_server and get_weapon().has_node("AttackSfx"):
+						get_weapon().get_node("AttackSfx").play()
+					
 					get_weapon().set_disabled(false)
 					attack = true
 					weapon_point.visible = true
@@ -476,9 +485,7 @@ func set_stats(_stats):
 
 func set_equipment(eq):
 	equipment = parse_json(eq)
-	
-	if equipment[0]:
-		set_weapon(int(equipment[0]))
+	set_weapon(int(equipment[0]))
 
 func set_souls(suls):
 	souls = parse_json(suls)

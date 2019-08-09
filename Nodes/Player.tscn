@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://Graphics/Characters/PlayerColor.png" type="Texture" id=4]
 [ext_resource path="res://Graphics/Enemies/Skeleton.png" type="Texture" id=5]
 [ext_resource path="res://Graphics/UI/PressUp.png" type="Texture" id=6]
+[ext_resource path="res://Audio/Jump.wav" type="AudioStream" id=7]
+[ext_resource path="res://Audio/Jump2.wav" type="AudioStream" id=8]
+[ext_resource path="res://Audio/Land.wav" type="AudioStream" id=9]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Crouch"
@@ -765,6 +768,17 @@ texture = ExtResource( 6 )
 
 [node name="Animation" type="AnimationPlayer" parent="PressUp"]
 anims/Idle = SubResource( 26 )
+
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+attenuation = 0.812252
+
+[node name="JumpSound2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+attenuation = 0.0853775
+
+[node name="LandSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 9 )
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="frame_changed" from="Sprite" to="." method="set_frame"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]

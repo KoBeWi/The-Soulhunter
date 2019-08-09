@@ -210,4 +210,18 @@ public class Server : Node {
         var room = Server.Instance().GetRoom(character.GetMapId());
         room.AddPlayer(character);
     }
+
+    public void LogToFile() {
+        Console.WriteLine("Log time!");
+        System.IO.StreamWriter file = new System.IO.StreamWriter("./log.txt");
+
+        file.WriteLine("Total seconds running: " + OS.GetTicksMsec() / 1000);
+        file.WriteLine("Total players joined: " + statsPlayers);
+        file.WriteLine("Packets received: " + statsPacketsReceived);
+        file.WriteLine("Bytes received: " + statsBytesReceived);
+        file.WriteLine("Packets sent: " + statsPacketsSent);
+        file.WriteLine("Bytes sent: " + statsBytesSent);
+
+        file.Close();
+    }
 }
