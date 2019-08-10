@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Resources/Character.gd" type="Script" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://Audio/Jump.wav" type="AudioStream" id=7]
 [ext_resource path="res://Audio/Jump2.wav" type="AudioStream" id=8]
 [ext_resource path="res://Audio/Land.wav" type="AudioStream" id=9]
-[ext_resource path="res://Audio/Save.wav" type="AudioStream" id=10]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Crouch"
@@ -780,10 +779,6 @@ attenuation = 0.0853775
 
 [node name="LandSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 9 )
-
-[node name="Save" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 10 )
-volume_db = -10.0
 [connection signal="animation_finished" from="Animation" to="Animation" method="_on_Animation_animation_finished"]
 [connection signal="frame_changed" from="Sprite" to="." method="set_frame"]
 [connection signal="body_entered" from="Hitbox" to="." method="on_hit"]

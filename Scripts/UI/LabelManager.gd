@@ -31,7 +31,7 @@ func on_enemy_attacked(enemy, damage):
 
 func push_label(type, data):
 	var label = preload("res://Nodes/UI/InfoLabel.tscn").instance()
-	label.rect_position.y -= get_child_count() * 32
+	label.rect_position.y -= (get_child_count()-2) * 32
 	add_child(label)
 	
 	match type:
