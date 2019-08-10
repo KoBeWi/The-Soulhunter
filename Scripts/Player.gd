@@ -603,6 +603,7 @@ func on_trigger_timeout():
 	cooldown = false
 
 func on_save():
+	$Save.play()
 	preload("res://Nodes/Effects/PopupText.tscn").instance().start(self, "Saved!", Color.cyan)
 
 func on_over(chyba):
