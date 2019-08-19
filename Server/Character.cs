@@ -255,6 +255,8 @@ public class Character : Godot.Object {
     }
 
     public void EquipSoul(byte slot, byte from) {
+        if (slot < 0 || slot > 6) return;
+
         var inventory = data.GetValue("souls").AsBsonArray;
         if (slot != 6) {
             var equipment = data.GetValue("soul_equipment").AsBsonArray;

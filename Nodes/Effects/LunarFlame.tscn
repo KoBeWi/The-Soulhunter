@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Graphics/Effects/LunarFlame.png" type="Texture" id=1]
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="GDScript" id=1]
 script/source = "extends Sprite
 
 func _ready():
@@ -11,8 +11,7 @@ func _ready():
 func _on_AnimationPlayer_animation_finished(anim_name):
 	queue_free()"
 
-[sub_resource type="Animation" id=1]
-resource_name = "Idle"
+[sub_resource type="Animation" id=2]
 length = 13.0
 step = 1.0
 tracks/0/type = "value"
@@ -54,11 +53,11 @@ z_index = 200
 texture = ExtResource( 1 )
 vframes = 7
 hframes = 8
-script = SubResource( 2 )
+script = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 autoplay = "Idle"
 playback_speed = 64.0
-anims/Idle = SubResource( 1 )
+anims/Idle = SubResource( 2 )
 "anims/Idle (copy)" = SubResource( 3 )
 [connection signal="animation_finished" from="Sprite/AnimationPlayer" to="Sprite" method="_on_AnimationPlayer_animation_finished"]

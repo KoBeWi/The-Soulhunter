@@ -1,1 +1,1 @@
-ssh -R 2412:127.0.0.1:2412 serveo.net
+ssh -o ServerAliveInterval=60 -R 2412:127.0.0.1:2412 serveo.net

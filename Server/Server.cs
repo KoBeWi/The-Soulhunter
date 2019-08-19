@@ -19,6 +19,7 @@ public class Server : Node {
     private Dictionary<int, List<Room>> rooms;
     private List<Player> playersOnline;
     private Node controls;
+    private int maxPlayersOnline;
 
     private bool available = true;
 
@@ -38,6 +39,7 @@ public class Server : Node {
             Console.WriteLine("-----------------------------------------------------");
             Console.WriteLine("Total seconds running: " + OS.GetTicksMsec() / 1000);
             Console.WriteLine("Total players joined: " + statsPlayers);
+            Console.WriteLine("Peak online players: " + maxPlayersOnline);
             Console.WriteLine("Packets received: " + statsPacketsReceived);
             Console.WriteLine("Bytes received: " + statsBytesReceived);
             Console.WriteLine("Packets sent: " + statsPacketsSent);
@@ -170,6 +172,7 @@ public class Server : Node {
 
     public static void AddOnlinePlayer(Player player) {
         instance.playersOnline.Add(player);
+        instance.maxPlayersOnline = Mathf.Max(instance.maxPlayersOnline, instance.playersOnline.Count);
     }
 
     public static Player GetPlayerOnline(string login) { //tu lepiej jakiś słownik
@@ -212,11 +215,17 @@ public class Server : Node {
     }
 
     public void LogToFile() {
-        Console.WriteLine("Log time!");
+        // Console.WriteLine("Log time!");
         System.IO.StreamWriter file = new System.IO.StreamWriter("./log.txt");
+
+        DateTime moment = DateTime.Now;
+        file.WriteLine("Last log: " + moment.Hour + ":" + moment.Minute + ":" + moment.Second);
+        file.WriteLine("Players right now: " + playersOnline.Count);
+        file.WriteLine(" ");
 
         file.WriteLine("Total seconds running: " + OS.GetTicksMsec() / 1000);
         file.WriteLine("Total players joined: " + statsPlayers);
+        file.WriteLine("Peak online players: " + maxPlayersOnline);
         file.WriteLine("Packets received: " + statsPacketsReceived);
         file.WriteLine("Bytes received: " + statsBytesReceived);
         file.WriteLine("Packets sent: " + statsPacketsSent);
