@@ -15,7 +15,7 @@ script/source = "extends Control
 enum{MAIN, LOGIN, REGISTER, OPTIONS}
 var state = MAIN
 var select = 0 setget set_select
-var max_select = 3
+var max_select = 2
 
 func _ready():
 	Network.connect(\"connected\", self, \"on_connect\")
@@ -60,7 +60,7 @@ func on_key_press(p_id, key, _state):
 						$Menu/Register/LoginInput.text = \"\"
 						$Menu/Register/PasswordInput.text = \"\"
 						$Menu/Register/LoginInput.grab_focus()
-					3:
+					2:
 						get_tree().quit()
 			LOGIN:
 				match select:
@@ -318,7 +318,6 @@ align = 1
 wait_time = 2.0
 
 [node name="Menu" type="Control" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -329,7 +328,6 @@ margin_right = 171.0
 margin_bottom = 185.822
 
 [node name="Texts" type="VBoxContainer" parent="Menu"]
-editor/display_folded = true
 margin_right = 341.0
 
 [node name="Login" type="Label" parent="Menu/Texts"]
@@ -347,18 +345,10 @@ custom_fonts/font = ExtResource( 4 )
 text = "Register"
 align = 1
 
-[node name="Options" type="Label" parent="Menu/Texts"]
+[node name="Quit" type="Label" parent="Menu/Texts"]
 margin_top = 56.0
 margin_right = 341.0
 margin_bottom = 80.0
-custom_fonts/font = ExtResource( 4 )
-text = "Options"
-align = 1
-
-[node name="Quit" type="Label" parent="Menu/Texts"]
-margin_top = 84.0
-margin_right = 341.0
-margin_bottom = 108.0
 custom_fonts/font = ExtResource( 4 )
 text = "Quit"
 align = 1
@@ -530,6 +520,24 @@ margin_right = 678.261
 margin_bottom = 459.281
 rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 7 )
+
+[node name="Label" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -260.0
+margin_top = -81.0
+margin_right = -4.0
+margin_bottom = -4.0
+custom_fonts/font = ExtResource( 3 )
+text = "by Tomasz Chabora
+Created for master thesis
+\"Implementation of client and server
+prototype for 2D MMORPG game\""
+align = 2
+valign = 2
 [connection signal="timeout" from="Connecting/Timer" to="." method="on_long_connect"]
 [connection signal="timeout" from="Status/Timer" to="Status" method="hide"]
 [connection signal="value_changed" from="Menu/Register/Hue" to="." method="on_hue"]

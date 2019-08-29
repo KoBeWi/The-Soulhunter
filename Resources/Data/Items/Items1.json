@@ -102,7 +102,7 @@
 
     {
         "name": "Meitsukimune",
-        "description": "A flame that spits cursed flames with each swing.",
+        "description": "A blade that spits cursed flames with each swing.",
         "type": "weapon",
         "attribute": "sharp",
         "attack": 5
