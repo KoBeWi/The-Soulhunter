@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "cmath": "cpp",
-        "thread": "cpp",
-        "list": "cpp",
-        "vector": "cpp",
-        "xstring": "cpp"
-    }
-}
