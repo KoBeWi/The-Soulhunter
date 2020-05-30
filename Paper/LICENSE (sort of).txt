@@ -1,0 +1,1 @@
+While the whole repository is MIT-license, the file "The Paper Eng.pdf" is a Google-translated version of my thesis. You can read it, but you can't modify it, re-publish or do some other stupid stuff like claming it's yours. Just saying, in case someone thinks that if it's on the repo means that the PDF is "open-source" too. So don't use it for weird purposes, thanks.
