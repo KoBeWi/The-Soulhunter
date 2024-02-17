@@ -7,7 +7,7 @@ It's an MMORPG game made in Godot engine. The project is discontinued. It might 
 
 # Running
 
-To run the game, you need the server running first. The easy way to run is download the build from [here](https://ufile.io/bols560h) (Windows only) and follow the instructions.
+To run the game, you need the server running first. The easy way to run is download the build from [here](https://ufile.io/65ps4q0k) ([mirror](https://www.mediafire.com/file/coftf9x7fh7td2y/TheSoulhunter.zip/file)) (Windows only) and follow the instructions.
 
 If you want to run from source, you need Mono version of Godot engine 3.1.x (available [here](https://godotengine.org/download)) and installed MongoDB.
 
